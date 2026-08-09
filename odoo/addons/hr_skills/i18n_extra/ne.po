@@ -1,0 +1,184 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0 (hr_skills)\n"
+"Report-Msgid-Bugs-To: \n"
+"Language-Team: Nepali\n"
+"Language: ne\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: hr_skills
+#: model:ir.model.fields,field_description:hr_skills.field_hr_employee_certification_report__active
+#: model:ir.model.fields,field_description:hr_skills.field_hr_employee_skill_report__active
+#: model:ir.model.fields,field_description:hr_skills.field_hr_skill_type__active
+msgid "Active"
+msgstr "सक्रिय"
+
+#. module: hr_skills
+#: model_terms:ir.ui.view,arch_db:hr_skills.hr_employee_skill_report_view_search
+#: model_terms:ir.ui.view,arch_db:hr_skills.hr_employee_skill_type_view_form
+#: model_terms:ir.ui.view,arch_db:hr_skills.hr_skill_type_view_search
+msgid "Archived"
+msgstr "संग्रहित"
+
+#. module: hr_skills
+#: model_terms:ir.ui.view,arch_db:hr_skills.employee_skill_view_form
+#: model_terms:ir.ui.view,arch_db:hr_skills.hr_job_skill_view_form
+msgid "Category"
+msgstr "श्रेणी"
+
+#. module: hr_skills
+#. odoo-javascript
+#: code:addons/hr_skills/static/src/fields/formatted_date/formatted_date.js:0
+#: model:ir.model.fields,field_description:hr_skills.field_hr_employee_skill__color
+#: model:ir.model.fields,field_description:hr_skills.field_hr_individual_skill_mixin__color
+#: model:ir.model.fields,field_description:hr_skills.field_hr_job_skill__color
+#: model:ir.model.fields,field_description:hr_skills.field_hr_resume_line__color
+#: model:ir.model.fields,field_description:hr_skills.field_hr_skill__color
+#: model:ir.model.fields,field_description:hr_skills.field_hr_skill_type__color
+msgid "Color"
+msgstr "रङ"
+
+#. module: hr_skills
+#: model:ir.model.fields,field_description:hr_skills.field_hr_employee_certification_report__company_id
+#: model:ir.model.fields,field_description:hr_skills.field_hr_employee_skill_report__company_id
+#: model:ir.model.fields,field_description:hr_skills.field_hr_resume_line__company_id
+msgid "Company"
+msgstr "कम्पनी"
+
+#. module: hr_skills
+#: model:ir.model.fields,field_description:hr_skills.field_hr_employee_skill_history_report__date
+#: model_terms:ir.ui.view,arch_db:hr_skills.hr_employee_skill_history_report_view_search
+#: model_terms:ir.ui.view,arch_db:hr_skills.hr_resume_line_list_view
+#: model_terms:ir.ui.view,arch_db:hr_skills.resume_line_view_form
+msgid "Date"
+msgstr "मिति"
+
+#. module: hr_skills
+#: model:ir.model.fields,field_description:hr_skills.field_hr_employee_certification_report__department_id
+#: model:ir.model.fields,field_description:hr_skills.field_hr_employee_skill_report__department_id
+#: model:ir.model.fields,field_description:hr_skills.field_hr_resume_line__department_id
+#: model_terms:ir.ui.view,arch_db:hr_skills.hr_employee_certification_report_view_search
+#: model_terms:ir.ui.view,arch_db:hr_skills.hr_employee_skill_report_view_search
+msgid "Department"
+msgstr "विभाग"
+
+#. module: hr_skills
+#: model:ir.model.fields,field_description:hr_skills.field_hr_resume_line__description
+#: model_terms:ir.ui.view,arch_db:hr_skills.resume_line_view_form
+msgid "Description"
+msgstr "विवरण"
+
+#. module: hr_skills
+#: model_terms:ir.ui.view,arch_db:hr_skills.hr_employee_cv_wizard_view_form
+msgid "Discard"
+msgstr "खारेज गर्नुहोस्"
+
+#. module: hr_skills
+#: model:ir.model.fields,field_description:hr_skills.field_hr_resume_line__duration
+#: model_terms:ir.ui.view,arch_db:hr_skills.resume_line_view_form
+msgid "Duration"
+msgstr "अवधि"
+
+#. module: hr_skills
+#: model:ir.model,name:hr_skills.model_hr_employee
+#: model:ir.model.fields,field_description:hr_skills.field_hr_employee_certification_report__employee_id
+#: model:ir.model.fields,field_description:hr_skills.field_hr_employee_cv_wizard__employee_ids
+#: model:ir.model.fields,field_description:hr_skills.field_hr_employee_skill__employee_id
+#: model:ir.model.fields,field_description:hr_skills.field_hr_employee_skill_history_report__employee_id
+#: model:ir.model.fields,field_description:hr_skills.field_hr_employee_skill_report__employee_id
+#: model:ir.model.fields,field_description:hr_skills.field_hr_resume_line__employee_id
+#: model_terms:ir.ui.view,arch_db:hr_skills.hr_employee_certification_report_view_search
+#: model_terms:ir.ui.view,arch_db:hr_skills.hr_employee_skill_report_view_search
+#: model_terms:ir.ui.view,arch_db:hr_skills.hr_employee_skill_view_search
+#: model_terms:ir.ui.view,arch_db:hr_skills.resume_line_view_form_inherit
+msgid "Employee"
+msgstr "कर्मचारी"
+
+#. module: hr_skills
+#: model:ir.model,name:hr_skills.model_hr_job
+msgid "Job Position"
+msgstr "पद"
+
+#. module: hr_skills
+#: model:hr.skill.type,name:hr_skills.hr_skill_type_lang
+#: model_terms:ir.ui.view,arch_db:hr_skills.report_employee_cv_main_panel
+msgid "Languages"
+msgstr "भाषाहरू"
+
+#. module: hr_skills
+#: model:ir.model.fields,field_description:hr_skills.field_hr_resume_line__name
+#: model:ir.model.fields,field_description:hr_skills.field_hr_resume_line_type__name
+#: model:ir.model.fields,field_description:hr_skills.field_hr_skill__name
+#: model:ir.model.fields,field_description:hr_skills.field_hr_skill_level__name
+#: model:ir.model.fields,field_description:hr_skills.field_hr_skill_type__name
+msgid "Name"
+msgstr "नाम"
+
+#. module: hr_skills
+#: model_terms:ir.ui.view,arch_db:hr_skills.hr_employee_skill_view_list
+msgid "New"
+msgstr "नयाँ"
+
+#. module: hr_skills
+#. odoo-javascript
+#. odoo-python
+#: code:addons/hr_skills/report/hr_employee_cv_report.py:0
+#: code:addons/hr_skills/static/src/views/skills_list_renderer.js:0
+msgid "Other"
+msgstr "अन्य"
+
+#. module: hr_skills
+#: model_terms:ir.ui.view,arch_db:hr_skills.hr_employee_cv_wizard_view_form
+msgid "Print"
+msgstr "छाप्नुहोस्"
+
+#. module: hr_skills
+#: model:ir.ui.menu,name:hr_skills.menu_human_resources_configuration_resume
+#: model_terms:ir.ui.view,arch_db:hr_skills.hr_employee_public_view_form_inherit
+#: model_terms:ir.ui.view,arch_db:hr_skills.hr_employee_public_view_search
+#: model_terms:ir.ui.view,arch_db:hr_skills.hr_employee_view_form
+#: model_terms:ir.ui.view,arch_db:hr_skills.hr_employee_view_search
+#: model_terms:ir.ui.view,arch_db:hr_skills.resume_line_view_form
+msgid "Resume"
+msgstr "बायोडाटा"
+
+#. module: hr_skills
+#: model:ir.model.fields,field_description:hr_skills.field_hr_resume_line_type__sequence
+#: model:ir.model.fields,field_description:hr_skills.field_hr_skill__sequence
+#: model:ir.model.fields,field_description:hr_skills.field_hr_skill_type__sequence
+msgid "Sequence"
+msgstr "क्रम"
+
+#. module: hr_skills
+#. odoo-javascript
+#: code:addons/hr_skills/static/src/components/avatar_card_resource/avatar_card_resource_popover.xml:0
+#: model:ir.model.fields,field_description:hr_skills.field_hr_employee__employee_skill_ids
+#: model:ir.model.fields,field_description:hr_skills.field_hr_employee_cv_wizard__show_skills
+#: model:ir.model.fields,field_description:hr_skills.field_hr_employee_public__employee_skill_ids
+#: model:ir.model.fields,field_description:hr_skills.field_hr_job__job_skill_ids
+#: model:ir.model.fields,field_description:hr_skills.field_hr_skill_type__skill_ids
+#: model:ir.model.fields,field_description:hr_skills.field_resource_resource__employee_skill_ids
+#: model:ir.ui.menu,name:hr_skills.hr_employee_skill_report_menu
+#: model_terms:ir.ui.view,arch_db:hr_skills.employee_skill_view_form
+#: model_terms:ir.ui.view,arch_db:hr_skills.hr_employee_skill_type_view_form
+#: model_terms:ir.ui.view,arch_db:hr_skills.hr_job_skill_view_form
+#: model_terms:ir.ui.view,arch_db:hr_skills.hr_skill_view_form
+#: model_terms:ir.ui.view,arch_db:hr_skills.report_employee_cv_main_panel
+msgid "Skills"
+msgstr "सीपहरू"
+
+#. module: hr_skills
+#: model_terms:ir.ui.view,arch_db:hr_skills.resume_line_view_form
+msgid "Title"
+msgstr "शीर्षक"
+
+#. module: hr_skills
+#: model:ir.model.fields,field_description:hr_skills.field_hr_resume_line__line_type_id
+#: model_terms:ir.ui.view,arch_db:hr_skills.hr_employee_skill_view_search
+#: model_terms:ir.ui.view,arch_db:hr_skills.hr_resume_line_list_view
+msgid "Type"
+msgstr "प्रकार"

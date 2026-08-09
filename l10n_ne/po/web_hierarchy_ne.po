@@ -1,0 +1,22 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0 (web_hierarchy)\n"
+"Report-Msgid-Bugs-To: \n"
+"Language-Team: Nepali\n"
+"Language: ne\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: web_hierarchy
+#. odoo-javascript
+#: code:addons/web_hierarchy/static/src/hierarchy_controller.xml:0
+msgid "New"
+msgstr "नयाँ"
+
+#. module: web_hierarchy
+#: model:ir.model,name:web_hierarchy.model_ir_ui_view
+msgid "View"
+msgstr "हेर्नुहोस्"

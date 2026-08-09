@@ -1,0 +1,157 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0 (portal)\n"
+"Report-Msgid-Bugs-To: \n"
+"Language-Team: Nepali\n"
+"Language: ne\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: portal
+#: model_terms:ir.ui.view,arch_db:portal.portal_my_security
+#: model_terms:ir.ui.view,arch_db:portal.portal_share_wizard
+msgid "Cancel"
+msgstr "रद्द गर्नुहोस्"
+
+#. module: portal
+#: model_terms:ir.ui.view,arch_db:portal.address_form_fields
+msgid "City"
+msgstr "सहर"
+
+#. module: portal
+#. odoo-javascript
+#: code:addons/portal/static/src/interactions/portal_security.js:0
+#: model_terms:ir.ui.view,arch_db:portal.portal_back_in_edit_mode
+#: model_terms:ir.ui.view,arch_db:portal.side_content
+#: model_terms:ir.ui.view,arch_db:portal.wizard_view
+msgid "Close"
+msgstr "बन्द गर्नुहोस्"
+
+#. module: portal
+#. odoo-javascript
+#: code:addons/portal/static/src/interactions/portal_security.js:0
+msgid "Confirm"
+msgstr "पुष्टि गर्नुहोस्"
+
+#. module: portal
+#: model:ir.model,name:portal.model_res_partner
+#: model:ir.model.fields,field_description:portal.field_portal_wizard_user__partner_id
+#: model_terms:ir.ui.view,arch_db:portal.portal_layout
+#: model_terms:ir.ui.view,arch_db:portal.portal_my_contact
+#: model_terms:ir.ui.view,arch_db:portal.side_content
+msgid "Contact"
+msgstr "सम्पर्क"
+
+#. module: portal
+#: model_terms:ir.ui.view,arch_db:portal.wizard_view
+msgid "Contacts"
+msgstr "सम्पर्कहरू"
+
+#. module: portal
+#: model_terms:ir.ui.view,arch_db:portal.address_form_fields
+msgid "Country"
+msgstr "देश"
+
+#. module: portal
+#. odoo-javascript
+#: code:addons/portal/static/src/xml/portal_chatter.xml:0
+msgid "Delete"
+msgstr "मेटाउनुहोस्"
+
+#. module: portal
+#: model_terms:ir.ui.view,arch_db:portal.portal_my_security
+msgid "Description"
+msgstr "विवरण"
+
+#. module: portal
+#: model:ir.model.fields,field_description:portal.field_portal_wizard_user__email
+#: model_terms:ir.ui.view,arch_db:portal.address_form_fields
+msgid "Email"
+msgstr "इमेल"
+
+#. module: portal
+#: model_terms:ir.ui.view,arch_db:portal.portal_breadcrumbs
+msgid "Home"
+msgstr "गृहपृष्ठ"
+
+#. module: portal
+#: model:ir.model.fields.selection,name:portal.selection__portal_wizard_user__email_state__ko
+msgid "Invalid"
+msgstr "अमान्य"
+
+#. module: portal
+#: model:ir.model,name:portal.model_mail_message
+msgid "Message"
+msgstr "सन्देश"
+
+#. module: portal
+#. odoo-javascript
+#: code:addons/portal/static/src/xml/portal_chatter.xml:0
+msgid "Next"
+msgstr "अर्को"
+
+#. module: portal
+#: model:ir.model.fields,field_description:portal.field_portal_share__note
+msgid "Note"
+msgstr "टिपोट"
+
+#. module: portal
+#: model_terms:ir.ui.view,arch_db:portal.portal_my_security
+msgid "Password"
+msgstr "पासवर्ड"
+
+#. module: portal
+#: model_terms:ir.ui.view,arch_db:portal.address_form_fields
+msgid "Phone"
+msgstr "फोन"
+
+#. module: portal
+#. odoo-javascript
+#: code:addons/portal/static/src/xml/portal_chatter.xml:0
+msgid "Previous"
+msgstr "अघिल्लो"
+
+#. module: portal
+#: model:ir.model.fields,field_description:portal.field_portal_share__partner_ids
+msgid "Recipients"
+msgstr "प्राप्तकर्ताहरू"
+
+#. module: portal
+#: model_terms:ir.ui.view,arch_db:portal.portal_searchbar
+msgid "Search"
+msgstr "खोज्नुहोस्"
+
+#. module: portal
+#. odoo-javascript
+#: code:addons/portal/static/src/interactions/portal_composer.js:0
+#: model_terms:ir.ui.view,arch_db:portal.portal_share_wizard
+msgid "Send"
+msgstr "पठाउनुहोस्"
+
+#. module: portal
+#: model_terms:ir.ui.view,arch_db:portal.portal_my_contact
+msgid "Send message"
+msgstr "सन्देश पठाउनुहोस्"
+
+#. module: portal
+#: model:ir.model.fields,field_description:portal.field_portal_wizard_user__email_state
+msgid "Status"
+msgstr "स्थिति"
+
+#. module: portal
+#: model:ir.model.fields,field_description:portal.field_portal_wizard_user__user_id
+msgid "User"
+msgstr "प्रयोगकर्ता"
+
+#. module: portal
+#: model:ir.model.fields,field_description:portal.field_portal_wizard__user_ids
+msgid "Users"
+msgstr "प्रयोगकर्ताहरू"
+
+#. module: portal
+#: model:ir.model,name:portal.model_ir_ui_view
+msgid "View"
+msgstr "हेर्नुहोस्"

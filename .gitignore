@@ -1,0 +1,50 @@
+# ---------------------------------------------------------------------------
+# Python
+# ---------------------------------------------------------------------------
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.eggs/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# ---------------------------------------------------------------------------
+# Virtual environment (recreate with: py -3.12 -m venv venv)
+# ---------------------------------------------------------------------------
+/venv/
+/.venv/
+/env/
+
+# ---------------------------------------------------------------------------
+# Odoo runtime data
+#   .odoo_data/ is the data_dir: filestore, sessions, compiled assets.
+#   The filestore holds real attachments -- back it up separately, alongside a
+#   pg_dump. It is deliberately NOT in git (binary, large, environment-local).
+# ---------------------------------------------------------------------------
+/.odoo_data/
+*.log
+*.pid
+.gunicorn.pid
+
+# ---------------------------------------------------------------------------
+# Local configuration
+#   odoo.conf carries the database password, so it stays untracked.
+#   odoo.conf.example is the tracked template -- copy it to odoo.conf and edit.
+#   If you would rather version the real file (local-only repo), delete the
+#   line below and run:  git add -f odoo.conf
+# ---------------------------------------------------------------------------
+/odoo.conf
+
+# ---------------------------------------------------------------------------
+# Editors / OS
+# ---------------------------------------------------------------------------
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+desktop.ini

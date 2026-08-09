@@ -1,0 +1,67 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0 (spreadsheet_dashboard_account)\n"
+"Report-Msgid-Bugs-To: \n"
+"Language-Team: Nepali\n"
+"Language: ne\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: spreadsheet_dashboard_account
+#. odoo-javascript
+#: code:addons/spreadsheet_dashboard_account/data/files/invoicing_dashboard.json:0
+#: code:addons/spreadsheet_dashboard_account/data/files/invoicing_sample_dashboard.json:0
+msgid "Amount"
+msgstr "रकम"
+
+#. module: spreadsheet_dashboard_account
+#. odoo-javascript
+#: code:addons/spreadsheet_dashboard_account/data/files/invoicing_dashboard.json:0
+#: code:addons/spreadsheet_dashboard_account/data/files/invoicing_sample_dashboard.json:0
+msgid "Country"
+msgstr "देश"
+
+#. module: spreadsheet_dashboard_account
+#. odoo-javascript
+#: code:addons/spreadsheet_dashboard_account/data/files/invoicing_dashboard.json:0
+#: code:addons/spreadsheet_dashboard_account/data/files/invoicing_sample_dashboard.json:0
+msgid "Customer"
+msgstr "ग्राहक"
+
+#. module: spreadsheet_dashboard_account
+#. odoo-javascript
+#: code:addons/spreadsheet_dashboard_account/data/files/invoicing_dashboard.json:0
+#: code:addons/spreadsheet_dashboard_account/data/files/invoicing_sample_dashboard.json:0
+msgid "Date"
+msgstr "मिति"
+
+#. module: spreadsheet_dashboard_account
+#. odoo-javascript
+#: code:addons/spreadsheet_dashboard_account/data/files/invoicing_dashboard.json:0
+#: code:addons/spreadsheet_dashboard_account/data/files/invoicing_sample_dashboard.json:0
+msgid "Invoices"
+msgstr "बीजकहरू"
+
+#. module: spreadsheet_dashboard_account
+#. odoo-javascript
+#: code:addons/spreadsheet_dashboard_account/data/files/invoicing_dashboard.json:0
+#: code:addons/spreadsheet_dashboard_account/data/files/invoicing_sample_dashboard.json:0
+msgid "Product"
+msgstr "उत्पादन"
+
+#. module: spreadsheet_dashboard_account
+#. odoo-javascript
+#: code:addons/spreadsheet_dashboard_account/data/files/invoicing_dashboard.json:0
+#: code:addons/spreadsheet_dashboard_account/data/files/invoicing_sample_dashboard.json:0
+msgid "Reference"
+msgstr "सन्दर्भ"
+
+#. module: spreadsheet_dashboard_account
+#. odoo-javascript
+#: code:addons/spreadsheet_dashboard_account/data/files/invoicing_dashboard.json:0
+#: code:addons/spreadsheet_dashboard_account/data/files/invoicing_sample_dashboard.json:0
+msgid "Status"
+msgstr "स्थिति"

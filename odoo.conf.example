@@ -1,0 +1,58 @@
+[options]
+; ---------------------------------------------------------------------------
+; Odoo 19.0 - local development configuration TEMPLATE
+;
+;   copy odoo.conf.example odoo.conf
+;   then edit the credentials and paths below.
+;
+; Run with:  venv\Scripts\python.exe -m odoo -c odoo.conf
+;        or: .\run-odoo.ps1
+; ---------------------------------------------------------------------------
+
+; --- Master password for the database manager at /web/database/manager ---
+admin_passwd = CHANGE_ME
+
+; --- PostgreSQL ---
+; NOTE: db_user cannot be 'postgres' -- Odoo aborts on startup if it is,
+; see check_postgres_user() in odoo/cli/server.py:37. Create a dedicated
+; non-superuser role instead:
+;   CREATE ROLE odoo LOGIN PASSWORD 'odoo' CREATEDB;
+db_host = localhost
+db_port = 5433
+db_user = odoo
+db_password = CHANGE_ME
+db_name = odoo19
+db_maxconn = 64
+
+; --- Where modules are loaded from ---
+; This source distribution keeps all 685 modules under odoo/addons.
+; Append your own directory here (comma-separated) for custom modules.
+addons_path = C:\path\to\odoo-19.0\odoo\addons
+
+; --- Filestore, sessions, compiled assets ---
+; Real attachments live here. Back this up together with the database dump.
+data_dir = C:\path\to\odoo-19.0\.odoo_data
+
+; --- HTTP ---
+http_interface = 127.0.0.1
+http_port = 8069
+gevent_port = 8072
+
+; --- Process model ---
+; Windows has no gevent/greenlet in requirements.txt, so multiprocessing
+; is unavailable: workers must stay 0 (threaded server).
+; On Linux, set workers = (cpu_cores * 2) + 1 and budget ~1 GB RAM each.
+workers = 0
+max_cron_threads = 2
+
+; --- Logging ---
+log_level = info
+log_handler = :INFO
+
+; --- Show the database selector / manager ---
+; Set to False in any deployment reachable from outside localhost.
+list_db = True
+
+; --- Uncomment while developing addons: auto-reload on .py change,
+;     no asset caching, better tracebacks ---
+; dev_mode = reload,qweb,xml

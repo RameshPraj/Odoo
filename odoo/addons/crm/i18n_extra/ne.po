@@ -1,0 +1,277 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0 (crm)\n"
+"Report-Msgid-Bugs-To: \n"
+"Language-Team: Nepali\n"
+"Language: ne\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: crm
+#: model:ir.model.fields,field_description:crm.field_crm_activity_report__active
+#: model:ir.model.fields,field_description:crm.field_crm_lead__active
+#: model:ir.model.fields,field_description:crm.field_crm_lost_reason__active
+#: model:ir.model.fields,field_description:crm.field_crm_recurring_plan__active
+#: model_terms:ir.ui.view,arch_db:crm.crm_lost_reason_view_search
+#: model_terms:ir.ui.view,arch_db:crm.crm_opportunity_report_view_search
+msgid "Active"
+msgstr "सक्रिय"
+
+#. module: crm
+#: model:ir.actions.act_window,name:crm.crm_activity_report_action
+#: model:ir.model.fields,field_description:crm.field_crm_lead__activity_ids
+#: model:ir.ui.menu,name:crm.crm_activity_report_menu
+#: model:ir.ui.menu,name:crm.crm_team_menu_config_activities
+#: model_terms:ir.ui.view,arch_db:crm.crm_team_view_kanban_dashboard
+msgid "Activities"
+msgstr "गतिविधिहरू"
+
+#. module: crm
+#: model:ir.model,name:crm.model_mail_activity
+#: model_terms:ir.ui.view,arch_db:crm.crm_activity_report_view_search
+msgid "Activity"
+msgstr "गतिविधि"
+
+#. module: crm
+#: model_terms:ir.ui.view,arch_db:crm.crm_lead_view_form
+msgid "Address"
+msgstr "ठेगाना"
+
+#. module: crm
+#: model_terms:ir.ui.view,arch_db:crm.crm_activity_report_view_search
+#: model_terms:ir.ui.view,arch_db:crm.crm_case_kanban_view_leads
+#: model_terms:ir.ui.view,arch_db:crm.crm_lead_view_form
+#: model_terms:ir.ui.view,arch_db:crm.crm_lost_reason_view_form
+#: model_terms:ir.ui.view,arch_db:crm.crm_lost_reason_view_search
+#: model_terms:ir.ui.view,arch_db:crm.crm_opportunity_report_view_search
+#: model_terms:ir.ui.view,arch_db:crm.crm_recurring_plan_view_search
+#: model_terms:ir.ui.view,arch_db:crm.view_crm_case_leads_filter
+msgid "Archived"
+msgstr "संग्रहित"
+
+#. module: crm
+#: model_terms:ir.ui.view,arch_db:crm.merge_opportunity_form
+#: model_terms:ir.ui.view,arch_db:crm.view_crm_lead2opportunity_partner
+#: model_terms:ir.ui.view,arch_db:crm.view_crm_lead2opportunity_partner_mass
+msgid "Cancel"
+msgstr "रद्द गर्नुहोस्"
+
+#. module: crm
+#: model:ir.model.fields,field_description:crm.field_crm_lead__city
+#: model_terms:ir.ui.view,arch_db:crm.crm_lead_view_form
+#: model_terms:ir.ui.view,arch_db:crm.crm_opportunity_report_view_search
+#: model_terms:ir.ui.view,arch_db:crm.view_crm_case_leads_filter
+#: model_terms:ir.ui.view,arch_db:crm.view_crm_case_opportunities_filter
+msgid "City"
+msgstr "सहर"
+
+#. module: crm
+#: model:ir.model.fields,field_description:crm.field_crm_lead_scoring_frequency_field__color
+msgid "Color"
+msgstr "रङ"
+
+#. module: crm
+#: model:ir.model.fields,field_description:crm.field_crm_activity_report__company_id
+#: model:ir.model.fields,field_description:crm.field_crm_lead2opportunity_partner__commercial_partner_id
+#: model:ir.model.fields,field_description:crm.field_crm_lead2opportunity_partner_mass__commercial_partner_id
+#: model:ir.model.fields,field_description:crm.field_crm_lead__company_id
+#: model_terms:ir.ui.view,arch_db:crm.crm_activity_report_view_search
+#: model_terms:ir.ui.view,arch_db:crm.crm_opportunity_report_view_search
+#: model_terms:ir.ui.view,arch_db:crm.quick_create_opportunity_form
+#: model_terms:ir.ui.view,arch_db:crm.view_crm_case_leads_filter
+#: model_terms:ir.ui.view,arch_db:crm.view_crm_case_opportunities_filter
+#: model_terms:ir.ui.view,arch_db:crm.view_crm_lead2opportunity_partner
+msgid "Company"
+msgstr "कम्पनी"
+
+#. module: crm
+#: model:ir.ui.menu,name:crm.crm_menu_config
+msgid "Configuration"
+msgstr "कन्फिगरेसन"
+
+#. module: crm
+#: model:ir.model,name:crm.model_res_partner
+#: model:ir.model.fields,field_description:crm.field_crm_lead__partner_id
+#: model_terms:ir.ui.view,arch_db:crm.quick_create_opportunity_form
+msgid "Contact"
+msgstr "सम्पर्क"
+
+#. module: crm
+#: model_terms:ir.ui.view,arch_db:crm.crm_lead_view_form
+msgid "Contacts"
+msgstr "सम्पर्कहरू"
+
+#. module: crm
+#: model:ir.model.fields,field_description:crm.field_crm_activity_report__country_id
+#: model:ir.model.fields,field_description:crm.field_crm_lead__country_id
+#: model_terms:ir.ui.view,arch_db:crm.crm_lead_view_form
+#: model_terms:ir.ui.view,arch_db:crm.crm_opportunity_report_view_search
+#: model_terms:ir.ui.view,arch_db:crm.view_crm_case_leads_filter
+#: model_terms:ir.ui.view,arch_db:crm.view_crm_case_opportunities_filter
+msgid "Country"
+msgstr "देश"
+
+#. module: crm
+#: model:ir.model.fields,field_description:crm.field_crm_lead__company_currency
+msgid "Currency"
+msgstr "मुद्रा"
+
+#. module: crm
+#: model:ir.model.fields,field_description:crm.field_crm_activity_report__partner_id
+#: model:ir.model.fields,field_description:crm.field_crm_lead2opportunity_partner__partner_id
+#: model:ir.model.fields,field_description:crm.field_crm_lead2opportunity_partner_mass__partner_id
+#: model_terms:ir.ui.view,arch_db:crm.view_crm_case_opportunities_filter
+msgid "Customer"
+msgstr "ग्राहक"
+
+#. module: crm
+#: model:ir.ui.menu,name:crm.res_partner_menu_customer
+#: model_terms:ir.ui.view,arch_db:crm.view_crm_lead2opportunity_partner_mass
+msgid "Customers"
+msgstr "ग्राहकहरू"
+
+#. module: crm
+#: model_terms:ir.ui.view,arch_db:crm.crm_case_kanban_view_leads
+msgid "Delete"
+msgstr "मेटाउनुहोस्"
+
+#. module: crm
+#: model:ir.model.fields,field_description:crm.field_crm_lost_reason__name
+msgid "Description"
+msgstr "विवरण"
+
+#. module: crm
+#: model_terms:ir.ui.view,arch_db:crm.crm_lead_lost_view_form
+#: model_terms:ir.ui.view,arch_db:crm.crm_lead_pls_update_view_form
+msgid "Discard"
+msgstr "खारेज गर्नुहोस्"
+
+#. module: crm
+#: model_terms:ir.ui.view,arch_db:crm.crm_case_kanban_view_leads
+msgid "Edit"
+msgstr "सम्पादन गर्नुहोस्"
+
+#. module: crm
+#: model:ir.model.fields,field_description:crm.field_crm_lead__email_from
+#: model_terms:ir.ui.view,arch_db:crm.crm_case_tree_view_oppor
+#: model_terms:ir.ui.view,arch_db:crm.crm_lead_view_form
+msgid "Email"
+msgstr "इमेल"
+
+#. module: crm
+#: model:ir.model.fields,field_description:crm.field_crm_lead__message_follower_ids
+msgid "Followers"
+msgstr "अनुयायीहरू"
+
+#. module: crm
+#: model:ir.model.fields,field_description:crm.field_crm_lead__function
+msgid "Job Position"
+msgstr "पद"
+
+#. module: crm
+#: model:ir.model.fields,field_description:crm.field_crm_lead__lang_id
+msgid "Language"
+msgstr "भाषा"
+
+#. module: crm
+#: model:ir.model.fields,field_description:crm.field_crm_lead__message_ids
+msgid "Messages"
+msgstr "सन्देशहरू"
+
+#. module: crm
+#. odoo-python
+#: code:addons/crm/models/crm_lead.py:0 model:crm.stage,name:crm.stage_lead1
+msgid "New"
+msgstr "नयाँ"
+
+#. module: crm
+#. odoo-python
+#: code:addons/crm/models/crm_lead.py:0
+msgid "No"
+msgstr "होइन"
+
+#. module: crm
+#: model:ir.model.fields,field_description:crm.field_crm_lead__description
+#: model_terms:ir.ui.view,arch_db:crm.crm_lead_view_form
+msgid "Notes"
+msgstr "टिपोटहरू"
+
+#. module: crm
+#: model:ir.model.fields.selection,name:crm.selection__crm_activity_report__won_status__pending
+#: model:ir.model.fields.selection,name:crm.selection__crm_lead__won_status__pending
+msgid "Pending"
+msgstr "बाँकी"
+
+#. module: crm
+#: model:ir.model.fields,field_description:crm.field_crm_lead__phone
+msgid "Phone"
+msgstr "फोन"
+
+#. module: crm
+#: model:ir.model.fields,field_description:crm.field_crm_lead__priority
+msgid "Priority"
+msgstr "प्राथमिकता"
+
+#. module: crm
+#: model:ir.ui.menu,name:crm.crm_menu_report
+msgid "Reporting"
+msgstr "प्रतिवेदन"
+
+#. module: crm
+#: model:ir.ui.menu,name:crm.crm_menu_sales
+msgid "Sales"
+msgstr "बिक्री"
+
+#. module: crm
+#: model:ir.model.fields,field_description:crm.field_crm_recurring_plan__sequence
+#: model:ir.model.fields,field_description:crm.field_crm_stage__sequence
+msgid "Sequence"
+msgstr "क्रम"
+
+#. module: crm
+#: model:ir.actions.act_window,name:crm.crm_config_settings_action
+#: model:ir.ui.menu,name:crm.crm_config_settings_menu
+msgid "Settings"
+msgstr "सेटिङहरू"
+
+#. module: crm
+#: model:ir.model.fields,field_description:crm.field_crm_lead__state_id
+#: model_terms:ir.ui.view,arch_db:crm.crm_lead_view_form
+msgid "State"
+msgstr "अवस्था"
+
+#. module: crm
+#: model:ir.model.fields,field_description:crm.field_crm_lead__street
+msgid "Street"
+msgstr "सडक"
+
+#. module: crm
+#: model:ir.model.fields,field_description:crm.field_crm_activity_report__lead_type
+#: model:ir.model.fields,field_description:crm.field_crm_lead__type
+#: model_terms:ir.ui.view,arch_db:crm.crm_activity_report_view_search
+msgid "Type"
+msgstr "प्रकार"
+
+#. module: crm
+#: model:ir.model,name:crm.model_res_users
+msgid "User"
+msgstr "प्रयोगकर्ता"
+
+#. module: crm
+#: model:ir.model.fields,field_description:crm.field_crm_lead__website
+msgid "Website"
+msgstr "वेबसाइट"
+
+#. module: crm
+#. odoo-python
+#: code:addons/crm/models/crm_lead.py:0
+msgid "Yes"
+msgstr "हो"
+
+#. module: crm
+#: model:ir.model.fields,field_description:crm.field_crm_lead__zip
+msgid "Zip"
+msgstr "पोस्ट कोड"

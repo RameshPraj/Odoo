@@ -1,0 +1,747 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0 (website)\n"
+"Report-Msgid-Bugs-To: \n"
+"Language-Team: Nepali\n"
+"Language: ne\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: website
+#: model_terms:ir.ui.view,arch_db:website.new_page_template_groups
+msgid "About"
+msgstr "बारेमा"
+
+#. module: website
+#. odoo-javascript
+#: code:addons/website/static/src/builder/plugins/form/form_option.xml:0
+#: model:ir.model.fields,field_description:website.field_website_rewrite__redirect_type
+#: model_terms:ir.ui.view,arch_db:website.bs_debug_view
+msgid "Action"
+msgstr "कार्य"
+
+#. module: website
+#. odoo-javascript
+#: code:addons/website/static/src/builder/plugins/options/header/header_elements_option.xml:0
+msgid "Actions"
+msgstr "कार्यहरू"
+
+#. module: website
+#. odoo-javascript
+#: code:addons/website/static/src/builder/plugins/options/accordion_option.xml:0
+#: model:ir.model.fields,field_description:website.field_theme_ir_asset__active
+#: model:ir.model.fields,field_description:website.field_theme_ir_ui_view__active
+#: model:ir.model.fields,field_description:website.field_website_controller_page__active
+#: model:ir.model.fields,field_description:website.field_website_page__active
+#: model:ir.model.fields,field_description:website.field_website_rewrite__active
+#: model_terms:ir.ui.view,arch_db:website.bs_debug_view
+#: model_terms:ir.ui.view,arch_db:website.color_combinations_debug_view
+msgid "Active"
+msgstr "सक्रिय"
+
+#. module: website
+#. odoo-javascript
+#: code:addons/website/static/src/builder/plugins/options/card_image_option.xml:0
+#: code:addons/website/static/src/builder/plugins/options/image_gallery_option.xml:0
+#: code:addons/website/static/src/client_actions/configurator/configurator.xml:0
+#: code:addons/website/static/src/components/dialog/seo.xml:0
+msgid "Add"
+msgstr "थप्नुहोस्"
+
+#. module: website
+#. odoo-javascript
+#: code:addons/website/static/src/builder/plugins/options/google_maps_option/google_maps_option.xml:0
+#: code:addons/website/static/src/builder/plugins/options/map_option.xml:0
+msgid "Address"
+msgstr "ठेगाना"
+
+#. module: website
+#. odoo-javascript
+#: code:addons/website/static/src/builder/plugins/options/dynamic_snippet_carousel_option.xml:0
+msgid "All"
+msgstr "सबै"
+
+#. module: website
+#. odoo-javascript
+#: code:addons/website/static/src/builder/plugins/carousel_option.xml:0
+#: code:addons/website/static/src/builder/plugins/options/image_gallery_option.xml:0
+msgid "Always"
+msgstr "सधैँ"
+
+#. module: website
+#. odoo-javascript
+#: code:addons/website/static/src/builder/plugins/translate_announcement_scroll_plugin.js:0
+msgid "Apply"
+msgstr "लागू गर्नुहोस्"
+
+#. module: website
+#: model:ir.actions.act_window,name:website.action_website_add_features
+#: model:ir.ui.menu,name:website.menu_website_add_features
+msgid "Apps"
+msgstr "एपहरू"
+
+#. module: website
+#: model_terms:ir.ui.view,arch_db:website.view_rewrite_search
+msgid "Archived"
+msgstr "संग्रहित"
+
+#. module: website
+#: model:ir.model,name:website.model_ir_attachment
+msgid "Attachment"
+msgstr "संलग्न"
+
+#. module: website
+#. odoo-javascript
+#: code:addons/website/static/src/builder/plugins/font/add_font_dialog.xml:0
+#: code:addons/website/static/src/builder/plugins/options/google_maps_option/google_maps_api_key_dialog.xml:0
+#: code:addons/website/static/src/components/dialog/dialog.js:0
+#: code:addons/website/static/src/js/utils.js:0
+#: code:addons/website/static/src/xml/website.xml:0
+#: model_terms:ir.ui.view,arch_db:website.qweb_500
+#: model_terms:ir.ui.view,arch_db:website.view_edit_robots
+#: model_terms:ir.ui.view,arch_db:website.view_edit_third_party_domains
+#: model_terms:ir.ui.view,arch_db:website.view_website_form_view_themes_modal
+msgid "Cancel"
+msgstr "रद्द गर्नुहोस्"
+
+#. module: website
+#: model_terms:ir.ui.view,arch_db:website.theme_view_search
+msgid "Category"
+msgstr "श्रेणी"
+
+#. module: website
+#. odoo-javascript
+#: code:addons/website/static/src/client_actions/website_preview/create_page_message.xml:0
+#: code:addons/website/static/src/components/resource_editor/resource_editor.xml:0
+#: code:addons/website/static/src/components/views/theme_preview.xml:0
+#: code:addons/website/static/src/snippets/s_image_gallery/001.xml:0
+#: code:addons/website/static/src/xml/website.xml:0
+#: model_terms:ir.ui.view,arch_db:website.bs_debug_view
+#: model_terms:ir.ui.view,arch_db:website.qweb_500
+#: model_terms:ir.ui.view,arch_db:website.s_popup
+#: model_terms:ir.ui.view,arch_db:website.show_website_info
+#: model_terms:ir.ui.view,arch_db:website.template_header_hamburger
+#: model_terms:ir.ui.view,arch_db:website.template_header_mobile
+msgid "Close"
+msgstr "बन्द गर्नुहोस्"
+
+#. module: website
+#. odoo-javascript
+#: code:addons/website/static/src/builder/plugins/font_awesome_option.xml:0
+#: code:addons/website/static/src/builder/plugins/highlight/highlight_configurator.xml:0
+#: code:addons/website/static/src/builder/plugins/options/animate_option.xml:0
+#: code:addons/website/static/src/builder/plugins/options/cover_properties_option.xml:0
+#: code:addons/website/static/src/builder/plugins/options/social_media_option.xml:0
+msgid "Color"
+msgstr "रङ"
+
+#. module: website
+#: model:ir.model,name:website.model_res_company
+msgid "Companies"
+msgstr "कम्पनीहरू"
+
+#. module: website
+#. odoo-python
+#: code:addons/website/models/website.py:0
+#: model:ir.model.fields,field_description:website.field_website__company_id
+#: model_terms:ir.ui.view,arch_db:website.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:website.template_footer_mega_cards
+msgid "Company"
+msgstr "कम्पनी"
+
+#. module: website
+#: model:ir.ui.menu,name:website.menu_website_global_configuration
+msgid "Configuration"
+msgstr "कन्फिगरेसन"
+
+#. module: website
+#. odoo-javascript
+#: code:addons/website/static/src/builder/plugins/options/footer_option_plugin.js:0
+#: model:ir.model,name:website.model_res_partner
+#: model:ir.model.fields,field_description:website.field_website_visitor__partner_id
+#: model_terms:ir.ui.view,arch_db:website.s_tabs
+#: model_terms:ir.ui.view,arch_db:website.template_footer_mega_columns
+#: model_terms:ir.ui.view,arch_db:website.template_footer_mega_links
+msgid "Contact"
+msgstr "सम्पर्क"
+
+#. module: website
+#: model_terms:ir.ui.view,arch_db:website.website_visitor_view_search
+msgid "Contacts"
+msgstr "सम्पर्कहरू"
+
+#. module: website
+#. odoo-javascript
+#: code:addons/website/static/src/builder/website_builder.js:0
+#: code:addons/website/static/src/components/dialog/edit_menu.xml:0
+msgid "Continue"
+msgstr "जारी राख्नुहोस्"
+
+#. module: website
+#. odoo-javascript
+#: code:addons/website/static/src/builder/plugins/options/visibility_option.xml:0
+#: model:ir.model.fields,field_description:website.field_website_visitor__country_id
+#: model_terms:ir.ui.view,arch_db:website.website_visitor_view_search
+msgid "Country"
+msgstr "देश"
+
+#. module: website
+#: model_terms:ir.ui.view,arch_db:website.s_mega_menu_big_icons_subtitles
+#: model_terms:ir.ui.view,arch_db:website.s_mega_menu_cards
+#: model_terms:ir.ui.view,arch_db:website.s_mega_menu_images_subtitles
+msgid "Customers"
+msgstr "ग्राहकहरू"
+
+#. module: website
+#. odoo-javascript
+#: code:addons/website/static/src/builder/plugins/form/form_option.xml:0
+#: code:addons/website/static/src/builder/plugins/options/timeline_option.xml:0
+#: code:addons/website/static/src/builder/plugins/timeline_images_option.xml:0
+#: model_terms:ir.ui.view,arch_db:website.website_visitor_page_view_search
+msgid "Date"
+msgstr "मिति"
+
+#. module: website
+#. odoo-javascript
+#: code:addons/website/static/src/components/dialog/page_properties.xml:0
+msgid "Delete"
+msgstr "मेटाउनुहोस्"
+
+#. module: website
+#: model_terms:ir.ui.view,arch_db:website.s_mega_menu_cards
+#: model_terms:ir.ui.view,arch_db:website.template_footer_mega_links
+msgid "Departments"
+msgstr "विभागहरू"
+
+#. module: website
+#. odoo-javascript
+#: code:addons/website/static/src/builder/plugins/form/form_option.xml:0
+#: code:addons/website/static/src/builder/plugins/options/google_maps_option/google_maps_option.xml:0
+#: code:addons/website/static/src/builder/plugins/options/map_option.xml:0
+#: code:addons/website/static/src/builder/plugins/options/searchbar_option_plugin.js:0
+#: code:addons/website/static/src/components/dialog/seo.xml:0
+#: model:ir.model.fields,field_description:website.field_website_configurator_feature__description
+#: model:ir.model.fields,field_description:website.field_website_snippet_filter__help
+msgid "Description"
+msgstr "विवरण"
+
+#. module: website
+#. odoo-javascript
+#: code:addons/website/static/src/builder/plugins/options/embed_code_option_dialog.xml:0
+#: code:addons/website/static/src/builder/website_builder.xml:0
+#: code:addons/website/static/src/components/dialog/edit_menu.xml:0
+#: code:addons/website/static/src/components/edit_head_body_dialog/edit_head_body_dialog.xml:0
+msgid "Discard"
+msgstr "खारेज गर्नुहोस्"
+
+#. module: website
+#. odoo-javascript
+#: code:addons/website/static/src/builder/website_builder.js:0
+msgid "Discard changes"
+msgstr "परिवर्तनहरू खारेज गर्नुहोस्"
+
+#. module: website
+#: model_terms:ir.ui.view,arch_db:website.template_footer_links
+#: model_terms:ir.ui.view,arch_db:website.template_footer_mega
+#: model_terms:ir.ui.view,arch_db:website.template_footer_mega_columns
+msgid "Documentation"
+msgstr "कागजात"
+
+#. module: website
+#. odoo-javascript
+#: code:addons/website/static/src/builder/plugins/options/countdown_option.xml:0
+msgid "Due Date"
+msgstr "भुक्तानी मिति"
+
+#. module: website
+#: model_terms:ir.ui.view,arch_db:website.s_features_grid
+msgid "Duplicate"
+msgstr "नक्कल गर्नुहोस्"
+
+#. module: website
+#. odoo-javascript
+#: code:addons/website/static/src/builder/plugins/options/animate_option.xml:0
+msgid "Duration"
+msgstr "अवधि"
+
+#. module: website
+#. odoo-javascript
+#: code:addons/website/static/src/builder/plugins/options/embed_code_option.xml:0
+#: code:addons/website/static/src/client_actions/website_preview/edit_website_systray_item.xml:0
+#: code:addons/website/static/src/client_actions/website_preview/website_builder_action.xml:0
+#: model_terms:ir.ui.view,arch_db:website.publish_management
+msgid "Edit"
+msgstr "सम्पादन गर्नुहोस्"
+
+#. module: website
+#. odoo-javascript
+#: code:addons/website/static/src/builder/plugins/form/form_option.xml:0
+#: model:ir.model.fields,field_description:website.field_website_visitor__email
+#: model_terms:ir.ui.view,arch_db:website.s_share
+#: model_terms:ir.ui.view,arch_db:website.website_visitor_view_kanban
+#: model_terms:ir.ui.view,arch_db:website.website_visitor_view_tree
+msgid "Email"
+msgstr "इमेल"
+
+#. module: website
+#. odoo-javascript
+#: code:addons/website/static/src/builder/plugins/theme/theme_advanced_option.xml:0
+#: code:addons/website/static/src/xml/website_form.xml:0
+msgid "Error"
+msgstr "त्रुटि"
+
+#. module: website
+#. odoo-javascript
+#: code:addons/website/static/src/builder/plugins/options/dynamic_snippet_option.xml:0
+#: code:addons/website/static/src/components/resource_editor/resource_editor.xml:0
+#: model:ir.model.fields,field_description:website.field_website_snippet_filter__filter_id
+msgid "Filter"
+msgstr "फिल्टर"
+
+#. module: website
+#: model_terms:ir.ui.view,arch_db:website.bs_debug_view
+msgid "Group"
+msgstr "समूह"
+
+#. module: website
+#: model:ir.model.fields,field_description:website.field_website_controller_page__group_ids
+#: model:ir.model.fields,field_description:website.field_website_page__group_ids
+#: model:ir.model.fields,field_description:website.field_website_page_properties__group_ids
+msgid "Groups"
+msgstr "समूहहरू"
+
+#. module: website
+#: model_terms:ir.ui.view,arch_db:website.template_footer_mega_cards
+#: model_terms:ir.ui.view,arch_db:website.template_footer_mega_links
+msgid "Help"
+msgstr "मद्दत"
+
+#. module: website
+#: model_terms:ir.ui.view,arch_db:website.template_footer_mega_cards
+#: model_terms:ir.ui.view,arch_db:website.template_footer_mega_links
+msgid "History"
+msgstr "इतिहास"
+
+#. module: website
+#. odoo-javascript
+#: code:addons/website/static/src/components/dialog/edit_menu.xml:0
+#: model:website.menu,name:website.menu_home
+#: model_terms:ir.ui.view,arch_db:website.bs_debug_view
+#: model_terms:ir.ui.view,arch_db:website.footer_custom
+#: model_terms:ir.ui.view,arch_db:website.s_tabs
+#: model_terms:ir.ui.view,arch_db:website.template_footer_contact
+#: model_terms:ir.ui.view,arch_db:website.template_footer_links
+#: model_terms:ir.ui.view,arch_db:website.template_footer_mega
+#: model_terms:ir.ui.view,arch_db:website.template_footer_mega_columns
+#: model_terms:ir.ui.view,arch_db:website.template_footer_mega_links
+#: model_terms:ir.ui.view,arch_db:website.template_footer_minimalist
+msgid "Home"
+msgstr "गृहपृष्ठ"
+
+#. module: website
+#. odoo-javascript
+#: code:addons/website/static/src/builder/plugins/layout_option/add_element_option.xml:0
+#: code:addons/website/static/src/builder/plugins/options/cover_properties_option.xml:0
+#: code:addons/website/static/src/builder/plugins/options/media_list_item_option.xml:0
+#: code:addons/website/static/src/builder/plugins/options/navbar_logo_option.xml:0
+#: code:addons/website/static/src/builder/plugins/options/searchbar_option_plugin.js:0
+#: code:addons/website/static/src/builder/plugins/theme/theme_tab.xml:0
+#: model:ir.model.fields,field_description:website.field_website_visitor__partner_image
+#: model_terms:ir.ui.view,arch_db:website.snippets
+msgid "Image"
+msgstr "तस्बिर"
+
+#. module: website
+#. odoo-javascript
+#: code:addons/website/static/src/builder/plugins/theme/theme_advanced_option.xml:0
+msgid "Info"
+msgstr "जानकारी"
+
+#. module: website
+#. odoo-javascript
+#: code:addons/website/static/src/client_actions/website_preview/new_content_systray_item.js:0
+msgid "Job Position"
+msgstr "पद"
+
+#. module: website
+#. odoo-javascript
+#: code:addons/website/static/src/builder/plugins/theme/theme_tab.xml:0
+#: model:ir.model.fields,field_description:website.field_website_visitor__lang_id
+#: model_terms:ir.ui.view,arch_db:website.website_visitor_view_search
+msgid "Language"
+msgstr "भाषा"
+
+#. module: website
+#. odoo-javascript
+#: code:addons/website/static/src/builder/plugins/options/visibility_option.xml:0
+#: model:ir.model,name:website.model_res_lang
+#: model:ir.model.fields,field_description:website.field_res_config_settings__language_ids
+#: model:ir.model.fields,field_description:website.field_website__language_ids
+#: model_terms:ir.ui.view,arch_db:website.res_config_settings_view_form
+msgid "Languages"
+msgstr "भाषाहरू"
+
+#. module: website
+#. odoo-javascript
+#: code:addons/website/static/src/builder/plugins/options/controller_page_listing_layout_option.xml:0
+#: model:ir.model.fields.selection,name:website.selection__website_controller_page__default_layout__list
+msgid "List"
+msgstr "सूची"
+
+#. module: website
+#. odoo-javascript
+#: code:addons/website/static/src/builder/builder_urlpicker.js:0
+#: code:addons/website/static/src/components/dialog/add_page_dialog.js:0
+#: code:addons/website/static/src/js/editor/html_editor.js:0
+#: code:addons/website/static/src/xml/website.background.video.xml:0
+msgid "Loading..."
+msgstr "लोड हुँदैछ..."
+
+#. module: website
+#. odoo-javascript
+#: code:addons/website/static/src/js/utils.js:0
+#: model_terms:ir.ui.view,arch_db:website.s_map
+#: model_terms:ir.ui.view,arch_db:website.snippets
+msgid "Map"
+msgstr "नक्सा"
+
+#. module: website
+#. odoo-javascript
+#: code:addons/website/static/src/builder/plugins/options/facebook_option.xml:0
+msgid "Messages"
+msgstr "सन्देशहरू"
+
+#. module: website
+#. odoo-javascript
+#: code:addons/website/static/src/components/views/theme_preview.xml:0
+#: model:ir.model.fields,field_description:website.field_website_visitor__mobile
+msgid "Mobile"
+msgstr "मोबाइल"
+
+#. module: website
+#: model:ir.model.fields,field_description:website.field_theme_ir_asset__name
+#: model:ir.model.fields,field_description:website.field_theme_ir_attachment__name
+#: model:ir.model.fields,field_description:website.field_theme_ir_ui_view__name
+#: model:ir.model.fields,field_description:website.field_theme_website_menu__name
+#: model:ir.model.fields,field_description:website.field_website_configurator_feature__name
+#: model:ir.model.fields,field_description:website.field_website_rewrite__name
+#: model:ir.model.fields,field_description:website.field_website_snippet_filter__name
+#: model:ir.model.fields,field_description:website.field_website_visitor__name
+#: model_terms:ir.ui.view,arch_db:website.menu_search
+#: model_terms:ir.ui.view,arch_db:website.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:website.website_visitor_view_tree
+msgid "Name"
+msgstr "नाम"
+
+#. module: website
+#. odoo-javascript
+#: code:addons/website/static/src/builder/plugins/carousel_option.xml:0
+#: code:addons/website/static/src/builder/plugins/options/image_gallery_option.xml:0
+msgid "Never"
+msgstr "कहिल्यै होइन"
+
+#. module: website
+#. odoo-javascript
+#: code:addons/website/static/src/client_actions/website_preview/new_content_systray_item.xml:0
+msgid "New"
+msgstr "नयाँ"
+
+#. module: website
+#. odoo-javascript
+#: code:addons/website/static/src/builder/plugins/options/image_gallery_option.xml:0
+#: code:addons/website/static/src/snippets/s_dynamic_snippet_carousel/000.xml:0
+#: code:addons/website/static/src/snippets/s_image_gallery/001.xml:0
+#: model_terms:ir.ui.view,arch_db:website.bs_debug_view
+#: model_terms:ir.ui.view,arch_db:website.s_carousel
+#: model_terms:ir.ui.view,arch_db:website.s_carousel_cards
+#: model_terms:ir.ui.view,arch_db:website.s_carousel_intro
+#: model_terms:ir.ui.view,arch_db:website.s_image_gallery
+#: model_terms:ir.ui.view,arch_db:website.s_quotes_carousel
+#: model_terms:ir.ui.view,arch_db:website.s_quotes_carousel_compact
+#: model_terms:ir.ui.view,arch_db:website.s_quotes_carousel_minimal
+msgid "Next"
+msgstr "अर्को"
+
+#. module: website
+#. odoo-javascript
+#: code:addons/website/static/src/builder/plugins/carousel_option.xml:0
+#: code:addons/website/static/src/builder/plugins/form/form_option.xml:0
+#: code:addons/website/static/src/builder/plugins/options/accordion_option.xml:0
+#: code:addons/website/static/src/builder/plugins/options/animate_option.xml:0
+#: code:addons/website/static/src/builder/plugins/options/announcement_scroll_option.xml:0
+#: code:addons/website/static/src/builder/plugins/options/blockquote_option.xml:0
+#: code:addons/website/static/src/builder/plugins/options/chart_option.xml:0
+#: code:addons/website/static/src/builder/plugins/options/countdown_option.xml:0
+#: code:addons/website/static/src/builder/plugins/options/cover_properties_option.xml:0
+#: code:addons/website/static/src/builder/plugins/options/dynamic_snippet_option.xml:0
+#: code:addons/website/static/src/builder/plugins/options/footer_copyright_option.xml:0
+#: code:addons/website/static/src/builder/plugins/options/image_gallery_option.xml:0
+#: code:addons/website/static/src/builder/plugins/options/navbar_logo_option.xml:0
+#: code:addons/website/static/src/builder/plugins/options/parallax_option.xml:0
+#: code:addons/website/static/src/builder/plugins/options/scroll_button_option.xml:0
+#: code:addons/website/static/src/builder/plugins/options/social_media_option.xml:0
+#: code:addons/website/static/src/builder/plugins/theme/theme_button_option.xml:0
+#: code:addons/website/static/src/builder/plugins/theme/theme_tab.xml:0
+msgid "None"
+msgstr "कुनै पनि होइन"
+
+#. module: website
+#. odoo-javascript
+#: code:addons/website/static/src/builder/plugins/form/form_option.xml:0
+msgid "Optional"
+msgstr "वैकल्पिक"
+
+#. module: website
+#: model_terms:ir.ui.view,arch_db:website.website_page_properties_view_form
+msgid "Password"
+msgstr "पासवर्ड"
+
+#. module: website
+#. odoo-javascript
+#: code:addons/website/static/src/builder/plugins/font/add_font_dialog.xml:0
+#: code:addons/website/static/src/components/dialog/seo.xml:0
+msgid "Preview"
+msgstr "पूर्वावलोकन"
+
+#. module: website
+#. odoo-javascript
+#: code:addons/website/static/src/builder/plugins/options/image_gallery_option.xml:0
+#: code:addons/website/static/src/snippets/s_dynamic_snippet_carousel/000.xml:0
+#: code:addons/website/static/src/snippets/s_image_gallery/001.xml:0
+#: model_terms:ir.ui.view,arch_db:website.bs_debug_view
+#: model_terms:ir.ui.view,arch_db:website.s_carousel
+#: model_terms:ir.ui.view,arch_db:website.s_carousel_cards
+#: model_terms:ir.ui.view,arch_db:website.s_carousel_intro
+#: model_terms:ir.ui.view,arch_db:website.s_image_gallery
+#: model_terms:ir.ui.view,arch_db:website.s_quotes_carousel
+#: model_terms:ir.ui.view,arch_db:website.s_quotes_carousel_compact
+#: model_terms:ir.ui.view,arch_db:website.s_quotes_carousel_minimal
+msgid "Previous"
+msgstr "अघिल्लो"
+
+#. module: website
+#: model:ir.model.fields,field_description:website.field_theme_ir_ui_view__priority
+msgid "Priority"
+msgstr "प्राथमिकता"
+
+#. module: website
+#. odoo-javascript
+#: code:addons/website/static/src/client_actions/website_preview/new_content_systray_item.js:0
+msgid "Product"
+msgstr "उत्पादन"
+
+#. module: website
+#: model_terms:ir.ui.view,arch_db:website.footer_custom
+#: model_terms:ir.ui.view,arch_db:website.s_mega_menu_cards
+#: model_terms:ir.ui.view,arch_db:website.template_footer_contact
+#: model_terms:ir.ui.view,arch_db:website.template_footer_minimalist
+msgid "Products"
+msgstr "उत्पादनहरू"
+
+#. module: website
+#. odoo-javascript
+#: code:addons/website/static/src/builder/plugins/options/dynamic_snippet_option.xml:0
+msgid "Record"
+msgstr "रेकर्ड"
+
+#. module: website
+#. odoo-javascript
+#: code:addons/website/static/src/components/dialog/seo.xml:0
+#: model:ir.model.fields.selection,name:website.selection__theme_ir_asset__directive__remove
+msgid "Remove"
+msgstr "हटाउनुहोस्"
+
+#. module: website
+#: model:ir.ui.menu,name:website.menu_reporting
+msgid "Reporting"
+msgstr "प्रतिवेदन"
+
+#. module: website
+#. odoo-javascript
+#: code:addons/website/static/src/builder/plugins/form/form_option.xml:0
+msgid "Required"
+msgstr "अनिवार्य"
+
+#. module: website
+#. odoo-javascript
+#: code:addons/website/static/src/builder/plugins/highlight/highlight_configurator.xml:0
+#: code:addons/website/static/src/builder/plugins/options/animate_text.xml:0
+#: code:addons/website/static/src/components/resource_editor/resource_editor.xml:0
+msgid "Reset"
+msgstr "रिसेट गर्नुहोस्"
+
+#. module: website
+#. odoo-javascript
+#: code:addons/website/static/src/builder/plugins/options/embed_code_option_dialog.xml:0
+#: code:addons/website/static/src/builder/plugins/options/google_maps_option/google_maps_api_key_dialog.xml:0
+#: code:addons/website/static/src/builder/plugins/translate_announcement_scroll_plugin.js:0
+#: code:addons/website/static/src/builder/website_builder.xml:0
+#: code:addons/website/static/src/components/dialog/edit_menu.xml:0
+#: code:addons/website/static/src/components/dialog/seo.js:0
+#: code:addons/website/static/src/components/edit_head_body_dialog/edit_head_body_dialog.xml:0
+#: code:addons/website/static/src/components/resource_editor/resource_editor.xml:0
+#: model_terms:ir.ui.view,arch_db:website.view_edit_robots
+#: model_terms:ir.ui.view,arch_db:website.view_edit_third_party_domains
+msgid "Save"
+msgstr "सुरक्षित गर्नुहोस्"
+
+#. module: website
+#. odoo-javascript
+#: code:addons/website/static/src/js/backend/view_hierarchy/hierarchy_navbar.xml:0
+#: model_terms:ir.ui.view,arch_db:website.bs_debug_view
+#: model_terms:ir.ui.view,arch_db:website.header_search_box
+#: model_terms:ir.ui.view,arch_db:website.snippets
+#: model_terms:ir.ui.view,arch_db:website.website_search_box
+msgid "Search"
+msgstr "खोज्नुहोस्"
+
+#. module: website
+#: model_terms:ir.ui.view,arch_db:website.website_search_box
+msgid "Search..."
+msgstr "खोज्नुहोस्..."
+
+#. module: website
+#: model:ir.model.fields,field_description:website.field_theme_ir_asset__sequence
+#: model:ir.model.fields,field_description:website.field_theme_website_menu__sequence
+#: model:ir.model.fields,field_description:website.field_website__sequence
+#: model:ir.model.fields,field_description:website.field_website_configurator_feature__sequence
+#: model:ir.model.fields,field_description:website.field_website_controller_page__priority
+#: model:ir.model.fields,field_description:website.field_website_menu__sequence
+#: model:ir.model.fields,field_description:website.field_website_page__priority
+#: model:ir.model.fields,field_description:website.field_website_rewrite__sequence
+msgid "Sequence"
+msgstr "क्रम"
+
+#. module: website
+#: model:ir.actions.act_window,name:website.action_website_configuration
+#: model:ir.ui.menu,name:website.menu_website_website_settings
+#: model_terms:ir.ui.view,arch_db:website.website_controller_pages_form_view
+#: model_terms:ir.ui.view,arch_db:website.website_pages_kanban_view
+#: model_terms:ir.ui.view,arch_db:website.website_pages_tree_view
+msgid "Settings"
+msgstr "सेटिङहरू"
+
+#. module: website
+#. odoo-javascript
+#: code:addons/website/static/src/builder/plugins/snippets_powerbox_plugin.js:0
+#: model_terms:ir.ui.view,arch_db:website.s_share
+#: model_terms:ir.ui.view,arch_db:website.snippets
+msgid "Share"
+msgstr "साझा गर्नुहोस्"
+
+#. module: website
+#. odoo-javascript
+#: code:addons/website/static/src/js/send_mail_form.js:0
+msgid "Subject"
+msgstr "विषय"
+
+#. module: website
+#. odoo-javascript
+#: code:addons/website/static/src/builder/plugins/theme/theme_advanced_option.xml:0
+#: code:addons/website/static/src/xml/website_form.xml:0
+#: code:addons/website/static/src/xml/website_form_editor.xml:0
+msgid "Success"
+msgstr "सफल"
+
+#. module: website
+#: model_terms:ir.ui.view,arch_db:website.template_footer_mega_cards
+#: model_terms:ir.ui.view,arch_db:website.template_footer_mega_links
+msgid "Support"
+msgstr "सहयोग"
+
+#. module: website
+#: model:ir.model.fields,field_description:website.field_website_visitor__timezone
+#: model_terms:ir.ui.view,arch_db:website.website_visitor_view_search
+msgid "Timezone"
+msgstr "समय क्षेत्र"
+
+#. module: website
+#. odoo-javascript
+#: code:addons/website/static/src/builder/plugins/theme/theme_colors_option.xml:0
+#: code:addons/website/static/src/components/dialog/edit_menu.xml:0
+#: code:addons/website/static/src/components/dialog/seo.xml:0
+#: model_terms:ir.ui.view,arch_db:website.new_page_template_about_map_s_text_block_h1
+#: model_terms:ir.ui.view,arch_db:website.s_text_block_h1
+#: model_terms:ir.ui.view,arch_db:website.s_text_block_h2
+#: model_terms:ir.ui.view,arch_db:website.snippets
+msgid "Title"
+msgstr "शीर्षक"
+
+#. module: website
+#. odoo-javascript
+#: code:addons/website/static/src/builder/plugins/form/form_option.xml:0
+#: code:addons/website/static/src/builder/plugins/options/chart_option.xml:0
+#: code:addons/website/static/src/builder/plugins/options/google_maps_option/google_maps_option.xml:0
+#: code:addons/website/static/src/builder/plugins/options/map_option.xml:0
+#: model:ir.model.fields,field_description:website.field_theme_ir_ui_view__type
+#: model_terms:ir.ui.view,arch_db:website.website_page_properties_view_form
+msgid "Type"
+msgstr "प्रकार"
+
+#. module: website
+#. odoo-javascript
+#: code:addons/website/static/src/client_actions/configurator/configurator.xml:0
+msgid "Upload"
+msgstr "अपलोड गर्नुहोस्"
+
+#. module: website
+#: model:ir.model,name:website.model_res_users
+msgid "User"
+msgstr "प्रयोगकर्ता"
+
+#. module: website
+#. odoo-javascript
+#: code:addons/website/static/src/builder/plugins/options/visibility_option.xml:0
+msgid "Users"
+msgstr "प्रयोगकर्ताहरू"
+
+#. module: website
+#: model:ir.model,name:website.model_ir_ui_view
+#: model:ir.model.fields,field_description:website.field_theme_website_page__view_id
+#: model:ir.model.fields,field_description:website.field_website_page__view_id
+#: model_terms:ir.ui.view,arch_db:website.website_controller_pages_form_view
+msgid "View"
+msgstr "हेर्नुहोस्"
+
+#. module: website
+#. odoo-javascript
+#: code:addons/website/static/src/builder/plugins/theme/theme_advanced_option.xml:0
+msgid "Warning"
+msgstr "चेतावनी"
+
+#. module: website
+#. odoo-javascript
+#: code:addons/website/static/src/builder/plugins/snippets_powerbox_plugin.js:0
+#: code:addons/website/static/src/builder/plugins/theme/theme_tab_plugin.js:0
+#: code:addons/website/static/src/components/fields/redirect_field.xml:0
+#: model:ir.actions.act_url,name:website.action_website
+#: model:ir.model,name:website.model_website
+#: model:ir.model.fields,field_description:website.field_ir_asset__website_id
+#: model:ir.model.fields,field_description:website.field_ir_attachment__website_id
+#: model:ir.model.fields,field_description:website.field_ir_ui_view__website_id
+#: model:ir.model.fields,field_description:website.field_product_document__website_id
+#: model:ir.model.fields,field_description:website.field_res_company__website_id
+#: model:ir.model.fields,field_description:website.field_res_partner__website_id
+#: model:ir.model.fields,field_description:website.field_res_users__website_id
+#: model:ir.model.fields,field_description:website.field_website_controller_page__website_id
+#: model:ir.model.fields,field_description:website.field_website_menu__website_id
+#: model:ir.model.fields,field_description:website.field_website_multi_mixin__website_id
+#: model:ir.model.fields,field_description:website.field_website_page__website_id
+#: model:ir.model.fields,field_description:website.field_website_page_properties__website_id
+#: model:ir.model.fields,field_description:website.field_website_page_properties_base__website_id
+#: model:ir.model.fields,field_description:website.field_website_published_multi_mixin__website_id
+#: model:ir.model.fields,field_description:website.field_website_rewrite__website_id
+#: model:ir.model.fields,field_description:website.field_website_snippet_filter__website_id
+#: model:ir.model.fields,field_description:website.field_website_visitor__website_id
+#: model:ir.ui.menu,name:website.menu_website_configuration
+#: model:res.groups.privilege,name:website.res_groups_privilege_website
+#: model_terms:ir.ui.view,arch_db:website.menu_search
+#: model_terms:ir.ui.view,arch_db:website.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:website.view_server_action_search_website
+#: model_terms:ir.ui.view,arch_db:website.website_controller_pages_search_view
+#: model_terms:ir.ui.view,arch_db:website.website_visitor_view_search
+msgid "Website"
+msgstr "वेबसाइट"

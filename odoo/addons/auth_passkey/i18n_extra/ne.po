@@ -1,0 +1,38 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0 (auth_passkey)\n"
+"Report-Msgid-Bugs-To: \n"
+"Language-Team: Nepali\n"
+"Language: ne\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: auth_passkey
+#: model_terms:ir.ui.view,arch_db:auth_passkey.auth_passkey_key_create_view_form
+#: model_terms:ir.ui.view,arch_db:auth_passkey.auth_passkey_key_rename
+msgid "Cancel"
+msgstr "रद्द गर्नुहोस्"
+
+#. module: auth_passkey
+#: model_terms:ir.ui.view,arch_db:auth_passkey.auth_passkey_key_view_kanban
+msgid "Delete"
+msgstr "मेटाउनुहोस्"
+
+#. module: auth_passkey
+#: model:ir.model.fields,field_description:auth_passkey.field_auth_passkey_key__name
+#: model:ir.model.fields,field_description:auth_passkey.field_auth_passkey_key_create__name
+msgid "Name"
+msgstr "नाम"
+
+#. module: auth_passkey
+#: model_terms:ir.ui.view,arch_db:auth_passkey.auth_passkey_key_rename
+msgid "Save"
+msgstr "सुरक्षित गर्नुहोस्"
+
+#. module: auth_passkey
+#: model:ir.model,name:auth_passkey.model_res_users
+msgid "User"
+msgstr "प्रयोगकर्ता"

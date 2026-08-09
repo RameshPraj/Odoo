@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell($body = '{\"jsonrpc\":\"2.0\",\"method\":\"call\",\"params\":{\"service\":\"common\",\"method\":\"login\",\"args\":[\"odoo19\",\"admin\",\"admin\"]}}'; $r = Invoke-RestMethod -Uri \"http://127.0.0.1:8069/jsonrpc\" -Method Post -ContentType \"application/json\" -Body $body -TimeoutSec 60; $uid = $r.result; $q = '{\"jsonrpc\":\"2.0\",\"method\":\"call\",\"params\":{\"service\":\"object\",\"method\":\"execute_kw\",\"args\":[\"odoo19\",' + $uid + ',\"admin\",\"ir.module.module\",\"read_group\",[[],[\"id\"],[\"state\"]]]}}'; $g = Invoke-RestMethod -Uri \"http://127.0.0.1:8069/jsonrpc\" -Method Post -ContentType \"application/json\" -Body $q -TimeoutSec 60; $g.result | ForEach-Object { Write-Output \"$\\($_.state\\) : $\\($_.state_count\\)\" })"
+    ]
+  }
+}

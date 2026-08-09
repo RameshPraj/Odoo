@@ -1,0 +1,367 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0 (sale)\n"
+"Report-Msgid-Bugs-To: \n"
+"Language-Team: Nepali\n"
+"Language: ne\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: sale
+#: model:ir.model.fields,field_description:sale.field_sale_order__activity_ids
+#: model:ir.ui.menu,name:sale.sale_menu_config_activities
+msgid "Activities"
+msgstr "गतिविधिहरू"
+
+#. module: sale
+#. odoo-javascript
+#: code:addons/sale/static/src/js/product/product.xml:0
+msgid "Add"
+msgstr "थप्नुहोस्"
+
+#. module: sale
+#: model:ir.model.fields,field_description:sale.field_sale_order_discount__discount_amount
+#: model:ir.model.fields,field_description:sale.field_sale_order_line__amount_to_invoice_at_date
+#: model_terms:ir.ui.view,arch_db:sale.sale_order_line_view_form_readonly
+#: model_terms:ir.ui.view,arch_db:sale.view_order_form
+msgid "Amount"
+msgstr "रकम"
+
+#. module: sale
+#: model_terms:ir.ui.view,arch_db:sale.sale_order_line_wizard_form
+msgid "Apply"
+msgstr "लागू गर्नुहोस्"
+
+#. module: sale
+#: model_terms:ir.ui.view,arch_db:sale.sale_report_view_tree
+msgid "Average"
+msgstr "औसत"
+
+#. module: sale
+#. odoo-javascript
+#: code:addons/sale/static/src/js/combo_configurator_dialog/combo_configurator_dialog.xml:0
+#: code:addons/sale/static/src/js/product_configurator_dialog/product_configurator_dialog.xml:0
+#: model:ir.actions.act_window,name:sale.action_mass_cancel_orders
+#: model_terms:ir.ui.view,arch_db:sale.mass_cancel_orders_view_form
+#: model_terms:ir.ui.view,arch_db:sale.sale_order_portal_template
+#: model_terms:ir.ui.view,arch_db:sale.view_order_form
+#: model_terms:ir.ui.view,arch_db:sale.view_sale_advance_payment_inv
+msgid "Cancel"
+msgstr "रद्द गर्नुहोस्"
+
+#. module: sale
+#: model:ir.model.fields.selection,name:sale.selection__sale_order__state__cancel
+#: model:ir.model.fields.selection,name:sale.selection__sale_report__state__cancel
+msgid "Cancelled"
+msgstr "रद्द गरिएको"
+
+#. module: sale
+#: model_terms:ir.ui.view,arch_db:sale.sale_order_portal_pay_modal
+#: model_terms:ir.ui.view,arch_db:sale.sale_order_portal_sign_modal
+#: model_terms:ir.ui.view,arch_db:sale.sale_order_portal_template
+msgid "Close"
+msgstr "बन्द गर्नुहोस्"
+
+#. module: sale
+#: model:ir.model,name:sale.model_res_company
+msgid "Companies"
+msgstr "कम्पनीहरू"
+
+#. module: sale
+#: model:ir.model.fields,field_description:sale.field_sale_advance_payment_inv__company_id
+#: model:ir.model.fields,field_description:sale.field_sale_order__company_id
+#: model:ir.model.fields,field_description:sale.field_sale_order_discount__company_id
+#: model:ir.model.fields,field_description:sale.field_sale_order_line__company_id
+#: model:ir.model.fields,field_description:sale.field_sale_report__company_id
+#: model:ir.model.fields,field_description:sale.field_utm_campaign__company_id
+#: model_terms:ir.ui.view,arch_db:sale.view_order_product_search
+msgid "Company"
+msgstr "कम्पनी"
+
+#. module: sale
+#: model:ir.ui.menu,name:sale.menu_sale_config
+msgid "Configuration"
+msgstr "कन्फिगरेसन"
+
+#. module: sale
+#. odoo-javascript
+#: code:addons/sale/static/src/js/product_configurator_dialog/product_configurator_dialog.xml:0
+#: model_terms:ir.ui.view,arch_db:sale.view_order_form
+msgid "Confirm"
+msgstr "पुष्टि गर्नुहोस्"
+
+#. module: sale
+#: model:ir.model,name:sale.model_res_partner
+msgid "Contact"
+msgstr "सम्पर्क"
+
+#. module: sale
+#: model_terms:ir.ui.view,arch_db:sale.sale_order_portal_template
+msgid "Copy"
+msgstr "प्रतिलिपि गर्नुहोस्"
+
+#. module: sale
+#: model:ir.model.fields,field_description:sale.field_sale_advance_payment_inv__currency_id
+#: model:ir.model.fields,field_description:sale.field_sale_order__currency_id
+#: model:ir.model.fields,field_description:sale.field_sale_order_discount__currency_id
+#: model:ir.model.fields,field_description:sale.field_sale_order_line__currency_id
+#: model:ir.model.fields,field_description:sale.field_sale_report__currency_id
+#: model:ir.model.fields,field_description:sale.field_utm_campaign__currency_id
+msgid "Currency"
+msgstr "मुद्रा"
+
+#. module: sale
+#: model:ir.model.fields,field_description:sale.field_sale_order__partner_id
+#: model:ir.model.fields,field_description:sale.field_sale_order_line__order_partner_id
+#: model:ir.model.fields,field_description:sale.field_sale_report__partner_id
+#: model_terms:ir.ui.view,arch_db:sale.view_order_product_search
+#: model_terms:ir.ui.view,arch_db:sale.view_sales_order_filter
+msgid "Customer"
+msgstr "ग्राहक"
+
+#. module: sale
+#: model:ir.ui.menu,name:sale.menu_reporting_customer
+#: model:ir.ui.menu,name:sale.res_partner_menu
+msgid "Customers"
+msgstr "ग्राहकहरू"
+
+#. module: sale
+#: model_terms:ir.ui.view,arch_db:sale.view_order_product_search
+msgid "Date"
+msgstr "मिति"
+
+#. module: sale
+#. odoo-javascript
+#: code:addons/sale/static/src/js/sale_order_line_field/sale_order_line_field.xml:0
+msgid "Delete"
+msgstr "मेटाउनुहोस्"
+
+#. module: sale
+#: model:ir.model.fields,field_description:sale.field_sale_order_line__name
+#: model_terms:ir.ui.view,arch_db:sale.report_saleorder_document
+#: model_terms:ir.ui.view,arch_db:sale.view_order_form
+msgid "Description"
+msgstr "विवरण"
+
+#. module: sale
+#: model_terms:ir.ui.view,arch_db:sale.mass_cancel_orders_view_form
+#: model_terms:ir.ui.view,arch_db:sale.sale_order_line_wizard_form
+msgid "Discard"
+msgstr "खारेज गर्नुहोस्"
+
+#. module: sale
+#. odoo-python
+#: code:addons/sale/models/sale_order.py:0
+#: code:addons/sale/wizard/sale_order_discount.py:0
+#: model_terms:ir.ui.view,arch_db:sale.sale_order_line_wizard_form
+#: model_terms:ir.ui.view,arch_db:sale.view_order_form
+msgid "Discount"
+msgstr "छुट"
+
+#. module: sale
+#: model_terms:ir.ui.view,arch_db:sale.res_config_settings_view_form
+msgid "Documentation"
+msgstr "कागजात"
+
+#. module: sale
+#: model:ir.model.fields,field_description:sale.field_sale_order__message_follower_ids
+msgid "Followers"
+msgstr "अनुयायीहरू"
+
+#. module: sale
+#: model:ir.actions.act_window,name:sale.action_invoice_salesteams
+#: model:ir.model.fields,field_description:sale.field_sale_order__invoice_ids
+#: model_terms:ir.ui.view,arch_db:sale.crm_team_view_kanban_dashboard
+#: model_terms:ir.ui.view,arch_db:sale.view_order_form
+msgid "Invoices"
+msgstr "बीजकहरू"
+
+#. module: sale
+#: model:ir.model,name:sale.model_account_move
+msgid "Journal Entry"
+msgstr "जर्नल प्रविष्टि"
+
+#. module: sale
+#: model:ir.model.fields,field_description:sale.field_sale_order__message_ids
+msgid "Messages"
+msgstr "सन्देशहरू"
+
+#. module: sale
+#. odoo-python
+#: code:addons/sale/models/sale_order.py:0
+msgid "New"
+msgstr "नयाँ"
+
+#. module: sale
+#: model:ir.model.fields.selection,name:sale.selection__product_template__expense_policy__no
+msgid "No"
+msgstr "होइन"
+
+#. module: sale
+#: model:ir.model.fields.selection,name:sale.selection__sale_order_line__display_type__line_note
+#: model_terms:ir.ui.view,arch_db:sale.view_order_form
+msgid "Note"
+msgstr "टिपोट"
+
+#. module: sale
+#. odoo-python
+#: code:addons/sale/models/sale_order.py:0
+#: model:ir.model.fields,field_description:sale.field_sale_report__order_reference
+#: model_terms:ir.ui.view,arch_db:sale.view_sales_order_filter
+#: model_terms:ir.ui.view,arch_db:sale.view_sales_order_line_filter
+msgid "Order"
+msgstr "अर्डर"
+
+#. module: sale
+#: model:ir.ui.menu,name:sale.menu_sale_order
+#: model:ir.ui.menu,name:sale.sale_order_menu
+msgid "Orders"
+msgstr "अर्डरहरू"
+
+#. module: sale
+#: model_terms:ir.ui.view,arch_db:sale.res_config_settings_view_form
+msgid "Payment"
+msgstr "भुक्तानी"
+
+#. module: sale
+#: model_terms:ir.ui.view,arch_db:sale.view_order_form
+msgid "Preview"
+msgstr "पूर्वावलोकन"
+
+#. module: sale
+#: model_terms:ir.ui.view,arch_db:sale.view_order_form
+msgid "Print"
+msgstr "छाप्नुहोस्"
+
+#. module: sale
+#. odoo-javascript
+#: code:addons/sale/static/src/js/product_list/product_list.xml:0
+#: model:ir.model,name:sale.model_product_template
+#: model:ir.model.fields,field_description:sale.field_sale_order_line__product_id
+#: model:ir.model.fields,field_description:sale.field_sale_report__product_tmpl_id
+#: model_terms:ir.ui.view,arch_db:sale.sale_report_view_tree
+#: model_terms:ir.ui.view,arch_db:sale.view_order_form
+#: model_terms:ir.ui.view,arch_db:sale.view_order_product_search
+#: model_terms:ir.ui.view,arch_db:sale.view_sales_order_filter
+#: model_terms:ir.ui.view,arch_db:sale.view_sales_order_line_filter
+msgid "Product"
+msgstr "उत्पादन"
+
+#. module: sale
+#: model:ir.actions.act_window,name:sale.product_template_action
+#: model:ir.ui.menu,name:sale.menu_product_template_action
+#: model:ir.ui.menu,name:sale.menu_reporting_product
+#: model:ir.ui.menu,name:sale.prod_config_main
+#: model:ir.ui.menu,name:sale.product_menu_catalog
+#: model_terms:ir.ui.view,arch_db:sale.sale_order_portal_content
+msgid "Products"
+msgstr "उत्पादनहरू"
+
+#. module: sale
+#: model:ir.model.fields,field_description:sale.field_sale_order_line__product_uom_qty
+#: model_terms:ir.ui.view,arch_db:sale.report_saleorder_document
+#: model_terms:ir.ui.view,arch_db:sale.sale_order_portal_content
+#: model_terms:ir.ui.view,arch_db:sale.sale_report_view_tree
+msgid "Quantity"
+msgstr "परिमाण"
+
+#. module: sale
+#. odoo-python
+#: code:addons/sale/models/sale_order.py:0
+#: model:ir.model.fields.selection,name:sale.selection__sale_order__state__draft
+#: model:ir.model.fields.selection,name:sale.selection__sale_report__state__draft
+#: model_terms:ir.ui.view,arch_db:sale.product_document_search
+msgid "Quotation"
+msgstr "कोटेशन"
+
+#. module: sale
+#. odoo-javascript
+#: code:addons/sale/static/src/js/product/product.xml:0
+msgid "Remove"
+msgstr "हटाउनुहोस्"
+
+#. module: sale
+#: model:ir.ui.menu,name:sale.menu_sale_report
+msgid "Reporting"
+msgstr "प्रतिवेदन"
+
+#. module: sale
+#: model:ir.ui.menu,name:sale.menu_reporting_sales
+#: model:ir.ui.menu,name:sale.sale_menu_root
+#: model_terms:ir.ui.view,arch_db:sale.crm_team_view_kanban_dashboard
+#: model_terms:ir.ui.view,arch_db:sale.product_document_form
+#: model_terms:ir.ui.view,arch_db:sale.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:sale.res_partner_view_buttons
+#: model_terms:ir.ui.view,arch_db:sale.view_order_form
+msgid "Sales"
+msgstr "बिक्री"
+
+#. module: sale
+#. odoo-python
+#: code:addons/sale/models/sale_order.py:0
+#: model_terms:ir.ui.view,arch_db:sale.view_order_form
+msgid "Send"
+msgstr "पठाउनुहोस्"
+
+#. module: sale
+#: model:ir.model.fields,field_description:sale.field_sale_order_line__sequence
+msgid "Sequence"
+msgstr "क्रम"
+
+#. module: sale
+#: model:ir.actions.act_window,name:sale.action_sale_config_settings
+#: model:ir.ui.menu,name:sale.menu_sale_general_settings
+msgid "Settings"
+msgstr "सेटिङहरू"
+
+#. module: sale
+#: model:ir.actions.server,name:sale.model_sale_order_action_share
+msgid "Share"
+msgstr "साझा गर्नुहोस्"
+
+#. module: sale
+#: model:ir.model.fields,field_description:sale.field_sale_order__state
+#: model:ir.model.fields,field_description:sale.field_sale_report__state
+#: model_terms:ir.ui.view,arch_db:sale.view_order_product_search
+msgid "Status"
+msgstr "स्थिति"
+
+#. module: sale
+#: model:ir.model.fields,field_description:sale.field_sale_order_line__price_subtotal
+msgid "Subtotal"
+msgstr "उप-जम्मा"
+
+#. module: sale
+#: model:ir.model.fields,field_description:sale.field_sale_order__amount_tax
+#: model:ir.model.fields,field_description:sale.field_sale_order_line__tax_ids
+msgid "Taxes"
+msgstr "करहरू"
+
+#. module: sale
+#: model:ir.model.fields,field_description:sale.field_sale_order__amount_total
+#: model:ir.model.fields,field_description:sale.field_sale_order_line__price_total
+#: model:ir.model.fields,field_description:sale.field_sale_report__price_total
+#: model_terms:ir.ui.view,arch_db:sale.portal_my_orders
+#: model_terms:ir.ui.view,arch_db:sale.portal_my_quotations
+#: model_terms:ir.ui.view,arch_db:sale.view_order_line_tree
+msgid "Total"
+msgstr "जम्मा"
+
+#. module: sale
+#: model:ir.model.fields,field_description:sale.field_sale_order_line__price_unit
+#: model:ir.model.fields,field_description:sale.field_sale_report__price_unit
+#: model_terms:ir.ui.view,arch_db:sale.report_saleorder_document
+#: model_terms:ir.ui.view,arch_db:sale.sale_order_portal_content
+msgid "Unit Price"
+msgstr "एकाइ मूल्य"
+
+#. module: sale
+#. odoo-python
+#: code:addons/sale/models/product_product.py:0
+#: code:addons/sale/models/product_template.py:0
+#: code:addons/sale/wizard/res_config_settings.py:0
+msgid "Warning"
+msgstr "चेतावनी"

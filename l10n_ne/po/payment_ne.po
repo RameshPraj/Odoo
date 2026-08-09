@@ -1,0 +1,240 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0 (payment)\n"
+"Report-Msgid-Bugs-To: \n"
+"Language-Team: Nepali\n"
+"Language: ne\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: payment
+#: model:ir.model.fields,field_description:payment.field_payment_method__active
+#: model:ir.model.fields,field_description:payment.field_payment_token__active
+msgid "Active"
+msgstr "सक्रिय"
+
+#. module: payment
+#: model:ir.model.fields,field_description:payment.field_payment_transaction__partner_address
+#: model_terms:ir.ui.view,arch_db:payment.payment_transaction_form
+msgid "Address"
+msgstr "ठेगाना"
+
+#. module: payment
+#: model:ir.model.fields,field_description:payment.field_payment_link_wizard__amount
+#: model:ir.model.fields,field_description:payment.field_payment_transaction__amount
+#: model_terms:ir.ui.view,arch_db:payment.confirm
+#: model_terms:ir.ui.view,arch_db:payment.pay
+#: model_terms:ir.ui.view,arch_db:payment.payment_status
+msgid "Amount"
+msgstr "रकम"
+
+#. module: payment
+#: model_terms:ir.ui.view,arch_db:payment.payment_token_form
+#: model_terms:ir.ui.view,arch_db:payment.payment_token_search
+msgid "Archived"
+msgstr "संग्रहित"
+
+#. module: payment
+#: model:ir.model.fields,field_description:payment.field_payment_transaction__partner_city
+#: model_terms:ir.ui.view,arch_db:payment.payment_transaction_form
+msgid "City"
+msgstr "सहर"
+
+#. module: payment
+#: model_terms:ir.ui.view,arch_db:payment.payment_capture_wizard_view_form
+#: model_terms:ir.ui.view,arch_db:payment.payment_link_wizard_view_form
+msgid "Close"
+msgstr "बन्द गर्नुहोस्"
+
+#. module: payment
+#: model:ir.model.fields,field_description:payment.field_payment_provider__color
+msgid "Color"
+msgstr "रङ"
+
+#. module: payment
+#: model:ir.model,name:payment.model_res_company
+msgid "Companies"
+msgstr "कम्पनीहरू"
+
+#. module: payment
+#: model:ir.model.fields,field_description:payment.field_payment_link_wizard__company_id
+#: model:ir.model.fields,field_description:payment.field_payment_provider__company_id
+#: model:ir.model.fields,field_description:payment.field_payment_token__company_id
+#: model:ir.model.fields,field_description:payment.field_payment_transaction__company_id
+#: model_terms:ir.ui.view,arch_db:payment.payment_provider_search
+#: model_terms:ir.ui.view,arch_db:payment.payment_token_search
+#: model_terms:ir.ui.view,arch_db:payment.payment_transaction_search
+msgid "Company"
+msgstr "कम्पनी"
+
+#. module: payment
+#: model_terms:ir.ui.view,arch_db:payment.payment_method_form
+#: model_terms:ir.ui.view,arch_db:payment.payment_provider_form
+msgid "Configuration"
+msgstr "कन्फिगरेसन"
+
+#. module: payment
+#. odoo-javascript
+#: code:addons/payment/static/src/interactions/payment_form.js:0
+msgid "Confirm"
+msgstr "पुष्टि गर्नुहोस्"
+
+#. module: payment
+#: model:ir.model.fields.selection,name:payment.selection__payment_transaction__state__done
+msgid "Confirmed"
+msgstr "पुष्टि भएको"
+
+#. module: payment
+#: model:ir.model,name:payment.model_res_partner
+#: model:payment.method,name:payment.payment_method_contact
+msgid "Contact"
+msgstr "सम्पर्क"
+
+#. module: payment
+#: model:ir.model,name:payment.model_res_country
+#: model:ir.model.fields,field_description:payment.field_payment_transaction__partner_country_id
+#: model_terms:ir.ui.view,arch_db:payment.payment_transaction_form
+msgid "Country"
+msgstr "देश"
+
+#. module: payment
+#: model:ir.model.fields,field_description:payment.field_payment_capture_wizard__currency_id
+#: model:ir.model.fields,field_description:payment.field_payment_link_wizard__currency_id
+#: model:ir.model.fields,field_description:payment.field_payment_provider__main_currency_id
+#: model:ir.model.fields,field_description:payment.field_payment_transaction__currency_id
+msgid "Currency"
+msgstr "मुद्रा"
+
+#. module: payment
+#: model:ir.model.fields,field_description:payment.field_payment_transaction__partner_id
+msgid "Customer"
+msgstr "ग्राहक"
+
+#. module: payment
+#: model:ir.model.fields.selection,name:payment.selection__payment_transaction__state__draft
+msgid "Draft"
+msgstr "मस्यौदा"
+
+#. module: payment
+#: model:ir.model.fields,field_description:payment.field_payment_link_wizard__partner_email
+#: model:ir.model.fields,field_description:payment.field_payment_transaction__partner_email
+msgid "Email"
+msgstr "इमेल"
+
+#. module: payment
+#: model:ir.model.fields.selection,name:payment.selection__payment_transaction__state__error
+msgid "Error"
+msgstr "त्रुटि"
+
+#. module: payment
+#: model:ir.model.fields,field_description:payment.field_payment_method__image
+#: model:ir.model.fields,field_description:payment.field_payment_provider__image_128
+msgid "Image"
+msgstr "तस्बिर"
+
+#. module: payment
+#: model:ir.model.fields,field_description:payment.field_payment_transaction__partner_lang
+msgid "Language"
+msgstr "भाषा"
+
+#. module: payment
+#: model:ir.model.fields,field_description:payment.field_payment_transaction__state_message
+#: model_terms:ir.ui.view,arch_db:payment.payment_transaction_form
+msgid "Message"
+msgstr "सन्देश"
+
+#. module: payment
+#: model_terms:ir.ui.view,arch_db:payment.payment_provider_form
+msgid "Messages"
+msgstr "सन्देशहरू"
+
+#. module: payment
+#: model:payment.method,name:payment.payment_method_mobile
+msgid "Mobile"
+msgstr "मोबाइल"
+
+#. module: payment
+#: model:ir.model.fields,field_description:payment.field_payment_method__name
+#: model:ir.model.fields,field_description:payment.field_payment_provider__name
+#: model_terms:ir.ui.view,arch_db:payment.payment_method_form
+#: model_terms:ir.ui.view,arch_db:payment.payment_method_search
+#: model_terms:ir.ui.view,arch_db:payment.payment_provider_form
+msgid "Name"
+msgstr "नाम"
+
+#. module: payment
+#: model:ir.model.fields,field_description:payment.field_payment_link_wizard__partner_id
+#: model:ir.model.fields,field_description:payment.field_payment_token__partner_id
+#: model_terms:ir.ui.view,arch_db:payment.payment_token_search
+#: model_terms:ir.ui.view,arch_db:payment.payment_transaction_search
+msgid "Partner"
+msgstr "साझेदार"
+
+#. module: payment
+#: model_terms:ir.ui.view,arch_db:payment.pay
+msgid "Payment"
+msgstr "भुक्तानी"
+
+#. module: payment
+#: model_terms:ir.ui.view,arch_db:payment.payment_token_form
+msgid "Payments"
+msgstr "भुक्तानीहरू"
+
+#. module: payment
+#: model:ir.model.fields.selection,name:payment.selection__payment_transaction__state__pending
+msgid "Pending"
+msgstr "बाँकी"
+
+#. module: payment
+#: model:ir.model.fields,field_description:payment.field_payment_transaction__partner_phone
+msgid "Phone"
+msgstr "फोन"
+
+#. module: payment
+#: model:ir.model.fields,field_description:payment.field_payment_transaction__reference
+#: model_terms:ir.ui.view,arch_db:payment.confirm
+#: model_terms:ir.ui.view,arch_db:payment.pay
+#: model_terms:ir.ui.view,arch_db:payment.payment_status
+msgid "Reference"
+msgstr "सन्दर्भ"
+
+#. module: payment
+#: model_terms:ir.ui.view,arch_db:payment.form
+msgid "Save"
+msgstr "सुरक्षित गर्नुहोस्"
+
+#. module: payment
+#: model:ir.model.fields,field_description:payment.field_payment_method__sequence
+#: model:ir.model.fields,field_description:payment.field_payment_provider__sequence
+msgid "Sequence"
+msgstr "क्रम"
+
+#. module: payment
+#: model:ir.model.fields,field_description:payment.field_payment_provider__state
+#: model:ir.model.fields,field_description:payment.field_payment_transaction__partner_state_id
+#: model_terms:ir.ui.view,arch_db:payment.payment_provider_search
+#: model_terms:ir.ui.view,arch_db:payment.payment_transaction_form
+msgid "State"
+msgstr "अवस्था"
+
+#. module: payment
+#: model:ir.model.fields,field_description:payment.field_payment_transaction__state
+#: model_terms:ir.ui.view,arch_db:payment.payment_transaction_search
+msgid "Status"
+msgstr "स्थिति"
+
+#. module: payment
+#. odoo-python
+#: code:addons/payment/models/payment_method.py:0
+#: code:addons/payment/models/payment_provider.py:0
+msgid "Warning"
+msgstr "चेतावनी"
+
+#. module: payment
+#: model:ir.model.fields,field_description:payment.field_payment_transaction__partner_zip
+#: model:payment.method,name:payment.payment_method_zip
+msgid "Zip"
+msgstr "पोस्ट कोड"

@@ -1,0 +1,51 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0 (phone_validation)\n"
+"Report-Msgid-Bugs-To: \n"
+"Language-Team: Nepali\n"
+"Language: ne\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: phone_validation
+#: model:ir.model.fields,field_description:phone_validation.field_phone_blacklist__active
+msgid "Active"
+msgstr "सक्रिय"
+
+#. module: phone_validation
+#: model_terms:ir.ui.view,arch_db:phone_validation.phone_blacklist_view_form
+#: model_terms:ir.ui.view,arch_db:phone_validation.phone_blacklist_view_search
+msgid "Archived"
+msgstr "संग्रहित"
+
+#. module: phone_validation
+#: model:ir.model,name:phone_validation.model_res_partner
+msgid "Contact"
+msgstr "सम्पर्क"
+
+#. module: phone_validation
+#: model_terms:ir.ui.view,arch_db:phone_validation.phone_blacklist_remove_view_form
+msgid "Discard"
+msgstr "खारेज गर्नुहोस्"
+
+#. module: phone_validation
+#: model:ir.model.fields,field_description:phone_validation.field_mail_thread_phone__message_follower_ids
+#: model:ir.model.fields,field_description:phone_validation.field_phone_blacklist__message_follower_ids
+#: model:ir.model.fields,field_description:phone_validation.field_res_partner__message_follower_ids
+msgid "Followers"
+msgstr "अनुयायीहरू"
+
+#. module: phone_validation
+#: model:ir.model.fields,field_description:phone_validation.field_mail_thread_phone__message_ids
+#: model:ir.model.fields,field_description:phone_validation.field_phone_blacklist__message_ids
+#: model:ir.model.fields,field_description:phone_validation.field_res_partner__message_ids
+msgid "Messages"
+msgstr "सन्देशहरू"
+
+#. module: phone_validation
+#: model:ir.model,name:phone_validation.model_res_users
+msgid "User"
+msgstr "प्रयोगकर्ता"

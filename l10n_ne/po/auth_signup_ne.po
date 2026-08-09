@@ -1,0 +1,47 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0 (auth_signup)\n"
+"Report-Msgid-Bugs-To: \n"
+"Language-Team: Nepali\n"
+"Language: ne\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: auth_signup
+#: model:ir.model.fields.selection,name:auth_signup.selection__res_users__state__active
+msgid "Confirmed"
+msgstr "पुष्टि भएको"
+
+#. module: auth_signup
+#: model:ir.model,name:auth_signup.model_res_partner
+msgid "Contact"
+msgstr "सम्पर्क"
+
+#. module: auth_signup
+#: model_terms:ir.ui.view,arch_db:auth_signup.reset_password
+#: model_terms:ir.ui.view,arch_db:auth_signup.signup
+msgid "Email"
+msgstr "इमेल"
+
+#. module: auth_signup
+#: model_terms:ir.ui.view,arch_db:auth_signup.signup
+msgid "Name"
+msgstr "नाम"
+
+#. module: auth_signup
+#: model_terms:ir.ui.view,arch_db:auth_signup.fields
+msgid "Password"
+msgstr "पासवर्ड"
+
+#. module: auth_signup
+#: model:ir.model.fields,field_description:auth_signup.field_res_users__state
+msgid "Status"
+msgstr "स्थिति"
+
+#. module: auth_signup
+#: model:ir.model,name:auth_signup.model_res_users
+msgid "User"
+msgstr "प्रयोगकर्ता"

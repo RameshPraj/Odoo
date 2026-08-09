@@ -1,0 +1,23 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0 (google_gmail)\n"
+"Report-Msgid-Bugs-To: \n"
+"Language-Team: Nepali\n"
+"Language: ne\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: google_gmail
+#: model:ir.model.fields,field_description:google_gmail.field_fetchmail_server__active
+#: model:ir.model.fields,field_description:google_gmail.field_google_gmail_mixin__active
+#: model:ir.model.fields,field_description:google_gmail.field_ir_mail_server__active
+msgid "Active"
+msgstr "सक्रिय"
+
+#. module: google_gmail
+#: model:ir.model,name:google_gmail.model_res_users
+msgid "User"
+msgstr "प्रयोगकर्ता"

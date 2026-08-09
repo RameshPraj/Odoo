@@ -1,0 +1,31 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0 (uom)\n"
+"Report-Msgid-Bugs-To: \n"
+"Language-Team: Nepali\n"
+"Language: ne\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: uom
+#: model:ir.model.fields,field_description:uom.field_uom_uom__active
+msgid "Active"
+msgstr "सक्रिय"
+
+#. module: uom
+#: model_terms:ir.ui.view,arch_db:uom.uom_uom_view_search
+msgid "Archived"
+msgstr "संग्रहित"
+
+#. module: uom
+#: model_terms:ir.ui.view,arch_db:uom.product_uom_form_view
+msgid "Quantity"
+msgstr "परिमाण"
+
+#. module: uom
+#: model:ir.model.fields,field_description:uom.field_uom_uom__sequence
+msgid "Sequence"
+msgstr "क्रम"
