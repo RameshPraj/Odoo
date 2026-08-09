@@ -61,11 +61,51 @@ or every financial report will cover the wrong period.
 The sibling module `l10n_np_bs` already handles Bikram Sambat date display, so the two are
 designed to be used together.
 
+## Financial reports — read this before planning
+
+⚠️ **Odoo Community ships the `account.report` schema but NOT its renderer.**
+
+Verified in this tree:
+
+```
+grep -c "_get_lines\|get_options\|_compute_expression" \
+     odoo/addons/account/models/account_report.py     →  0
+grep -rn "act_window\|menuitem" .../views/account_report.xml
+     (only ir.actions.report PDF records; no menu for account.report)
+```
+
+The models `account.report`, `account.report.line`, `account.report.expression`
+and `account.report.column` exist and accept records — but nothing in Community
+turns them into numbers, and no menu opens them. The rendering engine lives in
+the Enterprise `account_reports` module.
+
+**Consequence:** authoring Balance Sheet / P&L / VAT-return definitions as
+`account.report` records is a dead end on Community. They install, then sit
+unreachable. This was tried and removed; do not re-attempt it.
+
+**What Community actually gives you for reporting:**
+
+| Reachable today | Model |
+|---|---|
+| Journal Items (filter, group, pivot, export) | `account.move.line` |
+| Invoices Analysis | `account.invoice.report` |
+| Analytic Reporting / Items | `account.analytic.line` |
+
+**Free routes to real financial statements:**
+
+1. **OCA `account-financial-reporting`** (AGPL) — ships Trial Balance, General
+   Ledger, Aged Partner Balance, Open Items with **its own** rendering
+   (wizards + QWeb/XLSX), independent of the Enterprise engine. Least effort.
+2. **Write ordinary Odoo reports** — a wizard plus a QWeb template over
+   `account.move.line`. Standard development, fully LGPL-compatible.
+3. **Spreadsheet** — the `spreadsheet` module is installed; journal items can be
+   pivoted and exported.
+
 ## Not yet built
 
 | Missing | Why it matters | Effort |
 |---|---|---|
-| **IRD VAT return** as `account.report` | Statutory filing | Days — needs the official form layout from the SME. The `account.report` engine **is** in Community, so this is configuration, not code |
+| **IRD VAT return** | Statutory filing | Days. Must be built as a wizard + QWeb report or via OCA, **not** as `account.report` |
 | **TDS / withholding** | Legal obligation on many payments | Medium — see `l10n_in`'s TDS data files for the pattern |
 | Demo data | Testing convenience | Hours |
 | Nepali translations | UI language | The `l10n_ne/` toolchain at the repo root already covers general UI |

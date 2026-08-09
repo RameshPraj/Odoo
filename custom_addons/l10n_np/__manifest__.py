@@ -39,6 +39,10 @@ Activates:
     ],
     # Deliberately NOT auto_install: this must be a conscious choice while the
     # chart is unreviewed. Install explicitly with -i l10n_np.
+    # NOTE: no account.report definitions here. Odoo Community ships the
+    # account.report *schema* but not its renderer -- there is no _get_lines,
+    # no get_options and no menu anywhere in Community. Report records would
+    # install and then be unreachable. See README.md "Financial reports".
     'data': [
         'data/res_country_state_data.xml',
         'data/account.account.tag.csv',
