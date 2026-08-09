@@ -27,7 +27,7 @@ db_maxconn = 64
 ; --- Where modules are loaded from ---
 ; This source distribution keeps all 685 modules under odoo/addons.
 ; Append your own directory here (comma-separated) for custom modules.
-addons_path = C:\path\to\odoo-19.0\odoo\addons
+addons_path = C:\path\to\odoo-19.0\odoo\addons,C:\path\to\odoo-19.0\custom_addons
 
 ; --- Filestore, sessions, compiled assets ---
 ; Real attachments live here. Back this up together with the database dump.
