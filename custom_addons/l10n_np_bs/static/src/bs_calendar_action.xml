@@ -43,11 +43,12 @@
                          t-esc="wd"/>
                     <t t-foreach="cells" t-as="c" t-key="c.key">
                         <div t-if="c.blank" class="o_bs_cal_cell o_bs_cal_blank"/>
+                        <!-- OWL expressions support `and`/`or` but NOT `not` -- use `!` -->
                         <div t-else=""
                              class="o_bs_cal_cell border rounded"
                              t-att-class="{
                                  'o_bs_cal_today': c.today,
-                                 'o_bs_cal_sat': c.saturday and not c.today,
+                                 'o_bs_cal_sat': c.saturday and !c.today,
                              }">
                             <div class="o_bs_cal_np" t-esc="c.label"/>
                             <div class="o_bs_cal_ad text-muted" t-esc="c.adLabel"/>

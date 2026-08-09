@@ -47,13 +47,14 @@
                          t-esc="wd"/>
                     <t t-foreach="monthCells" t-as="cell" t-key="cell.key">
                         <div t-if="cell.blank" class="o_bs_cell"/>
+                        <!-- OWL expressions support `and`/`or` but NOT `not` -- use `!` -->
                         <button t-else=""
                                 type="button"
                                 class="o_bs_cell btn btn-sm"
                                 t-att-class="{
                                     'btn-primary': cell.selected,
-                                    'o_bs_today': cell.today and not cell.selected,
-                                    'btn-light': not cell.selected,
+                                    'o_bs_today': cell.today and !cell.selected,
+                                    'btn-light': !cell.selected,
                                 }"
                                 t-on-click.stop="() => this.pick(cell.day)"
                                 t-esc="cell.label"/>
