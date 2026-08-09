@@ -1,4 +1,12 @@
 .o_bs_calendar_action {
+    // Layout gives us the height; this just scrolls within it.
+    height: 100%;
+
+    .o_bs_cal_scroll {
+        height: 100%;
+        overflow-y: auto;
+    }
+
     .o_bs_cal_card {
         max-width: 46rem;
     }

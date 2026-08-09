@@ -7,6 +7,7 @@
 import { Component, useState } from "@odoo/owl";
 import { registry } from "@web/core/registry";
 import { standardActionServiceProps } from "@web/webclient/actions/action_service";
+import { Layout } from "@web/search/layout";
 import { _t } from "@web/core/l10n/translation";
 import {
     adToBs, bsToAd, bsMonthLength, bsMonthName, bsWeekdayNames,
@@ -19,11 +20,15 @@ const AD_MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
 
 export class BSCalendar extends Component {
     static template = "l10n_np_bs.Calendar";
+    static components = { Layout };
     static props = { ...standardActionServiceProps };
 
     setup() {
         const t = this.todayBs();
         this.state = useState({ year: t.year, month: t.month, npDigits: true });
+        // A client action must render inside <Layout>; without it the action
+        // container establishes no height and the page comes out blank.
+        this.display = { controlPanel: {} };
     }
 
     todayAdParts() {
