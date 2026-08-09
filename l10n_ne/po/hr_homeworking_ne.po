@@ -16,15 +16,65 @@ msgid "Contact"
 msgstr "सम्पर्क"
 
 #. module: hr_homeworking
+#: model:ir.model,website_form_label:hr_homeworking.model_res_partner
+msgid "Create a Customer"
+msgstr "ग्राहक सिर्जना गर्नुहोस्"
+
+#. module: hr_homeworking
+#: model:ir.model.fields,field_description:hr_homeworking.field_hr_employee_location__create_uid
+msgid "Created by"
+msgstr "सिर्जना गर्ने"
+
+#. module: hr_homeworking
+#: model:ir.model.fields,field_description:hr_homeworking.field_hr_employee_location__create_date
+msgid "Created on"
+msgstr "सिर्जना मिति"
+
+#. module: hr_homeworking
 #: model:ir.model.fields,field_description:hr_homeworking.field_hr_employee_location__date
 msgid "Date"
 msgstr "मिति"
+
+#. module: hr_homeworking
+#: model:ir.model.fields,field_description:hr_homeworking.field_hr_employee__display_name
+#: model:ir.model.fields,field_description:hr_homeworking.field_hr_employee_location__display_name
+#: model:ir.model.fields,field_description:hr_homeworking.field_hr_employee_public__display_name
+#: model:ir.model.fields,field_description:hr_homeworking.field_hr_work_location__display_name
+#: model:ir.model.fields,field_description:hr_homeworking.field_res_partner__display_name
+#: model:ir.model.fields,field_description:hr_homeworking.field_res_users__display_name
+msgid "Display Name"
+msgstr "प्रदर्शन नाम"
 
 #. module: hr_homeworking
 #: model:ir.model,name:hr_homeworking.model_hr_employee
 #: model:ir.model.fields,field_description:hr_homeworking.field_hr_employee_location__employee_id
 msgid "Employee"
 msgstr "कर्मचारी"
+
+#. module: hr_homeworking
+#: model:ir.model.fields,field_description:hr_homeworking.field_hr_employee__id
+#: model:ir.model.fields,field_description:hr_homeworking.field_hr_employee_location__id
+#: model:ir.model.fields,field_description:hr_homeworking.field_hr_employee_public__id
+#: model:ir.model.fields,field_description:hr_homeworking.field_hr_work_location__id
+#: model:ir.model.fields,field_description:hr_homeworking.field_res_partner__id
+#: model:ir.model.fields,field_description:hr_homeworking.field_res_users__id
+msgid "ID"
+msgstr "आईडी"
+
+#. module: hr_homeworking
+#: model:ir.model.fields,field_description:hr_homeworking.field_hr_employee_location__write_uid
+msgid "Last Updated by"
+msgstr "अन्तिम अद्यावधिक गर्ने"
+
+#. module: hr_homeworking
+#: model:ir.model.fields,field_description:hr_homeworking.field_hr_employee_location__write_date
+msgid "Last Updated on"
+msgstr "अन्तिम अद्यावधिक मिति"
+
+#. module: hr_homeworking
+#: model:ir.model.fields,field_description:hr_homeworking.field_hr_employee_location__work_location_id
+msgid "Location"
+msgstr "स्थान"
 
 #. module: hr_homeworking
 #: model:ir.model,name:hr_homeworking.model_res_users

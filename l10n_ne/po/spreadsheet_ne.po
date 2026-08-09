@@ -63,6 +63,12 @@ msgstr "खाली गर्नुहोस्"
 #. module: spreadsheet
 #. odoo-javascript
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.xml:0
+msgid "Code"
+msgstr "कोड"
+
+#. module: spreadsheet
+#. odoo-javascript
+#: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.xml:0
 msgid "Color"
 msgstr "रङ"
 
@@ -103,6 +109,13 @@ msgstr "मुद्रा"
 #. module: spreadsheet
 #. odoo-javascript
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
+#: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.xml:0
+msgid "Custom"
+msgstr "अनुकूल"
+
+#. module: spreadsheet
+#. odoo-javascript
+#: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 msgid "Cut"
 msgstr "काट्नुहोस्"
 
@@ -124,6 +137,16 @@ msgstr "मेटाउनुहोस्"
 #: code:addons/spreadsheet/static/src/global_filters/components/filter_values_list/filter_values_list.xml:0
 msgid "Discard"
 msgstr "खारेज गर्नुहोस्"
+
+#. module: spreadsheet
+#: model:ir.model.fields,field_description:spreadsheet.field_ir_http__display_name
+#: model:ir.model.fields,field_description:spreadsheet.field_ir_model__display_name
+#: model:ir.model.fields,field_description:spreadsheet.field_res_currency__display_name
+#: model:ir.model.fields,field_description:spreadsheet.field_res_currency_rate__display_name
+#: model:ir.model.fields,field_description:spreadsheet.field_res_lang__display_name
+#: model:ir.model.fields,field_description:spreadsheet.field_spreadsheet_mixin__display_name
+msgid "Display Name"
+msgstr "प्रदर्शन नाम"
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -161,6 +184,12 @@ msgstr "त्रुटि"
 
 #. module: spreadsheet
 #. odoo-javascript
+#: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
+msgid "File"
+msgstr "फाइल"
+
+#. module: spreadsheet
+#. odoo-javascript
 #: code:addons/spreadsheet/static/src/global_filters/components/filter_values_list/filter_values_list.xml:0
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 msgid "Filter"
@@ -175,6 +204,19 @@ msgstr "फिल्टरहरू"
 #. module: spreadsheet
 #. odoo-javascript
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
+#: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.xml:0
+msgid "Format"
+msgstr "ढाँचा"
+
+#. module: spreadsheet
+#. odoo-javascript
+#: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
+msgid "Function"
+msgstr "कार्यभार"
+
+#. module: spreadsheet
+#. odoo-javascript
+#: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 msgid "Group"
 msgstr "समूह"
 
@@ -183,6 +225,16 @@ msgstr "समूह"
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.xml:0
 msgid "Groups"
 msgstr "समूहहरू"
+
+#. module: spreadsheet
+#: model:ir.model.fields,field_description:spreadsheet.field_ir_http__id
+#: model:ir.model.fields,field_description:spreadsheet.field_ir_model__id
+#: model:ir.model.fields,field_description:spreadsheet.field_res_currency__id
+#: model:ir.model.fields,field_description:spreadsheet.field_res_currency_rate__id
+#: model:ir.model.fields,field_description:spreadsheet.field_res_lang__id
+#: model:ir.model.fields,field_description:spreadsheet.field_spreadsheet_mixin__id
+msgid "ID"
+msgstr "आईडी"
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -216,6 +268,20 @@ msgstr "गत महिना"
 #. module: spreadsheet
 #. odoo-javascript
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
+#: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.xml:0
+msgid "Left"
+msgstr "बायाँ"
+
+#. module: spreadsheet
+#. odoo-javascript
+#: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
+#: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.xml:0
+msgid "Link"
+msgstr "लिङ्क"
+
+#. module: spreadsheet
+#. odoo-javascript
+#: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 #: code:addons/spreadsheet/static/src/pivot/pivot_helpers.js:0
 msgid "Maximum"
 msgstr "अधिकतम"
@@ -223,9 +289,20 @@ msgstr "अधिकतम"
 #. module: spreadsheet
 #. odoo-javascript
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
+msgid "Medium"
+msgstr "माध्यम"
+
+#. module: spreadsheet
+#. odoo-javascript
+#: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 #: code:addons/spreadsheet/static/src/pivot/pivot_helpers.js:0
 msgid "Minimum"
 msgstr "न्यूनतम"
+
+#. module: spreadsheet
+#: model:ir.model,name:spreadsheet.model_ir_model
+msgid "Models"
+msgstr "मोडेलहरू"
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -250,6 +327,12 @@ msgstr "कुनै पनि होइन"
 
 #. module: spreadsheet
 #. odoo-javascript
+#: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.xml:0
+msgid "Options"
+msgstr "विकल्पहरू"
+
+#. module: spreadsheet
+#. odoo-javascript
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 msgid "Paste"
 msgstr "टाँस्नुहोस्"
@@ -271,6 +354,13 @@ msgstr "पुनः गर्नुहोस्"
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.xml:0
 msgid "Reset"
 msgstr "रिसेट गर्नुहोस्"
+
+#. module: spreadsheet
+#. odoo-javascript
+#: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
+#: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.xml:0
+msgid "Right"
+msgstr "दायाँ"
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -339,6 +429,19 @@ msgstr "प्रकार"
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
 msgid "Undo"
 msgstr "पूर्ववत् गर्नुहोस्"
+
+#. module: spreadsheet
+#. odoo-javascript
+#: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js:0
+#: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.xml:0
+msgid "Value"
+msgstr "मान"
+
+#. module: spreadsheet
+#. odoo-javascript
+#: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.xml:0
+msgid "Values"
+msgstr "मानहरू"
 
 #. module: spreadsheet
 #. odoo-javascript

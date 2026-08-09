@@ -21,6 +21,20 @@ msgid "Configuration"
 msgstr "कन्फिगरेसन"
 
 #. module: spreadsheet_dashboard
+#: model:ir.model.fields,field_description:spreadsheet_dashboard.field_spreadsheet_dashboard__create_uid
+#: model:ir.model.fields,field_description:spreadsheet_dashboard.field_spreadsheet_dashboard_group__create_uid
+#: model:ir.model.fields,field_description:spreadsheet_dashboard.field_spreadsheet_dashboard_share__create_uid
+msgid "Created by"
+msgstr "सिर्जना गर्ने"
+
+#. module: spreadsheet_dashboard
+#: model:ir.model.fields,field_description:spreadsheet_dashboard.field_spreadsheet_dashboard__create_date
+#: model:ir.model.fields,field_description:spreadsheet_dashboard.field_spreadsheet_dashboard_group__create_date
+#: model:ir.model.fields,field_description:spreadsheet_dashboard.field_spreadsheet_dashboard_share__create_date
+msgid "Created on"
+msgstr "सिर्जना मिति"
+
+#. module: spreadsheet_dashboard
 #: model:ir.model.fields,field_description:spreadsheet_dashboard.field_spreadsheet_dashboard_group__dashboard_ids
 #: model:ir.model.fields,field_description:spreadsheet_dashboard.field_spreadsheet_dashboard_share__dashboard_id
 #: model:res.groups.privilege,name:spreadsheet_dashboard.res_groups_privilege_dashboard
@@ -28,9 +42,37 @@ msgid "Dashboard"
 msgstr "ड्यासबोर्ड"
 
 #. module: spreadsheet_dashboard
+#: model:ir.model.fields,field_description:spreadsheet_dashboard.field_spreadsheet_dashboard__display_name
+#: model:ir.model.fields,field_description:spreadsheet_dashboard.field_spreadsheet_dashboard_group__display_name
+#: model:ir.model.fields,field_description:spreadsheet_dashboard.field_spreadsheet_dashboard_share__display_name
+msgid "Display Name"
+msgstr "प्रदर्शन नाम"
+
+#. module: spreadsheet_dashboard
 #: model:ir.model.fields,field_description:spreadsheet_dashboard.field_spreadsheet_dashboard__group_ids
 msgid "Group"
 msgstr "समूह"
+
+#. module: spreadsheet_dashboard
+#: model:ir.model.fields,field_description:spreadsheet_dashboard.field_spreadsheet_dashboard__id
+#: model:ir.model.fields,field_description:spreadsheet_dashboard.field_spreadsheet_dashboard_group__id
+#: model:ir.model.fields,field_description:spreadsheet_dashboard.field_spreadsheet_dashboard_share__id
+msgid "ID"
+msgstr "आईडी"
+
+#. module: spreadsheet_dashboard
+#: model:ir.model.fields,field_description:spreadsheet_dashboard.field_spreadsheet_dashboard__write_uid
+#: model:ir.model.fields,field_description:spreadsheet_dashboard.field_spreadsheet_dashboard_group__write_uid
+#: model:ir.model.fields,field_description:spreadsheet_dashboard.field_spreadsheet_dashboard_share__write_uid
+msgid "Last Updated by"
+msgstr "अन्तिम अद्यावधिक गर्ने"
+
+#. module: spreadsheet_dashboard
+#: model:ir.model.fields,field_description:spreadsheet_dashboard.field_spreadsheet_dashboard__write_date
+#: model:ir.model.fields,field_description:spreadsheet_dashboard.field_spreadsheet_dashboard_group__write_date
+#: model:ir.model.fields,field_description:spreadsheet_dashboard.field_spreadsheet_dashboard_share__write_date
+msgid "Last Updated on"
+msgstr "अन्तिम अद्यावधिक मिति"
 
 #. module: spreadsheet_dashboard
 #. odoo-javascript
@@ -73,6 +115,17 @@ msgstr "खोज्नुहोस्..."
 #: model:ir.model.fields,field_description:spreadsheet_dashboard.field_spreadsheet_dashboard_group__sequence
 msgid "Sequence"
 msgstr "क्रम"
+
+#. module: spreadsheet_dashboard
+#: model:ir.model.fields,field_description:spreadsheet_dashboard.field_spreadsheet_dashboard_share__full_url
+msgid "URL"
+msgstr "यूआरएल"
+
+#. module: spreadsheet_dashboard
+#: model_terms:ir.ui.view,arch_db:spreadsheet_dashboard.spreadsheet_dashboard_view_form
+#: model_terms:ir.ui.view,arch_db:spreadsheet_dashboard.spreadsheet_dashboard_view_list
+msgid "Visible to all"
+msgstr "सबैलाई देखिने"
 
 #. module: spreadsheet_dashboard
 #: model:spreadsheet.dashboard.group,name:spreadsheet_dashboard.spreadsheet_dashboard_group_website

@@ -182,12 +182,29 @@ def main():
         print(f"deployed {len(built)} file(s) to <module>/i18n_extra/ne.po")
 
         # -- 5. import into the database (model translations) --------------
+        # IMPORTANT: TranslationImporter.load_file() opens through Odoo's
+        # sandboxed file_open(), which only resolves paths inside the addons
+        # tree -- and it swallows the resulting FileNotFoundError:
+        #
+        #   with suppress(FileNotFoundError), file_open(filepath, ...) as f:
+        #
+        # Passing an absolute path to l10n_ne/po/ therefore imports NOTHING,
+        # silently. Load the copies deployed in step 4 instead, addressed
+        # module-relative so file_open can resolve them.
         importer = TranslationImporter(cr)
-        for mod, (path, _hits) in sorted(built.items()):
-            importer.load_file(path, LANG_CODE, module=mod)
+        loaded = 0
+        for mod in sorted(built):
+            rel = f"{mod}/i18n_extra/ne.po"
+            before = len(importer.model_translations)
+            importer.load_file(rel, LANG_CODE, module=mod)
+            if len(importer.model_translations) > before or importer.model_translations:
+                loaded += 1
+        if not importer.model_translations and not importer.model_terms_translations:
+            sys.exit("ERROR: importer collected nothing -- check that the i18n_extra "
+                     "files exist and that ne_NP is active")
         importer.save(overwrite=True)
         cr.commit()
-        print("imported model translations into the database")
+        print(f"imported model translations into the database from {loaded} file(s)")
 
         print()
         print("Done. Restart the server, then set a user's language to "

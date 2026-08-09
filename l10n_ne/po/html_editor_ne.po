@@ -18,6 +18,12 @@ msgstr "थप्नुहोस्"
 
 #. module: html_editor
 #. odoo-javascript
+#: code:addons/html_editor/static/src/main/media/media_dialog/file_selector.js:0
+msgid "Alert"
+msgstr "सचेतना"
+
+#. module: html_editor
+#. odoo-javascript
 #: code:addons/html_editor/static/src/main/media/media_dialog/file_selector.xml:0
 msgid "All"
 msgstr "सबै"
@@ -56,9 +62,33 @@ msgstr "बन्द गर्नुहोस्"
 
 #. module: html_editor
 #. odoo-javascript
+#: code:addons/html_editor/static/src/main/font/font_plugin.js:0
+#: code:addons/html_editor/static/src/others/embedded_components/backend/syntax_highlighting/syntax_highlighting.xml:0
+msgid "Code"
+msgstr "कोड"
+
+#. module: html_editor
+#. odoo-javascript
 #: code:addons/html_editor/static/src/others/embedded_components/backend/syntax_highlighting/code_toolbar.xml:0
 msgid "Copy"
 msgstr "प्रतिलिपि गर्नुहोस्"
+
+#. module: html_editor
+#: model:ir.model.fields,field_description:html_editor.field_html_editor_converter_test_sub__create_uid
+msgid "Created by"
+msgstr "सिर्जना गर्ने"
+
+#. module: html_editor
+#: model:ir.model.fields,field_description:html_editor.field_html_editor_converter_test_sub__create_date
+msgid "Created on"
+msgstr "सिर्जना मिति"
+
+#. module: html_editor
+#. odoo-javascript
+#: code:addons/html_editor/static/src/main/font/color_picker_gradient_tab.xml:0
+#: code:addons/html_editor/static/src/main/link/link_popover.js:0
+msgid "Custom"
+msgstr "अनुकूल"
 
 #. module: html_editor
 #. odoo-javascript
@@ -83,6 +113,32 @@ msgid "Discard"
 msgstr "खारेज गर्नुहोस्"
 
 #. module: html_editor
+#: model:ir.model.fields,field_description:html_editor.field_html_editor_converter_test_sub__display_name
+#: model:ir.model.fields,field_description:html_editor.field_html_field_history_mixin__display_name
+#: model:ir.model.fields,field_description:html_editor.field_ir_attachment__display_name
+#: model:ir.model.fields,field_description:html_editor.field_ir_http__display_name
+#: model:ir.model.fields,field_description:html_editor.field_ir_qweb__display_name
+#: model:ir.model.fields,field_description:html_editor.field_ir_qweb_field__display_name
+#: model:ir.model.fields,field_description:html_editor.field_ir_qweb_field_contact__display_name
+#: model:ir.model.fields,field_description:html_editor.field_ir_qweb_field_date__display_name
+#: model:ir.model.fields,field_description:html_editor.field_ir_qweb_field_datetime__display_name
+#: model:ir.model.fields,field_description:html_editor.field_ir_qweb_field_duration__display_name
+#: model:ir.model.fields,field_description:html_editor.field_ir_qweb_field_float__display_name
+#: model:ir.model.fields,field_description:html_editor.field_ir_qweb_field_html__display_name
+#: model:ir.model.fields,field_description:html_editor.field_ir_qweb_field_image__display_name
+#: model:ir.model.fields,field_description:html_editor.field_ir_qweb_field_integer__display_name
+#: model:ir.model.fields,field_description:html_editor.field_ir_qweb_field_many2one__display_name
+#: model:ir.model.fields,field_description:html_editor.field_ir_qweb_field_monetary__display_name
+#: model:ir.model.fields,field_description:html_editor.field_ir_qweb_field_qweb__display_name
+#: model:ir.model.fields,field_description:html_editor.field_ir_qweb_field_relative__display_name
+#: model:ir.model.fields,field_description:html_editor.field_ir_qweb_field_selection__display_name
+#: model:ir.model.fields,field_description:html_editor.field_ir_qweb_field_text__display_name
+#: model:ir.model.fields,field_description:html_editor.field_ir_ui_view__display_name
+#: model:ir.model.fields,field_description:html_editor.field_ir_websocket__display_name
+msgid "Display Name"
+msgstr "प्रदर्शन नाम"
+
+#. module: html_editor
 #. odoo-javascript
 #: code:addons/html_editor/static/src/fields/x2many_field/x2many_image_field.xml:0
 #: code:addons/html_editor/static/src/main/link/link_popover.xml:0
@@ -91,9 +147,64 @@ msgstr "सम्पादन गर्नुहोस्"
 
 #. module: html_editor
 #. odoo-javascript
+#: code:addons/html_editor/static/src/main/font/font_plugin.js:0
+msgid "Format"
+msgstr "ढाँचा"
+
+#. module: html_editor
+#. odoo-javascript
 #: code:addons/html_editor/static/src/components/history_dialog/history_dialog.js:0
 msgid "History"
 msgstr "इतिहास"
+
+#. module: html_editor
+#: model:ir.model.fields,field_description:html_editor.field_html_editor_converter_test_sub__id
+#: model:ir.model.fields,field_description:html_editor.field_html_field_history_mixin__id
+#: model:ir.model.fields,field_description:html_editor.field_ir_attachment__id
+#: model:ir.model.fields,field_description:html_editor.field_ir_http__id
+#: model:ir.model.fields,field_description:html_editor.field_ir_qweb__id
+#: model:ir.model.fields,field_description:html_editor.field_ir_qweb_field__id
+#: model:ir.model.fields,field_description:html_editor.field_ir_qweb_field_contact__id
+#: model:ir.model.fields,field_description:html_editor.field_ir_qweb_field_date__id
+#: model:ir.model.fields,field_description:html_editor.field_ir_qweb_field_datetime__id
+#: model:ir.model.fields,field_description:html_editor.field_ir_qweb_field_duration__id
+#: model:ir.model.fields,field_description:html_editor.field_ir_qweb_field_float__id
+#: model:ir.model.fields,field_description:html_editor.field_ir_qweb_field_html__id
+#: model:ir.model.fields,field_description:html_editor.field_ir_qweb_field_image__id
+#: model:ir.model.fields,field_description:html_editor.field_ir_qweb_field_integer__id
+#: model:ir.model.fields,field_description:html_editor.field_ir_qweb_field_many2one__id
+#: model:ir.model.fields,field_description:html_editor.field_ir_qweb_field_monetary__id
+#: model:ir.model.fields,field_description:html_editor.field_ir_qweb_field_qweb__id
+#: model:ir.model.fields,field_description:html_editor.field_ir_qweb_field_relative__id
+#: model:ir.model.fields,field_description:html_editor.field_ir_qweb_field_selection__id
+#: model:ir.model.fields,field_description:html_editor.field_ir_qweb_field_text__id
+#: model:ir.model.fields,field_description:html_editor.field_ir_ui_view__id
+#: model:ir.model.fields,field_description:html_editor.field_ir_websocket__id
+msgid "ID"
+msgstr "आईडी"
+
+#. module: html_editor
+#. odoo-javascript
+#: code:addons/html_editor/static/src/main/link/link_popover.xml:0
+msgid "Label"
+msgstr "लेबल"
+
+#. module: html_editor
+#: model:ir.model.fields,field_description:html_editor.field_html_editor_converter_test_sub__write_uid
+msgid "Last Updated by"
+msgstr "अन्तिम अद्यावधिक गर्ने"
+
+#. module: html_editor
+#: model:ir.model.fields,field_description:html_editor.field_html_editor_converter_test_sub__write_date
+msgid "Last Updated on"
+msgstr "अन्तिम अद्यावधिक मिति"
+
+#. module: html_editor
+#. odoo-javascript
+#: code:addons/html_editor/static/src/main/link/link_plugin.js:0
+#: code:addons/html_editor/static/src/main/link/link_popover.js:0
+msgid "Link"
+msgstr "लिङ्क"
 
 #. module: html_editor
 #. odoo-javascript
@@ -108,6 +219,12 @@ msgstr "सूची"
 #: code:addons/html_editor/static/src/main/media/media_dialog/file_selector.xml:0
 msgid "Loading..."
 msgstr "लोड हुँदैछ..."
+
+#. module: html_editor
+#. odoo-javascript
+#: code:addons/html_editor/static/src/main/link/link_popover.js:0
+msgid "Medium"
+msgstr "माध्यम"
 
 #. module: html_editor
 #. odoo-javascript
@@ -147,8 +264,20 @@ msgstr "खोज्नुहोस्"
 #. module: html_editor
 #. odoo-javascript
 #: code:addons/html_editor/static/src/main/font/gradient_picker/gradient_picker.xml:0
+msgid "Size"
+msgstr "आकार"
+
+#. module: html_editor
+#. odoo-javascript
+#: code:addons/html_editor/static/src/main/font/gradient_picker/gradient_picker.xml:0
 msgid "Type"
 msgstr "प्रकार"
+
+#. module: html_editor
+#. odoo-javascript
+#: code:addons/html_editor/static/src/main/link/link_popover.xml:0
+msgid "URL"
+msgstr "यूआरएल"
 
 #. module: html_editor
 #. odoo-javascript

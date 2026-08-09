@@ -21,6 +21,36 @@ msgid "Archived"
 msgstr "संग्रहित"
 
 #. module: uom
+#: model:ir.model.fields,field_description:uom.field_uom_uom__create_uid
+msgid "Created by"
+msgstr "सिर्जना गर्ने"
+
+#. module: uom
+#: model:ir.model.fields,field_description:uom.field_uom_uom__create_date
+msgid "Created on"
+msgstr "सिर्जना मिति"
+
+#. module: uom
+#: model:ir.model.fields,field_description:uom.field_uom_uom__display_name
+msgid "Display Name"
+msgstr "प्रदर्शन नाम"
+
+#. module: uom
+#: model:ir.model.fields,field_description:uom.field_uom_uom__id
+msgid "ID"
+msgstr "आईडी"
+
+#. module: uom
+#: model:ir.model.fields,field_description:uom.field_uom_uom__write_uid
+msgid "Last Updated by"
+msgstr "अन्तिम अद्यावधिक गर्ने"
+
+#. module: uom
+#: model:ir.model.fields,field_description:uom.field_uom_uom__write_date
+msgid "Last Updated on"
+msgstr "अन्तिम अद्यावधिक मिति"
+
+#. module: uom
 #: model_terms:ir.ui.view,arch_db:uom.product_uom_form_view
 msgid "Quantity"
 msgstr "परिमाण"

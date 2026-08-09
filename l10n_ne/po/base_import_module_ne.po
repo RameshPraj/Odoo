@@ -28,6 +28,44 @@ msgid "Close"
 msgstr "बन्द गर्नुहोस्"
 
 #. module: base_import_module
+#: model:ir.model.fields,field_description:base_import_module.field_base_import_module__create_uid
+msgid "Created by"
+msgstr "सिर्जना गर्ने"
+
+#. module: base_import_module
+#: model:ir.model.fields,field_description:base_import_module.field_base_import_module__create_date
+msgid "Created on"
+msgstr "सिर्जना मिति"
+
+#. module: base_import_module
+#: model:ir.model.fields,field_description:base_import_module.field_base_import_module__display_name
+#: model:ir.model.fields,field_description:base_import_module.field_base_module_uninstall__display_name
+#: model:ir.model.fields,field_description:base_import_module.field_ir_http__display_name
+#: model:ir.model.fields,field_description:base_import_module.field_ir_module_module__display_name
+#: model:ir.model.fields,field_description:base_import_module.field_ir_ui_view__display_name
+msgid "Display Name"
+msgstr "प्रदर्शन नाम"
+
+#. module: base_import_module
+#: model:ir.model.fields,field_description:base_import_module.field_base_import_module__id
+#: model:ir.model.fields,field_description:base_import_module.field_base_module_uninstall__id
+#: model:ir.model.fields,field_description:base_import_module.field_ir_http__id
+#: model:ir.model.fields,field_description:base_import_module.field_ir_module_module__id
+#: model:ir.model.fields,field_description:base_import_module.field_ir_ui_view__id
+msgid "ID"
+msgstr "आईडी"
+
+#. module: base_import_module
+#: model:ir.model.fields,field_description:base_import_module.field_base_import_module__write_uid
+msgid "Last Updated by"
+msgstr "अन्तिम अद्यावधिक गर्ने"
+
+#. module: base_import_module
+#: model:ir.model.fields,field_description:base_import_module.field_base_import_module__write_date
+msgid "Last Updated on"
+msgstr "अन्तिम अद्यावधिक मिति"
+
+#. module: base_import_module
 #: model:ir.model.fields,field_description:base_import_module.field_base_import_module__state
 msgid "Status"
 msgstr "स्थिति"

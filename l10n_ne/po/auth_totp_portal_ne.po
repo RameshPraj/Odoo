@@ -11,6 +11,16 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: auth_totp_portal
+#: model:ir.model.fields,field_description:auth_totp_portal.field_res_users__display_name
+msgid "Display Name"
+msgstr "प्रदर्शन नाम"
+
+#. module: auth_totp_portal
+#: model:ir.model.fields,field_description:auth_totp_portal.field_res_users__id
+msgid "ID"
+msgstr "आईडी"
+
+#. module: auth_totp_portal
 #: model:ir.model,name:auth_totp_portal.model_res_users
 msgid "User"
 msgstr "प्रयोगकर्ता"

@@ -11,6 +11,51 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: web_tour
+#: model:ir.model.fields,field_description:web_tour.field_web_tour_tour__create_uid
+#: model:ir.model.fields,field_description:web_tour.field_web_tour_tour_step__create_uid
+msgid "Created by"
+msgstr "सिर्जना गर्ने"
+
+#. module: web_tour
+#: model:ir.model.fields,field_description:web_tour.field_web_tour_tour__create_date
+#: model:ir.model.fields,field_description:web_tour.field_web_tour_tour_step__create_date
+msgid "Created on"
+msgstr "सिर्जना मिति"
+
+#. module: web_tour
+#: model:ir.model.fields,field_description:web_tour.field_web_tour_tour__custom
+msgid "Custom"
+msgstr "अनुकूल"
+
+#. module: web_tour
+#: model:ir.model.fields,field_description:web_tour.field_ir_http__display_name
+#: model:ir.model.fields,field_description:web_tour.field_res_users__display_name
+#: model:ir.model.fields,field_description:web_tour.field_web_tour_tour__display_name
+#: model:ir.model.fields,field_description:web_tour.field_web_tour_tour_step__display_name
+msgid "Display Name"
+msgstr "प्रदर्शन नाम"
+
+#. module: web_tour
+#: model:ir.model.fields,field_description:web_tour.field_ir_http__id
+#: model:ir.model.fields,field_description:web_tour.field_res_users__id
+#: model:ir.model.fields,field_description:web_tour.field_web_tour_tour__id
+#: model:ir.model.fields,field_description:web_tour.field_web_tour_tour_step__id
+msgid "ID"
+msgstr "आईडी"
+
+#. module: web_tour
+#: model:ir.model.fields,field_description:web_tour.field_web_tour_tour__write_uid
+#: model:ir.model.fields,field_description:web_tour.field_web_tour_tour_step__write_uid
+msgid "Last Updated by"
+msgstr "अन्तिम अद्यावधिक गर्ने"
+
+#. module: web_tour
+#: model:ir.model.fields,field_description:web_tour.field_web_tour_tour__write_date
+#: model:ir.model.fields,field_description:web_tour.field_web_tour_tour_step__write_date
+msgid "Last Updated on"
+msgstr "अन्तिम अद्यावधिक मिति"
+
+#. module: web_tour
 #: model:ir.model.fields,field_description:web_tour.field_web_tour_tour__name
 msgid "Name"
 msgstr "नाम"
@@ -21,6 +66,11 @@ msgstr "नाम"
 #: code:addons/web_tour/static/src/views/tour_controller.xml:0
 msgid "Record"
 msgstr "रेकर्ड"
+
+#. module: web_tour
+#: model:ir.model.fields.selection,name:web_tour.selection__web_tour_tour_step__tooltip_position__right
+msgid "Right"
+msgstr "दायाँ"
 
 #. module: web_tour
 #. odoo-javascript

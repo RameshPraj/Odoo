@@ -17,9 +17,48 @@ msgid "Cancel"
 msgstr "रद्द गर्नुहोस्"
 
 #. module: auth_passkey
+#: model:ir.model.fields,field_description:auth_passkey.field_auth_passkey_key_create__create_uid
+msgid "Created by"
+msgstr "सिर्जना गर्ने"
+
+#. module: auth_passkey
+#: model:ir.model.fields,field_description:auth_passkey.field_auth_passkey_key__create_date
+#: model:ir.model.fields,field_description:auth_passkey.field_auth_passkey_key_create__create_date
+msgid "Created on"
+msgstr "सिर्जना मिति"
+
+#. module: auth_passkey
 #: model_terms:ir.ui.view,arch_db:auth_passkey.auth_passkey_key_view_kanban
 msgid "Delete"
 msgstr "मेटाउनुहोस्"
+
+#. module: auth_passkey
+#: model:ir.model.fields,field_description:auth_passkey.field_auth_passkey_key__display_name
+#: model:ir.model.fields,field_description:auth_passkey.field_auth_passkey_key_create__display_name
+#: model:ir.model.fields,field_description:auth_passkey.field_res_users__display_name
+#: model:ir.model.fields,field_description:auth_passkey.field_res_users_identitycheck__display_name
+msgid "Display Name"
+msgstr "प्रदर्शन नाम"
+
+#. module: auth_passkey
+#: model:ir.model.fields,field_description:auth_passkey.field_auth_passkey_key__id
+#: model:ir.model.fields,field_description:auth_passkey.field_auth_passkey_key_create__id
+#: model:ir.model.fields,field_description:auth_passkey.field_res_users__id
+#: model:ir.model.fields,field_description:auth_passkey.field_res_users_identitycheck__id
+msgid "ID"
+msgstr "आईडी"
+
+#. module: auth_passkey
+#: model:ir.model.fields,field_description:auth_passkey.field_auth_passkey_key__write_uid
+#: model:ir.model.fields,field_description:auth_passkey.field_auth_passkey_key_create__write_uid
+msgid "Last Updated by"
+msgstr "अन्तिम अद्यावधिक गर्ने"
+
+#. module: auth_passkey
+#: model:ir.model.fields,field_description:auth_passkey.field_auth_passkey_key__write_date
+#: model:ir.model.fields,field_description:auth_passkey.field_auth_passkey_key_create__write_date
+msgid "Last Updated on"
+msgstr "अन्तिम अद्यावधिक मिति"
 
 #. module: auth_passkey
 #: model:ir.model.fields,field_description:auth_passkey.field_auth_passkey_key__name

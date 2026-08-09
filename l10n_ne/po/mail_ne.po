@@ -24,6 +24,21 @@ msgid "Action"
 msgstr "कार्य"
 
 #. module: mail
+#: model:ir.model.fields,field_description:mail.field_discuss_channel__message_needaction
+#: model:ir.model.fields,field_description:mail.field_ir_actions_server__message_needaction
+#: model:ir.model.fields,field_description:mail.field_ir_cron__message_needaction
+#: model:ir.model.fields,field_description:mail.field_mail_blacklist__message_needaction
+#: model:ir.model.fields,field_description:mail.field_mail_thread__message_needaction
+#: model:ir.model.fields,field_description:mail.field_mail_thread_blacklist__message_needaction
+#: model:ir.model.fields,field_description:mail.field_mail_thread_cc__message_needaction
+#: model:ir.model.fields,field_description:mail.field_mail_thread_main_attachment__message_needaction
+#: model:ir.model.fields,field_description:mail.field_mail_tracking_duration_mixin__message_needaction
+#: model:ir.model.fields,field_description:mail.field_res_partner__message_needaction
+#: model:ir.model.fields,field_description:mail.field_res_users__message_needaction
+msgid "Action Needed"
+msgstr "कार्य आवश्यक"
+
+#. module: mail
 #. odoo-javascript
 #: code:addons/mail/static/src/core/common/attachment_list.xml:0
 msgid "Actions"
@@ -78,6 +93,44 @@ msgid "Activity"
 msgstr "गतिविधि"
 
 #. module: mail
+#: model:ir.model.fields,field_description:mail.field_ir_actions_server__activity_exception_decoration
+#: model:ir.model.fields,field_description:mail.field_ir_cron__activity_exception_decoration
+#: model:ir.model.fields,field_description:mail.field_mail_activity_mixin__activity_exception_decoration
+#: model:ir.model.fields,field_description:mail.field_res_partner__activity_exception_decoration
+#: model:ir.model.fields,field_description:mail.field_res_users__activity_exception_decoration
+msgid "Activity Exception Decoration"
+msgstr "गतिविधि अपवाद सजावट"
+
+#. module: mail
+#: model:ir.model.fields,field_description:mail.field_ir_actions_server__activity_state
+#: model:ir.model.fields,field_description:mail.field_ir_cron__activity_state
+#: model:ir.model.fields,field_description:mail.field_mail_activity_mixin__activity_state
+#: model:ir.model.fields,field_description:mail.field_res_partner__activity_state
+#: model:ir.model.fields,field_description:mail.field_res_users__activity_state
+msgid "Activity State"
+msgstr "गतिविधि अवस्था"
+
+#. module: mail
+#: model:ir.model,name:mail.model_mail_activity_type
+#: model:ir.model.fields,field_description:mail.field_ir_actions_server__activity_type_id
+#: model:ir.model.fields,field_description:mail.field_mail_activity__activity_type_id
+#: model:ir.model.fields,field_description:mail.field_mail_activity_plan_template__activity_type_id
+#: model:ir.model.fields,field_description:mail.field_mail_activity_schedule__activity_type_id
+#: model_terms:ir.ui.view,arch_db:mail.mail_activity_plan_view_form
+#: model_terms:ir.ui.view,arch_db:mail.mail_activity_view_search
+msgid "Activity Type"
+msgstr "गतिविधि प्रकार"
+
+#. module: mail
+#: model:ir.model.fields,field_description:mail.field_ir_actions_server__activity_type_icon
+#: model:ir.model.fields,field_description:mail.field_ir_cron__activity_type_icon
+#: model:ir.model.fields,field_description:mail.field_mail_activity_mixin__activity_type_icon
+#: model:ir.model.fields,field_description:mail.field_res_partner__activity_type_icon
+#: model:ir.model.fields,field_description:mail.field_res_users__activity_type_icon
+msgid "Activity Type Icon"
+msgstr "गतिविधि प्रकार आइकन"
+
+#. module: mail
 #: model:ir.model.fields.selection,name:mail.selection__mail_followers_edit__operation__add
 msgid "Add"
 msgstr "थप्नुहोस्"
@@ -89,6 +142,65 @@ msgstr "थप्नुहोस्"
 #: model_terms:ir.ui.view,arch_db:mail.mail_followers_list_edit_form
 msgid "Add Followers"
 msgstr "अनुयायीहरू थप्नुहोस्"
+
+#. module: mail
+#: model:ir.model.fields.selection,name:mail.selection__account_account__activity_exception_decoration__warning
+#: model:ir.model.fields.selection,name:mail.selection__account_journal__activity_exception_decoration__warning
+#: model:ir.model.fields.selection,name:mail.selection__account_move__activity_exception_decoration__warning
+#: model:ir.model.fields.selection,name:mail.selection__account_payment__activity_exception_decoration__warning
+#: model:ir.model.fields.selection,name:mail.selection__base_automation__activity_exception_decoration__warning
+#: model:ir.model.fields.selection,name:mail.selection__card_campaign__activity_exception_decoration__warning
+#: model:ir.model.fields.selection,name:mail.selection__crm_lead__activity_exception_decoration__warning
+#: model:ir.model.fields.selection,name:mail.selection__event_booth__activity_exception_decoration__warning
+#: model:ir.model.fields.selection,name:mail.selection__event_event__activity_exception_decoration__warning
+#: model:ir.model.fields.selection,name:mail.selection__event_registration__activity_exception_decoration__warning
+#: model:ir.model.fields.selection,name:mail.selection__event_sponsor__activity_exception_decoration__warning
+#: model:ir.model.fields.selection,name:mail.selection__event_track__activity_exception_decoration__warning
+#: model:ir.model.fields.selection,name:mail.selection__fleet_vehicle__activity_exception_decoration__warning
+#: model:ir.model.fields.selection,name:mail.selection__fleet_vehicle_log_contract__activity_exception_decoration__warning
+#: model:ir.model.fields.selection,name:mail.selection__fleet_vehicle_log_services__activity_exception_decoration__warning
+#: model:ir.model.fields.selection,name:mail.selection__fleet_vehicle_model__activity_exception_decoration__warning
+#: model:ir.model.fields.selection,name:mail.selection__hr_applicant__activity_exception_decoration__warning
+#: model:ir.model.fields.selection,name:mail.selection__hr_department__activity_exception_decoration__warning
+#: model:ir.model.fields.selection,name:mail.selection__hr_employee__activity_exception_decoration__warning
+#: model:ir.model.fields.selection,name:mail.selection__hr_expense__activity_exception_decoration__warning
+#: model:ir.model.fields.selection,name:mail.selection__hr_job__activity_exception_decoration__warning
+#: model:ir.model.fields.selection,name:mail.selection__hr_leave__activity_exception_decoration__warning
+#: model:ir.model.fields.selection,name:mail.selection__hr_leave_allocation__activity_exception_decoration__warning
+#: model:ir.model.fields.selection,name:mail.selection__hr_version__activity_exception_decoration__warning
+#: model:ir.model.fields.selection,name:mail.selection__ir_actions_server__activity_exception_decoration__warning
+#: model:ir.model.fields.selection,name:mail.selection__ir_cron__activity_exception_decoration__warning
+#: model:ir.model.fields.selection,name:mail.selection__lunch_supplier__activity_exception_decoration__warning
+#: model:ir.model.fields.selection,name:mail.selection__mail_activity_mixin__activity_exception_decoration__warning
+#: model:ir.model.fields.selection,name:mail.selection__mail_activity_type__decoration_type__warning
+#: model:ir.model.fields.selection,name:mail.selection__mailing_mailing__activity_exception_decoration__warning
+#: model:ir.model.fields.selection,name:mail.selection__maintenance_equipment__activity_exception_decoration__warning
+#: model:ir.model.fields.selection,name:mail.selection__maintenance_request__activity_exception_decoration__warning
+#: model:ir.model.fields.selection,name:mail.selection__mrp_production__activity_exception_decoration__warning
+#: model:ir.model.fields.selection,name:mail.selection__mrp_routing_workcenter__activity_exception_decoration__warning
+#: model:ir.model.fields.selection,name:mail.selection__mrp_unbuild__activity_exception_decoration__warning
+#: model:ir.model.fields.selection,name:mail.selection__pos_session__activity_exception_decoration__warning
+#: model:ir.model.fields.selection,name:mail.selection__product_pricelist__activity_exception_decoration__warning
+#: model:ir.model.fields.selection,name:mail.selection__product_product__activity_exception_decoration__warning
+#: model:ir.model.fields.selection,name:mail.selection__product_template__activity_exception_decoration__warning
+#: model:ir.model.fields.selection,name:mail.selection__project_project__activity_exception_decoration__warning
+#: model:ir.model.fields.selection,name:mail.selection__project_task__activity_exception_decoration__warning
+#: model:ir.model.fields.selection,name:mail.selection__project_update__activity_exception_decoration__warning
+#: model:ir.model.fields.selection,name:mail.selection__purchase_order__activity_exception_decoration__warning
+#: model:ir.model.fields.selection,name:mail.selection__purchase_requisition__activity_exception_decoration__warning
+#: model:ir.model.fields.selection,name:mail.selection__repair_order__activity_exception_decoration__warning
+#: model:ir.model.fields.selection,name:mail.selection__res_partner__activity_exception_decoration__warning
+#: model:ir.model.fields.selection,name:mail.selection__res_partner_bank__activity_exception_decoration__warning
+#: model:ir.model.fields.selection,name:mail.selection__sale_order__activity_exception_decoration__warning
+#: model:ir.model.fields.selection,name:mail.selection__slide_channel__activity_exception_decoration__warning
+#: model:ir.model.fields.selection,name:mail.selection__stock_landed_cost__activity_exception_decoration__warning
+#: model:ir.model.fields.selection,name:mail.selection__stock_lot__activity_exception_decoration__warning
+#: model:ir.model.fields.selection,name:mail.selection__stock_picking__activity_exception_decoration__warning
+#: model:ir.model.fields.selection,name:mail.selection__stock_picking_batch__activity_exception_decoration__warning
+#: model:ir.model.fields.selection,name:mail.selection__survey_survey__activity_exception_decoration__warning
+#: model:ir.model.fields.selection,name:mail.selection__survey_user_input__activity_exception_decoration__warning
+msgid "Alert"
+msgstr "सचेतना"
 
 #. module: mail
 #. odoo-javascript
@@ -129,6 +241,21 @@ msgstr "फाइलहरू संलग्न गर्नुहोस्"
 #: model:ir.model.fields,field_description:mail.field_discuss_voice_metadata__attachment_id
 msgid "Attachment"
 msgstr "संलग्न"
+
+#. module: mail
+#: model:ir.model.fields,field_description:mail.field_discuss_channel__message_attachment_count
+#: model:ir.model.fields,field_description:mail.field_ir_actions_server__message_attachment_count
+#: model:ir.model.fields,field_description:mail.field_ir_cron__message_attachment_count
+#: model:ir.model.fields,field_description:mail.field_mail_blacklist__message_attachment_count
+#: model:ir.model.fields,field_description:mail.field_mail_thread__message_attachment_count
+#: model:ir.model.fields,field_description:mail.field_mail_thread_blacklist__message_attachment_count
+#: model:ir.model.fields,field_description:mail.field_mail_thread_cc__message_attachment_count
+#: model:ir.model.fields,field_description:mail.field_mail_thread_main_attachment__message_attachment_count
+#: model:ir.model.fields,field_description:mail.field_mail_tracking_duration_mixin__message_attachment_count
+#: model:ir.model.fields,field_description:mail.field_res_partner__message_attachment_count
+#: model:ir.model.fields,field_description:mail.field_res_users__message_attachment_count
+msgid "Attachment Count"
+msgstr "संलग्न संख्या"
 
 #. module: mail
 #. odoo-javascript
@@ -202,6 +329,11 @@ msgid "Company"
 msgstr "कम्पनी"
 
 #. module: mail
+#: model:ir.model,name:mail.model_res_config_settings
+msgid "Config Settings"
+msgstr "कन्फिग सेटिङहरू"
+
+#. module: mail
 #: model:ir.model.fields,field_description:mail.field_fetchmail_server__configuration
 #: model:ir.ui.menu,name:mail.menu_configuration
 #: model_terms:ir.ui.view,arch_db:mail.view_email_server_form
@@ -229,6 +361,94 @@ msgid "Country"
 msgstr "देश"
 
 #. module: mail
+#: model:ir.model,website_form_label:mail.model_res_partner
+msgid "Create a Customer"
+msgstr "ग्राहक सिर्जना गर्नुहोस्"
+
+#. module: mail
+#: model:ir.model.fields,field_description:mail.field_discuss_call_history__create_uid
+#: model:ir.model.fields,field_description:mail.field_discuss_channel__create_uid
+#: model:ir.model.fields,field_description:mail.field_discuss_channel_member__create_uid
+#: model:ir.model.fields,field_description:mail.field_discuss_channel_rtc_session__create_uid
+#: model:ir.model.fields,field_description:mail.field_discuss_gif_favorite__create_uid
+#: model:ir.model.fields,field_description:mail.field_discuss_voice_metadata__create_uid
+#: model:ir.model.fields,field_description:mail.field_fetchmail_server__create_uid
+#: model:ir.model.fields,field_description:mail.field_mail_activity__create_uid
+#: model:ir.model.fields,field_description:mail.field_mail_activity_plan__create_uid
+#: model:ir.model.fields,field_description:mail.field_mail_activity_plan_template__create_uid
+#: model:ir.model.fields,field_description:mail.field_mail_activity_schedule__create_uid
+#: model:ir.model.fields,field_description:mail.field_mail_activity_schedule_line__create_uid
+#: model:ir.model.fields,field_description:mail.field_mail_alias__create_uid
+#: model:ir.model.fields,field_description:mail.field_mail_alias_domain__create_uid
+#: model:ir.model.fields,field_description:mail.field_mail_blacklist__create_uid
+#: model:ir.model.fields,field_description:mail.field_mail_blacklist_remove__create_uid
+#: model:ir.model.fields,field_description:mail.field_mail_canned_response__create_uid
+#: model:ir.model.fields,field_description:mail.field_mail_compose_message__create_uid
+#: model:ir.model.fields,field_description:mail.field_mail_followers_edit__create_uid
+#: model:ir.model.fields,field_description:mail.field_mail_gateway_allowed__create_uid
+#: model:ir.model.fields,field_description:mail.field_mail_guest__create_uid
+#: model:ir.model.fields,field_description:mail.field_mail_ice_server__create_uid
+#: model:ir.model.fields,field_description:mail.field_mail_link_preview__create_uid
+#: model:ir.model.fields,field_description:mail.field_mail_mail__create_uid
+#: model:ir.model.fields,field_description:mail.field_mail_message__create_uid
+#: model:ir.model.fields,field_description:mail.field_mail_message_link_preview__create_uid
+#: model:ir.model.fields,field_description:mail.field_mail_message_schedule__create_uid
+#: model:ir.model.fields,field_description:mail.field_mail_message_subtype__create_uid
+#: model:ir.model.fields,field_description:mail.field_mail_message_translation__create_uid
+#: model:ir.model.fields,field_description:mail.field_mail_push__create_uid
+#: model:ir.model.fields,field_description:mail.field_mail_push_device__create_uid
+#: model:ir.model.fields,field_description:mail.field_mail_scheduled_message__create_uid
+#: model:ir.model.fields,field_description:mail.field_mail_template__create_uid
+#: model:ir.model.fields,field_description:mail.field_mail_template_preview__create_uid
+#: model:ir.model.fields,field_description:mail.field_mail_template_reset__create_uid
+#: model:ir.model.fields,field_description:mail.field_mail_tracking_value__create_uid
+#: model:ir.model.fields,field_description:mail.field_res_role__create_uid
+#: model:ir.model.fields,field_description:mail.field_res_users_settings_volumes__create_uid
+msgid "Created by"
+msgstr "सिर्जना गर्ने"
+
+#. module: mail
+#: model:ir.model.fields,field_description:mail.field_discuss_call_history__create_date
+#: model:ir.model.fields,field_description:mail.field_discuss_channel__create_date
+#: model:ir.model.fields,field_description:mail.field_discuss_channel_member__create_date
+#: model:ir.model.fields,field_description:mail.field_discuss_channel_rtc_session__create_date
+#: model:ir.model.fields,field_description:mail.field_discuss_gif_favorite__create_date
+#: model:ir.model.fields,field_description:mail.field_discuss_voice_metadata__create_date
+#: model:ir.model.fields,field_description:mail.field_fetchmail_server__create_date
+#: model:ir.model.fields,field_description:mail.field_mail_activity__create_date
+#: model:ir.model.fields,field_description:mail.field_mail_activity_plan__create_date
+#: model:ir.model.fields,field_description:mail.field_mail_activity_plan_template__create_date
+#: model:ir.model.fields,field_description:mail.field_mail_activity_schedule__create_date
+#: model:ir.model.fields,field_description:mail.field_mail_activity_schedule_line__create_date
+#: model:ir.model.fields,field_description:mail.field_mail_activity_type__create_date
+#: model:ir.model.fields,field_description:mail.field_mail_alias__create_date
+#: model:ir.model.fields,field_description:mail.field_mail_alias_domain__create_date
+#: model:ir.model.fields,field_description:mail.field_mail_blacklist__create_date
+#: model:ir.model.fields,field_description:mail.field_mail_blacklist_remove__create_date
+#: model:ir.model.fields,field_description:mail.field_mail_canned_response__create_date
+#: model:ir.model.fields,field_description:mail.field_mail_compose_message__create_date
+#: model:ir.model.fields,field_description:mail.field_mail_followers_edit__create_date
+#: model:ir.model.fields,field_description:mail.field_mail_gateway_allowed__create_date
+#: model:ir.model.fields,field_description:mail.field_mail_guest__create_date
+#: model:ir.model.fields,field_description:mail.field_mail_ice_server__create_date
+#: model:ir.model.fields,field_description:mail.field_mail_mail__create_date
+#: model:ir.model.fields,field_description:mail.field_mail_message__create_date
+#: model:ir.model.fields,field_description:mail.field_mail_message_link_preview__create_date
+#: model:ir.model.fields,field_description:mail.field_mail_message_schedule__create_date
+#: model:ir.model.fields,field_description:mail.field_mail_message_subtype__create_date
+#: model:ir.model.fields,field_description:mail.field_mail_push__create_date
+#: model:ir.model.fields,field_description:mail.field_mail_push_device__create_date
+#: model:ir.model.fields,field_description:mail.field_mail_scheduled_message__create_date
+#: model:ir.model.fields,field_description:mail.field_mail_template__create_date
+#: model:ir.model.fields,field_description:mail.field_mail_template_preview__create_date
+#: model:ir.model.fields,field_description:mail.field_mail_template_reset__create_date
+#: model:ir.model.fields,field_description:mail.field_mail_tracking_value__create_date
+#: model:ir.model.fields,field_description:mail.field_res_role__create_date
+#: model:ir.model.fields,field_description:mail.field_res_users_settings_volumes__create_date
+msgid "Created on"
+msgstr "सिर्जना मिति"
+
+#. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_tracking_value__currency_id
 msgid "Currency"
 msgstr "मुद्रा"
@@ -244,6 +464,13 @@ msgstr "मिति"
 #: model_terms:ir.ui.view,arch_db:mail.mail_activity_view_search
 msgid "Deadline"
 msgstr "अन्तिम म्याद"
+
+#. module: mail
+#: model:ir.model.fields,field_description:mail.field_mail_message_subtype__default
+#: model:ir.model.fields.selection,name:mail.selection__res_users__outgoing_mail_server_type__default
+#: model_terms:ir.ui.view,arch_db:mail.mail_message_subtype_view_search
+msgid "Default"
+msgstr "पूर्वनिर्धारित"
 
 #. module: mail
 #. odoo-javascript
@@ -277,6 +504,87 @@ msgstr "विवरण"
 #: model_terms:ir.ui.view,arch_db:mail.mail_template_reset_view_form
 msgid "Discard"
 msgstr "खारेज गर्नुहोस्"
+
+#. module: mail
+#: model:ir.model.fields,field_description:mail.field_base_module_uninstall__display_name
+#: model:ir.model.fields,field_description:mail.field_base_partner_merge_automatic_wizard__display_name
+#: model:ir.model.fields,field_description:mail.field_bus_listener_mixin__display_name
+#: model:ir.model.fields,field_description:mail.field_discuss_call_history__display_name
+#: model:ir.model.fields,field_description:mail.field_discuss_channel__display_name
+#: model:ir.model.fields,field_description:mail.field_discuss_channel_member__display_name
+#: model:ir.model.fields,field_description:mail.field_discuss_channel_rtc_session__display_name
+#: model:ir.model.fields,field_description:mail.field_discuss_gif_favorite__display_name
+#: model:ir.model.fields,field_description:mail.field_discuss_voice_metadata__display_name
+#: model:ir.model.fields,field_description:mail.field_fetchmail_server__display_name
+#: model:ir.model.fields,field_description:mail.field_ir_actions_act_window_view__display_name
+#: model:ir.model.fields,field_description:mail.field_ir_actions_server__display_name
+#: model:ir.model.fields,field_description:mail.field_ir_attachment__display_name
+#: model:ir.model.fields,field_description:mail.field_ir_config_parameter__display_name
+#: model:ir.model.fields,field_description:mail.field_ir_cron__display_name
+#: model:ir.model.fields,field_description:mail.field_ir_http__display_name
+#: model:ir.model.fields,field_description:mail.field_ir_mail_server__display_name
+#: model:ir.model.fields,field_description:mail.field_ir_model__display_name
+#: model:ir.model.fields,field_description:mail.field_ir_model_fields__display_name
+#: model:ir.model.fields,field_description:mail.field_ir_qweb__display_name
+#: model:ir.model.fields,field_description:mail.field_ir_ui_menu__display_name
+#: model:ir.model.fields,field_description:mail.field_ir_ui_view__display_name
+#: model:ir.model.fields,field_description:mail.field_ir_websocket__display_name
+#: model:ir.model.fields,field_description:mail.field_mail_activity__display_name
+#: model:ir.model.fields,field_description:mail.field_mail_activity_mixin__display_name
+#: model:ir.model.fields,field_description:mail.field_mail_activity_plan__display_name
+#: model:ir.model.fields,field_description:mail.field_mail_activity_plan_template__display_name
+#: model:ir.model.fields,field_description:mail.field_mail_activity_schedule__display_name
+#: model:ir.model.fields,field_description:mail.field_mail_activity_schedule_line__display_name
+#: model:ir.model.fields,field_description:mail.field_mail_activity_type__display_name
+#: model:ir.model.fields,field_description:mail.field_mail_alias__display_name
+#: model:ir.model.fields,field_description:mail.field_mail_alias_domain__display_name
+#: model:ir.model.fields,field_description:mail.field_mail_alias_mixin__display_name
+#: model:ir.model.fields,field_description:mail.field_mail_alias_mixin_optional__display_name
+#: model:ir.model.fields,field_description:mail.field_mail_blacklist__display_name
+#: model:ir.model.fields,field_description:mail.field_mail_blacklist_remove__display_name
+#: model:ir.model.fields,field_description:mail.field_mail_canned_response__display_name
+#: model:ir.model.fields,field_description:mail.field_mail_compose_message__display_name
+#: model:ir.model.fields,field_description:mail.field_mail_composer_mixin__display_name
+#: model:ir.model.fields,field_description:mail.field_mail_followers__display_name
+#: model:ir.model.fields,field_description:mail.field_mail_followers_edit__display_name
+#: model:ir.model.fields,field_description:mail.field_mail_gateway_allowed__display_name
+#: model:ir.model.fields,field_description:mail.field_mail_guest__display_name
+#: model:ir.model.fields,field_description:mail.field_mail_ice_server__display_name
+#: model:ir.model.fields,field_description:mail.field_mail_link_preview__display_name
+#: model:ir.model.fields,field_description:mail.field_mail_mail__display_name
+#: model:ir.model.fields,field_description:mail.field_mail_message__display_name
+#: model:ir.model.fields,field_description:mail.field_mail_message_link_preview__display_name
+#: model:ir.model.fields,field_description:mail.field_mail_message_reaction__display_name
+#: model:ir.model.fields,field_description:mail.field_mail_message_schedule__display_name
+#: model:ir.model.fields,field_description:mail.field_mail_message_subtype__display_name
+#: model:ir.model.fields,field_description:mail.field_mail_message_translation__display_name
+#: model:ir.model.fields,field_description:mail.field_mail_notification__display_name
+#: model:ir.model.fields,field_description:mail.field_mail_presence__display_name
+#: model:ir.model.fields,field_description:mail.field_mail_push__display_name
+#: model:ir.model.fields,field_description:mail.field_mail_push_device__display_name
+#: model:ir.model.fields,field_description:mail.field_mail_render_mixin__display_name
+#: model:ir.model.fields,field_description:mail.field_mail_scheduled_message__display_name
+#: model:ir.model.fields,field_description:mail.field_mail_template__display_name
+#: model:ir.model.fields,field_description:mail.field_mail_template_preview__display_name
+#: model:ir.model.fields,field_description:mail.field_mail_template_reset__display_name
+#: model:ir.model.fields,field_description:mail.field_mail_thread__display_name
+#: model:ir.model.fields,field_description:mail.field_mail_thread_blacklist__display_name
+#: model:ir.model.fields,field_description:mail.field_mail_thread_cc__display_name
+#: model:ir.model.fields,field_description:mail.field_mail_thread_main_attachment__display_name
+#: model:ir.model.fields,field_description:mail.field_mail_tracking_duration_mixin__display_name
+#: model:ir.model.fields,field_description:mail.field_mail_tracking_value__display_name
+#: model:ir.model.fields,field_description:mail.field_publisher_warranty_contract__display_name
+#: model:ir.model.fields,field_description:mail.field_res_company__display_name
+#: model:ir.model.fields,field_description:mail.field_res_config_settings__display_name
+#: model:ir.model.fields,field_description:mail.field_res_groups__display_name
+#: model:ir.model.fields,field_description:mail.field_res_partner__display_name
+#: model:ir.model.fields,field_description:mail.field_res_role__display_name
+#: model:ir.model.fields,field_description:mail.field_res_users__display_name
+#: model:ir.model.fields,field_description:mail.field_res_users_settings__display_name
+#: model:ir.model.fields,field_description:mail.field_res_users_settings_volumes__display_name
+#: model:ir.model.fields,field_description:mail.field_template_reset_mixin__display_name
+msgid "Display Name"
+msgstr "प्रदर्शन नाम"
 
 #. module: mail
 #. odoo-javascript
@@ -401,6 +709,22 @@ msgid "Favorites"
 msgstr "मनपर्ने"
 
 #. module: mail
+#: model:ir.model.fields,field_description:mail.field_mail_tracking_value__field_id
+msgid "Field"
+msgstr "फिल्ड"
+
+#. module: mail
+#: model:ir.model,name:mail.model_ir_model_fields
+msgid "Fields"
+msgstr "फिल्डहरू"
+
+#. module: mail
+#. odoo-javascript
+#: code:addons/mail/static/src/chatter/web/chatter.xml:0
+msgid "Files"
+msgstr "फाइलहरू"
+
+#. module: mail
 #. odoo-javascript
 #: code:addons/mail/static/src/core/web/follower_list.xml:0
 msgid "Follow"
@@ -426,6 +750,21 @@ msgid "Followers"
 msgstr "अनुयायीहरू"
 
 #. module: mail
+#: model:ir.model.fields,field_description:mail.field_discuss_channel__message_partner_ids
+#: model:ir.model.fields,field_description:mail.field_ir_actions_server__message_partner_ids
+#: model:ir.model.fields,field_description:mail.field_ir_cron__message_partner_ids
+#: model:ir.model.fields,field_description:mail.field_mail_blacklist__message_partner_ids
+#: model:ir.model.fields,field_description:mail.field_mail_thread__message_partner_ids
+#: model:ir.model.fields,field_description:mail.field_mail_thread_blacklist__message_partner_ids
+#: model:ir.model.fields,field_description:mail.field_mail_thread_cc__message_partner_ids
+#: model:ir.model.fields,field_description:mail.field_mail_thread_main_attachment__message_partner_ids
+#: model:ir.model.fields,field_description:mail.field_mail_tracking_duration_mixin__message_partner_ids
+#: model:ir.model.fields,field_description:mail.field_res_partner__message_partner_ids
+#: model:ir.model.fields,field_description:mail.field_res_users__message_partner_ids
+msgid "Followers (Partners)"
+msgstr "अनुयायीहरू (साझेदारहरू)"
+
+#. module: mail
 #: model:ir.model.fields.selection,name:mail.selection__discuss_channel__channel_type__group
 msgid "Group"
 msgstr "समूह"
@@ -436,11 +775,119 @@ msgid "Groups"
 msgstr "समूहहरू"
 
 #. module: mail
+#: model:ir.model.fields,field_description:mail.field_discuss_channel__has_message
+#: model:ir.model.fields,field_description:mail.field_ir_actions_server__has_message
+#: model:ir.model.fields,field_description:mail.field_ir_cron__has_message
+#: model:ir.model.fields,field_description:mail.field_mail_blacklist__has_message
+#: model:ir.model.fields,field_description:mail.field_mail_thread__has_message
+#: model:ir.model.fields,field_description:mail.field_mail_thread_blacklist__has_message
+#: model:ir.model.fields,field_description:mail.field_mail_thread_cc__has_message
+#: model:ir.model.fields,field_description:mail.field_mail_thread_main_attachment__has_message
+#: model:ir.model.fields,field_description:mail.field_mail_tracking_duration_mixin__has_message
+#: model:ir.model.fields,field_description:mail.field_res_partner__has_message
+#: model:ir.model.fields,field_description:mail.field_res_users__has_message
+msgid "Has Message"
+msgstr "सन्देश छ"
+
+#. module: mail
 #. odoo-javascript
 #: code:addons/mail/static/src/core/web/store_service_patch.js:0
 #: code:addons/mail/static/src/core/web/thread_patch.xml:0
 msgid "History"
 msgstr "इतिहास"
+
+#. module: mail
+#: model:ir.model.fields,field_description:mail.field_base_module_uninstall__id
+#: model:ir.model.fields,field_description:mail.field_base_partner_merge_automatic_wizard__id
+#: model:ir.model.fields,field_description:mail.field_bus_listener_mixin__id
+#: model:ir.model.fields,field_description:mail.field_discuss_call_history__id
+#: model:ir.model.fields,field_description:mail.field_discuss_channel__id
+#: model:ir.model.fields,field_description:mail.field_discuss_channel_member__id
+#: model:ir.model.fields,field_description:mail.field_discuss_channel_rtc_session__id
+#: model:ir.model.fields,field_description:mail.field_discuss_gif_favorite__id
+#: model:ir.model.fields,field_description:mail.field_discuss_voice_metadata__id
+#: model:ir.model.fields,field_description:mail.field_fetchmail_server__id
+#: model:ir.model.fields,field_description:mail.field_ir_actions_act_window_view__id
+#: model:ir.model.fields,field_description:mail.field_ir_actions_server__id
+#: model:ir.model.fields,field_description:mail.field_ir_attachment__id
+#: model:ir.model.fields,field_description:mail.field_ir_config_parameter__id
+#: model:ir.model.fields,field_description:mail.field_ir_cron__id
+#: model:ir.model.fields,field_description:mail.field_ir_http__id
+#: model:ir.model.fields,field_description:mail.field_ir_mail_server__id
+#: model:ir.model.fields,field_description:mail.field_ir_model__id
+#: model:ir.model.fields,field_description:mail.field_ir_model_fields__id
+#: model:ir.model.fields,field_description:mail.field_ir_qweb__id
+#: model:ir.model.fields,field_description:mail.field_ir_ui_menu__id
+#: model:ir.model.fields,field_description:mail.field_ir_ui_view__id
+#: model:ir.model.fields,field_description:mail.field_ir_websocket__id
+#: model:ir.model.fields,field_description:mail.field_mail_activity__id
+#: model:ir.model.fields,field_description:mail.field_mail_activity_mixin__id
+#: model:ir.model.fields,field_description:mail.field_mail_activity_plan__id
+#: model:ir.model.fields,field_description:mail.field_mail_activity_plan_template__id
+#: model:ir.model.fields,field_description:mail.field_mail_activity_schedule__id
+#: model:ir.model.fields,field_description:mail.field_mail_activity_schedule_line__id
+#: model:ir.model.fields,field_description:mail.field_mail_activity_type__id
+#: model:ir.model.fields,field_description:mail.field_mail_alias__id
+#: model:ir.model.fields,field_description:mail.field_mail_alias_domain__id
+#: model:ir.model.fields,field_description:mail.field_mail_alias_mixin__id
+#: model:ir.model.fields,field_description:mail.field_mail_alias_mixin_optional__id
+#: model:ir.model.fields,field_description:mail.field_mail_blacklist__id
+#: model:ir.model.fields,field_description:mail.field_mail_blacklist_remove__id
+#: model:ir.model.fields,field_description:mail.field_mail_canned_response__id
+#: model:ir.model.fields,field_description:mail.field_mail_compose_message__id
+#: model:ir.model.fields,field_description:mail.field_mail_composer_mixin__id
+#: model:ir.model.fields,field_description:mail.field_mail_followers__id
+#: model:ir.model.fields,field_description:mail.field_mail_followers_edit__id
+#: model:ir.model.fields,field_description:mail.field_mail_gateway_allowed__id
+#: model:ir.model.fields,field_description:mail.field_mail_guest__id
+#: model:ir.model.fields,field_description:mail.field_mail_ice_server__id
+#: model:ir.model.fields,field_description:mail.field_mail_link_preview__id
+#: model:ir.model.fields,field_description:mail.field_mail_mail__id
+#: model:ir.model.fields,field_description:mail.field_mail_message__id
+#: model:ir.model.fields,field_description:mail.field_mail_message_link_preview__id
+#: model:ir.model.fields,field_description:mail.field_mail_message_reaction__id
+#: model:ir.model.fields,field_description:mail.field_mail_message_schedule__id
+#: model:ir.model.fields,field_description:mail.field_mail_message_subtype__id
+#: model:ir.model.fields,field_description:mail.field_mail_message_translation__id
+#: model:ir.model.fields,field_description:mail.field_mail_notification__id
+#: model:ir.model.fields,field_description:mail.field_mail_presence__id
+#: model:ir.model.fields,field_description:mail.field_mail_push__id
+#: model:ir.model.fields,field_description:mail.field_mail_push_device__id
+#: model:ir.model.fields,field_description:mail.field_mail_render_mixin__id
+#: model:ir.model.fields,field_description:mail.field_mail_scheduled_message__id
+#: model:ir.model.fields,field_description:mail.field_mail_template__id
+#: model:ir.model.fields,field_description:mail.field_mail_template_preview__id
+#: model:ir.model.fields,field_description:mail.field_mail_template_reset__id
+#: model:ir.model.fields,field_description:mail.field_mail_thread__id
+#: model:ir.model.fields,field_description:mail.field_mail_thread_blacklist__id
+#: model:ir.model.fields,field_description:mail.field_mail_thread_cc__id
+#: model:ir.model.fields,field_description:mail.field_mail_thread_main_attachment__id
+#: model:ir.model.fields,field_description:mail.field_mail_tracking_duration_mixin__id
+#: model:ir.model.fields,field_description:mail.field_mail_tracking_value__id
+#: model:ir.model.fields,field_description:mail.field_publisher_warranty_contract__id
+#: model:ir.model.fields,field_description:mail.field_res_company__id
+#: model:ir.model.fields,field_description:mail.field_res_config_settings__id
+#: model:ir.model.fields,field_description:mail.field_res_groups__id
+#: model:ir.model.fields,field_description:mail.field_res_partner__id
+#: model:ir.model.fields,field_description:mail.field_res_role__id
+#: model:ir.model.fields,field_description:mail.field_res_users__id
+#: model:ir.model.fields,field_description:mail.field_res_users_settings__id
+#: model:ir.model.fields,field_description:mail.field_res_users_settings_volumes__id
+#: model:ir.model.fields,field_description:mail.field_template_reset_mixin__id
+msgid "ID"
+msgstr "आईडी"
+
+#. module: mail
+#: model:ir.model.fields,field_description:mail.field_ir_actions_server__activity_exception_icon
+#: model:ir.model.fields,field_description:mail.field_ir_cron__activity_exception_icon
+#: model:ir.model.fields,field_description:mail.field_mail_activity__icon
+#: model:ir.model.fields,field_description:mail.field_mail_activity_mixin__activity_exception_icon
+#: model:ir.model.fields,field_description:mail.field_mail_activity_plan_template__icon
+#: model:ir.model.fields,field_description:mail.field_mail_activity_type__icon
+#: model:ir.model.fields,field_description:mail.field_res_partner__activity_exception_icon
+#: model:ir.model.fields,field_description:mail.field_res_users__activity_exception_icon
+msgid "Icon"
+msgstr "आइकन"
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_discuss_channel__image_128
@@ -469,6 +916,26 @@ msgid "Invalid"
 msgstr "अमान्य"
 
 #. module: mail
+#: model:ir.model.fields,field_description:mail.field_discuss_channel__message_is_follower
+#: model:ir.model.fields,field_description:mail.field_ir_actions_server__message_is_follower
+#: model:ir.model.fields,field_description:mail.field_ir_cron__message_is_follower
+#: model:ir.model.fields,field_description:mail.field_mail_blacklist__message_is_follower
+#: model:ir.model.fields,field_description:mail.field_mail_thread__message_is_follower
+#: model:ir.model.fields,field_description:mail.field_mail_thread_blacklist__message_is_follower
+#: model:ir.model.fields,field_description:mail.field_mail_thread_cc__message_is_follower
+#: model:ir.model.fields,field_description:mail.field_mail_thread_main_attachment__message_is_follower
+#: model:ir.model.fields,field_description:mail.field_mail_tracking_duration_mixin__message_is_follower
+#: model:ir.model.fields,field_description:mail.field_res_partner__message_is_follower
+#: model:ir.model.fields,field_description:mail.field_res_users__message_is_follower
+msgid "Is Follower"
+msgstr "अनुयायी हो"
+
+#. module: mail
+#: model_terms:ir.ui.view,arch_db:mail.res_config_settings_view_form
+msgid "Key"
+msgstr "कुञ्जी"
+
+#. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_compose_message__lang
 #: model:ir.model.fields,field_description:mail.field_mail_composer_mixin__lang
 #: model:ir.model.fields,field_description:mail.field_mail_guest__lang
@@ -476,6 +943,91 @@ msgstr "अमान्य"
 #: model:ir.model.fields,field_description:mail.field_mail_template__lang
 msgid "Language"
 msgstr "भाषा"
+
+#. module: mail
+#: model:ir.model.fields,field_description:mail.field_discuss_call_history__write_uid
+#: model:ir.model.fields,field_description:mail.field_discuss_channel__write_uid
+#: model:ir.model.fields,field_description:mail.field_discuss_channel_member__write_uid
+#: model:ir.model.fields,field_description:mail.field_discuss_channel_rtc_session__write_uid
+#: model:ir.model.fields,field_description:mail.field_discuss_gif_favorite__write_uid
+#: model:ir.model.fields,field_description:mail.field_discuss_voice_metadata__write_uid
+#: model:ir.model.fields,field_description:mail.field_fetchmail_server__write_uid
+#: model:ir.model.fields,field_description:mail.field_mail_activity__write_uid
+#: model:ir.model.fields,field_description:mail.field_mail_activity_plan__write_uid
+#: model:ir.model.fields,field_description:mail.field_mail_activity_plan_template__write_uid
+#: model:ir.model.fields,field_description:mail.field_mail_activity_schedule__write_uid
+#: model:ir.model.fields,field_description:mail.field_mail_activity_schedule_line__write_uid
+#: model:ir.model.fields,field_description:mail.field_mail_activity_type__write_uid
+#: model:ir.model.fields,field_description:mail.field_mail_alias__write_uid
+#: model:ir.model.fields,field_description:mail.field_mail_alias_domain__write_uid
+#: model:ir.model.fields,field_description:mail.field_mail_blacklist__write_uid
+#: model:ir.model.fields,field_description:mail.field_mail_blacklist_remove__write_uid
+#: model:ir.model.fields,field_description:mail.field_mail_canned_response__write_uid
+#: model:ir.model.fields,field_description:mail.field_mail_compose_message__write_uid
+#: model:ir.model.fields,field_description:mail.field_mail_followers_edit__write_uid
+#: model:ir.model.fields,field_description:mail.field_mail_gateway_allowed__write_uid
+#: model:ir.model.fields,field_description:mail.field_mail_guest__write_uid
+#: model:ir.model.fields,field_description:mail.field_mail_ice_server__write_uid
+#: model:ir.model.fields,field_description:mail.field_mail_link_preview__write_uid
+#: model:ir.model.fields,field_description:mail.field_mail_mail__write_uid
+#: model:ir.model.fields,field_description:mail.field_mail_message__write_uid
+#: model:ir.model.fields,field_description:mail.field_mail_message_link_preview__write_uid
+#: model:ir.model.fields,field_description:mail.field_mail_message_schedule__write_uid
+#: model:ir.model.fields,field_description:mail.field_mail_message_subtype__write_uid
+#: model:ir.model.fields,field_description:mail.field_mail_message_translation__write_uid
+#: model:ir.model.fields,field_description:mail.field_mail_push__write_uid
+#: model:ir.model.fields,field_description:mail.field_mail_push_device__write_uid
+#: model:ir.model.fields,field_description:mail.field_mail_scheduled_message__write_uid
+#: model:ir.model.fields,field_description:mail.field_mail_template__write_uid
+#: model:ir.model.fields,field_description:mail.field_mail_template_preview__write_uid
+#: model:ir.model.fields,field_description:mail.field_mail_template_reset__write_uid
+#: model:ir.model.fields,field_description:mail.field_mail_tracking_value__write_uid
+#: model:ir.model.fields,field_description:mail.field_res_role__write_uid
+#: model:ir.model.fields,field_description:mail.field_res_users_settings_volumes__write_uid
+msgid "Last Updated by"
+msgstr "अन्तिम अद्यावधिक गर्ने"
+
+#. module: mail
+#: model:ir.model.fields,field_description:mail.field_discuss_call_history__write_date
+#: model:ir.model.fields,field_description:mail.field_discuss_channel__write_date
+#: model:ir.model.fields,field_description:mail.field_discuss_channel_member__write_date
+#: model:ir.model.fields,field_description:mail.field_discuss_gif_favorite__write_date
+#: model:ir.model.fields,field_description:mail.field_discuss_voice_metadata__write_date
+#: model:ir.model.fields,field_description:mail.field_fetchmail_server__write_date
+#: model:ir.model.fields,field_description:mail.field_mail_activity__write_date
+#: model:ir.model.fields,field_description:mail.field_mail_activity_plan__write_date
+#: model:ir.model.fields,field_description:mail.field_mail_activity_plan_template__write_date
+#: model:ir.model.fields,field_description:mail.field_mail_activity_schedule__write_date
+#: model:ir.model.fields,field_description:mail.field_mail_activity_schedule_line__write_date
+#: model:ir.model.fields,field_description:mail.field_mail_activity_type__write_date
+#: model:ir.model.fields,field_description:mail.field_mail_alias__write_date
+#: model:ir.model.fields,field_description:mail.field_mail_alias_domain__write_date
+#: model:ir.model.fields,field_description:mail.field_mail_blacklist__write_date
+#: model:ir.model.fields,field_description:mail.field_mail_blacklist_remove__write_date
+#: model:ir.model.fields,field_description:mail.field_mail_canned_response__write_date
+#: model:ir.model.fields,field_description:mail.field_mail_compose_message__write_date
+#: model:ir.model.fields,field_description:mail.field_mail_followers_edit__write_date
+#: model:ir.model.fields,field_description:mail.field_mail_gateway_allowed__write_date
+#: model:ir.model.fields,field_description:mail.field_mail_guest__write_date
+#: model:ir.model.fields,field_description:mail.field_mail_ice_server__write_date
+#: model:ir.model.fields,field_description:mail.field_mail_link_preview__write_date
+#: model:ir.model.fields,field_description:mail.field_mail_mail__write_date
+#: model:ir.model.fields,field_description:mail.field_mail_message__write_date
+#: model:ir.model.fields,field_description:mail.field_mail_message_link_preview__write_date
+#: model:ir.model.fields,field_description:mail.field_mail_message_schedule__write_date
+#: model:ir.model.fields,field_description:mail.field_mail_message_subtype__write_date
+#: model:ir.model.fields,field_description:mail.field_mail_message_translation__write_date
+#: model:ir.model.fields,field_description:mail.field_mail_push__write_date
+#: model:ir.model.fields,field_description:mail.field_mail_push_device__write_date
+#: model:ir.model.fields,field_description:mail.field_mail_scheduled_message__write_date
+#: model:ir.model.fields,field_description:mail.field_mail_template__write_date
+#: model:ir.model.fields,field_description:mail.field_mail_template_preview__write_date
+#: model:ir.model.fields,field_description:mail.field_mail_template_reset__write_date
+#: model:ir.model.fields,field_description:mail.field_mail_tracking_value__write_date
+#: model:ir.model.fields,field_description:mail.field_res_role__write_date
+#: model:ir.model.fields,field_description:mail.field_res_users_settings_volumes__write_date
+msgid "Last Updated on"
+msgstr "अन्तिम अद्यावधिक मिति"
 
 #. module: mail
 #. odoo-javascript
@@ -489,6 +1041,11 @@ msgstr "लोड हुँदैछ..."
 #: code:addons/mail/static/src/core/common/composer.js:0
 msgid "Log note"
 msgstr "टिपोट राख्नुहोस्"
+
+#. module: mail
+#: model:ir.model.fields,field_description:mail.field_mail_thread_main_attachment__message_main_attachment_id
+msgid "Main Attachment"
+msgstr "मुख्य संलग्न"
 
 #. module: mail
 #. odoo-javascript
@@ -505,6 +1062,21 @@ msgstr "टिपोट राख्नुहोस्"
 #: model_terms:ir.ui.view,arch_db:mail.mail_message_view_form
 msgid "Message"
 msgstr "सन्देश"
+
+#. module: mail
+#: model:ir.model.fields,field_description:mail.field_discuss_channel__message_has_error
+#: model:ir.model.fields,field_description:mail.field_ir_actions_server__message_has_error
+#: model:ir.model.fields,field_description:mail.field_ir_cron__message_has_error
+#: model:ir.model.fields,field_description:mail.field_mail_blacklist__message_has_error
+#: model:ir.model.fields,field_description:mail.field_mail_thread__message_has_error
+#: model:ir.model.fields,field_description:mail.field_mail_thread_blacklist__message_has_error
+#: model:ir.model.fields,field_description:mail.field_mail_thread_cc__message_has_error
+#: model:ir.model.fields,field_description:mail.field_mail_thread_main_attachment__message_has_error
+#: model:ir.model.fields,field_description:mail.field_mail_tracking_duration_mixin__message_has_error
+#: model:ir.model.fields,field_description:mail.field_res_partner__message_has_error
+#: model:ir.model.fields,field_description:mail.field_res_users__message_has_error
+msgid "Message Delivery error"
+msgstr "सन्देश पठाउन त्रुटि"
 
 #. module: mail
 #. odoo-javascript
@@ -530,6 +1102,33 @@ msgid "Messages"
 msgstr "सन्देशहरू"
 
 #. module: mail
+#: model:ir.model.fields,field_description:mail.field_ir_actions_server__model_id
+#: model:ir.model.fields,field_description:mail.field_ir_cron__model_id
+#: model:ir.model.fields,field_description:mail.field_mail_activity_plan__res_model
+#: model:ir.model.fields,field_description:mail.field_mail_activity_plan_template__res_model
+#: model:ir.model.fields,field_description:mail.field_mail_activity_schedule__res_model
+#: model:ir.model.fields,field_description:mail.field_mail_activity_type__res_model
+#: model:ir.model.fields,field_description:mail.field_mail_message_subtype__res_model
+#: model_terms:ir.ui.view,arch_db:mail.mail_activity_plan_view_search
+#: model_terms:ir.ui.view,arch_db:mail.view_email_template_search
+msgid "Model"
+msgstr "मोडेल"
+
+#. module: mail
+#: model:ir.model,name:mail.model_ir_model
+msgid "Models"
+msgstr "मोडेलहरू"
+
+#. module: mail
+#: model:ir.model.fields,field_description:mail.field_ir_actions_server__my_activity_date_deadline
+#: model:ir.model.fields,field_description:mail.field_ir_cron__my_activity_date_deadline
+#: model:ir.model.fields,field_description:mail.field_mail_activity_mixin__my_activity_date_deadline
+#: model:ir.model.fields,field_description:mail.field_res_partner__my_activity_date_deadline
+#: model:ir.model.fields,field_description:mail.field_res_users__my_activity_date_deadline
+msgid "My Activity Deadline"
+msgstr "मेरो गतिविधि म्याद"
+
+#. module: mail
 #: model:ir.model.fields,field_description:mail.field_discuss_channel__name
 #: model:ir.model.fields,field_description:mail.field_fetchmail_server__name
 #: model:ir.model.fields,field_description:mail.field_mail_activity_plan__name
@@ -551,6 +1150,31 @@ msgstr "नाम"
 #: code:addons/mail/static/src/core/common/thread.xml:0
 msgid "New"
 msgstr "नयाँ"
+
+#. module: mail
+#: model:ir.model.fields,field_description:mail.field_ir_actions_server__activity_date_deadline
+#: model:ir.model.fields,field_description:mail.field_ir_cron__activity_date_deadline
+#: model:ir.model.fields,field_description:mail.field_mail_activity_mixin__activity_date_deadline
+#: model:ir.model.fields,field_description:mail.field_res_partner__activity_date_deadline
+#: model:ir.model.fields,field_description:mail.field_res_users__activity_date_deadline
+msgid "Next Activity Deadline"
+msgstr "अर्को गतिविधि म्याद"
+
+#. module: mail
+#: model:ir.model.fields,field_description:mail.field_ir_cron__activity_summary
+#: model:ir.model.fields,field_description:mail.field_mail_activity_mixin__activity_summary
+#: model:ir.model.fields,field_description:mail.field_res_partner__activity_summary
+#: model:ir.model.fields,field_description:mail.field_res_users__activity_summary
+msgid "Next Activity Summary"
+msgstr "अर्को गतिविधि सारांश"
+
+#. module: mail
+#: model:ir.model.fields,field_description:mail.field_ir_cron__activity_type_id
+#: model:ir.model.fields,field_description:mail.field_mail_activity_mixin__activity_type_id
+#: model:ir.model.fields,field_description:mail.field_res_partner__activity_type_id
+#: model:ir.model.fields,field_description:mail.field_res_users__activity_type_id
+msgid "Next Activity Type"
+msgstr "अर्को गतिविधि प्रकार"
 
 #. module: mail
 #. odoo-javascript
@@ -603,10 +1227,112 @@ msgid "Notifications"
 msgstr "सूचनाहरू"
 
 #. module: mail
+#: model:ir.model.fields,field_description:mail.field_discuss_channel__message_needaction_counter
+#: model:ir.model.fields,field_description:mail.field_ir_actions_server__message_needaction_counter
+#: model:ir.model.fields,field_description:mail.field_ir_cron__message_needaction_counter
+#: model:ir.model.fields,field_description:mail.field_mail_blacklist__message_needaction_counter
+#: model:ir.model.fields,field_description:mail.field_mail_thread__message_needaction_counter
+#: model:ir.model.fields,field_description:mail.field_mail_thread_blacklist__message_needaction_counter
+#: model:ir.model.fields,field_description:mail.field_mail_thread_cc__message_needaction_counter
+#: model:ir.model.fields,field_description:mail.field_mail_thread_main_attachment__message_needaction_counter
+#: model:ir.model.fields,field_description:mail.field_mail_tracking_duration_mixin__message_needaction_counter
+#: model:ir.model.fields,field_description:mail.field_res_partner__message_needaction_counter
+#: model:ir.model.fields,field_description:mail.field_res_users__message_needaction_counter
+msgid "Number of Actions"
+msgstr "कार्यहरूको संख्या"
+
+#. module: mail
+#: model:ir.model.fields,field_description:mail.field_discuss_channel__message_has_error_counter
+#: model:ir.model.fields,field_description:mail.field_ir_actions_server__message_has_error_counter
+#: model:ir.model.fields,field_description:mail.field_ir_cron__message_has_error_counter
+#: model:ir.model.fields,field_description:mail.field_mail_blacklist__message_has_error_counter
+#: model:ir.model.fields,field_description:mail.field_mail_thread__message_has_error_counter
+#: model:ir.model.fields,field_description:mail.field_mail_thread_blacklist__message_has_error_counter
+#: model:ir.model.fields,field_description:mail.field_mail_thread_cc__message_has_error_counter
+#: model:ir.model.fields,field_description:mail.field_mail_thread_main_attachment__message_has_error_counter
+#: model:ir.model.fields,field_description:mail.field_mail_tracking_duration_mixin__message_has_error_counter
+#: model:ir.model.fields,field_description:mail.field_res_partner__message_has_error_counter
+#: model:ir.model.fields,field_description:mail.field_res_users__message_has_error_counter
+msgid "Number of errors"
+msgstr "त्रुटिहरूको संख्या"
+
+#. module: mail
 #. odoo-javascript
 #: code:addons/mail/static/src/core/common/thread_actions.js:0
 msgid "Open"
 msgstr "खोल्नुहोस्"
+
+#. module: mail
+#: model_terms:ir.ui.view,arch_db:mail.email_template_form
+msgid "Options"
+msgstr "विकल्पहरू"
+
+#. module: mail
+#. odoo-javascript
+#: code:addons/mail/static/src/core/web/activity_list_popover.xml:0
+#: model:ir.model.fields.selection,name:mail.selection__account_account__activity_state__overdue
+#: model:ir.model.fields.selection,name:mail.selection__account_journal__activity_state__overdue
+#: model:ir.model.fields.selection,name:mail.selection__account_move__activity_state__overdue
+#: model:ir.model.fields.selection,name:mail.selection__account_payment__activity_state__overdue
+#: model:ir.model.fields.selection,name:mail.selection__base_automation__activity_state__overdue
+#: model:ir.model.fields.selection,name:mail.selection__card_campaign__activity_state__overdue
+#: model:ir.model.fields.selection,name:mail.selection__crm_lead__activity_state__overdue
+#: model:ir.model.fields.selection,name:mail.selection__event_booth__activity_state__overdue
+#: model:ir.model.fields.selection,name:mail.selection__event_event__activity_state__overdue
+#: model:ir.model.fields.selection,name:mail.selection__event_registration__activity_state__overdue
+#: model:ir.model.fields.selection,name:mail.selection__event_sponsor__activity_state__overdue
+#: model:ir.model.fields.selection,name:mail.selection__event_track__activity_state__overdue
+#: model:ir.model.fields.selection,name:mail.selection__fleet_vehicle__activity_state__overdue
+#: model:ir.model.fields.selection,name:mail.selection__fleet_vehicle_log_contract__activity_state__overdue
+#: model:ir.model.fields.selection,name:mail.selection__fleet_vehicle_log_services__activity_state__overdue
+#: model:ir.model.fields.selection,name:mail.selection__fleet_vehicle_model__activity_state__overdue
+#: model:ir.model.fields.selection,name:mail.selection__hr_applicant__activity_state__overdue
+#: model:ir.model.fields.selection,name:mail.selection__hr_department__activity_state__overdue
+#: model:ir.model.fields.selection,name:mail.selection__hr_employee__activity_state__overdue
+#: model:ir.model.fields.selection,name:mail.selection__hr_expense__activity_state__overdue
+#: model:ir.model.fields.selection,name:mail.selection__hr_job__activity_state__overdue
+#: model:ir.model.fields.selection,name:mail.selection__hr_leave__activity_state__overdue
+#: model:ir.model.fields.selection,name:mail.selection__hr_leave_allocation__activity_state__overdue
+#: model:ir.model.fields.selection,name:mail.selection__hr_version__activity_state__overdue
+#: model:ir.model.fields.selection,name:mail.selection__ir_actions_server__activity_state__overdue
+#: model:ir.model.fields.selection,name:mail.selection__ir_cron__activity_state__overdue
+#: model:ir.model.fields.selection,name:mail.selection__lunch_supplier__activity_state__overdue
+#: model:ir.model.fields.selection,name:mail.selection__mail_activity__state__overdue
+#: model:ir.model.fields.selection,name:mail.selection__mail_activity_mixin__activity_state__overdue
+#: model:ir.model.fields.selection,name:mail.selection__mailing_mailing__activity_state__overdue
+#: model:ir.model.fields.selection,name:mail.selection__maintenance_equipment__activity_state__overdue
+#: model:ir.model.fields.selection,name:mail.selection__maintenance_request__activity_state__overdue
+#: model:ir.model.fields.selection,name:mail.selection__mrp_production__activity_state__overdue
+#: model:ir.model.fields.selection,name:mail.selection__mrp_routing_workcenter__activity_state__overdue
+#: model:ir.model.fields.selection,name:mail.selection__mrp_unbuild__activity_state__overdue
+#: model:ir.model.fields.selection,name:mail.selection__pos_session__activity_state__overdue
+#: model:ir.model.fields.selection,name:mail.selection__product_pricelist__activity_state__overdue
+#: model:ir.model.fields.selection,name:mail.selection__product_product__activity_state__overdue
+#: model:ir.model.fields.selection,name:mail.selection__product_template__activity_state__overdue
+#: model:ir.model.fields.selection,name:mail.selection__project_project__activity_state__overdue
+#: model:ir.model.fields.selection,name:mail.selection__project_task__activity_state__overdue
+#: model:ir.model.fields.selection,name:mail.selection__project_update__activity_state__overdue
+#: model:ir.model.fields.selection,name:mail.selection__purchase_order__activity_state__overdue
+#: model:ir.model.fields.selection,name:mail.selection__purchase_requisition__activity_state__overdue
+#: model:ir.model.fields.selection,name:mail.selection__repair_order__activity_state__overdue
+#: model:ir.model.fields.selection,name:mail.selection__res_partner__activity_state__overdue
+#: model:ir.model.fields.selection,name:mail.selection__res_partner_bank__activity_state__overdue
+#: model:ir.model.fields.selection,name:mail.selection__sale_order__activity_state__overdue
+#: model:ir.model.fields.selection,name:mail.selection__slide_channel__activity_state__overdue
+#: model:ir.model.fields.selection,name:mail.selection__stock_landed_cost__activity_state__overdue
+#: model:ir.model.fields.selection,name:mail.selection__stock_lot__activity_state__overdue
+#: model:ir.model.fields.selection,name:mail.selection__stock_picking__activity_state__overdue
+#: model:ir.model.fields.selection,name:mail.selection__stock_picking_batch__activity_state__overdue
+#: model:ir.model.fields.selection,name:mail.selection__survey_survey__activity_state__overdue
+#: model:ir.model.fields.selection,name:mail.selection__survey_user_input__activity_state__overdue
+#: model_terms:ir.ui.view,arch_db:mail.mail_activity_view_search
+msgid "Overdue"
+msgstr "म्याद नाघेको"
+
+#. module: mail
+#: model:ir.model.fields,field_description:mail.field_mail_message_subtype__parent_id
+msgid "Parent"
+msgstr "मूल"
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_discuss_channel_member__partner_id
@@ -628,6 +1354,67 @@ msgstr "पासवर्ड"
 #: model:ir.model.fields,field_description:mail.field_res_users__phone
 msgid "Phone"
 msgstr "फोन"
+
+#. module: mail
+#. odoo-javascript
+#: code:addons/mail/static/src/core/web/activity_list_popover.xml:0
+#: model:ir.model.fields.selection,name:mail.selection__account_account__activity_state__planned
+#: model:ir.model.fields.selection,name:mail.selection__account_journal__activity_state__planned
+#: model:ir.model.fields.selection,name:mail.selection__account_move__activity_state__planned
+#: model:ir.model.fields.selection,name:mail.selection__account_payment__activity_state__planned
+#: model:ir.model.fields.selection,name:mail.selection__base_automation__activity_state__planned
+#: model:ir.model.fields.selection,name:mail.selection__card_campaign__activity_state__planned
+#: model:ir.model.fields.selection,name:mail.selection__crm_lead__activity_state__planned
+#: model:ir.model.fields.selection,name:mail.selection__event_booth__activity_state__planned
+#: model:ir.model.fields.selection,name:mail.selection__event_event__activity_state__planned
+#: model:ir.model.fields.selection,name:mail.selection__event_registration__activity_state__planned
+#: model:ir.model.fields.selection,name:mail.selection__event_sponsor__activity_state__planned
+#: model:ir.model.fields.selection,name:mail.selection__event_track__activity_state__planned
+#: model:ir.model.fields.selection,name:mail.selection__fleet_vehicle__activity_state__planned
+#: model:ir.model.fields.selection,name:mail.selection__fleet_vehicle_log_contract__activity_state__planned
+#: model:ir.model.fields.selection,name:mail.selection__fleet_vehicle_log_services__activity_state__planned
+#: model:ir.model.fields.selection,name:mail.selection__fleet_vehicle_model__activity_state__planned
+#: model:ir.model.fields.selection,name:mail.selection__hr_applicant__activity_state__planned
+#: model:ir.model.fields.selection,name:mail.selection__hr_department__activity_state__planned
+#: model:ir.model.fields.selection,name:mail.selection__hr_employee__activity_state__planned
+#: model:ir.model.fields.selection,name:mail.selection__hr_expense__activity_state__planned
+#: model:ir.model.fields.selection,name:mail.selection__hr_job__activity_state__planned
+#: model:ir.model.fields.selection,name:mail.selection__hr_leave__activity_state__planned
+#: model:ir.model.fields.selection,name:mail.selection__hr_leave_allocation__activity_state__planned
+#: model:ir.model.fields.selection,name:mail.selection__hr_version__activity_state__planned
+#: model:ir.model.fields.selection,name:mail.selection__ir_actions_server__activity_state__planned
+#: model:ir.model.fields.selection,name:mail.selection__ir_cron__activity_state__planned
+#: model:ir.model.fields.selection,name:mail.selection__lunch_supplier__activity_state__planned
+#: model:ir.model.fields.selection,name:mail.selection__mail_activity__state__planned
+#: model:ir.model.fields.selection,name:mail.selection__mail_activity_mixin__activity_state__planned
+#: model:ir.model.fields.selection,name:mail.selection__mailing_mailing__activity_state__planned
+#: model:ir.model.fields.selection,name:mail.selection__maintenance_equipment__activity_state__planned
+#: model:ir.model.fields.selection,name:mail.selection__maintenance_request__activity_state__planned
+#: model:ir.model.fields.selection,name:mail.selection__mrp_production__activity_state__planned
+#: model:ir.model.fields.selection,name:mail.selection__mrp_routing_workcenter__activity_state__planned
+#: model:ir.model.fields.selection,name:mail.selection__mrp_unbuild__activity_state__planned
+#: model:ir.model.fields.selection,name:mail.selection__pos_session__activity_state__planned
+#: model:ir.model.fields.selection,name:mail.selection__product_pricelist__activity_state__planned
+#: model:ir.model.fields.selection,name:mail.selection__product_product__activity_state__planned
+#: model:ir.model.fields.selection,name:mail.selection__product_template__activity_state__planned
+#: model:ir.model.fields.selection,name:mail.selection__project_project__activity_state__planned
+#: model:ir.model.fields.selection,name:mail.selection__project_task__activity_state__planned
+#: model:ir.model.fields.selection,name:mail.selection__project_update__activity_state__planned
+#: model:ir.model.fields.selection,name:mail.selection__purchase_order__activity_state__planned
+#: model:ir.model.fields.selection,name:mail.selection__purchase_requisition__activity_state__planned
+#: model:ir.model.fields.selection,name:mail.selection__repair_order__activity_state__planned
+#: model:ir.model.fields.selection,name:mail.selection__res_partner__activity_state__planned
+#: model:ir.model.fields.selection,name:mail.selection__res_partner_bank__activity_state__planned
+#: model:ir.model.fields.selection,name:mail.selection__sale_order__activity_state__planned
+#: model:ir.model.fields.selection,name:mail.selection__slide_channel__activity_state__planned
+#: model:ir.model.fields.selection,name:mail.selection__stock_landed_cost__activity_state__planned
+#: model:ir.model.fields.selection,name:mail.selection__stock_lot__activity_state__planned
+#: model:ir.model.fields.selection,name:mail.selection__stock_picking__activity_state__planned
+#: model:ir.model.fields.selection,name:mail.selection__stock_picking_batch__activity_state__planned
+#: model:ir.model.fields.selection,name:mail.selection__survey_survey__activity_state__planned
+#: model:ir.model.fields.selection,name:mail.selection__survey_user_input__activity_state__planned
+msgid "Planned"
+msgstr "योजनाबद्ध"
 
 #. module: mail
 #. odoo-javascript
@@ -669,10 +1456,38 @@ msgid "Remove"
 msgstr "हटाउनुहोस्"
 
 #. module: mail
+#. odoo-python
+#: code:addons/mail/models/mail_template.py:0
+msgid "Report"
+msgstr "प्रतिवेदन"
+
+#. module: mail
+#: model:ir.model.fields,field_description:mail.field_ir_actions_server__activity_user_id
+#: model:ir.model.fields,field_description:mail.field_mail_compose_message__res_domain_user_id
+#: model_terms:ir.ui.view,arch_db:mail.mail_activity_schedule_view_form
+msgid "Responsible"
+msgstr "जिम्मेवार"
+
+#. module: mail
+#: model:ir.model.fields,field_description:mail.field_ir_cron__activity_user_id
+#: model:ir.model.fields,field_description:mail.field_mail_activity_mixin__activity_user_id
+#: model:ir.model.fields,field_description:mail.field_mail_activity_schedule_line__responsible_user_id
+#: model:ir.model.fields,field_description:mail.field_res_partner__activity_user_id
+#: model:ir.model.fields,field_description:mail.field_res_users__activity_user_id
+msgid "Responsible User"
+msgstr "जिम्मेवार प्रयोगकर्ता"
+
+#. module: mail
 #: model_terms:ir.ui.view,arch_db:mail.view_mail_form
 #: model_terms:ir.ui.view,arch_db:mail.view_mail_tree
 msgid "Retry"
 msgstr "पुनः प्रयास गर्नुहोस्"
+
+#. module: mail
+#: model:ir.model.fields,field_description:mail.field_res_partner__user_id
+#: model:ir.model.fields,field_description:mail.field_res_users__user_id
+msgid "Salesperson"
+msgstr "बिक्रेता"
 
 #. module: mail
 #. odoo-javascript
@@ -740,6 +1555,11 @@ msgid "Shared"
 msgstr "साझा गरिएको"
 
 #. module: mail
+#: model_terms:ir.ui.view,arch_db:mail.mail_notification_view_form
+msgid "Source"
+msgstr "स्रोत"
+
+#. module: mail
 #. odoo-javascript
 #: code:addons/mail/static/src/core/web/messaging_menu_patch.js:0
 #: model:ir.model.fields,field_description:mail.field_mail_mail__starred
@@ -779,6 +1599,33 @@ msgstr "रोक्नुहोस्"
 #: model:ir.model.fields,field_description:mail.field_mail_template_preview__subject
 msgid "Subject"
 msgstr "विषय"
+
+#. module: mail
+#: model:ir.model.fields,field_description:mail.field_res_partner__vat
+#: model:ir.model.fields,field_description:mail.field_res_users__vat
+msgid "Tax ID"
+msgstr "कर नम्बर"
+
+#. module: mail
+#: model:ir.ui.menu,name:mail.discuss_technical
+#: model_terms:ir.ui.view,arch_db:mail.email_template_form
+msgid "Technical"
+msgstr "प्राविधिक"
+
+#. module: mail
+#: model:ir.model.fields,field_description:mail.field_mail_template_reset__template_ids
+msgid "Template"
+msgstr "ढाँचा"
+
+#. module: mail
+#. odoo-javascript
+#: code:addons/mail/static/src/core/web/mail_composer_template_selector.xml:0
+#: model_terms:ir.ui.view,arch_db:mail.email_template_form
+#: model_terms:ir.ui.view,arch_db:mail.email_template_tree
+#: model_terms:ir.ui.view,arch_db:mail.mail_compose_message_view_form_template_save
+#: model_terms:ir.ui.view,arch_db:mail.view_email_template_search
+msgid "Templates"
+msgstr "ढाँचाहरू"
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_activity__user_tz
@@ -881,6 +1728,12 @@ msgid "Type"
 msgstr "प्रकार"
 
 #. module: mail
+#: model:ir.model.fields,field_description:mail.field_mail_link_preview__source_url
+#: model_terms:ir.ui.view,arch_db:mail.res_config_settings_view_form
+msgid "URL"
+msgstr "यूआरएल"
+
+#. module: mail
 #. odoo-javascript
 #: code:addons/mail/static/src/chatter/web/chatter_patch.js:0
 #: code:addons/mail/static/src/core/common/message_actions.js:0
@@ -890,6 +1743,11 @@ msgstr "प्रकार"
 #: model_terms:ir.ui.view,arch_db:mail.mail_notification_light
 msgid "Unfollow"
 msgstr "अनुसरण छोड्नुहोस्"
+
+#. module: mail
+#: model_terms:ir.ui.view,arch_db:mail.mail_activity_plan_view_form
+msgid "Unit"
+msgstr "एकाइ"
 
 #. module: mail
 #. odoo-python
@@ -912,6 +1770,12 @@ msgid "Users"
 msgstr "प्रयोगकर्ताहरू"
 
 #. module: mail
+#: model:ir.model.fields,field_description:mail.field_ir_actions_server__value
+#: model:ir.model.fields,field_description:mail.field_ir_cron__value
+msgid "Value"
+msgstr "मान"
+
+#. module: mail
 #. odoo-javascript
 #. odoo-python
 #: code:addons/mail/models/mail_thread.py:0
@@ -919,6 +1783,12 @@ msgstr "प्रयोगकर्ताहरू"
 #: model:ir.model,name:mail.model_ir_ui_view
 msgid "View"
 msgstr "हेर्नुहोस्"
+
+#. module: mail
+#: model_terms:ir.ui.view,arch_db:mail.mail_activity_plan_view_form
+#: model_terms:ir.ui.view,arch_db:mail.mail_alias_domain_view_form
+msgid "Visible to all"
+msgstr "सबैलाई देखिने"
 
 #. module: mail
 #. odoo-javascript

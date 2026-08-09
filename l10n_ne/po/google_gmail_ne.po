@@ -18,6 +18,30 @@ msgid "Active"
 msgstr "सक्रिय"
 
 #. module: google_gmail
+#: model:ir.model,name:google_gmail.model_res_config_settings
+msgid "Config Settings"
+msgstr "कन्फिग सेटिङहरू"
+
+#. module: google_gmail
+#: model:ir.model.fields,field_description:google_gmail.field_fetchmail_server__display_name
+#: model:ir.model.fields,field_description:google_gmail.field_google_gmail_mixin__display_name
+#: model:ir.model.fields,field_description:google_gmail.field_ir_mail_server__display_name
+#: model:ir.model.fields,field_description:google_gmail.field_res_config_settings__display_name
+#: model:ir.model.fields,field_description:google_gmail.field_res_users__display_name
+msgid "Display Name"
+msgstr "प्रदर्शन नाम"
+
+#. module: google_gmail
+#: model:ir.model.fields,field_description:google_gmail.field_fetchmail_server__id
+#: model:ir.model.fields,field_description:google_gmail.field_google_gmail_mixin__id
+#: model:ir.model.fields,field_description:google_gmail.field_ir_mail_server__id
+#: model:ir.model.fields,field_description:google_gmail.field_res_config_settings__id
+#: model:ir.model.fields,field_description:google_gmail.field_res_users__id
+#: model_terms:ir.ui.view,arch_db:google_gmail.res_config_settings_view_form
+msgid "ID"
+msgstr "आईडी"
+
+#. module: google_gmail
 #: model:ir.model,name:google_gmail.model_res_users
 msgid "User"
 msgstr "प्रयोगकर्ता"

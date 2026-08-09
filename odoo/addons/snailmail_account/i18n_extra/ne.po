@@ -16,6 +16,27 @@ msgid "Contact"
 msgstr "सम्पर्क"
 
 #. module: snailmail_account
+#: model:ir.model,website_form_label:snailmail_account.model_res_partner
+msgid "Create a Customer"
+msgstr "ग्राहक सिर्जना गर्नुहोस्"
+
+#. module: snailmail_account
+#: model:ir.model.fields,field_description:snailmail_account.field_account_move__display_name
+#: model:ir.model.fields,field_description:snailmail_account.field_account_move_send__display_name
+#: model:ir.model.fields,field_description:snailmail_account.field_account_move_send_batch_wizard__display_name
+#: model:ir.model.fields,field_description:snailmail_account.field_res_partner__display_name
+msgid "Display Name"
+msgstr "प्रदर्शन नाम"
+
+#. module: snailmail_account
+#: model:ir.model.fields,field_description:snailmail_account.field_account_move__id
+#: model:ir.model.fields,field_description:snailmail_account.field_account_move_send__id
+#: model:ir.model.fields,field_description:snailmail_account.field_account_move_send_batch_wizard__id
+#: model:ir.model.fields,field_description:snailmail_account.field_res_partner__id
+msgid "ID"
+msgstr "आईडी"
+
+#. module: snailmail_account
 #: model:ir.model,name:snailmail_account.model_account_move
 msgid "Journal Entry"
 msgstr "जर्नल प्रविष्टि"

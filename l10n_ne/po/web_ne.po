@@ -53,6 +53,12 @@ msgstr "ठेगाना"
 
 #. module: web
 #. odoo-javascript
+#: code:addons/web/static/src/core/confirmation_dialog/confirmation_dialog.js:0
+msgid "Alert"
+msgstr "सचेतना"
+
+#. module: web
+#. odoo-javascript
 #: code:addons/web/static/src/search/search_arch_parser.js:0
 #: code:addons/web/static/src/search/search_panel/search_panel.xml:0
 #: code:addons/web/static/src/views/view_components/selection_box.xml:0
@@ -150,6 +156,16 @@ msgid "Company"
 msgstr "कम्पनी"
 
 #. module: web
+#: model:ir.model.fields,field_description:web.field_base_document_layout__name
+msgid "Company Name"
+msgstr "कम्पनीको नाम"
+
+#. module: web
+#: model:ir.model,name:web.model_res_config_settings
+msgid "Config Settings"
+msgstr "कन्फिग सेटिङहरू"
+
+#. module: web
 #. odoo-javascript
 #: code:addons/web/static/src/core/domain_selector_dialog/domain_selector_dialog.js:0
 #: code:addons/web/static/src/core/expression_editor_dialog/expression_editor_dialog.xml:0
@@ -187,6 +203,23 @@ msgid "Country"
 msgstr "देश"
 
 #. module: web
+#: model:ir.model,website_form_label:web.model_res_partner
+msgid "Create a Customer"
+msgstr "ग्राहक सिर्जना गर्नुहोस्"
+
+#. module: web
+#: model:ir.model.fields,field_description:web.field_base_document_layout__create_uid
+#: model:ir.model.fields,field_description:web.field_res_users_settings_embedded_action__create_uid
+msgid "Created by"
+msgstr "सिर्जना गर्ने"
+
+#. module: web
+#: model:ir.model.fields,field_description:web.field_base_document_layout__create_date
+#: model:ir.model.fields,field_description:web.field_res_users_settings_embedded_action__create_date
+msgid "Created on"
+msgstr "सिर्जना मिति"
+
+#. module: web
 #. odoo-javascript
 #: code:addons/web/static/src/views/fields/monetary/monetary_field.js:0
 msgid "Currency"
@@ -194,10 +227,22 @@ msgstr "मुद्रा"
 
 #. module: web
 #. odoo-javascript
+#: code:addons/web/static/src/core/color_picker/tabs/color_picker_custom_tab.js:0
+msgid "Custom"
+msgstr "अनुकूल"
+
+#. module: web
+#. odoo-javascript
 #: code:addons/web/static/src/views/fields/datetime/datetime_field.js:0
 #: code:addons/web/static/src/views/fields/properties/property_definition.js:0
 msgid "Date"
 msgstr "मिति"
+
+#. module: web
+#. odoo-javascript
+#: code:addons/web/static/src/webclient/debug/profiling/profiling_item.xml:0
+msgid "Default"
+msgstr "पूर्वनिर्धारित"
 
 #. module: web
 #. odoo-javascript
@@ -241,6 +286,24 @@ msgstr "खारेज गर्नुहोस्"
 #: code:addons/web/static/src/views/form/form_error_dialog/form_error_dialog.xml:0
 msgid "Discard changes"
 msgstr "परिवर्तनहरू खारेज गर्नुहोस्"
+
+#. module: web
+#: model:ir.model.fields,field_description:web.field_base_document_layout__display_name
+#: model:ir.model.fields,field_description:web.field_ir_http__display_name
+#: model:ir.model.fields,field_description:web.field_ir_model__display_name
+#: model:ir.model.fields,field_description:web.field_ir_qweb_field_image__display_name
+#: model:ir.model.fields,field_description:web.field_ir_qweb_field_image_url__display_name
+#: model:ir.model.fields,field_description:web.field_ir_ui_menu__display_name
+#: model:ir.model.fields,field_description:web.field_ir_ui_view__display_name
+#: model:ir.model.fields,field_description:web.field_properties_base_definition__display_name
+#: model:ir.model.fields,field_description:web.field_res_company__display_name
+#: model:ir.model.fields,field_description:web.field_res_config_settings__display_name
+#: model:ir.model.fields,field_description:web.field_res_partner__display_name
+#: model:ir.model.fields,field_description:web.field_res_users__display_name
+#: model:ir.model.fields,field_description:web.field_res_users_settings__display_name
+#: model:ir.model.fields,field_description:web.field_res_users_settings_embedded_action__display_name
+msgid "Display Name"
+msgstr "प्रदर्शन नाम"
 
 #. module: web
 #. odoo-javascript
@@ -314,6 +377,18 @@ msgstr "मनपर्ने"
 
 #. module: web
 #. odoo-javascript
+#: code:addons/web/static/src/webclient/actions/debug_items.js:0
+msgid "Fields"
+msgstr "फिल्डहरू"
+
+#. module: web
+#. odoo-javascript
+#: code:addons/web/static/src/views/fields/binary/binary_field.js:0
+msgid "File"
+msgstr "फाइल"
+
+#. module: web
+#. odoo-javascript
 #: code:addons/web/static/src/search/search_bar_menu/search_bar_menu.xml:0
 #: code:addons/web/static/src/webclient/actions/debug_items.js:0
 msgid "Filters"
@@ -339,6 +414,32 @@ msgstr "मद्दत"
 
 #. module: web
 #. odoo-javascript
+#: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
+#: model:ir.model.fields,field_description:web.field_base_document_layout__id
+#: model:ir.model.fields,field_description:web.field_ir_http__id
+#: model:ir.model.fields,field_description:web.field_ir_model__id
+#: model:ir.model.fields,field_description:web.field_ir_qweb_field_image__id
+#: model:ir.model.fields,field_description:web.field_ir_qweb_field_image_url__id
+#: model:ir.model.fields,field_description:web.field_ir_ui_menu__id
+#: model:ir.model.fields,field_description:web.field_ir_ui_view__id
+#: model:ir.model.fields,field_description:web.field_properties_base_definition__id
+#: model:ir.model.fields,field_description:web.field_res_company__id
+#: model:ir.model.fields,field_description:web.field_res_config_settings__id
+#: model:ir.model.fields,field_description:web.field_res_partner__id
+#: model:ir.model.fields,field_description:web.field_res_users__id
+#: model:ir.model.fields,field_description:web.field_res_users_settings__id
+#: model:ir.model.fields,field_description:web.field_res_users_settings_embedded_action__id
+msgid "ID"
+msgstr "आईडी"
+
+#. module: web
+#. odoo-javascript
+#: code:addons/web/static/src/views/fields/boolean_icon/boolean_icon_field.js:0
+msgid "Icon"
+msgstr "आइकन"
+
+#. module: web
+#. odoo-javascript
 #: code:addons/web/static/src/core/file_viewer/file_viewer.xml:0
 #: code:addons/web/static/src/views/fields/attachment_image/attachment_image_field.xml:0
 #: code:addons/web/static/src/views/fields/image/image_field.js:0
@@ -348,10 +449,28 @@ msgid "Image"
 msgstr "तस्बिर"
 
 #. module: web
+#. odoo-javascript
+#: code:addons/web/static/src/views/fields/properties/property_definition.xml:0
+msgid "Label"
+msgstr "लेबल"
+
+#. module: web
 #. odoo-python
 #: code:addons/web/controllers/session.py:0
 msgid "Languages"
 msgstr "भाषाहरू"
+
+#. module: web
+#: model:ir.model.fields,field_description:web.field_base_document_layout__write_uid
+#: model:ir.model.fields,field_description:web.field_res_users_settings_embedded_action__write_uid
+msgid "Last Updated by"
+msgstr "अन्तिम अद्यावधिक गर्ने"
+
+#. module: web
+#: model:ir.model.fields,field_description:web.field_base_document_layout__write_date
+#: model:ir.model.fields,field_description:web.field_res_users_settings_embedded_action__write_date
+msgid "Last Updated on"
+msgstr "अन्तिम अद्यावधिक मिति"
 
 #. module: web
 #. odoo-javascript
@@ -382,6 +501,27 @@ msgstr "लगआउट"
 #: code:addons/web/controllers/home.py:0
 msgid "Login"
 msgstr "लगइन"
+
+#. module: web
+#. odoo-javascript
+#: code:addons/web/static/src/views/fields/image/image_field.js:0
+#: code:addons/web/static/src/views/fields/image_url/image_url_field.js:0
+#: code:addons/web/static/src/views/fields/signature/signature_field.js:0
+msgid "Medium"
+msgstr "माध्यम"
+
+#. module: web
+#. odoo-javascript
+#: code:addons/web/static/src/views/fields/domain/domain_field.js:0
+#: code:addons/web/static/src/views/fields/field_selector/field_selector_field.js:0
+#: code:addons/web/static/src/views/fields/properties/property_definition.xml:0
+msgid "Model"
+msgstr "मोडेल"
+
+#. module: web
+#: model:ir.model,name:web.model_ir_model
+msgid "Models"
+msgstr "मोडेलहरू"
 
 #. module: web
 #. odoo-javascript
@@ -497,6 +637,12 @@ msgstr "प्राथमिकता"
 
 #. module: web
 #. odoo-javascript
+#: code:addons/web/static/src/views/fields/properties/properties_field.js:0
+msgid "Properties"
+msgstr "गुणहरू"
+
+#. module: web
+#. odoo-javascript
 #: code:addons/web/static/src/core/debug/debug_menu_basic.js:0
 msgid "Record"
 msgstr "रेकर्ड"
@@ -528,6 +674,12 @@ msgstr "ताजा गर्नुहोस्"
 #: code:addons/web/static/src/views/list/list_confirmation_dialog.xml:0
 msgid "Remove"
 msgstr "हटाउनुहोस्"
+
+#. module: web
+#. odoo-javascript
+#: code:addons/web/static/src/webclient/actions/action_service.js:0
+msgid "Report"
+msgstr "प्रतिवेदन"
 
 #. module: web
 #. odoo-javascript
@@ -619,6 +771,14 @@ msgstr "साझा गरिएको"
 
 #. module: web
 #. odoo-javascript
+#: code:addons/web/static/src/views/fields/image/image_field.js:0
+#: code:addons/web/static/src/views/fields/image_url/image_url_field.js:0
+#: code:addons/web/static/src/views/fields/signature/signature_field.js:0
+msgid "Size"
+msgstr "आकार"
+
+#. module: web
+#. odoo-javascript
 #: code:addons/web/static/src/views/fields/statusbar/statusbar_field.js:0
 msgid "Status"
 msgstr "स्थिति"
@@ -628,6 +788,26 @@ msgstr "स्थिति"
 #: code:addons/web/static/src/views/graph/graph_model.js:0
 msgid "Sum"
 msgstr "योग"
+
+#. module: web
+#. odoo-javascript
+#: code:addons/web/static/src/views/fields/many2many_tags/many2many_tags_field.js:0
+#: code:addons/web/static/src/views/fields/properties/property_definition.js:0
+#: code:addons/web/static/src/views/fields/properties/property_definition.xml:0
+msgid "Tags"
+msgstr "ट्यागहरू"
+
+#. module: web
+#: model:ir.model.fields,field_description:web.field_base_document_layout__vat
+#: model_terms:ir.ui.view,arch_db:web.external_layout_bold
+#: model_terms:ir.ui.view,arch_db:web.external_layout_boxed
+#: model_terms:ir.ui.view,arch_db:web.external_layout_bubble
+#: model_terms:ir.ui.view,arch_db:web.external_layout_folder
+#: model_terms:ir.ui.view,arch_db:web.external_layout_standard
+#: model_terms:ir.ui.view,arch_db:web.external_layout_striped
+#: model_terms:ir.ui.view,arch_db:web.external_layout_wave
+msgid "Tax ID"
+msgstr "कर नम्बर"
 
 #. module: web
 #. odoo-javascript
@@ -661,6 +841,12 @@ msgstr "प्रकार"
 
 #. module: web
 #. odoo-javascript
+#: code:addons/web/static/src/views/fields/url/url_field.js:0
+msgid "URL"
+msgstr "यूआरएल"
+
+#. module: web
+#. odoo-javascript
 #: code:addons/web/static/src/views/form/form_controller.js:0
 #: code:addons/web/static/src/views/kanban/kanban_controller.js:0
 #: code:addons/web/static/src/views/list/list_controller.js:0
@@ -681,6 +867,12 @@ msgstr "आफ्नो फाइल अपलोड गर्नुहोस्
 #: model:ir.model,name:web.model_res_users
 msgid "User"
 msgstr "प्रयोगकर्ता"
+
+#. module: web
+#. odoo-javascript
+#: code:addons/web/static/src/views/fields/properties/property_definition.xml:0
+msgid "Values"
+msgstr "मानहरू"
 
 #. module: web
 #. odoo-javascript

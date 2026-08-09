@@ -21,10 +21,48 @@ msgid "Company"
 msgstr "कम्पनी"
 
 #. module: iap
+#: model:ir.model.fields,field_description:iap.field_iap_account__create_uid
+#: model:ir.model.fields,field_description:iap.field_iap_service__create_uid
+msgid "Created by"
+msgstr "सिर्जना गर्ने"
+
+#. module: iap
+#: model:ir.model.fields,field_description:iap.field_iap_account__create_date
+#: model:ir.model.fields,field_description:iap.field_iap_service__create_date
+msgid "Created on"
+msgstr "सिर्जना मिति"
+
+#. module: iap
 #: model:ir.model.fields,field_description:iap.field_iap_account__description
 #: model:ir.model.fields,field_description:iap.field_iap_service__description
 msgid "Description"
 msgstr "विवरण"
+
+#. module: iap
+#: model:ir.model.fields,field_description:iap.field_iap_account__display_name
+#: model:ir.model.fields,field_description:iap.field_iap_enrich_api__display_name
+#: model:ir.model.fields,field_description:iap.field_iap_service__display_name
+msgid "Display Name"
+msgstr "प्रदर्शन नाम"
+
+#. module: iap
+#: model:ir.model.fields,field_description:iap.field_iap_account__id
+#: model:ir.model.fields,field_description:iap.field_iap_enrich_api__id
+#: model:ir.model.fields,field_description:iap.field_iap_service__id
+msgid "ID"
+msgstr "आईडी"
+
+#. module: iap
+#: model:ir.model.fields,field_description:iap.field_iap_account__write_uid
+#: model:ir.model.fields,field_description:iap.field_iap_service__write_uid
+msgid "Last Updated by"
+msgstr "अन्तिम अद्यावधिक गर्ने"
+
+#. module: iap
+#: model:ir.model.fields,field_description:iap.field_iap_account__write_date
+#: model:ir.model.fields,field_description:iap.field_iap_service__write_date
+msgid "Last Updated on"
+msgstr "अन्तिम अद्यावधिक मिति"
 
 #. module: iap
 #: model:ir.model.fields,field_description:iap.field_iap_account__name

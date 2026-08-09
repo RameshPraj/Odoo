@@ -1,0 +1,1214 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0 (point_of_sale)\n"
+"Report-Msgid-Bugs-To: \n"
+"Language-Team: Nepali\n"
+"Language: ne\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: point_of_sale
+#: model:ir.model,name:point_of_sale.model_account_account
+#: model_terms:ir.ui.view,arch_db:point_of_sale.pos_payment_method_view_search
+msgid "Account"
+msgstr "खाता"
+
+#. module: point_of_sale
+#: model_terms:ir.ui.view,arch_db:point_of_sale.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:point_of_sale.view_pos_pos_form
+msgid "Accounting"
+msgstr "लेखा"
+
+#. module: point_of_sale
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_order__message_needaction
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_session__message_needaction
+msgid "Action Needed"
+msgstr "कार्य आवश्यक"
+
+#. module: point_of_sale
+#. odoo-javascript
+#: code:addons/point_of_sale/static/src/app/screens/product_screen/control_buttons/control_buttons.xml:0
+msgid "Actions"
+msgstr "कार्यहरू"
+
+#. module: point_of_sale
+#. odoo-javascript
+#: code:addons/point_of_sale/static/src/app/screens/ticket_screen/ticket_screen.js:0
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_config__active
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_payment_method__active
+msgid "Active"
+msgstr "सक्रिय"
+
+#. module: point_of_sale
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_session__activity_ids
+msgid "Activities"
+msgstr "गतिविधिहरू"
+
+#. module: point_of_sale
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_session__activity_exception_decoration
+msgid "Activity Exception Decoration"
+msgstr "गतिविधि अपवाद सजावट"
+
+#. module: point_of_sale
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_session__activity_state
+msgid "Activity State"
+msgstr "गतिविधि अवस्था"
+
+#. module: point_of_sale
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_session__activity_type_icon
+msgid "Activity Type Icon"
+msgstr "गतिविधि प्रकार आइकन"
+
+#. module: point_of_sale
+#. odoo-javascript
+#: code:addons/point_of_sale/static/src/app/components/popups/optional_products_popup/optional_products_popup.xml:0
+#: code:addons/point_of_sale/static/src/app/components/popups/product_configurator_popup/product_configurator_popup.xml:0
+msgid "Add"
+msgstr "थप्नुहोस्"
+
+#. module: point_of_sale
+#. odoo-javascript
+#: code:addons/point_of_sale/static/src/app/models/pos_order.js:0
+#: model:ir.model.fields.selection,name:point_of_sale.selection__pos_preset__identification__address
+msgid "Address"
+msgstr "ठेगाना"
+
+#. module: point_of_sale
+#. odoo-javascript
+#: code:addons/point_of_sale/static/src/app/components/popups/cash_move_popup/cash_move_popup.js:0
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_make_payment__amount
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_payment__amount
+msgid "Amount"
+msgstr "रकम"
+
+#. module: point_of_sale
+#. odoo-javascript
+#: code:addons/point_of_sale/static/src/app/components/popups/select_lot_popup/select_lot_popup.xml:0
+#: code:addons/point_of_sale/static/src/app/components/popups/text_input_popup/text_input_popup.xml:0
+msgid "Apply"
+msgstr "लागू गर्नुहोस्"
+
+#. module: point_of_sale
+#: model_terms:ir.ui.view,arch_db:point_of_sale.pos_config_view_form
+#: model_terms:ir.ui.view,arch_db:point_of_sale.pos_payment_method_view_form
+#: model_terms:ir.ui.view,arch_db:point_of_sale.pos_payment_method_view_search
+#: model_terms:ir.ui.view,arch_db:point_of_sale.view_pos_config_search
+msgid "Archived"
+msgstr "संग्रहित"
+
+#. module: point_of_sale
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_order__message_attachment_count
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_session__message_attachment_count
+msgid "Attachment Count"
+msgstr "संलग्न संख्या"
+
+#. module: point_of_sale
+#. odoo-javascript
+#: code:addons/point_of_sale/static/src/app/screens/payment_screen/payment_screen.xml:0
+msgid "Back"
+msgstr "पछाडि"
+
+#. module: point_of_sale
+#: model_terms:ir.ui.view,arch_db:point_of_sale.view_pos_config_tree
+msgid "Balance"
+msgstr "मौज्दात"
+
+#. module: point_of_sale
+#: model:ir.model.fields.selection,name:point_of_sale.selection__pos_payment_method__type__bank
+msgid "Bank"
+msgstr "बैंक"
+
+#. module: point_of_sale
+#. odoo-javascript
+#: code:addons/point_of_sale/static/src/app/utils/debug/debug_widget.xml:0
+#: model_terms:ir.ui.view,arch_db:point_of_sale.pos_session_sales_details
+msgid "Barcode"
+msgstr "बारकोड"
+
+#. module: point_of_sale
+#: model_terms:ir.ui.view,arch_db:point_of_sale.view_pos_bill_form
+#: model_terms:ir.ui.view,arch_db:point_of_sale.view_pos_bill_tree
+msgid "Bills"
+msgstr "बिलहरू"
+
+#. module: point_of_sale
+#. odoo-javascript
+#: code:addons/point_of_sale/static/src/app/screens/payment_screen/payment_lines/payment_lines.xml:0
+#: model_terms:ir.ui.view,arch_db:point_of_sale.view_confirm_action_wizard
+#: model_terms:ir.ui.view,arch_db:point_of_sale.view_form_pos_close_session_wizard
+#: model_terms:ir.ui.view,arch_db:point_of_sale.view_pos_daily_sales_reports_wizard
+#: model_terms:ir.ui.view,arch_db:point_of_sale.view_pos_details_wizard
+#: model_terms:ir.ui.view,arch_db:point_of_sale.view_pos_make_invoice
+#: model_terms:ir.ui.view,arch_db:point_of_sale.view_pos_payment
+msgid "Cancel"
+msgstr "रद्द गर्नुहोस्"
+
+#. module: point_of_sale
+#: model:ir.model.fields.selection,name:point_of_sale.selection__pos_order__state__cancel
+#: model:ir.model.fields.selection,name:point_of_sale.selection__report_pos_order__state__cancel
+#: model_terms:ir.ui.view,arch_db:point_of_sale.view_pos_order_filter
+msgid "Cancelled"
+msgstr "रद्द गरिएको"
+
+#. module: point_of_sale
+#. odoo-javascript
+#: code:addons/point_of_sale/static/src/app/components/category_selector/category_selector.xml:0
+#: model_terms:ir.ui.view,arch_db:point_of_sale.product_template_form_view
+#: model_terms:ir.ui.view,arch_db:point_of_sale.view_pos_category_kanban
+msgid "Category"
+msgstr "श्रेणी"
+
+#. module: point_of_sale
+#. odoo-javascript
+#: code:addons/point_of_sale/static/src/app/components/popups/product_info_popup/product_info_popup.xml:0
+#: code:addons/point_of_sale/static/src/app/components/tour_selector_popup/tour_selector_popup.xml:0
+#: code:addons/point_of_sale/static/src/app/customer_display/customer_display_qr_code_popup.xml:0
+#: code:addons/point_of_sale/static/src/app/screens/scale_screen/scale_screen.xml:0
+#: code:addons/point_of_sale/static/src/app/utils/debug/debug_widget.xml:0
+#: model_terms:ir.ui.view,arch_db:point_of_sale.view_pos_config_kanban
+msgid "Close"
+msgstr "बन्द गर्नुहोस्"
+
+#. module: point_of_sale
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_category__color
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_note__color
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_preset__color
+#: model_terms:ir.ui.view,arch_db:point_of_sale.product_template_form_view
+#: model_terms:ir.ui.view,arch_db:point_of_sale.product_template_view_form_normalized_pos
+msgid "Color"
+msgstr "रङ"
+
+#. module: point_of_sale
+#: model:ir.model,name:point_of_sale.model_res_company
+msgid "Companies"
+msgstr "कम्पनीहरू"
+
+#. module: point_of_sale
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_config__company_id
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_order__company_id
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_order_line__company_id
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_payment__company_id
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_payment_method__company_id
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_printer__company_id
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_session__company_id
+#: model:ir.model.fields,field_description:point_of_sale.field_report_pos_order__company_id
+msgid "Company"
+msgstr "कम्पनी"
+
+#. module: point_of_sale
+#: model:ir.model,name:point_of_sale.model_res_config_settings
+msgid "Config Settings"
+msgstr "कन्फिग सेटिङहरू"
+
+#. module: point_of_sale
+#: model:ir.ui.menu,name:point_of_sale.menu_point_config_product
+#: model_terms:ir.ui.view,arch_db:point_of_sale.pos_config_view_form
+msgid "Configuration"
+msgstr "कन्फिगरेसन"
+
+#. module: point_of_sale
+#. odoo-javascript
+#: code:addons/point_of_sale/static/src/app/components/popups/cash_move_popup/cash_move_popup.xml:0
+#: code:addons/point_of_sale/static/src/app/components/popups/date_picker_popup/date_picker_popup.js:0
+#: code:addons/point_of_sale/static/src/app/components/popups/money_details_popup/money_details_popup.xml:0
+#: code:addons/point_of_sale/static/src/app/components/popups/number_popup/number_popup.js:0
+#: code:addons/point_of_sale/static/src/app/components/tour_selector_popup/tour_selector_popup.xml:0
+#: model_terms:ir.ui.view,arch_db:point_of_sale.view_confirm_action_wizard
+msgid "Confirm"
+msgstr "पुष्टि गर्नुहोस्"
+
+#. module: point_of_sale
+#: model:ir.model,name:point_of_sale.model_res_partner
+msgid "Contact"
+msgstr "सम्पर्क"
+
+#. module: point_of_sale
+#. odoo-javascript
+#: code:addons/point_of_sale/static/src/app/components/popups/preset_slots_popup/preset_slots_popup.xml:0
+#: code:addons/point_of_sale/static/src/app/components/popups/retry_print_popup/retry_print_popup.xml:0
+msgid "Continue"
+msgstr "जारी राख्नुहोस्"
+
+#. module: point_of_sale
+#. odoo-javascript
+#: code:addons/point_of_sale/static/src/app/components/popups/closing_popup/closing_popup.xml:0
+msgid "Count"
+msgstr "गणना"
+
+#. module: point_of_sale
+#: model:ir.model,name:point_of_sale.model_res_country
+msgid "Country"
+msgstr "देश"
+
+#. module: point_of_sale
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_order__country_code
+msgid "Country Code"
+msgstr "देश कोड"
+
+#. module: point_of_sale
+#: model:ir.model,website_form_label:point_of_sale.model_res_partner
+msgid "Create a Customer"
+msgstr "ग्राहक सिर्जना गर्नुहोस्"
+
+#. module: point_of_sale
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_bill__create_uid
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_category__create_uid
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_close_session_wizard__create_uid
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_config__create_uid
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_confirmation_wizard__create_uid
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_daily_sales_reports_wizard__create_uid
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_details_wizard__create_uid
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_make_invoice__create_uid
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_make_payment__create_uid
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_note__create_uid
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_order__create_uid
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_order_line__create_uid
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_pack_operation_lot__create_uid
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_payment__create_uid
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_payment_method__create_uid
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_preset__create_uid
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_printer__create_uid
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_session__create_uid
+msgid "Created by"
+msgstr "सिर्जना गर्ने"
+
+#. module: point_of_sale
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_bill__create_date
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_category__create_date
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_close_session_wizard__create_date
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_config__create_date
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_confirmation_wizard__create_date
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_daily_sales_reports_wizard__create_date
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_details_wizard__create_date
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_make_invoice__create_date
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_make_payment__create_date
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_note__create_date
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_order__create_date
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_order_line__create_date
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_pack_operation_lot__create_date
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_payment__create_date
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_payment_method__create_date
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_preset__create_date
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_printer__create_date
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_session__create_date
+msgid "Created on"
+msgstr "सिर्जना मिति"
+
+#. module: point_of_sale
+#: model:ir.model,name:point_of_sale.model_res_currency
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_config__currency_id
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_order__currency_id
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_order_line__currency_id
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_payment__currency_id
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_session__currency_id
+msgid "Currency"
+msgstr "मुद्रा"
+
+#. module: point_of_sale
+#. odoo-javascript
+#. odoo-python
+#: code:addons/point_of_sale/models/pos_order.py:0
+#: code:addons/point_of_sale/static/src/app/models/pos_order.js:0
+#: code:addons/point_of_sale/static/src/app/screens/payment_screen/payment_screen.xml:0
+#: code:addons/point_of_sale/static/src/app/screens/product_screen/control_buttons/select_partner_button/select_partner_button.xml:0
+#: code:addons/point_of_sale/static/src/app/screens/ticket_screen/ticket_screen.js:0
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_order__partner_id
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_payment__partner_id
+#: model:ir.model.fields,field_description:point_of_sale.field_report_pos_order__partner_id
+#: model_terms:ir.ui.view,arch_db:point_of_sale.view_pos_order_filter
+msgid "Customer"
+msgstr "ग्राहक"
+
+#. module: point_of_sale
+#: model:ir.ui.menu,name:point_of_sale.menu_point_of_sale_customer
+msgid "Customers"
+msgstr "ग्राहकहरू"
+
+#. module: point_of_sale
+#: model:ir.ui.menu,name:point_of_sale.menu_pos_dashboard
+msgid "Dashboard"
+msgstr "ड्यासबोर्ड"
+
+#. module: point_of_sale
+#. odoo-javascript
+#: code:addons/point_of_sale/static/src/app/screens/ticket_screen/ticket_screen.js:0
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_order__date_order
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_payment__payment_date
+#: model_terms:ir.ui.view,arch_db:point_of_sale.ticket_request_with_code
+msgid "Date"
+msgstr "मिति"
+
+#. module: point_of_sale
+#: model_terms:ir.ui.view,arch_db:point_of_sale.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:point_of_sale.view_pos_preset_form
+msgid "Default"
+msgstr "पूर्वनिर्धारित"
+
+#. module: point_of_sale
+#. odoo-javascript
+#: code:addons/point_of_sale/static/src/app/screens/payment_screen/payment_lines/payment_lines.xml:0
+msgid "Delete"
+msgstr "मेटाउनुहोस्"
+
+#. module: point_of_sale
+#. odoo-javascript
+#: code:addons/point_of_sale/static/src/app/components/popups/product_info_popup/product_info_popup.xml:0
+#: model:ir.model.fields,field_description:point_of_sale.field_product_tag__pos_description
+#: model_terms:ir.ui.view,arch_db:point_of_sale.product_template_form_view
+msgid "Description"
+msgstr "विवरण"
+
+#. module: point_of_sale
+#. odoo-javascript
+#: code:addons/point_of_sale/static/src/app/components/popups/cash_move_popup/cash_move_list_popup/cash_move_list_popup.xml:0
+#: code:addons/point_of_sale/static/src/app/components/popups/cash_move_popup/cash_move_popup.xml:0
+#: code:addons/point_of_sale/static/src/app/components/popups/closing_popup/closing_popup.js:0
+#: code:addons/point_of_sale/static/src/app/components/popups/closing_popup/closing_popup.xml:0
+#: code:addons/point_of_sale/static/src/app/components/popups/number_popup/number_popup.xml:0
+#: code:addons/point_of_sale/static/src/app/components/popups/opening_control_popup/opening_control_popup.xml:0
+#: code:addons/point_of_sale/static/src/app/components/popups/optional_products_popup/optional_products_popup.xml:0
+#: code:addons/point_of_sale/static/src/app/components/popups/product_configurator_popup/product_configurator_popup.xml:0
+#: code:addons/point_of_sale/static/src/app/components/popups/select_lot_popup/select_lot_popup.xml:0
+#: code:addons/point_of_sale/static/src/app/components/popups/sync_popup/sync_popup.xml:0
+#: code:addons/point_of_sale/static/src/app/components/popups/text_input_popup/text_input_popup.xml:0
+#: code:addons/point_of_sale/static/src/app/screens/partner_list/partner_list.xml:0
+#: model_terms:ir.ui.view,arch_db:point_of_sale.pos_config_view_form
+msgid "Discard"
+msgstr "खारेज गर्नुहोस्"
+
+#. module: point_of_sale
+#: model:ir.model.fields,field_description:point_of_sale.field_account_account__display_name
+#: model:ir.model.fields,field_description:point_of_sale.field_account_bank_statement_line__display_name
+#: model:ir.model.fields,field_description:point_of_sale.field_account_cash_rounding__display_name
+#: model:ir.model.fields,field_description:point_of_sale.field_account_fiscal_position__display_name
+#: model:ir.model.fields,field_description:point_of_sale.field_account_journal__display_name
+#: model:ir.model.fields,field_description:point_of_sale.field_account_move__display_name
+#: model:ir.model.fields,field_description:point_of_sale.field_account_move_line__display_name
+#: model:ir.model.fields,field_description:point_of_sale.field_account_payment__display_name
+#: model:ir.model.fields,field_description:point_of_sale.field_account_tax__display_name
+#: model:ir.model.fields,field_description:point_of_sale.field_account_tax_group__display_name
+#: model:ir.model.fields,field_description:point_of_sale.field_barcode_rule__display_name
+#: model:ir.model.fields,field_description:point_of_sale.field_decimal_precision__display_name
+#: model:ir.model.fields,field_description:point_of_sale.field_digest_digest__display_name
+#: model:ir.model.fields,field_description:point_of_sale.field_ir_http__display_name
+#: model:ir.model.fields,field_description:point_of_sale.field_ir_module_module__display_name
+#: model:ir.model.fields,field_description:point_of_sale.field_ir_sequence__display_name
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_bill__display_name
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_bus_mixin__display_name
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_category__display_name
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_close_session_wizard__display_name
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_config__display_name
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_confirmation_wizard__display_name
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_daily_sales_reports_wizard__display_name
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_details_wizard__display_name
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_load_mixin__display_name
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_make_invoice__display_name
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_make_payment__display_name
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_note__display_name
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_order__display_name
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_order_line__display_name
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_pack_operation_lot__display_name
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_payment__display_name
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_payment_method__display_name
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_preset__display_name
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_printer__display_name
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_session__display_name
+#: model:ir.model.fields,field_description:point_of_sale.field_product_attribute__display_name
+#: model:ir.model.fields,field_description:point_of_sale.field_product_attribute_custom_value__display_name
+#: model:ir.model.fields,field_description:point_of_sale.field_product_category__display_name
+#: model:ir.model.fields,field_description:point_of_sale.field_product_combo__display_name
+#: model:ir.model.fields,field_description:point_of_sale.field_product_combo_item__display_name
+#: model:ir.model.fields,field_description:point_of_sale.field_product_pricelist__display_name
+#: model:ir.model.fields,field_description:point_of_sale.field_product_pricelist_item__display_name
+#: model:ir.model.fields,field_description:point_of_sale.field_product_product__display_name
+#: model:ir.model.fields,field_description:point_of_sale.field_product_removal__display_name
+#: model:ir.model.fields,field_description:point_of_sale.field_product_tag__display_name
+#: model:ir.model.fields,field_description:point_of_sale.field_product_template__display_name
+#: model:ir.model.fields,field_description:point_of_sale.field_product_template_attribute_exclusion__display_name
+#: model:ir.model.fields,field_description:point_of_sale.field_product_template_attribute_line__display_name
+#: model:ir.model.fields,field_description:point_of_sale.field_product_template_attribute_value__display_name
+#: model:ir.model.fields,field_description:point_of_sale.field_product_uom__display_name
+#: model:ir.model.fields,field_description:point_of_sale.field_report_point_of_sale_report_invoice__display_name
+#: model:ir.model.fields,field_description:point_of_sale.field_report_point_of_sale_report_saledetails__display_name
+#: model:ir.model.fields,field_description:point_of_sale.field_report_pos_order__display_name
+#: model:ir.model.fields,field_description:point_of_sale.field_res_company__display_name
+#: model:ir.model.fields,field_description:point_of_sale.field_res_config_settings__display_name
+#: model:ir.model.fields,field_description:point_of_sale.field_res_country__display_name
+#: model:ir.model.fields,field_description:point_of_sale.field_res_country_state__display_name
+#: model:ir.model.fields,field_description:point_of_sale.field_res_currency__display_name
+#: model:ir.model.fields,field_description:point_of_sale.field_res_lang__display_name
+#: model:ir.model.fields,field_description:point_of_sale.field_res_partner__display_name
+#: model:ir.model.fields,field_description:point_of_sale.field_res_users__display_name
+#: model:ir.model.fields,field_description:point_of_sale.field_resource_calendar_attendance__display_name
+#: model:ir.model.fields,field_description:point_of_sale.field_stock_move__display_name
+#: model:ir.model.fields,field_description:point_of_sale.field_stock_picking__display_name
+#: model:ir.model.fields,field_description:point_of_sale.field_stock_picking_type__display_name
+#: model:ir.model.fields,field_description:point_of_sale.field_stock_reference__display_name
+#: model:ir.model.fields,field_description:point_of_sale.field_stock_rule__display_name
+#: model:ir.model.fields,field_description:point_of_sale.field_stock_warehouse__display_name
+#: model:ir.model.fields,field_description:point_of_sale.field_uom_uom__display_name
+msgid "Display Name"
+msgstr "प्रदर्शन नाम"
+
+#. module: point_of_sale
+#. odoo-javascript
+#: code:addons/point_of_sale/static/src/app/components/popups/retry_print_popup/retry_print_popup.xml:0
+msgid "Download"
+msgstr "डाउनलोड गर्नुहोस्"
+
+#. module: point_of_sale
+#. odoo-javascript
+#: code:addons/point_of_sale/static/src/app/components/popups/product_info_popup/product_info_popup.xml:0
+msgid "Edit"
+msgstr "सम्पादन गर्नुहोस्"
+
+#. module: point_of_sale
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_order__email
+msgid "Email"
+msgstr "इमेल"
+
+#. module: point_of_sale
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_order__user_id
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_payment__user_id
+msgid "Employee"
+msgstr "कर्मचारी"
+
+#. module: point_of_sale
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_details_wizard__end_date
+msgid "End Date"
+msgstr "अन्त्य मिति"
+
+#. module: point_of_sale
+#. odoo-javascript
+#: code:addons/point_of_sale/static/src/app/components/popups/closing_popup/closing_popup.js:0
+#: code:addons/point_of_sale/static/src/app/screens/payment_screen/payment_screen.js:0
+#: code:addons/point_of_sale/static/src/app/services/pos_store.js:0
+#: code:addons/point_of_sale/static/src/app/services/printer_service.js:0
+msgid "Error"
+msgstr "त्रुटि"
+
+#. module: point_of_sale
+#: model:ir.model,name:point_of_sale.model_account_fiscal_position
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_order__fiscal_position_id
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_preset__fiscal_position_id
+msgid "Fiscal Position"
+msgstr "वित्तीय स्थिति"
+
+#. module: point_of_sale
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_order__message_follower_ids
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_session__message_follower_ids
+msgid "Followers"
+msgstr "अनुयायीहरू"
+
+#. module: point_of_sale
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_order__message_partner_ids
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_session__message_partner_ids
+msgid "Followers (Partners)"
+msgstr "अनुयायीहरू (साझेदारहरू)"
+
+#. module: point_of_sale
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_order__has_message
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_session__has_message
+msgid "Has Message"
+msgstr "सन्देश छ"
+
+#. module: point_of_sale
+#: model:ir.model.fields,field_description:point_of_sale.field_account_account__id
+#: model:ir.model.fields,field_description:point_of_sale.field_account_bank_statement_line__id
+#: model:ir.model.fields,field_description:point_of_sale.field_account_cash_rounding__id
+#: model:ir.model.fields,field_description:point_of_sale.field_account_fiscal_position__id
+#: model:ir.model.fields,field_description:point_of_sale.field_account_journal__id
+#: model:ir.model.fields,field_description:point_of_sale.field_account_move__id
+#: model:ir.model.fields,field_description:point_of_sale.field_account_move_line__id
+#: model:ir.model.fields,field_description:point_of_sale.field_account_payment__id
+#: model:ir.model.fields,field_description:point_of_sale.field_account_tax__id
+#: model:ir.model.fields,field_description:point_of_sale.field_account_tax_group__id
+#: model:ir.model.fields,field_description:point_of_sale.field_barcode_rule__id
+#: model:ir.model.fields,field_description:point_of_sale.field_decimal_precision__id
+#: model:ir.model.fields,field_description:point_of_sale.field_digest_digest__id
+#: model:ir.model.fields,field_description:point_of_sale.field_ir_http__id
+#: model:ir.model.fields,field_description:point_of_sale.field_ir_module_module__id
+#: model:ir.model.fields,field_description:point_of_sale.field_ir_sequence__id
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_bill__id
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_bus_mixin__id
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_category__id
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_close_session_wizard__id
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_config__id
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_confirmation_wizard__id
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_daily_sales_reports_wizard__id
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_details_wizard__id
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_load_mixin__id
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_make_invoice__id
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_make_payment__id
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_note__id
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_order__id
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_order_line__id
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_pack_operation_lot__id
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_payment__id
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_payment_method__id
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_preset__id
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_printer__id
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_session__id
+#: model:ir.model.fields,field_description:point_of_sale.field_product_attribute__id
+#: model:ir.model.fields,field_description:point_of_sale.field_product_attribute_custom_value__id
+#: model:ir.model.fields,field_description:point_of_sale.field_product_category__id
+#: model:ir.model.fields,field_description:point_of_sale.field_product_combo__id
+#: model:ir.model.fields,field_description:point_of_sale.field_product_combo_item__id
+#: model:ir.model.fields,field_description:point_of_sale.field_product_pricelist__id
+#: model:ir.model.fields,field_description:point_of_sale.field_product_pricelist_item__id
+#: model:ir.model.fields,field_description:point_of_sale.field_product_product__id
+#: model:ir.model.fields,field_description:point_of_sale.field_product_removal__id
+#: model:ir.model.fields,field_description:point_of_sale.field_product_tag__id
+#: model:ir.model.fields,field_description:point_of_sale.field_product_template__id
+#: model:ir.model.fields,field_description:point_of_sale.field_product_template_attribute_exclusion__id
+#: model:ir.model.fields,field_description:point_of_sale.field_product_template_attribute_line__id
+#: model:ir.model.fields,field_description:point_of_sale.field_product_template_attribute_value__id
+#: model:ir.model.fields,field_description:point_of_sale.field_product_uom__id
+#: model:ir.model.fields,field_description:point_of_sale.field_report_point_of_sale_report_invoice__id
+#: model:ir.model.fields,field_description:point_of_sale.field_report_point_of_sale_report_saledetails__id
+#: model:ir.model.fields,field_description:point_of_sale.field_report_pos_order__id
+#: model:ir.model.fields,field_description:point_of_sale.field_res_company__id
+#: model:ir.model.fields,field_description:point_of_sale.field_res_config_settings__id
+#: model:ir.model.fields,field_description:point_of_sale.field_res_country__id
+#: model:ir.model.fields,field_description:point_of_sale.field_res_country_state__id
+#: model:ir.model.fields,field_description:point_of_sale.field_res_currency__id
+#: model:ir.model.fields,field_description:point_of_sale.field_res_lang__id
+#: model:ir.model.fields,field_description:point_of_sale.field_res_partner__id
+#: model:ir.model.fields,field_description:point_of_sale.field_res_users__id
+#: model:ir.model.fields,field_description:point_of_sale.field_resource_calendar_attendance__id
+#: model:ir.model.fields,field_description:point_of_sale.field_stock_move__id
+#: model:ir.model.fields,field_description:point_of_sale.field_stock_picking__id
+#: model:ir.model.fields,field_description:point_of_sale.field_stock_picking_type__id
+#: model:ir.model.fields,field_description:point_of_sale.field_stock_reference__id
+#: model:ir.model.fields,field_description:point_of_sale.field_stock_rule__id
+#: model:ir.model.fields,field_description:point_of_sale.field_stock_warehouse__id
+#: model:ir.model.fields,field_description:point_of_sale.field_uom_uom__id
+msgid "ID"
+msgstr "आईडी"
+
+#. module: point_of_sale
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_session__activity_exception_icon
+msgid "Icon"
+msgstr "आइकन"
+
+#. module: point_of_sale
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_category__image_512
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_payment_method__image
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_preset__image_512
+msgid "Image"
+msgstr "तस्बिर"
+
+#. module: point_of_sale
+#: model:ir.model.fields.selection,name:point_of_sale.selection__pos_session__state__opened
+#: model_terms:ir.ui.view,arch_db:point_of_sale.view_pos_session_search
+msgid "In Progress"
+msgstr "प्रगतिमा"
+
+#. module: point_of_sale
+#. odoo-javascript
+#: code:addons/point_of_sale/static/src/app/screens/product_screen/control_buttons/control_buttons.xml:0
+msgid "Info"
+msgstr "जानकारी"
+
+#. module: point_of_sale
+#. odoo-javascript
+#: code:addons/point_of_sale/static/src/app/components/popups/product_info_popup/product_info_popup.xml:0
+#: code:addons/point_of_sale/static/src/app/components/product_info_banner/product_info_banner.xml:0
+#: model_terms:ir.ui.view,arch_db:point_of_sale.res_config_settings_view_form
+msgid "Inventory"
+msgstr "मौज्दात व्यवस्थापन"
+
+#. module: point_of_sale
+#. odoo-javascript
+#: code:addons/point_of_sale/static/src/app/screens/payment_screen/payment_screen.xml:0
+#: code:addons/point_of_sale/static/src/app/screens/ticket_screen/invoice_button/invoice_button.js:0
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_order__account_move
+#: model_terms:ir.ui.view,arch_db:point_of_sale.view_pos_pos_form
+msgid "Invoice"
+msgstr "बीजक"
+
+#. module: point_of_sale
+#: model_terms:ir.ui.view,arch_db:point_of_sale.pos_session_sales_details
+#: model_terms:ir.ui.view,arch_db:point_of_sale.res_config_settings_view_form
+msgid "Invoices"
+msgstr "बीजकहरू"
+
+#. module: point_of_sale
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_order__message_is_follower
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_session__message_is_follower
+msgid "Is Follower"
+msgstr "अनुयायी हो"
+
+#. module: point_of_sale
+#: model:ir.model,name:point_of_sale.model_account_journal
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_payment_method__journal_id
+#: model:ir.model.fields,field_description:point_of_sale.field_report_pos_order__journal_id
+#: model_terms:ir.ui.view,arch_db:point_of_sale.pos_payment_method_view_search
+msgid "Journal"
+msgstr "जर्नल"
+
+#. module: point_of_sale
+#: model:ir.model,name:point_of_sale.model_account_move
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_session__move_id
+msgid "Journal Entry"
+msgstr "जर्नल प्रविष्टि"
+
+#. module: point_of_sale
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_payment__name
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_preset__name
+msgid "Label"
+msgstr "लेबल"
+
+#. module: point_of_sale
+#: model:ir.model,name:point_of_sale.model_res_lang
+msgid "Languages"
+msgstr "भाषाहरू"
+
+#. module: point_of_sale
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_bill__write_uid
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_category__write_uid
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_close_session_wizard__write_uid
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_config__write_uid
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_confirmation_wizard__write_uid
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_daily_sales_reports_wizard__write_uid
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_details_wizard__write_uid
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_make_invoice__write_uid
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_make_payment__write_uid
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_note__write_uid
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_order__write_uid
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_order_line__write_uid
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_pack_operation_lot__write_uid
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_payment__write_uid
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_payment_method__write_uid
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_preset__write_uid
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_printer__write_uid
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_session__write_uid
+msgid "Last Updated by"
+msgstr "अन्तिम अद्यावधिक गर्ने"
+
+#. module: point_of_sale
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_bill__write_date
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_category__write_date
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_close_session_wizard__write_date
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_config__write_date
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_confirmation_wizard__write_date
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_daily_sales_reports_wizard__write_date
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_details_wizard__write_date
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_make_invoice__write_date
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_make_payment__write_date
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_note__write_date
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_order__write_date
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_order_line__write_date
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_pack_operation_lot__write_date
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_payment__write_date
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_payment_method__write_date
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_preset__write_date
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_printer__write_date
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_session__write_date
+msgid "Last Updated on"
+msgstr "अन्तिम अद्यावधिक मिति"
+
+#. module: point_of_sale
+#. odoo-javascript
+#: code:addons/point_of_sale/static/src/app/screens/product_screen/product_screen.xml:0
+msgid "Loading..."
+msgstr "लोड हुँदैछ..."
+
+#. module: point_of_sale
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_confirmation_wizard__message
+msgid "Message"
+msgstr "सन्देश"
+
+#. module: point_of_sale
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_order__message_has_error
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_session__message_has_error
+msgid "Message Delivery error"
+msgstr "सन्देश पठाउन त्रुटि"
+
+#. module: point_of_sale
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_order__message_ids
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_session__message_ids
+msgid "Messages"
+msgstr "सन्देशहरू"
+
+#. module: point_of_sale
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_payment_method__name
+msgid "Method"
+msgstr "विधि"
+
+#. module: point_of_sale
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_order__mobile
+msgid "Mobile"
+msgstr "मोबाइल"
+
+#. module: point_of_sale
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_session__my_activity_date_deadline
+msgid "My Activity Deadline"
+msgstr "मेरो गतिविधि म्याद"
+
+#. module: point_of_sale
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_bill__name
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_note__name
+#: model:ir.model.fields.selection,name:point_of_sale.selection__pos_preset__identification__name
+#: model_terms:ir.ui.view,arch_db:point_of_sale.pos_session_sales_details
+#: model_terms:ir.ui.view,arch_db:point_of_sale.report_userlabel
+msgid "Name"
+msgstr "नाम"
+
+#. module: point_of_sale
+#. odoo-javascript
+#: code:addons/point_of_sale/static/src/app/screens/partner_list/partner_list.xml:0
+#: model:ir.model.fields.selection,name:point_of_sale.selection__pos_order__state__draft
+#: model:ir.model.fields.selection,name:point_of_sale.selection__report_pos_order__state__draft
+msgid "New"
+msgstr "नयाँ"
+
+#. module: point_of_sale
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_session__activity_calendar_event_id
+msgid "Next Activity Calendar Event"
+msgstr "अर्को गतिविधि पात्रो कार्यक्रम"
+
+#. module: point_of_sale
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_session__activity_date_deadline
+msgid "Next Activity Deadline"
+msgstr "अर्को गतिविधि म्याद"
+
+#. module: point_of_sale
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_session__activity_summary
+msgid "Next Activity Summary"
+msgstr "अर्को गतिविधि सारांश"
+
+#. module: point_of_sale
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_session__activity_type_id
+msgid "Next Activity Type"
+msgstr "अर्को गतिविधि प्रकार"
+
+#. module: point_of_sale
+#. odoo-javascript
+#: code:addons/point_of_sale/static/src/app/services/pos_store.js:0
+msgid "No"
+msgstr "होइन"
+
+#. module: point_of_sale
+#. odoo-javascript
+#: code:addons/point_of_sale/static/src/app/screens/product_screen/control_buttons/control_buttons.xml:0
+msgid "Note"
+msgstr "टिपोट"
+
+#. module: point_of_sale
+#: model_terms:ir.ui.view,arch_db:point_of_sale.res_config_settings_view_form
+msgid "Notes"
+msgstr "टिपोटहरू"
+
+#. module: point_of_sale
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_order__message_needaction_counter
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_session__message_needaction_counter
+msgid "Number of Actions"
+msgstr "कार्यहरूको संख्या"
+
+#. module: point_of_sale
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_order__message_has_error_counter
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_session__message_has_error_counter
+msgid "Number of errors"
+msgstr "त्रुटिहरूको संख्या"
+
+#. module: point_of_sale
+#. odoo-javascript
+#: code:addons/point_of_sale/static/src/app/components/popups/product_info_popup/product_info_popup.xml:0
+#: code:addons/point_of_sale/static/src/app/screens/scale_screen/scale_screen.xml:0
+#: code:addons/point_of_sale/static/src/app/store/order_change_receipt_template.xml:0
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_payment__pos_order_id
+#: model:ir.model.fields,field_description:point_of_sale.field_report_pos_order__order_id
+msgid "Order"
+msgstr "क्रम"
+
+#. module: point_of_sale
+#: model:ir.model.fields,field_description:point_of_sale.field_report_pos_order__date
+#: model_terms:ir.ui.view,arch_db:point_of_sale.view_pos_order_filter
+#: model_terms:ir.ui.view,arch_db:point_of_sale.view_report_pos_order_search
+msgid "Order Date"
+msgstr "अर्डर मिति"
+
+#. module: point_of_sale
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_order__lines
+msgid "Order Lines"
+msgstr "अर्डर पङ्क्तिहरू"
+
+#. module: point_of_sale
+#. odoo-javascript
+#. odoo-python
+#: code:addons/point_of_sale/models/pos_session.py:0
+#: code:addons/point_of_sale/static/src/app/components/navbar/navbar.xml:0
+#: model:ir.actions.act_window,name:point_of_sale.action_pos_order_filtered
+#: model:ir.actions.act_window,name:point_of_sale.action_pos_pos_form
+#: model:ir.actions.act_window,name:point_of_sale.action_pos_sale_graph
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_session__order_ids
+#: model:ir.ui.menu,name:point_of_sale.menu_point_of_sale
+#: model:ir.ui.menu,name:point_of_sale.menu_point_ofsale
+#: model:ir.ui.menu,name:point_of_sale.menu_report_pos_order_all
+#: model_terms:ir.ui.view,arch_db:point_of_sale.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:point_of_sale.view_pos_config_kanban
+#: model_terms:ir.ui.view,arch_db:point_of_sale.view_pos_session_form
+msgid "Orders"
+msgstr "अर्डरहरू"
+
+#. module: point_of_sale
+#. odoo-javascript
+#: code:addons/point_of_sale/static/src/app/screens/ticket_screen/ticket_screen.js:0
+#: code:addons/point_of_sale/static/src/app/utils/debug/debug_widget.xml:0
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_order__amount_paid
+#: model:ir.model.fields.selection,name:point_of_sale.selection__pos_order__state__paid
+#: model:ir.model.fields.selection,name:point_of_sale.selection__report_pos_order__state__paid
+msgid "Paid"
+msgstr "भुक्तानी भएको"
+
+#. module: point_of_sale
+#. odoo-javascript
+#. odoo-python
+#: code:addons/point_of_sale/static/src/app/screens/product_screen/product_screen.xml:0
+#: code:addons/point_of_sale/static/src/app/screens/ticket_screen/ticket_screen.js:0
+#: code:addons/point_of_sale/wizard/pos_payment.py:0
+#: model:ir.actions.act_window,name:point_of_sale.action_pos_payment
+#: model_terms:ir.ui.view,arch_db:point_of_sale.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:point_of_sale.view_pos_pos_form
+msgid "Payment"
+msgstr "भुक्तानी"
+
+#. module: point_of_sale
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_make_payment__payment_method_id
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_payment__payment_method_id
+#: model:ir.model.fields,field_description:point_of_sale.field_report_pos_order__payment_method_id
+#: model_terms:ir.ui.view,arch_db:point_of_sale.view_pos_payment_search
+#: model_terms:ir.ui.view,arch_db:point_of_sale.view_report_pos_order_search
+msgid "Payment Method"
+msgstr "भुक्तानी विधि"
+
+#. module: point_of_sale
+#. odoo-python
+#: code:addons/point_of_sale/models/pos_session.py:0
+#: model:ir.actions.act_window,name:point_of_sale.action_pos_payment_form
+#: model:ir.model,name:point_of_sale.model_account_payment
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_order__payment_ids
+#: model:ir.ui.menu,name:point_of_sale.menu_pos_payment
+#: model_terms:ir.ui.view,arch_db:point_of_sale.pos_session_sales_details
+#: model_terms:ir.ui.view,arch_db:point_of_sale.view_pos_payment_form
+#: model_terms:ir.ui.view,arch_db:point_of_sale.view_pos_payment_search
+#: model_terms:ir.ui.view,arch_db:point_of_sale.view_pos_payment_tree
+#: model_terms:ir.ui.view,arch_db:point_of_sale.view_pos_pos_form
+#: model_terms:ir.ui.view,arch_db:point_of_sale.view_pos_session_form
+msgid "Payments"
+msgstr "भुक्तानीहरू"
+
+#. module: point_of_sale
+#. odoo-python
+#: code:addons/point_of_sale/models/account_journal.py:0
+#: model:ir.actions.act_window,name:point_of_sale.action_pos_config_kanban
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_config__name
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_order__config_id
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_payment_method__config_ids
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_session__config_id
+#: model:ir.model.fields,field_description:point_of_sale.field_report_pos_order__config_id
+#: model:ir.model.fields,field_description:point_of_sale.field_res_config_settings__pos_config_id
+#: model:ir.model.fields.selection,name:point_of_sale.selection__pos_order__source__pos
+#: model:ir.ui.menu,name:point_of_sale.menu_point_root
+#: model:res.groups.privilege,name:point_of_sale.res_groups_privilege_point_of_sale
+#: model_terms:ir.ui.view,arch_db:point_of_sale.digest_digest_view_form
+#: model_terms:ir.ui.view,arch_db:point_of_sale.pos_payment_method_view_search
+#: model_terms:ir.ui.view,arch_db:point_of_sale.product_tag_form_view_inherit_point_of_sale
+#: model_terms:ir.ui.view,arch_db:point_of_sale.product_template_form_view
+#: model_terms:ir.ui.view,arch_db:point_of_sale.product_template_search_view_pos
+#: model_terms:ir.ui.view,arch_db:point_of_sale.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:point_of_sale.view_pos_order_filter
+#: model_terms:ir.ui.view,arch_db:point_of_sale.view_pos_session_search
+#: model_terms:ir.ui.view,arch_db:point_of_sale.view_report_pos_order_search
+msgid "Point of Sale"
+msgstr "बिक्री केन्द्र"
+
+#. module: point_of_sale
+#: model:ir.model.fields.selection,name:point_of_sale.selection__pos_order__state__done
+#: model:ir.model.fields.selection,name:point_of_sale.selection__report_pos_order__state__done
+#: model_terms:ir.ui.view,arch_db:point_of_sale.view_pos_order_filter
+msgid "Posted"
+msgstr "पोस्ट गरिएको"
+
+#. module: point_of_sale
+#. odoo-javascript
+#: code:addons/point_of_sale/static/src/app/screens/product_screen/product_screen.js:0
+#: code:addons/point_of_sale/static/src/app/screens/ticket_screen/ticket_screen.js:0
+msgid "Price"
+msgstr "मूल्य"
+
+#. module: point_of_sale
+#. odoo-javascript
+#: code:addons/point_of_sale/static/src/app/components/navbar/sale_details_button/sale_details_button.xml:0
+#: model:ir.model.fields,field_description:point_of_sale.field_res_company__point_of_sale_ticket_portal_url_display_mode
+#: model:ir.model.fields,field_description:point_of_sale.field_res_config_settings__point_of_sale_ticket_portal_url_display_mode
+#: model_terms:ir.ui.view,arch_db:point_of_sale.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:point_of_sale.view_pos_daily_sales_reports_wizard
+#: model_terms:ir.ui.view,arch_db:point_of_sale.view_pos_details_wizard
+msgid "Print"
+msgstr "छाप्नुहोस्"
+
+#. module: point_of_sale
+#: model:ir.model,name:point_of_sale.model_product_template
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_order_line__product_id
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_pack_operation_lot__product_id
+#: model:ir.model.fields,field_description:point_of_sale.field_report_pos_order__product_id
+#: model_terms:ir.ui.view,arch_db:point_of_sale.view_pos_order_filter
+#: model_terms:ir.ui.view,arch_db:point_of_sale.view_report_pos_order_search
+msgid "Product"
+msgstr "उत्पादन"
+
+#. module: point_of_sale
+#: model:ir.model,name:point_of_sale.model_product_category
+#: model:ir.model.fields,field_description:point_of_sale.field_report_pos_order__product_categ_id
+#: model_terms:ir.ui.view,arch_db:point_of_sale.view_report_pos_order_search
+msgid "Product Category"
+msgstr "उत्पादन श्रेणी"
+
+#. module: point_of_sale
+#: model:ir.model.fields,field_description:point_of_sale.field_report_pos_order__product_tmpl_id
+msgid "Product Template"
+msgstr "उत्पादन ढाँचा"
+
+#. module: point_of_sale
+#. odoo-javascript
+#: code:addons/point_of_sale/static/src/app/screens/product_screen/product_screen.xml:0
+#: model:ir.actions.act_window,name:point_of_sale.product_template_action_pos_product
+#: model:ir.ui.menu,name:point_of_sale.menu_pos_products
+#: model:ir.ui.menu,name:point_of_sale.pos_config_menu_catalog
+#: model:ir.ui.menu,name:point_of_sale.pos_menu_products_configuration
+#: model_terms:ir.ui.view,arch_db:point_of_sale.view_pos_pos_form
+msgid "Products"
+msgstr "उत्पादनहरू"
+
+#. module: point_of_sale
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_order_line__qty
+msgid "Quantity"
+msgstr "परिमाण"
+
+#. module: point_of_sale
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_order__rating_ids
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_session__rating_ids
+msgid "Ratings"
+msgstr "मूल्याङ्कनहरू"
+
+#. module: point_of_sale
+#. odoo-javascript
+#: code:addons/point_of_sale/static/src/app/screens/ticket_screen/ticket_screen.js:0
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_order__stock_reference_ids
+msgid "Reference"
+msgstr "सन्दर्भ"
+
+#. module: point_of_sale
+#. odoo-javascript
+#: code:addons/point_of_sale/static/src/app/utils/debug/debug_widget.xml:0
+msgid "Refresh"
+msgstr "ताजा गर्नुहोस्"
+
+#. module: point_of_sale
+#: model:ir.ui.menu,name:point_of_sale.menu_point_rep
+msgid "Reporting"
+msgstr "प्रतिवेदन"
+
+#. module: point_of_sale
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_session__activity_user_id
+msgid "Responsible User"
+msgstr "जिम्मेवार प्रयोगकर्ता"
+
+#. module: point_of_sale
+#. odoo-javascript
+#: code:addons/point_of_sale/static/src/app/components/popups/retry_print_popup/retry_print_popup.xml:0
+#: code:addons/point_of_sale/static/src/app/screens/payment_screen/payment_lines/payment_lines.xml:0
+msgid "Retry"
+msgstr "पुनः प्रयास गर्नुहोस्"
+
+#. module: point_of_sale
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_order__message_has_sms_error
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_session__message_has_sms_error
+msgid "SMS Delivery error"
+msgstr "एसएमएस पठाउन त्रुटि"
+
+#. module: point_of_sale
+#. odoo-python
+#: code:addons/point_of_sale/models/pos_session.py:0
+#: model_terms:ir.ui.view,arch_db:point_of_sale.pos_session_sales_details
+msgid "Sales"
+msgstr "बिक्री"
+
+#. module: point_of_sale
+#: model_terms:ir.ui.view,arch_db:point_of_sale.pos_config_view_form
+msgid "Save"
+msgstr "सुरक्षित गर्नुहोस्"
+
+#. module: point_of_sale
+#. odoo-javascript
+#: code:addons/point_of_sale/static/src/app/components/popups/selection_popup/selection_popup.js:0
+msgid "Select"
+msgstr "छान्नुहोस्"
+
+#. module: point_of_sale
+#. odoo-javascript
+#: code:addons/point_of_sale/static/src/app/screens/payment_screen/payment_lines/payment_lines.xml:0
+msgid "Send"
+msgstr "पठाउनुहोस्"
+
+#. module: point_of_sale
+#: model:ir.model,name:point_of_sale.model_ir_sequence
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_category__sequence
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_note__sequence
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_payment_method__sequence
+msgid "Sequence"
+msgstr "क्रम"
+
+#. module: point_of_sale
+#: model:ir.actions.act_window,name:point_of_sale.action_pos_configuration
+#: model:ir.ui.menu,name:point_of_sale.menu_pos_global_settings
+msgid "Settings"
+msgstr "सेटिङहरू"
+
+#. module: point_of_sale
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_details_wizard__start_date
+msgid "Start Date"
+msgstr "सुरु मिति"
+
+#. module: point_of_sale
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_order__state
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_session__state
+#: model:ir.model.fields,field_description:point_of_sale.field_report_pos_order__state
+#: model_terms:ir.ui.view,arch_db:point_of_sale.view_pos_order_filter
+#: model_terms:ir.ui.view,arch_db:point_of_sale.view_pos_session_search
+msgid "Status"
+msgstr "स्थिति"
+
+#. module: point_of_sale
+#. odoo-javascript
+#: code:addons/point_of_sale/static/src/app/components/navbar/navbar.xml:0
+msgid "Stop"
+msgstr "रोक्नुहोस्"
+
+#. module: point_of_sale
+#. odoo-javascript
+#: code:addons/point_of_sale/static/src/app/components/order_display/order_display.xml:0
+#: code:addons/point_of_sale/static/src/app/screens/receipt_screen/receipt/order_receipt.xml:0
+#: code:addons/point_of_sale/static/src/customer_display/customer_display.xml:0
+msgid "Subtotal"
+msgstr "उप-जम्मा"
+
+#. module: point_of_sale
+#. odoo-javascript
+#: code:addons/point_of_sale/static/src/app/screens/product_screen/control_buttons/control_buttons.xml:0
+#: model:ir.model,name:point_of_sale.model_account_tax
+msgid "Tax"
+msgstr "कर"
+
+#. module: point_of_sale
+#. odoo-javascript
+#: code:addons/point_of_sale/static/src/app/components/order_display/order_display.xml:0
+#: code:addons/point_of_sale/static/src/customer_display/customer_display.xml:0
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_order__amount_tax
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_order_line__tax_ids
+#: model:ir.ui.menu,name:point_of_sale.menu_action_tax_form_open
+#: model_terms:ir.ui.view,arch_db:point_of_sale.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:point_of_sale.view_pos_pos_form
+msgid "Taxes"
+msgstr "करहरू"
+
+#. module: point_of_sale
+#. odoo-javascript
+#: code:addons/point_of_sale/static/src/app/services/pos_store.js:0
+msgid "Today"
+msgstr "आज"
+
+#. module: point_of_sale
+#. odoo-javascript
+#: code:addons/point_of_sale/static/src/app/components/order_display/order_display.xml:0
+#: code:addons/point_of_sale/static/src/app/components/popups/money_details_popup/money_details_popup.xml:0
+#: code:addons/point_of_sale/static/src/app/screens/receipt_screen/receipt/order_receipt.xml:0
+#: code:addons/point_of_sale/static/src/customer_display/customer_display.xml:0
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_order__amount_total
+#: model_terms:ir.ui.view,arch_db:point_of_sale.pos_session_sales_details
+msgid "Total"
+msgstr "जम्मा"
+
+#. module: point_of_sale
+#: model:ir.model.fields,field_description:point_of_sale.field_barcode_rule__type
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_payment_method__type
+msgid "Type"
+msgstr "प्रकार"
+
+#. module: point_of_sale
+#: model:ir.model.fields.selection,name:point_of_sale.selection__res_company__point_of_sale_ticket_portal_url_display_mode__url
+msgid "URL"
+msgstr "यूआरएल"
+
+#. module: point_of_sale
+#: model_terms:ir.ui.view,arch_db:point_of_sale.pos_session_sales_details
+msgid "Unit"
+msgstr "एकाइ"
+
+#. module: point_of_sale
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_order_line__price_unit
+msgid "Unit Price"
+msgstr "एकाइ मूल्य"
+
+#. module: point_of_sale
+#: model:ir.model,name:point_of_sale.model_res_users
+#: model:ir.model.fields,field_description:point_of_sale.field_report_pos_order__user_id
+#: model:res.groups,name:point_of_sale.group_pos_user
+#: model_terms:ir.ui.view,arch_db:point_of_sale.view_pos_order_filter
+#: model_terms:ir.ui.view,arch_db:point_of_sale.view_pos_pos_form
+#: model_terms:ir.ui.view,arch_db:point_of_sale.view_report_pos_order_search
+msgid "User"
+msgstr "प्रयोगकर्ता"
+
+#. module: point_of_sale
+#. odoo-javascript
+#: code:addons/point_of_sale/static/src/app/screens/receipt_screen/receipt/receipt_header/receipt_header.xml:0
+msgid "VAT"
+msgstr "मूल्य अभिवृद्धि कर"
+
+#. module: point_of_sale
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_bill__value
+msgid "Value"
+msgstr "मान"
+
+#. module: point_of_sale
+#: model_terms:ir.ui.view,arch_db:point_of_sale.product_combo_view_form
+msgid "Visible to all"
+msgstr "सबैलाई देखिने"
+
+#. module: point_of_sale
+#: model:ir.model,name:point_of_sale.model_stock_warehouse
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_config__warehouse_id
+#: model_terms:ir.ui.view,arch_db:point_of_sale.res_config_settings_view_form
+msgid "Warehouse"
+msgstr "गोदाम"
+
+#. module: point_of_sale
+#. odoo-python
+#: code:addons/point_of_sale/wizard/pos_make_invoice.py:0
+#: model_terms:ir.ui.view,arch_db:point_of_sale.view_confirm_action_wizard
+msgid "Warning"
+msgstr "चेतावनी"
+
+#. module: point_of_sale
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_order__website_message_ids
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_session__website_message_ids
+msgid "Website Messages"
+msgstr "वेबसाइट सन्देशहरू"
+
+#. module: point_of_sale
+#: model:ir.model.fields,help:point_of_sale.field_pos_order__website_message_ids
+#: model:ir.model.fields,help:point_of_sale.field_pos_session__website_message_ids
+msgid "Website communication history"
+msgstr "वेबसाइट सञ्चार इतिहास"
+
+#. module: point_of_sale
+#. odoo-javascript
+#: code:addons/point_of_sale/static/src/app/services/pos_store.js:0
+msgid "Yes"
+msgstr "हो"

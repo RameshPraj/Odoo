@@ -16,6 +16,13 @@ msgid "Back"
 msgstr "पछाडि"
 
 #. module: http_routing
+#: model:ir.model.fields,field_description:http_routing.field_ir_http__display_name
+#: model:ir.model.fields,field_description:http_routing.field_ir_qweb__display_name
+#: model:ir.model.fields,field_description:http_routing.field_res_lang__display_name
+msgid "Display Name"
+msgstr "प्रदर्शन नाम"
+
+#. module: http_routing
 #: model_terms:ir.ui.view,arch_db:http_routing.http_error_debug
 msgid "Error"
 msgstr "त्रुटि"
@@ -25,6 +32,13 @@ msgstr "त्रुटि"
 #: model_terms:ir.ui.view,arch_db:http_routing.500
 msgid "Home"
 msgstr "गृहपृष्ठ"
+
+#. module: http_routing
+#: model:ir.model.fields,field_description:http_routing.field_ir_http__id
+#: model:ir.model.fields,field_description:http_routing.field_ir_qweb__id
+#: model:ir.model.fields,field_description:http_routing.field_res_lang__id
+msgid "ID"
+msgstr "आईडी"
 
 #. module: http_routing
 #: model:ir.model,name:http_routing.model_res_lang

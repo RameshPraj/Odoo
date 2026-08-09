@@ -35,6 +35,13 @@ msgstr "ग्राहक"
 
 #. module: spreadsheet_dashboard_sale
 #. odoo-javascript
+#: code:addons/spreadsheet_dashboard_sale/data/files/sales_dashboard.json:0
+#: code:addons/spreadsheet_dashboard_sale/data/files/sales_sample_dashboard.json:0
+msgid "Medium"
+msgstr "माध्यम"
+
+#. module: spreadsheet_dashboard_sale
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_sale/data/files/product_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_sale/data/files/product_sample_dashboard.json:0
 msgid "Name"
@@ -68,3 +75,24 @@ msgstr "उत्पादन"
 #: model:spreadsheet.dashboard,name:spreadsheet_dashboard_sale.spreadsheet_dashboard_sales
 msgid "Sales"
 msgstr "बिक्री"
+
+#. module: spreadsheet_dashboard_sale
+#. odoo-javascript
+#: code:addons/spreadsheet_dashboard_sale/data/files/sales_dashboard.json:0
+#: code:addons/spreadsheet_dashboard_sale/data/files/sales_sample_dashboard.json:0
+msgid "Sales Team"
+msgstr "बिक्री टोली"
+
+#. module: spreadsheet_dashboard_sale
+#. odoo-javascript
+#: code:addons/spreadsheet_dashboard_sale/data/files/sales_dashboard.json:0
+#: code:addons/spreadsheet_dashboard_sale/data/files/sales_sample_dashboard.json:0
+msgid "Salesperson"
+msgstr "बिक्रेता"
+
+#. module: spreadsheet_dashboard_sale
+#. odoo-javascript
+#: code:addons/spreadsheet_dashboard_sale/data/files/sales_dashboard.json:0
+#: code:addons/spreadsheet_dashboard_sale/data/files/sales_sample_dashboard.json:0
+msgid "Source"
+msgstr "स्रोत"

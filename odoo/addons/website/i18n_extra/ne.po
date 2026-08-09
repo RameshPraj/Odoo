@@ -60,6 +60,13 @@ msgstr "ठेगाना"
 
 #. module: website
 #. odoo-javascript
+#: code:addons/website/static/src/builder/plugins/snippets_powerbox_plugin.js:0
+#: model_terms:ir.ui.view,arch_db:website.snippets
+msgid "Alert"
+msgstr "सचेतना"
+
+#. module: website
+#. odoo-javascript
 #: code:addons/website/static/src/builder/plugins/options/dynamic_snippet_carousel_option.xml:0
 msgid "All"
 msgstr "सबै"
@@ -113,6 +120,11 @@ msgid "Category"
 msgstr "श्रेणी"
 
 #. module: website
+#: model_terms:ir.ui.view,arch_db:website.s_mega_menu_menus_logos
+msgid "Children"
+msgstr "अन्तर्गतका"
+
+#. module: website
 #. odoo-javascript
 #: code:addons/website/static/src/client_actions/website_preview/create_page_message.xml:0
 #: code:addons/website/static/src/components/resource_editor/resource_editor.xml:0
@@ -127,6 +139,15 @@ msgstr "श्रेणी"
 #: model_terms:ir.ui.view,arch_db:website.template_header_mobile
 msgid "Close"
 msgstr "बन्द गर्नुहोस्"
+
+#. module: website
+#. odoo-javascript
+#: code:addons/website/static/src/builder/plugins/options/embed_code_option.xml:0
+#: code:addons/website/static/src/builder/plugins/options/footer_copyright_option.xml:0
+#: code:addons/website/static/src/builder/plugins/options/language_selector_option.xml:0
+#: model_terms:ir.ui.view,arch_db:website.res_config_settings_view_form
+msgid "Code"
+msgstr "कोड"
 
 #. module: website
 #. odoo-javascript
@@ -151,6 +172,11 @@ msgstr "कम्पनीहरू"
 #: model_terms:ir.ui.view,arch_db:website.template_footer_mega_cards
 msgid "Company"
 msgstr "कम्पनी"
+
+#. module: website
+#: model:ir.model,name:website.model_res_config_settings
+msgid "Config Settings"
+msgstr "कन्फिग सेटिङहरू"
 
 #. module: website
 #: model:ir.ui.menu,name:website.menu_website_global_configuration
@@ -189,6 +215,65 @@ msgid "Country"
 msgstr "देश"
 
 #. module: website
+#: model:ir.model,website_form_label:website.model_res_partner
+msgid "Create a Customer"
+msgstr "ग्राहक सिर्जना गर्नुहोस्"
+
+#. module: website
+#: model:ir.model.fields,field_description:website.field_theme_ir_asset__create_uid
+#: model:ir.model.fields,field_description:website.field_theme_ir_attachment__create_uid
+#: model:ir.model.fields,field_description:website.field_theme_ir_ui_view__create_uid
+#: model:ir.model.fields,field_description:website.field_theme_website_menu__create_uid
+#: model:ir.model.fields,field_description:website.field_theme_website_page__create_uid
+#: model:ir.model.fields,field_description:website.field_website__create_uid
+#: model:ir.model.fields,field_description:website.field_website_configurator_feature__create_uid
+#: model:ir.model.fields,field_description:website.field_website_controller_page__create_uid
+#: model:ir.model.fields,field_description:website.field_website_custom_blocked_third_party_domains__create_uid
+#: model:ir.model.fields,field_description:website.field_website_menu__create_uid
+#: model:ir.model.fields,field_description:website.field_website_page__create_uid
+#: model:ir.model.fields,field_description:website.field_website_page_properties__create_uid
+#: model:ir.model.fields,field_description:website.field_website_page_properties_base__create_uid
+#: model:ir.model.fields,field_description:website.field_website_rewrite__create_uid
+#: model:ir.model.fields,field_description:website.field_website_robots__create_uid
+#: model:ir.model.fields,field_description:website.field_website_route__create_uid
+#: model:ir.model.fields,field_description:website.field_website_snippet_filter__create_uid
+#: model:ir.model.fields,field_description:website.field_website_visitor__create_uid
+#: model_terms:ir.ui.view,arch_db:website.view_rewrite_search
+msgid "Created by"
+msgstr "सिर्जना गर्ने"
+
+#. module: website
+#: model:ir.model.fields,field_description:website.field_theme_ir_asset__create_date
+#: model:ir.model.fields,field_description:website.field_theme_ir_attachment__create_date
+#: model:ir.model.fields,field_description:website.field_theme_ir_ui_view__create_date
+#: model:ir.model.fields,field_description:website.field_theme_website_menu__create_date
+#: model:ir.model.fields,field_description:website.field_theme_website_page__create_date
+#: model:ir.model.fields,field_description:website.field_website__create_date
+#: model:ir.model.fields,field_description:website.field_website_configurator_feature__create_date
+#: model:ir.model.fields,field_description:website.field_website_controller_page__create_date
+#: model:ir.model.fields,field_description:website.field_website_custom_blocked_third_party_domains__create_date
+#: model:ir.model.fields,field_description:website.field_website_menu__create_date
+#: model:ir.model.fields,field_description:website.field_website_page__create_date
+#: model:ir.model.fields,field_description:website.field_website_page_properties__create_date
+#: model:ir.model.fields,field_description:website.field_website_page_properties_base__create_date
+#: model:ir.model.fields,field_description:website.field_website_rewrite__create_date
+#: model:ir.model.fields,field_description:website.field_website_robots__create_date
+#: model:ir.model.fields,field_description:website.field_website_route__create_date
+#: model:ir.model.fields,field_description:website.field_website_snippet_filter__create_date
+msgid "Created on"
+msgstr "सिर्जना मिति"
+
+#. module: website
+#. odoo-javascript
+#: code:addons/website/static/src/builder/plugins/options/accordion_option.xml:0
+#: code:addons/website/static/src/builder/plugins/options/card_image_option.xml:0
+#: code:addons/website/static/src/components/dialog/seo.xml:0
+#: model_terms:ir.ui.view,arch_db:website.new_page_template_groups
+#: model_terms:ir.ui.view,arch_db:website.snippets
+msgid "Custom"
+msgstr "अनुकूल"
+
+#. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_mega_menu_big_icons_subtitles
 #: model_terms:ir.ui.view,arch_db:website.s_mega_menu_cards
 #: model_terms:ir.ui.view,arch_db:website.s_mega_menu_images_subtitles
@@ -203,6 +288,23 @@ msgstr "ग्राहकहरू"
 #: model_terms:ir.ui.view,arch_db:website.website_visitor_page_view_search
 msgid "Date"
 msgstr "मिति"
+
+#. module: website
+#. odoo-javascript
+#: code:addons/website/static/src/builder/plugins/carousel_bottom_controllers_option.xml:0
+#: code:addons/website/static/src/builder/plugins/carousel_option.xml:0
+#: code:addons/website/static/src/builder/plugins/options/accordion_option.xml:0
+#: code:addons/website/static/src/builder/plugins/options/ecomm_categories_showcase_option.xml:0
+#: code:addons/website/static/src/builder/plugins/options/footer_option_plugin.js:0
+#: code:addons/website/static/src/builder/plugins/options/google_maps_option/google_maps_option.xml:0
+#: code:addons/website/static/src/builder/plugins/options/header/header_font_option.xml:0
+#: code:addons/website/static/src/builder/plugins/options/header/header_navigation_option.xml:0
+#: code:addons/website/static/src/builder/plugins/options/header/header_template_option.xml:0
+#: code:addons/website/static/src/builder/plugins/options/image_gallery_option.xml:0
+#: model_terms:ir.ui.view,arch_db:website.bs_debug_view
+#: model_terms:ir.ui.view,arch_db:website.res_config_settings_view_form
+msgid "Default"
+msgstr "पूर्वनिर्धारित"
 
 #. module: website
 #. odoo-javascript
@@ -242,6 +344,64 @@ msgstr "खारेज गर्नुहोस्"
 #: code:addons/website/static/src/builder/website_builder.js:0
 msgid "Discard changes"
 msgstr "परिवर्तनहरू खारेज गर्नुहोस्"
+
+#. module: website
+#: model:ir.model.fields,field_description:website.field_base_language_install__display_name
+#: model:ir.model.fields,field_description:website.field_base_partner_merge_automatic_wizard__display_name
+#: model:ir.model.fields,field_description:website.field_ir_actions_server__display_name
+#: model:ir.model.fields,field_description:website.field_ir_asset__display_name
+#: model:ir.model.fields,field_description:website.field_ir_attachment__display_name
+#: model:ir.model.fields,field_description:website.field_ir_binary__display_name
+#: model:ir.model.fields,field_description:website.field_ir_http__display_name
+#: model:ir.model.fields,field_description:website.field_ir_model__display_name
+#: model:ir.model.fields,field_description:website.field_ir_model_data__display_name
+#: model:ir.model.fields,field_description:website.field_ir_model_fields__display_name
+#: model:ir.model.fields,field_description:website.field_ir_module_module__display_name
+#: model:ir.model.fields,field_description:website.field_ir_qweb__display_name
+#: model:ir.model.fields,field_description:website.field_ir_qweb_field_contact__display_name
+#: model:ir.model.fields,field_description:website.field_ir_qweb_field_html__display_name
+#: model:ir.model.fields,field_description:website.field_ir_rule__display_name
+#: model:ir.model.fields,field_description:website.field_ir_ui_menu__display_name
+#: model:ir.model.fields,field_description:website.field_ir_ui_view__display_name
+#: model:ir.model.fields,field_description:website.field_portal_wizard_user__display_name
+#: model:ir.model.fields,field_description:website.field_res_company__display_name
+#: model:ir.model.fields,field_description:website.field_res_config_settings__display_name
+#: model:ir.model.fields,field_description:website.field_res_lang__display_name
+#: model:ir.model.fields,field_description:website.field_res_partner__display_name
+#: model:ir.model.fields,field_description:website.field_res_users__display_name
+#: model:ir.model.fields,field_description:website.field_theme_ir_asset__display_name
+#: model:ir.model.fields,field_description:website.field_theme_ir_attachment__display_name
+#: model:ir.model.fields,field_description:website.field_theme_ir_ui_view__display_name
+#: model:ir.model.fields,field_description:website.field_theme_utils__display_name
+#: model:ir.model.fields,field_description:website.field_theme_website_menu__display_name
+#: model:ir.model.fields,field_description:website.field_theme_website_page__display_name
+#: model:ir.model.fields,field_description:website.field_website__display_name
+#: model:ir.model.fields,field_description:website.field_website_assets__display_name
+#: model:ir.model.fields,field_description:website.field_website_configurator_feature__display_name
+#: model:ir.model.fields,field_description:website.field_website_controller_page__display_name
+#: model:ir.model.fields,field_description:website.field_website_cover_properties_mixin__display_name
+#: model:ir.model.fields,field_description:website.field_website_custom_blocked_third_party_domains__display_name
+#: model:ir.model.fields,field_description:website.field_website_html_text_processor__display_name
+#: model:ir.model.fields,field_description:website.field_website_menu__display_name
+#: model:ir.model.fields,field_description:website.field_website_multi_mixin__display_name
+#: model:ir.model.fields,field_description:website.field_website_page__display_name
+#: model:ir.model.fields,field_description:website.field_website_page_options_mixin__display_name
+#: model:ir.model.fields,field_description:website.field_website_page_properties__display_name
+#: model:ir.model.fields,field_description:website.field_website_page_properties_base__display_name
+#: model:ir.model.fields,field_description:website.field_website_page_visibility_options_mixin__display_name
+#: model:ir.model.fields,field_description:website.field_website_published_mixin__display_name
+#: model:ir.model.fields,field_description:website.field_website_published_multi_mixin__display_name
+#: model:ir.model.fields,field_description:website.field_website_rewrite__display_name
+#: model:ir.model.fields,field_description:website.field_website_robots__display_name
+#: model:ir.model.fields,field_description:website.field_website_route__display_name
+#: model:ir.model.fields,field_description:website.field_website_searchable_mixin__display_name
+#: model:ir.model.fields,field_description:website.field_website_seo_metadata__display_name
+#: model:ir.model.fields,field_description:website.field_website_snippet_filter__display_name
+#: model:ir.model.fields,field_description:website.field_website_technical_page__display_name
+#: model:ir.model.fields,field_description:website.field_website_track__display_name
+#: model:ir.model.fields,field_description:website.field_website_visitor__display_name
+msgid "Display Name"
+msgstr "प्रदर्शन नाम"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.template_footer_links
@@ -295,11 +455,29 @@ msgstr "त्रुटि"
 
 #. module: website
 #. odoo-javascript
+#: code:addons/website/static/src/builder/plugins/form/utils.js:0
+msgid "Field"
+msgstr "फिल्ड"
+
+#. module: website
+#: model:ir.model,name:website.model_ir_model_fields
+msgid "Fields"
+msgstr "फिल्डहरू"
+
+#. module: website
+#. odoo-javascript
 #: code:addons/website/static/src/builder/plugins/options/dynamic_snippet_option.xml:0
 #: code:addons/website/static/src/components/resource_editor/resource_editor.xml:0
 #: model:ir.model.fields,field_description:website.field_website_snippet_filter__filter_id
 msgid "Filter"
 msgstr "फिल्टर"
+
+#. module: website
+#. odoo-javascript
+#: code:addons/website/static/src/builder/plugins/options/header/header_font_option.xml:0
+#: code:addons/website/static/src/components/resource_editor/resource_editor.xml:0
+msgid "Format"
+msgstr "ढाँचा"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.bs_debug_view
@@ -312,6 +490,15 @@ msgstr "समूह"
 #: model:ir.model.fields,field_description:website.field_website_page_properties__group_ids
 msgid "Groups"
 msgstr "समूहहरू"
+
+#. module: website
+#. odoo-javascript
+#: code:addons/website/static/src/builder/plugins/form/form_option.xml:0
+#: code:addons/website/static/src/builder/plugins/options/navbar_logo_option.xml:0
+#: code:addons/website/static/src/builder/plugins/options/scroll_button_option.js:0
+#: code:addons/website/static/src/builder/plugins/options/scroll_button_option.xml:0
+msgid "Height"
+msgstr "उचाइ"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.template_footer_mega_cards
@@ -342,6 +529,71 @@ msgid "Home"
 msgstr "गृहपृष्ठ"
 
 #. module: website
+#: model:ir.model.fields,field_description:website.field_base_language_install__id
+#: model:ir.model.fields,field_description:website.field_base_partner_merge_automatic_wizard__id
+#: model:ir.model.fields,field_description:website.field_ir_actions_server__id
+#: model:ir.model.fields,field_description:website.field_ir_asset__id
+#: model:ir.model.fields,field_description:website.field_ir_attachment__id
+#: model:ir.model.fields,field_description:website.field_ir_binary__id
+#: model:ir.model.fields,field_description:website.field_ir_http__id
+#: model:ir.model.fields,field_description:website.field_ir_model__id
+#: model:ir.model.fields,field_description:website.field_ir_model_data__id
+#: model:ir.model.fields,field_description:website.field_ir_model_fields__id
+#: model:ir.model.fields,field_description:website.field_ir_module_module__id
+#: model:ir.model.fields,field_description:website.field_ir_qweb__id
+#: model:ir.model.fields,field_description:website.field_ir_qweb_field_contact__id
+#: model:ir.model.fields,field_description:website.field_ir_qweb_field_html__id
+#: model:ir.model.fields,field_description:website.field_ir_rule__id
+#: model:ir.model.fields,field_description:website.field_ir_ui_menu__id
+#: model:ir.model.fields,field_description:website.field_ir_ui_view__id
+#: model:ir.model.fields,field_description:website.field_portal_wizard_user__id
+#: model:ir.model.fields,field_description:website.field_res_company__id
+#: model:ir.model.fields,field_description:website.field_res_config_settings__id
+#: model:ir.model.fields,field_description:website.field_res_lang__id
+#: model:ir.model.fields,field_description:website.field_res_partner__id
+#: model:ir.model.fields,field_description:website.field_res_users__id
+#: model:ir.model.fields,field_description:website.field_theme_ir_asset__id
+#: model:ir.model.fields,field_description:website.field_theme_ir_attachment__id
+#: model:ir.model.fields,field_description:website.field_theme_ir_ui_view__id
+#: model:ir.model.fields,field_description:website.field_theme_utils__id
+#: model:ir.model.fields,field_description:website.field_theme_website_menu__id
+#: model:ir.model.fields,field_description:website.field_theme_website_page__id
+#: model:ir.model.fields,field_description:website.field_website__id
+#: model:ir.model.fields,field_description:website.field_website_assets__id
+#: model:ir.model.fields,field_description:website.field_website_configurator_feature__id
+#: model:ir.model.fields,field_description:website.field_website_controller_page__id
+#: model:ir.model.fields,field_description:website.field_website_cover_properties_mixin__id
+#: model:ir.model.fields,field_description:website.field_website_custom_blocked_third_party_domains__id
+#: model:ir.model.fields,field_description:website.field_website_html_text_processor__id
+#: model:ir.model.fields,field_description:website.field_website_menu__id
+#: model:ir.model.fields,field_description:website.field_website_multi_mixin__id
+#: model:ir.model.fields,field_description:website.field_website_page__id
+#: model:ir.model.fields,field_description:website.field_website_page_options_mixin__id
+#: model:ir.model.fields,field_description:website.field_website_page_properties__id
+#: model:ir.model.fields,field_description:website.field_website_page_properties_base__id
+#: model:ir.model.fields,field_description:website.field_website_page_visibility_options_mixin__id
+#: model:ir.model.fields,field_description:website.field_website_published_mixin__id
+#: model:ir.model.fields,field_description:website.field_website_published_multi_mixin__id
+#: model:ir.model.fields,field_description:website.field_website_rewrite__id
+#: model:ir.model.fields,field_description:website.field_website_robots__id
+#: model:ir.model.fields,field_description:website.field_website_route__id
+#: model:ir.model.fields,field_description:website.field_website_searchable_mixin__id
+#: model:ir.model.fields,field_description:website.field_website_seo_metadata__id
+#: model:ir.model.fields,field_description:website.field_website_snippet_filter__id
+#: model:ir.model.fields,field_description:website.field_website_technical_page__id
+#: model:ir.model.fields,field_description:website.field_website_track__id
+#: model:ir.model.fields,field_description:website.field_website_visitor__id
+msgid "ID"
+msgstr "आईडी"
+
+#. module: website
+#. odoo-javascript
+#: code:addons/website/static/src/builder/plugins/options/blockquote_option.xml:0
+#: model:ir.model.fields,field_description:website.field_website_configurator_feature__icon
+msgid "Icon"
+msgstr "आइकन"
+
+#. module: website
 #. odoo-javascript
 #: code:addons/website/static/src/builder/plugins/layout_option/add_element_option.xml:0
 #: code:addons/website/static/src/builder/plugins/options/cover_properties_option.xml:0
@@ -367,6 +619,28 @@ msgid "Job Position"
 msgstr "पद"
 
 #. module: website
+#: model:ir.model.fields,field_description:website.field_ir_asset__key
+#: model:ir.model.fields,field_description:website.field_ir_attachment__key
+#: model:ir.model.fields,field_description:website.field_product_document__key
+#: model:ir.model.fields,field_description:website.field_theme_ir_asset__key
+#: model:ir.model.fields,field_description:website.field_theme_ir_attachment__key
+#: model:ir.model.fields,field_description:website.field_theme_ir_ui_view__key
+#: model:ir.model.fields,field_description:website.field_website_controller_page__key
+#: model:ir.model.fields,field_description:website.field_website_page__key
+msgid "Key"
+msgstr "कुञ्जी"
+
+#. module: website
+#. odoo-javascript
+#: code:addons/website/static/src/builder/plugins/form/form_option.xml:0
+#: code:addons/website/static/src/builder/plugins/options/footer_copyright_option.xml:0
+#: code:addons/website/static/src/builder/plugins/options/language_selector_option.xml:0
+#: code:addons/website/static/src/builder/plugins/options/progress_bar_option.xml:0
+#: model_terms:ir.ui.view,arch_db:website.color_combinations_debug_view
+msgid "Label"
+msgstr "लेबल"
+
+#. module: website
 #. odoo-javascript
 #: code:addons/website/static/src/builder/plugins/theme/theme_tab.xml:0
 #: model:ir.model.fields,field_description:website.field_website_visitor__lang_id
@@ -383,6 +657,80 @@ msgstr "भाषा"
 #: model_terms:ir.ui.view,arch_db:website.res_config_settings_view_form
 msgid "Languages"
 msgstr "भाषाहरू"
+
+#. module: website
+#: model:ir.model.fields,field_description:website.field_theme_ir_asset__write_uid
+#: model:ir.model.fields,field_description:website.field_theme_ir_attachment__write_uid
+#: model:ir.model.fields,field_description:website.field_theme_ir_ui_view__write_uid
+#: model:ir.model.fields,field_description:website.field_theme_website_menu__write_uid
+#: model:ir.model.fields,field_description:website.field_theme_website_page__write_uid
+#: model:ir.model.fields,field_description:website.field_website__write_uid
+#: model:ir.model.fields,field_description:website.field_website_configurator_feature__write_uid
+#: model:ir.model.fields,field_description:website.field_website_controller_page__write_uid
+#: model:ir.model.fields,field_description:website.field_website_custom_blocked_third_party_domains__write_uid
+#: model:ir.model.fields,field_description:website.field_website_menu__write_uid
+#: model:ir.model.fields,field_description:website.field_website_page__write_uid
+#: model:ir.model.fields,field_description:website.field_website_page_properties__write_uid
+#: model:ir.model.fields,field_description:website.field_website_page_properties_base__write_uid
+#: model:ir.model.fields,field_description:website.field_website_rewrite__write_uid
+#: model:ir.model.fields,field_description:website.field_website_robots__write_uid
+#: model:ir.model.fields,field_description:website.field_website_route__write_uid
+#: model:ir.model.fields,field_description:website.field_website_snippet_filter__write_uid
+#: model:ir.model.fields,field_description:website.field_website_visitor__write_uid
+msgid "Last Updated by"
+msgstr "अन्तिम अद्यावधिक गर्ने"
+
+#. module: website
+#: model:ir.model.fields,field_description:website.field_theme_ir_asset__write_date
+#: model:ir.model.fields,field_description:website.field_theme_ir_attachment__write_date
+#: model:ir.model.fields,field_description:website.field_theme_ir_ui_view__write_date
+#: model:ir.model.fields,field_description:website.field_theme_website_menu__write_date
+#: model:ir.model.fields,field_description:website.field_theme_website_page__write_date
+#: model:ir.model.fields,field_description:website.field_website__write_date
+#: model:ir.model.fields,field_description:website.field_website_configurator_feature__write_date
+#: model:ir.model.fields,field_description:website.field_website_controller_page__write_date
+#: model:ir.model.fields,field_description:website.field_website_custom_blocked_third_party_domains__write_date
+#: model:ir.model.fields,field_description:website.field_website_menu__write_date
+#: model:ir.model.fields,field_description:website.field_website_page__write_date
+#: model:ir.model.fields,field_description:website.field_website_page_properties__write_date
+#: model:ir.model.fields,field_description:website.field_website_page_properties_base__write_date
+#: model:ir.model.fields,field_description:website.field_website_rewrite__write_date
+#: model:ir.model.fields,field_description:website.field_website_robots__write_date
+#: model:ir.model.fields,field_description:website.field_website_route__write_date
+#: model:ir.model.fields,field_description:website.field_website_snippet_filter__write_date
+#: model:ir.model.fields,field_description:website.field_website_visitor__write_date
+msgid "Last Updated on"
+msgstr "अन्तिम अद्यावधिक मिति"
+
+#. module: website
+#. odoo-javascript
+#: code:addons/website/static/src/builder/plugins/carousel_cards_option.xml:0
+#: code:addons/website/static/src/builder/plugins/form/form_option.xml:0
+#: code:addons/website/static/src/builder/plugins/options/accordion_option.xml:0
+#: code:addons/website/static/src/builder/plugins/options/announcement_scroll_option.xml:0
+#: code:addons/website/static/src/builder/plugins/options/blockquote_option.xml:0
+#: code:addons/website/static/src/builder/plugins/options/card_image_option.xml:0
+#: code:addons/website/static/src/builder/plugins/options/card_width_option.xml:0
+#: code:addons/website/static/src/builder/plugins/options/chart_option.xml:0
+#: code:addons/website/static/src/builder/plugins/options/cover_properties_option.xml:0
+#: code:addons/website/static/src/builder/plugins/options/dynamic_snippet_option.xml:0
+#: code:addons/website/static/src/builder/plugins/options/embed_code_option.xml:0
+#: code:addons/website/static/src/builder/plugins/options/footer_option.xml:0
+#: code:addons/website/static/src/builder/plugins/options/media_list_item_option.xml:0
+#: code:addons/website/static/src/builder/plugins/options/navtabs_style_option.xml:0
+#: code:addons/website/static/src/builder/plugins/options/social_media_option.xml:0
+#: code:addons/website/static/src/builder/plugins/options/table_of_content_option.xml:0
+#: model_terms:ir.ui.view,arch_db:website.bs_debug_view
+msgid "Left"
+msgstr "बायाँ"
+
+#. module: website
+#. odoo-javascript
+#: code:addons/website/static/src/builder/plugins/theme/theme_tab_plugin.js:0
+#: model_terms:ir.ui.view,arch_db:website.bs_debug_view
+#: model_terms:ir.ui.view,arch_db:website.color_combinations_debug_view
+msgid "Link"
+msgstr "लिङ्क"
 
 #. module: website
 #. odoo-javascript
@@ -410,6 +758,16 @@ msgstr "नक्सा"
 
 #. module: website
 #. odoo-javascript
+#: code:addons/website/static/src/builder/plugins/options/countdown_option.xml:0
+#: code:addons/website/static/src/builder/plugins/options/cover_properties_option.xml:0
+#: code:addons/website/static/src/builder/plugins/options/popup_option.xml:0
+#: code:addons/website/static/src/builder/plugins/options/scroll_button_option.xml:0
+#: code:addons/website/static/src/builder/plugins/options/social_media_option.xml:0
+msgid "Medium"
+msgstr "माध्यम"
+
+#. module: website
+#. odoo-javascript
 #: code:addons/website/static/src/builder/plugins/options/facebook_option.xml:0
 msgid "Messages"
 msgstr "सन्देशहरू"
@@ -420,6 +778,20 @@ msgstr "सन्देशहरू"
 #: model:ir.model.fields,field_description:website.field_website_visitor__mobile
 msgid "Mobile"
 msgstr "मोबाइल"
+
+#. module: website
+#. odoo-javascript
+#: code:addons/website/static/src/builder/plugins/options/dynamic_snippet_option.xml:0
+#: model:ir.model.fields,field_description:website.field_website_controller_page__model
+#: model:ir.model.fields,field_description:website.field_website_page__model
+#: model_terms:ir.ui.view,arch_db:website.website_controller_pages_search_view
+msgid "Model"
+msgstr "मोडेल"
+
+#. module: website
+#: model:ir.model,name:website.model_ir_model
+msgid "Models"
+msgstr "मोडेलहरू"
 
 #. module: website
 #: model:ir.model.fields,field_description:website.field_theme_ir_asset__name
@@ -495,9 +867,25 @@ msgid "Optional"
 msgstr "वैकल्पिक"
 
 #. module: website
+#: model:ir.model.fields,field_description:website.field_theme_website_menu__parent_id
+msgid "Parent"
+msgstr "मूल"
+
+#. module: website
 #: model_terms:ir.ui.view,arch_db:website.website_page_properties_view_form
 msgid "Password"
 msgstr "पासवर्ड"
+
+#. module: website
+#. odoo-javascript
+#: code:addons/website/static/src/builder/plugins/carousel_cards_option.xml:0
+#: code:addons/website/static/src/builder/plugins/form/form_option.xml:0
+#: code:addons/website/static/src/builder/plugins/image/grid_image_option.xml:0
+#: code:addons/website/static/src/builder/plugins/options/accordion_option.xml:0
+#: code:addons/website/static/src/builder/plugins/options/popup_option.xml:0
+#: code:addons/website/static/src/builder/plugins/options/table_of_content_option.xml:0
+msgid "Position"
+msgstr "स्थान"
 
 #. module: website
 #. odoo-javascript
@@ -542,6 +930,18 @@ msgid "Products"
 msgstr "उत्पादनहरू"
 
 #. module: website
+#: model:ir.ui.menu,name:website.menu_page_properties
+msgid "Properties"
+msgstr "गुणहरू"
+
+#. module: website
+#. odoo-javascript
+#: code:addons/website/static/src/builder/plugins/snippets_powerbox_plugin.js:0
+#: model_terms:ir.ui.view,arch_db:website.snippets
+msgid "Rating"
+msgstr "मूल्याङ्कन"
+
+#. module: website
 #. odoo-javascript
 #: code:addons/website/static/src/builder/plugins/options/dynamic_snippet_option.xml:0
 msgid "Record"
@@ -572,6 +972,27 @@ msgstr "अनिवार्य"
 #: code:addons/website/static/src/components/resource_editor/resource_editor.xml:0
 msgid "Reset"
 msgstr "रिसेट गर्नुहोस्"
+
+#. module: website
+#. odoo-javascript
+#: code:addons/website/static/src/builder/plugins/carousel_cards_option.xml:0
+#: code:addons/website/static/src/builder/plugins/form/form_option.xml:0
+#: code:addons/website/static/src/builder/plugins/options/accordion_option.xml:0
+#: code:addons/website/static/src/builder/plugins/options/announcement_scroll_option.xml:0
+#: code:addons/website/static/src/builder/plugins/options/blockquote_option.xml:0
+#: code:addons/website/static/src/builder/plugins/options/card_image_option.xml:0
+#: code:addons/website/static/src/builder/plugins/options/card_width_option.xml:0
+#: code:addons/website/static/src/builder/plugins/options/chart_option.xml:0
+#: code:addons/website/static/src/builder/plugins/options/cover_properties_option.xml:0
+#: code:addons/website/static/src/builder/plugins/options/dynamic_snippet_option.xml:0
+#: code:addons/website/static/src/builder/plugins/options/embed_code_option.xml:0
+#: code:addons/website/static/src/builder/plugins/options/footer_option.xml:0
+#: code:addons/website/static/src/builder/plugins/options/media_list_item_option.xml:0
+#: code:addons/website/static/src/builder/plugins/options/navtabs_style_option.xml:0
+#: code:addons/website/static/src/builder/plugins/options/table_of_content_option.xml:0
+#: model_terms:ir.ui.view,arch_db:website.bs_debug_view
+msgid "Right"
+msgstr "दायाँ"
 
 #. module: website
 #. odoo-javascript
@@ -633,6 +1054,22 @@ msgid "Share"
 msgstr "साझा गर्नुहोस्"
 
 #. module: website
+#: model_terms:ir.ui.view,arch_db:website.template_footer_mega_links
+msgid "Shipping"
+msgstr "ढुवानी"
+
+#. module: website
+#. odoo-javascript
+#: code:addons/website/static/src/builder/plugins/font_awesome_option.xml:0
+#: code:addons/website/static/src/builder/plugins/options/countdown_option.xml:0
+#: code:addons/website/static/src/builder/plugins/options/cover_properties_option.xml:0
+#: code:addons/website/static/src/builder/plugins/options/mega_menu_option.xml:0
+#: code:addons/website/static/src/builder/plugins/options/popup_option.xml:0
+#: code:addons/website/static/src/builder/plugins/options/social_media_option.xml:0
+msgid "Size"
+msgstr "आकार"
+
+#. module: website
 #. odoo-javascript
 #: code:addons/website/static/src/js/send_mail_form.js:0
 msgid "Subject"
@@ -651,6 +1088,26 @@ msgstr "सफल"
 #: model_terms:ir.ui.view,arch_db:website.template_footer_mega_links
 msgid "Support"
 msgstr "सहयोग"
+
+#. module: website
+#: model:ir.model.fields,field_description:website.field_theme_ir_asset__target
+msgid "Target"
+msgstr "लक्ष्य"
+
+#. module: website
+#. odoo-javascript
+#: code:addons/website/static/src/builder/plugins/options/dynamic_snippet_option.xml:0
+#: code:addons/website/static/src/builder/plugins/options/footer_option.xml:0
+#: code:addons/website/static/src/builder/plugins/options/header/header_template_option.xml:0
+#: code:addons/website/static/src/builder/plugins/options/mega_menu_option.xml:0
+msgid "Template"
+msgstr "ढाँचा"
+
+#. module: website
+#: model_terms:ir.ui.view,arch_db:website.template_footer_mega
+#: model_terms:ir.ui.view,arch_db:website.template_footer_mega_columns
+msgid "Terms and Conditions"
+msgstr "नियम तथा सर्तहरू"
 
 #. module: website
 #: model:ir.model.fields,field_description:website.field_website_visitor__timezone
@@ -683,6 +1140,16 @@ msgstr "प्रकार"
 
 #. module: website
 #. odoo-javascript
+#: code:addons/website/static/src/builder/plugins/form/form_option.xml:0
+#: code:addons/website/static/src/builder/plugins/options/countdown_option.xml:0
+#: code:addons/website/static/src/builder/plugins/options/facebook_option.xml:0
+#: model:ir.model.fields,field_description:website.field_website_controller_page__name_slugified
+#: model_terms:ir.ui.view,arch_db:website.website_controller_pages_form_view
+msgid "URL"
+msgstr "यूआरएल"
+
+#. module: website
+#. odoo-javascript
 #: code:addons/website/static/src/client_actions/configurator/configurator.xml:0
 msgid "Upload"
 msgstr "अपलोड गर्नुहोस्"
@@ -697,6 +1164,12 @@ msgstr "प्रयोगकर्ता"
 #: code:addons/website/static/src/builder/plugins/options/visibility_option.xml:0
 msgid "Users"
 msgstr "प्रयोगकर्ताहरू"
+
+#. module: website
+#. odoo-javascript
+#: code:addons/website/static/src/builder/plugins/options/progress_bar_option.xml:0
+msgid "Value"
+msgstr "मान"
 
 #. module: website
 #: model:ir.model,name:website.model_ir_ui_view
@@ -745,3 +1218,11 @@ msgstr "चेतावनी"
 #: model_terms:ir.ui.view,arch_db:website.website_visitor_view_search
 msgid "Website"
 msgstr "वेबसाइट"
+
+#. module: website
+#. odoo-javascript
+#: code:addons/website/static/src/builder/plugins/carousel_cards_option.xml:0
+#: code:addons/website/static/src/builder/plugins/options/card_image_option.xml:0
+#: code:addons/website/static/src/builder/plugins/options/header/header_template_option.xml:0
+msgid "Width"
+msgstr "चौडाइ"

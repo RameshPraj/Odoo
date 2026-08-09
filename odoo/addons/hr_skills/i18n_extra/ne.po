@@ -50,6 +50,30 @@ msgid "Company"
 msgstr "कम्पनी"
 
 #. module: hr_skills
+#: model:ir.model.fields,field_description:hr_skills.field_hr_employee_cv_wizard__create_uid
+#: model:ir.model.fields,field_description:hr_skills.field_hr_employee_skill__create_uid
+#: model:ir.model.fields,field_description:hr_skills.field_hr_job_skill__create_uid
+#: model:ir.model.fields,field_description:hr_skills.field_hr_resume_line__create_uid
+#: model:ir.model.fields,field_description:hr_skills.field_hr_resume_line_type__create_uid
+#: model:ir.model.fields,field_description:hr_skills.field_hr_skill__create_uid
+#: model:ir.model.fields,field_description:hr_skills.field_hr_skill_level__create_uid
+#: model:ir.model.fields,field_description:hr_skills.field_hr_skill_type__create_uid
+msgid "Created by"
+msgstr "सिर्जना गर्ने"
+
+#. module: hr_skills
+#: model:ir.model.fields,field_description:hr_skills.field_hr_employee_cv_wizard__create_date
+#: model:ir.model.fields,field_description:hr_skills.field_hr_employee_skill__create_date
+#: model:ir.model.fields,field_description:hr_skills.field_hr_job_skill__create_date
+#: model:ir.model.fields,field_description:hr_skills.field_hr_resume_line__create_date
+#: model:ir.model.fields,field_description:hr_skills.field_hr_resume_line_type__create_date
+#: model:ir.model.fields,field_description:hr_skills.field_hr_skill__create_date
+#: model:ir.model.fields,field_description:hr_skills.field_hr_skill_level__create_date
+#: model:ir.model.fields,field_description:hr_skills.field_hr_skill_type__create_date
+msgid "Created on"
+msgstr "सिर्जना मिति"
+
+#. module: hr_skills
 #: model:ir.model.fields,field_description:hr_skills.field_hr_employee_skill_history_report__date
 #: model_terms:ir.ui.view,arch_db:hr_skills.hr_employee_skill_history_report_view_search
 #: model_terms:ir.ui.view,arch_db:hr_skills.hr_resume_line_list_view
@@ -78,6 +102,27 @@ msgid "Discard"
 msgstr "खारेज गर्नुहोस्"
 
 #. module: hr_skills
+#: model:ir.model.fields,field_description:hr_skills.field_hr_employee__display_name
+#: model:ir.model.fields,field_description:hr_skills.field_hr_employee_certification_report__display_name
+#: model:ir.model.fields,field_description:hr_skills.field_hr_employee_cv_wizard__display_name
+#: model:ir.model.fields,field_description:hr_skills.field_hr_employee_public__display_name
+#: model:ir.model.fields,field_description:hr_skills.field_hr_employee_skill__display_name
+#: model:ir.model.fields,field_description:hr_skills.field_hr_employee_skill_history_report__display_name
+#: model:ir.model.fields,field_description:hr_skills.field_hr_employee_skill_report__display_name
+#: model:ir.model.fields,field_description:hr_skills.field_hr_individual_skill_mixin__display_name
+#: model:ir.model.fields,field_description:hr_skills.field_hr_job__display_name
+#: model:ir.model.fields,field_description:hr_skills.field_hr_job_skill__display_name
+#: model:ir.model.fields,field_description:hr_skills.field_hr_resume_line__display_name
+#: model:ir.model.fields,field_description:hr_skills.field_hr_resume_line_type__display_name
+#: model:ir.model.fields,field_description:hr_skills.field_hr_skill__display_name
+#: model:ir.model.fields,field_description:hr_skills.field_hr_skill_level__display_name
+#: model:ir.model.fields,field_description:hr_skills.field_hr_skill_type__display_name
+#: model:ir.model.fields,field_description:hr_skills.field_report_hr_skills_report_employee_cv__display_name
+#: model:ir.model.fields,field_description:hr_skills.field_resource_resource__display_name
+msgid "Display Name"
+msgstr "प्रदर्शन नाम"
+
+#. module: hr_skills
 #: model:ir.model.fields,field_description:hr_skills.field_hr_resume_line__duration
 #: model_terms:ir.ui.view,arch_db:hr_skills.resume_line_view_form
 msgid "Duration"
@@ -99,6 +144,27 @@ msgid "Employee"
 msgstr "कर्मचारी"
 
 #. module: hr_skills
+#: model:ir.model.fields,field_description:hr_skills.field_hr_employee__id
+#: model:ir.model.fields,field_description:hr_skills.field_hr_employee_certification_report__id
+#: model:ir.model.fields,field_description:hr_skills.field_hr_employee_cv_wizard__id
+#: model:ir.model.fields,field_description:hr_skills.field_hr_employee_public__id
+#: model:ir.model.fields,field_description:hr_skills.field_hr_employee_skill__id
+#: model:ir.model.fields,field_description:hr_skills.field_hr_employee_skill_history_report__id
+#: model:ir.model.fields,field_description:hr_skills.field_hr_employee_skill_report__id
+#: model:ir.model.fields,field_description:hr_skills.field_hr_individual_skill_mixin__id
+#: model:ir.model.fields,field_description:hr_skills.field_hr_job__id
+#: model:ir.model.fields,field_description:hr_skills.field_hr_job_skill__id
+#: model:ir.model.fields,field_description:hr_skills.field_hr_resume_line__id
+#: model:ir.model.fields,field_description:hr_skills.field_hr_resume_line_type__id
+#: model:ir.model.fields,field_description:hr_skills.field_hr_skill__id
+#: model:ir.model.fields,field_description:hr_skills.field_hr_skill_level__id
+#: model:ir.model.fields,field_description:hr_skills.field_hr_skill_type__id
+#: model:ir.model.fields,field_description:hr_skills.field_report_hr_skills_report_employee_cv__id
+#: model:ir.model.fields,field_description:hr_skills.field_resource_resource__id
+msgid "ID"
+msgstr "आईडी"
+
+#. module: hr_skills
 #: model:ir.model,name:hr_skills.model_hr_job
 msgid "Job Position"
 msgstr "पद"
@@ -108,6 +174,30 @@ msgstr "पद"
 #: model_terms:ir.ui.view,arch_db:hr_skills.report_employee_cv_main_panel
 msgid "Languages"
 msgstr "भाषाहरू"
+
+#. module: hr_skills
+#: model:ir.model.fields,field_description:hr_skills.field_hr_employee_cv_wizard__write_uid
+#: model:ir.model.fields,field_description:hr_skills.field_hr_employee_skill__write_uid
+#: model:ir.model.fields,field_description:hr_skills.field_hr_job_skill__write_uid
+#: model:ir.model.fields,field_description:hr_skills.field_hr_resume_line__write_uid
+#: model:ir.model.fields,field_description:hr_skills.field_hr_resume_line_type__write_uid
+#: model:ir.model.fields,field_description:hr_skills.field_hr_skill__write_uid
+#: model:ir.model.fields,field_description:hr_skills.field_hr_skill_level__write_uid
+#: model:ir.model.fields,field_description:hr_skills.field_hr_skill_type__write_uid
+msgid "Last Updated by"
+msgstr "अन्तिम अद्यावधिक गर्ने"
+
+#. module: hr_skills
+#: model:ir.model.fields,field_description:hr_skills.field_hr_employee_cv_wizard__write_date
+#: model:ir.model.fields,field_description:hr_skills.field_hr_employee_skill__write_date
+#: model:ir.model.fields,field_description:hr_skills.field_hr_job_skill__write_date
+#: model:ir.model.fields,field_description:hr_skills.field_hr_resume_line__write_date
+#: model:ir.model.fields,field_description:hr_skills.field_hr_resume_line_type__write_date
+#: model:ir.model.fields,field_description:hr_skills.field_hr_skill__write_date
+#: model:ir.model.fields,field_description:hr_skills.field_hr_skill_level__write_date
+#: model:ir.model.fields,field_description:hr_skills.field_hr_skill_type__write_date
+msgid "Last Updated on"
+msgstr "अन्तिम अद्यावधिक मिति"
 
 #. module: hr_skills
 #: model:ir.model.fields,field_description:hr_skills.field_hr_resume_line__name
@@ -135,6 +225,11 @@ msgstr "अन्य"
 #: model_terms:ir.ui.view,arch_db:hr_skills.hr_employee_cv_wizard_view_form
 msgid "Print"
 msgstr "छाप्नुहोस्"
+
+#. module: hr_skills
+#: model:ir.model.fields,field_description:hr_skills.field_hr_resume_line__resume_line_properties
+msgid "Properties"
+msgstr "गुणहरू"
 
 #. module: hr_skills
 #: model:ir.ui.menu,name:hr_skills.menu_human_resources_configuration_resume
@@ -182,3 +277,8 @@ msgstr "शीर्षक"
 #: model_terms:ir.ui.view,arch_db:hr_skills.hr_resume_line_list_view
 msgid "Type"
 msgstr "प्रकार"
+
+#. module: hr_skills
+#: model_terms:ir.ui.view,arch_db:hr_skills.employee_skill_view_form
+msgid "Validity"
+msgstr "वैधता"

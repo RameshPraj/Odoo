@@ -1,0 +1,21 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0 (iap_crm)\n"
+"Report-Msgid-Bugs-To: \n"
+"Language-Team: Nepali\n"
+"Language: ne\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: iap_crm
+#: model:ir.model.fields,field_description:iap_crm.field_crm_lead__display_name
+msgid "Display Name"
+msgstr "प्रदर्शन नाम"
+
+#. module: iap_crm
+#: model:ir.model.fields,field_description:iap_crm.field_crm_lead__id
+msgid "ID"
+msgstr "आईडी"

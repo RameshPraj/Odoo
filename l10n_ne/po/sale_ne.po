@@ -11,10 +11,30 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: sale
+#: model:ir.model.fields,field_description:sale.field_sale_order__message_needaction
+msgid "Action Needed"
+msgstr "कार्य आवश्यक"
+
+#. module: sale
 #: model:ir.model.fields,field_description:sale.field_sale_order__activity_ids
 #: model:ir.ui.menu,name:sale.sale_menu_config_activities
 msgid "Activities"
 msgstr "गतिविधिहरू"
+
+#. module: sale
+#: model:ir.model.fields,field_description:sale.field_sale_order__activity_exception_decoration
+msgid "Activity Exception Decoration"
+msgstr "गतिविधि अपवाद सजावट"
+
+#. module: sale
+#: model:ir.model.fields,field_description:sale.field_sale_order__activity_state
+msgid "Activity State"
+msgstr "गतिविधि अवस्था"
+
+#. module: sale
+#: model:ir.model.fields,field_description:sale.field_sale_order__activity_type_icon
+msgid "Activity Type Icon"
+msgstr "गतिविधि प्रकार आइकन"
 
 #. module: sale
 #. odoo-javascript
@@ -31,9 +51,19 @@ msgid "Amount"
 msgstr "रकम"
 
 #. module: sale
+#: model:ir.model.fields,field_description:sale.field_sale_order_line__analytic_distribution
+msgid "Analytic Distribution"
+msgstr "विश्लेषणात्मक वितरण"
+
+#. module: sale
 #: model_terms:ir.ui.view,arch_db:sale.sale_order_line_wizard_form
 msgid "Apply"
 msgstr "लागू गर्नुहोस्"
+
+#. module: sale
+#: model:ir.model.fields,field_description:sale.field_sale_order__message_attachment_count
+msgid "Attachment Count"
+msgstr "संलग्न संख्या"
 
 #. module: sale
 #: model_terms:ir.ui.view,arch_db:sale.sale_report_view_tree
@@ -82,6 +112,11 @@ msgid "Company"
 msgstr "कम्पनी"
 
 #. module: sale
+#: model:ir.model,name:sale.model_res_config_settings
+msgid "Config Settings"
+msgstr "कन्फिग सेटिङहरू"
+
+#. module: sale
 #: model:ir.ui.menu,name:sale.menu_sale_config
 msgid "Configuration"
 msgstr "कन्फिगरेसन"
@@ -102,6 +137,28 @@ msgstr "सम्पर्क"
 #: model_terms:ir.ui.view,arch_db:sale.sale_order_portal_template
 msgid "Copy"
 msgstr "प्रतिलिपि गर्नुहोस्"
+
+#. module: sale
+#: model:ir.model,website_form_label:sale.model_res_partner
+msgid "Create a Customer"
+msgstr "ग्राहक सिर्जना गर्नुहोस्"
+
+#. module: sale
+#: model:ir.model.fields,field_description:sale.field_sale_advance_payment_inv__create_uid
+#: model:ir.model.fields,field_description:sale.field_sale_mass_cancel_orders__create_uid
+#: model:ir.model.fields,field_description:sale.field_sale_order__create_uid
+#: model:ir.model.fields,field_description:sale.field_sale_order_discount__create_uid
+#: model:ir.model.fields,field_description:sale.field_sale_order_line__create_uid
+msgid "Created by"
+msgstr "सिर्जना गर्ने"
+
+#. module: sale
+#: model:ir.model.fields,field_description:sale.field_sale_advance_payment_inv__create_date
+#: model:ir.model.fields,field_description:sale.field_sale_mass_cancel_orders__create_date
+#: model:ir.model.fields,field_description:sale.field_sale_order_discount__create_date
+#: model:ir.model.fields,field_description:sale.field_sale_order_line__create_date
+msgid "Created on"
+msgstr "सिर्जना मिति"
 
 #. module: sale
 #: model:ir.model.fields,field_description:sale.field_sale_advance_payment_inv__currency_id
@@ -140,6 +197,11 @@ msgid "Delete"
 msgstr "मेटाउनुहोस्"
 
 #. module: sale
+#: model:ir.model.fields,field_description:sale.field_sale_order__partner_shipping_id
+msgid "Delivery Address"
+msgstr "डेलिभरी ठेगाना"
+
+#. module: sale
 #: model:ir.model.fields,field_description:sale.field_sale_order_line__name
 #: model_terms:ir.ui.view,arch_db:sale.report_saleorder_document
 #: model_terms:ir.ui.view,arch_db:sale.view_order_form
@@ -162,14 +224,108 @@ msgid "Discount"
 msgstr "छुट"
 
 #. module: sale
+#: model:ir.model.fields,field_description:sale.field_account_analytic_applicability__display_name
+#: model:ir.model.fields,field_description:sale.field_account_analytic_line__display_name
+#: model:ir.model.fields,field_description:sale.field_account_chart_template__display_name
+#: model:ir.model.fields,field_description:sale.field_account_invoice_report__display_name
+#: model:ir.model.fields,field_description:sale.field_account_move__display_name
+#: model:ir.model.fields,field_description:sale.field_account_move_line__display_name
+#: model:ir.model.fields,field_description:sale.field_base_document_layout__display_name
+#: model:ir.model.fields,field_description:sale.field_crm_team__display_name
+#: model:ir.model.fields,field_description:sale.field_ir_actions_report__display_name
+#: model:ir.model.fields,field_description:sale.field_ir_config_parameter__display_name
+#: model:ir.model.fields,field_description:sale.field_payment_link_wizard__display_name
+#: model:ir.model.fields,field_description:sale.field_payment_provider__display_name
+#: model:ir.model.fields,field_description:sale.field_payment_transaction__display_name
+#: model:ir.model.fields,field_description:sale.field_product_attribute_custom_value__display_name
+#: model:ir.model.fields,field_description:sale.field_product_document__display_name
+#: model:ir.model.fields,field_description:sale.field_product_pricelist_item__display_name
+#: model:ir.model.fields,field_description:sale.field_product_product__display_name
+#: model:ir.model.fields,field_description:sale.field_product_template__display_name
+#: model:ir.model.fields,field_description:sale.field_res_company__display_name
+#: model:ir.model.fields,field_description:sale.field_res_config_settings__display_name
+#: model:ir.model.fields,field_description:sale.field_res_partner__display_name
+#: model:ir.model.fields,field_description:sale.field_sale_advance_payment_inv__display_name
+#: model:ir.model.fields,field_description:sale.field_sale_mass_cancel_orders__display_name
+#: model:ir.model.fields,field_description:sale.field_sale_order__display_name
+#: model:ir.model.fields,field_description:sale.field_sale_order_discount__display_name
+#: model:ir.model.fields,field_description:sale.field_sale_order_line__display_name
+#: model:ir.model.fields,field_description:sale.field_sale_report__display_name
+#: model:ir.model.fields,field_description:sale.field_utm_campaign__display_name
+msgid "Display Name"
+msgstr "प्रदर्शन नाम"
+
+#. module: sale
 #: model_terms:ir.ui.view,arch_db:sale.res_config_settings_view_form
 msgid "Documentation"
 msgstr "कागजात"
 
 #. module: sale
+#: model:ir.model.fields,field_description:sale.field_sale_order__validity_date
+msgid "Expiration"
+msgstr "म्याद समाप्ति"
+
+#. module: sale
+#: model:ir.model.fields,field_description:sale.field_sale_order__fiscal_position_id
+msgid "Fiscal Position"
+msgstr "वित्तीय स्थिति"
+
+#. module: sale
 #: model:ir.model.fields,field_description:sale.field_sale_order__message_follower_ids
 msgid "Followers"
 msgstr "अनुयायीहरू"
+
+#. module: sale
+#: model:ir.model.fields,field_description:sale.field_sale_order__message_partner_ids
+msgid "Followers (Partners)"
+msgstr "अनुयायीहरू (साझेदारहरू)"
+
+#. module: sale
+#: model:ir.model.fields,field_description:sale.field_sale_order__has_message
+msgid "Has Message"
+msgstr "सन्देश छ"
+
+#. module: sale
+#: model:ir.model.fields,field_description:sale.field_account_analytic_applicability__id
+#: model:ir.model.fields,field_description:sale.field_account_analytic_line__id
+#: model:ir.model.fields,field_description:sale.field_account_chart_template__id
+#: model:ir.model.fields,field_description:sale.field_account_invoice_report__id
+#: model:ir.model.fields,field_description:sale.field_account_move__id
+#: model:ir.model.fields,field_description:sale.field_account_move_line__id
+#: model:ir.model.fields,field_description:sale.field_base_document_layout__id
+#: model:ir.model.fields,field_description:sale.field_crm_team__id
+#: model:ir.model.fields,field_description:sale.field_ir_actions_report__id
+#: model:ir.model.fields,field_description:sale.field_ir_config_parameter__id
+#: model:ir.model.fields,field_description:sale.field_payment_link_wizard__id
+#: model:ir.model.fields,field_description:sale.field_payment_provider__id
+#: model:ir.model.fields,field_description:sale.field_payment_transaction__id
+#: model:ir.model.fields,field_description:sale.field_product_attribute_custom_value__id
+#: model:ir.model.fields,field_description:sale.field_product_document__id
+#: model:ir.model.fields,field_description:sale.field_product_pricelist_item__id
+#: model:ir.model.fields,field_description:sale.field_product_product__id
+#: model:ir.model.fields,field_description:sale.field_product_template__id
+#: model:ir.model.fields,field_description:sale.field_res_company__id
+#: model:ir.model.fields,field_description:sale.field_res_config_settings__id
+#: model:ir.model.fields,field_description:sale.field_res_partner__id
+#: model:ir.model.fields,field_description:sale.field_sale_advance_payment_inv__id
+#: model:ir.model.fields,field_description:sale.field_sale_mass_cancel_orders__id
+#: model:ir.model.fields,field_description:sale.field_sale_order__id
+#: model:ir.model.fields,field_description:sale.field_sale_order_discount__id
+#: model:ir.model.fields,field_description:sale.field_sale_order_line__id
+#: model:ir.model.fields,field_description:sale.field_sale_report__id
+#: model:ir.model.fields,field_description:sale.field_utm_campaign__id
+msgid "ID"
+msgstr "आईडी"
+
+#. module: sale
+#: model:ir.model.fields,field_description:sale.field_sale_order__activity_exception_icon
+msgid "Icon"
+msgstr "आइकन"
+
+#. module: sale
+#: model:ir.model.fields,field_description:sale.field_sale_order__partner_invoice_id
+msgid "Invoice Address"
+msgstr "बीजक ठेगाना"
 
 #. module: sale
 #: model:ir.actions.act_window,name:sale.action_invoice_salesteams
@@ -180,9 +336,45 @@ msgid "Invoices"
 msgstr "बीजकहरू"
 
 #. module: sale
+#: model:ir.model.fields,field_description:sale.field_sale_order__message_is_follower
+msgid "Is Follower"
+msgstr "अनुयायी हो"
+
+#. module: sale
 #: model:ir.model,name:sale.model_account_move
 msgid "Journal Entry"
 msgstr "जर्नल प्रविष्टि"
+
+#. module: sale
+#: model:ir.model.fields,field_description:sale.field_sale_advance_payment_inv__write_uid
+#: model:ir.model.fields,field_description:sale.field_sale_mass_cancel_orders__write_uid
+#: model:ir.model.fields,field_description:sale.field_sale_order__write_uid
+#: model:ir.model.fields,field_description:sale.field_sale_order_discount__write_uid
+#: model:ir.model.fields,field_description:sale.field_sale_order_line__write_uid
+msgid "Last Updated by"
+msgstr "अन्तिम अद्यावधिक गर्ने"
+
+#. module: sale
+#: model:ir.model.fields,field_description:sale.field_sale_advance_payment_inv__write_date
+#: model:ir.model.fields,field_description:sale.field_sale_mass_cancel_orders__write_date
+#: model:ir.model.fields,field_description:sale.field_sale_order__write_date
+#: model:ir.model.fields,field_description:sale.field_sale_order_discount__write_date
+#: model:ir.model.fields,field_description:sale.field_sale_order_line__write_date
+msgid "Last Updated on"
+msgstr "अन्तिम अद्यावधिक मिति"
+
+#. module: sale
+#: model:ir.model.fields,field_description:sale.field_account_bank_statement_line__medium_id
+#: model:ir.model.fields,field_description:sale.field_account_move__medium_id
+#: model:ir.model.fields,field_description:sale.field_sale_order__medium_id
+#: model:ir.model.fields,field_description:sale.field_sale_report__medium_id
+msgid "Medium"
+msgstr "माध्यम"
+
+#. module: sale
+#: model:ir.model.fields,field_description:sale.field_sale_order__message_has_error
+msgid "Message Delivery error"
+msgstr "सन्देश पठाउन त्रुटि"
 
 #. module: sale
 #: model:ir.model.fields,field_description:sale.field_sale_order__message_ids
@@ -190,10 +382,35 @@ msgid "Messages"
 msgstr "सन्देशहरू"
 
 #. module: sale
+#: model:ir.model.fields,field_description:sale.field_sale_order__my_activity_date_deadline
+msgid "My Activity Deadline"
+msgstr "मेरो गतिविधि म्याद"
+
+#. module: sale
 #. odoo-python
 #: code:addons/sale/models/sale_order.py:0
 msgid "New"
 msgstr "नयाँ"
+
+#. module: sale
+#: model:ir.model.fields,field_description:sale.field_sale_order__activity_calendar_event_id
+msgid "Next Activity Calendar Event"
+msgstr "अर्को गतिविधि पात्रो कार्यक्रम"
+
+#. module: sale
+#: model:ir.model.fields,field_description:sale.field_sale_order__activity_date_deadline
+msgid "Next Activity Deadline"
+msgstr "अर्को गतिविधि म्याद"
+
+#. module: sale
+#: model:ir.model.fields,field_description:sale.field_sale_order__activity_summary
+msgid "Next Activity Summary"
+msgstr "अर्को गतिविधि सारांश"
+
+#. module: sale
+#: model:ir.model.fields,field_description:sale.field_sale_order__activity_type_id
+msgid "Next Activity Type"
+msgstr "अर्को गतिविधि प्रकार"
 
 #. module: sale
 #: model:ir.model.fields.selection,name:sale.selection__product_template__expense_policy__no
@@ -207,13 +424,43 @@ msgid "Note"
 msgstr "टिपोट"
 
 #. module: sale
+#: model:ir.model.fields,field_description:sale.field_sale_order__message_needaction_counter
+msgid "Number of Actions"
+msgstr "कार्यहरूको संख्या"
+
+#. module: sale
+#: model:ir.model.fields,field_description:sale.field_sale_order__message_has_error_counter
+msgid "Number of errors"
+msgstr "त्रुटिहरूको संख्या"
+
+#. module: sale
 #. odoo-python
 #: code:addons/sale/models/sale_order.py:0
 #: model:ir.model.fields,field_description:sale.field_sale_report__order_reference
 #: model_terms:ir.ui.view,arch_db:sale.view_sales_order_filter
 #: model_terms:ir.ui.view,arch_db:sale.view_sales_order_line_filter
 msgid "Order"
-msgstr "अर्डर"
+msgstr "क्रम"
+
+#. module: sale
+#. odoo-python
+#: code:addons/sale/controllers/portal.py:0
+#: model:ir.model.fields,field_description:sale.field_sale_order__date_order
+#: model:ir.model.fields,field_description:sale.field_sale_report__date
+#: model_terms:ir.ui.view,arch_db:sale.portal_my_orders
+#: model_terms:ir.ui.view,arch_db:sale.report_saleorder_document
+#: model_terms:ir.ui.view,arch_db:sale.sale_order_view_search_inherit_sale
+#: model_terms:ir.ui.view,arch_db:sale.view_order_form
+#: model_terms:ir.ui.view,arch_db:sale.view_order_product_search
+#: model_terms:ir.ui.view,arch_db:sale.view_sales_order_filter
+msgid "Order Date"
+msgstr "अर्डर मिति"
+
+#. module: sale
+#: model:ir.model.fields,field_description:sale.field_sale_order__order_line
+#: model_terms:ir.ui.view,arch_db:sale.view_order_form
+msgid "Order Lines"
+msgstr "अर्डर पङ्क्तिहरू"
 
 #. module: sale
 #: model:ir.ui.menu,name:sale.menu_sale_order
@@ -225,6 +472,17 @@ msgstr "अर्डरहरू"
 #: model_terms:ir.ui.view,arch_db:sale.res_config_settings_view_form
 msgid "Payment"
 msgstr "भुक्तानी"
+
+#. module: sale
+#: model:ir.model.fields,field_description:sale.field_sale_order__preferred_payment_method_line_id
+#: model_terms:ir.ui.view,arch_db:sale.view_sales_order_filter
+msgid "Payment Method"
+msgstr "भुक्तानी विधि"
+
+#. module: sale
+#: model:ir.model.fields,field_description:sale.field_sale_order__payment_term_id
+msgid "Payment Terms"
+msgstr "भुक्तानी सर्तहरू"
 
 #. module: sale
 #: model_terms:ir.ui.view,arch_db:sale.view_order_form
@@ -249,6 +507,23 @@ msgstr "छाप्नुहोस्"
 #: model_terms:ir.ui.view,arch_db:sale.view_sales_order_line_filter
 msgid "Product"
 msgstr "उत्पादन"
+
+#. module: sale
+#: model:ir.model.fields,field_description:sale.field_sale_order_line__categ_id
+#: model:ir.model.fields,field_description:sale.field_sale_report__categ_id
+#: model_terms:ir.ui.view,arch_db:sale.view_order_product_search
+msgid "Product Category"
+msgstr "उत्पादन श्रेणी"
+
+#. module: sale
+#: model:ir.model.fields,field_description:sale.field_sale_order_line__product_template_id
+msgid "Product Template"
+msgstr "उत्पादन ढाँचा"
+
+#. module: sale
+#: model:ir.model.fields,field_description:sale.field_sale_order_line__product_type
+msgid "Product Type"
+msgstr "उत्पादन प्रकार"
 
 #. module: sale
 #: model:ir.actions.act_window,name:sale.product_template_action
@@ -278,6 +553,11 @@ msgid "Quotation"
 msgstr "कोटेशन"
 
 #. module: sale
+#: model:ir.model.fields,field_description:sale.field_sale_order__rating_ids
+msgid "Ratings"
+msgstr "मूल्याङ्कनहरू"
+
+#. module: sale
 #. odoo-javascript
 #: code:addons/sale/static/src/js/product/product.xml:0
 msgid "Remove"
@@ -289,6 +569,16 @@ msgid "Reporting"
 msgstr "प्रतिवेदन"
 
 #. module: sale
+#: model:ir.model.fields,field_description:sale.field_sale_order__activity_user_id
+msgid "Responsible User"
+msgstr "जिम्मेवार प्रयोगकर्ता"
+
+#. module: sale
+#: model:ir.model.fields,field_description:sale.field_sale_order__message_has_sms_error
+msgid "SMS Delivery error"
+msgstr "एसएमएस पठाउन त्रुटि"
+
+#. module: sale
 #: model:ir.ui.menu,name:sale.menu_reporting_sales
 #: model:ir.ui.menu,name:sale.sale_menu_root
 #: model_terms:ir.ui.view,arch_db:sale.crm_team_view_kanban_dashboard
@@ -298,6 +588,64 @@ msgstr "प्रतिवेदन"
 #: model_terms:ir.ui.view,arch_db:sale.view_order_form
 msgid "Sales"
 msgstr "बिक्री"
+
+#. module: sale
+#. odoo-python
+#: code:addons/sale/models/sale_order.py:0
+#: model:ir.model,name:sale.model_sale_order
+#: model:ir.model.fields,field_description:sale.field_res_partner__sale_order_ids
+#: model:ir.model.fields,field_description:sale.field_res_users__sale_order_ids
+#: model:ir.model.fields.selection,name:sale.selection__sale_order__state__sale
+#: model:ir.model.fields.selection,name:sale.selection__sale_report__order_reference__sale_order
+#: model:ir.model.fields.selection,name:sale.selection__sale_report__state__sale
+#: model_terms:ir.ui.view,arch_db:sale.product_document_search
+#: model_terms:ir.ui.view,arch_db:sale.sale_order_view_activity
+#: model_terms:ir.ui.view,arch_db:sale.view_order_form
+msgid "Sales Order"
+msgstr "बिक्री अर्डर"
+
+#. module: sale
+#: model:ir.actions.act_window,name:sale.action_orders
+#: model:ir.actions.act_window,name:sale.action_orders_salesteams
+#: model:ir.actions.act_window,name:sale.action_orders_to_invoice_salesteams
+#: model:ir.model.fields,field_description:sale.field_payment_transaction__sale_order_ids
+#: model:ir.ui.menu,name:sale.menu_sales_config
+#: model_terms:ir.ui.view,arch_db:sale.crm_team_view_kanban_dashboard
+#: model_terms:ir.ui.view,arch_db:sale.portal_my_home_menu_sale
+#: model_terms:ir.ui.view,arch_db:sale.sale_order_tree
+#: model_terms:ir.ui.view,arch_db:sale.sale_order_view_search_inherit_quotation
+#: model_terms:ir.ui.view,arch_db:sale.sale_order_view_search_inherit_sale
+#: model_terms:ir.ui.view,arch_db:sale.view_order_product_search
+#: model_terms:ir.ui.view,arch_db:sale.view_order_tree
+#: model_terms:ir.ui.view,arch_db:sale.view_sale_order_calendar
+#: model_terms:ir.ui.view,arch_db:sale.view_sale_order_graph
+#: model_terms:ir.ui.view,arch_db:sale.view_sale_order_pivot
+msgid "Sales Orders"
+msgstr "बिक्री अर्डरहरू"
+
+#. module: sale
+#: model:ir.model,name:sale.model_crm_team
+#: model:ir.model.fields,field_description:sale.field_account_bank_statement_line__team_id
+#: model:ir.model.fields,field_description:sale.field_account_invoice_report__team_id
+#: model:ir.model.fields,field_description:sale.field_account_move__team_id
+#: model:ir.model.fields,field_description:sale.field_sale_order__team_id
+#: model:ir.model.fields,field_description:sale.field_sale_report__team_id
+#: model_terms:ir.ui.view,arch_db:sale.account_invoice_groupby_inherit
+#: model_terms:ir.ui.view,arch_db:sale.view_account_invoice_report_search_inherit
+#: model_terms:ir.ui.view,arch_db:sale.view_order_product_search
+#: model_terms:ir.ui.view,arch_db:sale.view_sales_order_filter
+msgid "Sales Team"
+msgstr "बिक्री टोली"
+
+#. module: sale
+#: model:ir.model.fields,field_description:sale.field_sale_order__user_id
+#: model:ir.model.fields,field_description:sale.field_sale_order_line__salesman_id
+#: model:ir.model.fields,field_description:sale.field_sale_report__user_id
+#: model_terms:ir.ui.view,arch_db:sale.view_order_product_search
+#: model_terms:ir.ui.view,arch_db:sale.view_sales_order_filter
+#: model_terms:ir.ui.view,arch_db:sale.view_sales_order_line_filter
+msgid "Salesperson"
+msgstr "बिक्रेता"
 
 #. module: sale
 #. odoo-python
@@ -323,6 +671,20 @@ msgid "Share"
 msgstr "साझा गर्नुहोस्"
 
 #. module: sale
+#: model_terms:ir.ui.view,arch_db:sale.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:sale.view_order_form
+msgid "Shipping"
+msgstr "ढुवानी"
+
+#. module: sale
+#: model:ir.model.fields,field_description:sale.field_account_bank_statement_line__source_id
+#: model:ir.model.fields,field_description:sale.field_account_move__source_id
+#: model:ir.model.fields,field_description:sale.field_sale_order__source_id
+#: model:ir.model.fields,field_description:sale.field_sale_report__source_id
+msgid "Source"
+msgstr "स्रोत"
+
+#. module: sale
 #: model:ir.model.fields,field_description:sale.field_sale_order__state
 #: model:ir.model.fields,field_description:sale.field_sale_report__state
 #: model_terms:ir.ui.view,arch_db:sale.view_order_product_search
@@ -333,6 +695,17 @@ msgstr "स्थिति"
 #: model:ir.model.fields,field_description:sale.field_sale_order_line__price_subtotal
 msgid "Subtotal"
 msgstr "उप-जम्मा"
+
+#. module: sale
+#: model:ir.model.fields,field_description:sale.field_sale_order__tag_ids
+#: model:ir.ui.menu,name:sale.menu_tag_config
+msgid "Tags"
+msgstr "ट्यागहरू"
+
+#. module: sale
+#: model_terms:ir.ui.view,arch_db:sale.report_saleorder_document
+msgid "Tax ID"
+msgstr "कर नम्बर"
 
 #. module: sale
 #: model:ir.model.fields,field_description:sale.field_sale_order__amount_tax
@@ -351,6 +724,12 @@ msgid "Total"
 msgstr "जम्मा"
 
 #. module: sale
+#: model:ir.model.fields,field_description:sale.field_sale_order_line__product_uom_id
+#: model:ir.model.fields,field_description:sale.field_sale_report__product_uom_id
+msgid "Unit"
+msgstr "एकाइ"
+
+#. module: sale
 #: model:ir.model.fields,field_description:sale.field_sale_order_line__price_unit
 #: model:ir.model.fields,field_description:sale.field_sale_report__price_unit
 #: model_terms:ir.ui.view,arch_db:sale.report_saleorder_document
@@ -359,9 +738,24 @@ msgid "Unit Price"
 msgstr "एकाइ मूल्य"
 
 #. module: sale
+#: model:ir.model.fields,field_description:sale.field_sale_order__amount_untaxed
+msgid "Untaxed Amount"
+msgstr "कर बिनाको रकम"
+
+#. module: sale
 #. odoo-python
 #: code:addons/sale/models/product_product.py:0
 #: code:addons/sale/models/product_template.py:0
 #: code:addons/sale/wizard/res_config_settings.py:0
 msgid "Warning"
 msgstr "चेतावनी"
+
+#. module: sale
+#: model:ir.model.fields,field_description:sale.field_sale_order__website_message_ids
+msgid "Website Messages"
+msgstr "वेबसाइट सन्देशहरू"
+
+#. module: sale
+#: model:ir.model.fields,help:sale.field_sale_order__website_message_ids
+msgid "Website communication history"
+msgstr "वेबसाइट सञ्चार इतिहास"

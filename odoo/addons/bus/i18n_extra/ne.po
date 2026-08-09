@@ -21,9 +21,64 @@ msgid "Contact"
 msgstr "सम्पर्क"
 
 #. module: bus
+#: model:ir.model,website_form_label:bus.model_res_partner
+msgid "Create a Customer"
+msgstr "ग्राहक सिर्जना गर्नुहोस्"
+
+#. module: bus
+#: model:ir.model.fields,field_description:bus.field_bus_bus__create_uid
+msgid "Created by"
+msgstr "सिर्जना गर्ने"
+
+#. module: bus
+#: model:ir.model.fields,field_description:bus.field_bus_bus__display_name
+#: model:ir.model.fields,field_description:bus.field_bus_listener_mixin__display_name
+#: model:ir.model.fields,field_description:bus.field_ir_attachment__display_name
+#: model:ir.model.fields,field_description:bus.field_ir_http__display_name
+#: model:ir.model.fields,field_description:bus.field_ir_model__display_name
+#: model:ir.model.fields,field_description:bus.field_ir_qweb__display_name
+#: model:ir.model.fields,field_description:bus.field_ir_websocket__display_name
+#: model:ir.model.fields,field_description:bus.field_res_groups__display_name
+#: model:ir.model.fields,field_description:bus.field_res_partner__display_name
+#: model:ir.model.fields,field_description:bus.field_res_users__display_name
+#: model:ir.model.fields,field_description:bus.field_res_users_settings__display_name
+msgid "Display Name"
+msgstr "प्रदर्शन नाम"
+
+#. module: bus
+#: model:ir.model.fields,field_description:bus.field_bus_bus__id
+#: model:ir.model.fields,field_description:bus.field_bus_listener_mixin__id
+#: model:ir.model.fields,field_description:bus.field_ir_attachment__id
+#: model:ir.model.fields,field_description:bus.field_ir_http__id
+#: model:ir.model.fields,field_description:bus.field_ir_model__id
+#: model:ir.model.fields,field_description:bus.field_ir_qweb__id
+#: model:ir.model.fields,field_description:bus.field_ir_websocket__id
+#: model:ir.model.fields,field_description:bus.field_res_groups__id
+#: model:ir.model.fields,field_description:bus.field_res_partner__id
+#: model:ir.model.fields,field_description:bus.field_res_users__id
+#: model:ir.model.fields,field_description:bus.field_res_users_settings__id
+msgid "ID"
+msgstr "आईडी"
+
+#. module: bus
+#: model:ir.model.fields,field_description:bus.field_bus_bus__write_uid
+msgid "Last Updated by"
+msgstr "अन्तिम अद्यावधिक गर्ने"
+
+#. module: bus
+#: model:ir.model.fields,field_description:bus.field_bus_bus__write_date
+msgid "Last Updated on"
+msgstr "अन्तिम अद्यावधिक मिति"
+
+#. module: bus
 #: model:ir.model.fields,field_description:bus.field_bus_bus__message
 msgid "Message"
 msgstr "सन्देश"
+
+#. module: bus
+#: model:ir.model,name:bus.model_ir_model
+msgid "Models"
+msgstr "मोडेलहरू"
 
 #. module: bus
 #. odoo-javascript

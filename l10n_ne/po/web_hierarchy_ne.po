@@ -11,6 +11,18 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: web_hierarchy
+#: model:ir.model.fields,field_description:web_hierarchy.field_ir_actions_act_window_view__display_name
+#: model:ir.model.fields,field_description:web_hierarchy.field_ir_ui_view__display_name
+msgid "Display Name"
+msgstr "प्रदर्शन नाम"
+
+#. module: web_hierarchy
+#: model:ir.model.fields,field_description:web_hierarchy.field_ir_actions_act_window_view__id
+#: model:ir.model.fields,field_description:web_hierarchy.field_ir_ui_view__id
+msgid "ID"
+msgstr "आईडी"
+
+#. module: web_hierarchy
 #. odoo-javascript
 #: code:addons/web_hierarchy/static/src/hierarchy_controller.xml:0
 msgid "New"

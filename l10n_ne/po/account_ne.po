@@ -33,6 +33,12 @@ msgid "Account"
 msgstr "खाता"
 
 #. module: account
+#: model:ir.model.fields,field_description:account.field_account_automatic_entry_wizard__account_type
+#: model_terms:ir.ui.view,arch_db:account.view_account_search
+msgid "Account Type"
+msgstr "खाता प्रकार"
+
+#. module: account
 #: model:account.account,name:account.2_account_account_us_accounting
 #: model:ir.model.fields,field_description:account.field_res_config_settings__module_account_accountant
 #: model:ir.ui.menu,name:account.account_account_menu
@@ -56,6 +62,20 @@ msgstr "खाताहरू"
 #: model:ir.model.fields,field_description:account.field_account_report_line__action_id
 msgid "Action"
 msgstr "कार्य"
+
+#. module: account
+#: model:ir.model.fields,field_description:account.field_account_account__message_needaction
+#: model:ir.model.fields,field_description:account.field_account_bank_statement_line__message_needaction
+#: model:ir.model.fields,field_description:account.field_account_journal__message_needaction
+#: model:ir.model.fields,field_description:account.field_account_move__message_needaction
+#: model:ir.model.fields,field_description:account.field_account_payment__message_needaction
+#: model:ir.model.fields,field_description:account.field_account_reconcile_model__message_needaction
+#: model:ir.model.fields,field_description:account.field_account_setup_bank_manual_config__message_needaction
+#: model:ir.model.fields,field_description:account.field_account_tax__message_needaction
+#: model:ir.model.fields,field_description:account.field_res_company__message_needaction
+#: model:ir.model.fields,field_description:account.field_res_partner_bank__message_needaction
+msgid "Action Needed"
+msgstr "कार्य आवश्यक"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_account__active
@@ -85,6 +105,39 @@ msgstr "सक्रिय"
 #: model:ir.model.fields,field_description:account.field_res_partner_bank__activity_ids
 msgid "Activities"
 msgstr "गतिविधिहरू"
+
+#. module: account
+#: model:ir.model.fields,field_description:account.field_account_account__activity_exception_decoration
+#: model:ir.model.fields,field_description:account.field_account_bank_statement_line__activity_exception_decoration
+#: model:ir.model.fields,field_description:account.field_account_journal__activity_exception_decoration
+#: model:ir.model.fields,field_description:account.field_account_move__activity_exception_decoration
+#: model:ir.model.fields,field_description:account.field_account_payment__activity_exception_decoration
+#: model:ir.model.fields,field_description:account.field_account_setup_bank_manual_config__activity_exception_decoration
+#: model:ir.model.fields,field_description:account.field_res_partner_bank__activity_exception_decoration
+msgid "Activity Exception Decoration"
+msgstr "गतिविधि अपवाद सजावट"
+
+#. module: account
+#: model:ir.model.fields,field_description:account.field_account_account__activity_state
+#: model:ir.model.fields,field_description:account.field_account_bank_statement_line__activity_state
+#: model:ir.model.fields,field_description:account.field_account_journal__activity_state
+#: model:ir.model.fields,field_description:account.field_account_move__activity_state
+#: model:ir.model.fields,field_description:account.field_account_payment__activity_state
+#: model:ir.model.fields,field_description:account.field_account_setup_bank_manual_config__activity_state
+#: model:ir.model.fields,field_description:account.field_res_partner_bank__activity_state
+msgid "Activity State"
+msgstr "गतिविधि अवस्था"
+
+#. module: account
+#: model:ir.model.fields,field_description:account.field_account_account__activity_type_icon
+#: model:ir.model.fields,field_description:account.field_account_bank_statement_line__activity_type_icon
+#: model:ir.model.fields,field_description:account.field_account_journal__activity_type_icon
+#: model:ir.model.fields,field_description:account.field_account_move__activity_type_icon
+#: model:ir.model.fields,field_description:account.field_account_payment__activity_type_icon
+#: model:ir.model.fields,field_description:account.field_account_setup_bank_manual_config__activity_type_icon
+#: model:ir.model.fields,field_description:account.field_res_partner_bank__activity_type_icon
+msgid "Activity Type Icon"
+msgstr "गतिविधि प्रकार आइकन"
 
 #. module: account
 #. odoo-javascript
@@ -133,6 +186,17 @@ msgid "Amount"
 msgstr "रकम"
 
 #. module: account
+#: model:ir.model,name:account.model_account_analytic_account
+msgid "Analytic Account"
+msgstr "विश्लेषणात्मक खाता"
+
+#. module: account
+#: model:ir.model.fields,field_description:account.field_account_move_line__analytic_distribution
+#: model:ir.model.fields,field_description:account.field_account_reconcile_model_line__analytic_distribution
+msgid "Analytic Distribution"
+msgstr "विश्लेषणात्मक वितरण"
+
+#. module: account
 #: model_terms:ir.ui.view,arch_db:account.res_company_form_view_onboarding_sale_tax
 #: model_terms:ir.ui.view,arch_db:account.setup_financial_year_opening_form
 msgid "Apply"
@@ -159,6 +223,20 @@ msgid "Attachment"
 msgstr "संलग्न"
 
 #. module: account
+#: model:ir.model.fields,field_description:account.field_account_account__message_attachment_count
+#: model:ir.model.fields,field_description:account.field_account_bank_statement_line__message_attachment_count
+#: model:ir.model.fields,field_description:account.field_account_journal__message_attachment_count
+#: model:ir.model.fields,field_description:account.field_account_move__message_attachment_count
+#: model:ir.model.fields,field_description:account.field_account_payment__message_attachment_count
+#: model:ir.model.fields,field_description:account.field_account_reconcile_model__message_attachment_count
+#: model:ir.model.fields,field_description:account.field_account_setup_bank_manual_config__message_attachment_count
+#: model:ir.model.fields,field_description:account.field_account_tax__message_attachment_count
+#: model:ir.model.fields,field_description:account.field_res_company__message_attachment_count
+#: model:ir.model.fields,field_description:account.field_res_partner_bank__message_attachment_count
+msgid "Attachment Count"
+msgstr "संलग्न संख्या"
+
+#. module: account
 #: model:ir.model.fields,field_description:account.field_account_bank_statement__attachment_ids
 #: model:ir.model.fields,field_description:account.field_account_bank_statement_line__attachment_ids
 #: model:ir.model.fields,field_description:account.field_account_move__attachment_ids
@@ -170,6 +248,32 @@ msgstr "संलग्नहरू"
 #: model:ir.model.fields,field_description:account.field_account_move_line__balance
 msgid "Balance"
 msgstr "मौज्दात"
+
+#. module: account
+#. odoo-python
+#: code:addons/account/models/account_journal.py:0
+#: code:addons/account/models/chart_template.py:0
+#: model:account.account,name:account.1_bank_journal_default_account_47
+#: model:account.account,name:account.2_bank_journal_default_account_153
+#: model:account.journal,name:account.1_bank
+#: model:account.journal,name:account.2_bank
+#: model:ir.model.fields,field_description:account.field_account_journal__bank_id
+#: model:ir.model.fields,field_description:account.field_account_setup_bank_manual_config__bank_id
+#: model:ir.model.fields,field_description:account.field_res_partner__bank_account_count
+#: model:ir.model.fields,field_description:account.field_res_partner_bank__bank_id
+#: model:ir.model.fields,field_description:account.field_res_users__bank_account_count
+#: model:ir.model.fields.selection,name:account.selection__account_journal__type__bank
+#: model:res.groups.privilege,name:account.res_group_privilege_accounting_bank
+#: model_terms:ir.ui.view,arch_db:account.view_account_move_filter
+#: model_terms:ir.ui.view,arch_db:account.view_account_move_line_filter
+msgid "Bank"
+msgstr "बैंक"
+
+#. module: account
+#: model:ir.model.fields,field_description:account.field_account_journal__bank_account_id
+#: model_terms:ir.ui.view,arch_db:account.view_account_journal_form
+msgid "Bank Account"
+msgstr "बैंक खाता"
 
 #. module: account
 #. odoo-javascript
@@ -225,6 +329,15 @@ msgid "Category"
 msgstr "श्रेणी"
 
 #. module: account
+#. odoo-python
+#: code:addons/account/models/onboarding_onboarding_step.py:0
+#: model:ir.actions.act_window,name:account.action_account_form
+#: model:ir.model.fields,field_description:account.field_account_report__chart_template
+#: model:ir.ui.menu,name:account.menu_action_account_form
+msgid "Chart of Accounts"
+msgstr "खाता तालिका"
+
+#. module: account
 #: model_terms:ir.ui.view,arch_db:account.res_company_form_view_onboarding
 msgid "City"
 msgstr "सहर"
@@ -233,6 +346,22 @@ msgstr "सहर"
 #: model_terms:ir.ui.view,arch_db:account.account_terms_conditions_setting_banner
 msgid "Close"
 msgstr "बन्द गर्नुहोस्"
+
+#. module: account
+#: model:ir.model.fields,field_description:account.field_account_account__code
+#: model:ir.model.fields,field_description:account.field_account_analytic_line__code
+#: model:ir.model.fields,field_description:account.field_account_code_mapping__code
+#: model:ir.model.fields,field_description:account.field_account_incoterms__code
+#: model:ir.model.fields,field_description:account.field_account_move_line__account_code
+#: model:ir.model.fields,field_description:account.field_account_payment__payment_method_code
+#: model:ir.model.fields,field_description:account.field_account_payment_method__code
+#: model:ir.model.fields,field_description:account.field_account_payment_method_line__code
+#: model:ir.model.fields,field_description:account.field_account_payment_register__payment_method_code
+#: model:ir.model.fields,field_description:account.field_account_report_line__code
+#: model_terms:ir.ui.view,arch_db:account.view_account_form
+#: model_terms:ir.ui.view,arch_db:account.view_account_list
+msgid "Code"
+msgstr "कोड"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_setup_bank_manual_config__color
@@ -288,6 +417,11 @@ msgid "Company"
 msgstr "कम्पनी"
 
 #. module: account
+#: model:ir.model,name:account.model_res_config_settings
+msgid "Config Settings"
+msgstr "कन्फिग सेटिङहरू"
+
+#. module: account
 #: model:ir.ui.menu,name:account.menu_finance_configuration
 #: model_terms:ir.ui.view,arch_db:account.account_journal_dashboard_kanban_view
 msgid "Configuration"
@@ -321,6 +455,124 @@ msgstr "सम्पर्क"
 #: model_terms:ir.ui.view,arch_db:account.res_company_form_view_onboarding
 msgid "Country"
 msgstr "देश"
+
+#. module: account
+#: model:ir.model.fields,field_description:account.field_account_bank_statement_line__country_code
+#: model:ir.model.fields,field_description:account.field_account_journal__country_code
+#: model:ir.model.fields,field_description:account.field_account_move__country_code
+#: model:ir.model.fields,field_description:account.field_account_move_reversal__country_code
+#: model:ir.model.fields,field_description:account.field_account_payment__country_code
+#: model:ir.model.fields,field_description:account.field_account_payment_register__country_code
+#: model:ir.model.fields,field_description:account.field_account_secure_entries_wizard__country_code
+#: model:ir.model.fields,field_description:account.field_account_setup_bank_manual_config__country_code
+#: model:ir.model.fields,field_description:account.field_account_tax__country_code
+#: model:ir.model.fields,field_description:account.field_account_tax_group__country_code
+#: model:ir.model.fields,field_description:account.field_res_config_settings__country_code
+msgid "Country Code"
+msgstr "देश कोड"
+
+#. module: account
+#: model:ir.model,website_form_label:account.model_res_partner
+msgid "Create a Customer"
+msgstr "ग्राहक सिर्जना गर्नुहोस्"
+
+#. module: account
+#: model:ir.model.fields,field_description:account.field_account_account__create_uid
+#: model:ir.model.fields,field_description:account.field_account_account_tag__create_uid
+#: model:ir.model.fields,field_description:account.field_account_accrued_orders_wizard__create_uid
+#: model:ir.model.fields,field_description:account.field_account_automatic_entry_wizard__create_uid
+#: model:ir.model.fields,field_description:account.field_account_autopost_bills_wizard__create_uid
+#: model:ir.model.fields,field_description:account.field_account_bank_statement__create_uid
+#: model:ir.model.fields,field_description:account.field_account_bank_statement_line__create_uid
+#: model:ir.model.fields,field_description:account.field_account_cash_rounding__create_uid
+#: model:ir.model.fields,field_description:account.field_account_financial_year_op__create_uid
+#: model:ir.model.fields,field_description:account.field_account_fiscal_position__create_uid
+#: model:ir.model.fields,field_description:account.field_account_fiscal_position_account__create_uid
+#: model:ir.model.fields,field_description:account.field_account_full_reconcile__create_uid
+#: model:ir.model.fields,field_description:account.field_account_group__create_uid
+#: model:ir.model.fields,field_description:account.field_account_incoterms__create_uid
+#: model:ir.model.fields,field_description:account.field_account_journal__create_uid
+#: model:ir.model.fields,field_description:account.field_account_journal_group__create_uid
+#: model:ir.model.fields,field_description:account.field_account_lock_exception__create_uid
+#: model:ir.model.fields,field_description:account.field_account_merge_wizard__create_uid
+#: model:ir.model.fields,field_description:account.field_account_merge_wizard_line__create_uid
+#: model:ir.model.fields,field_description:account.field_account_move__create_uid
+#: model:ir.model.fields,field_description:account.field_account_move_line__create_uid
+#: model:ir.model.fields,field_description:account.field_account_move_reversal__create_uid
+#: model:ir.model.fields,field_description:account.field_account_move_send_batch_wizard__create_uid
+#: model:ir.model.fields,field_description:account.field_account_move_send_wizard__create_uid
+#: model:ir.model.fields,field_description:account.field_account_partial_reconcile__create_uid
+#: model:ir.model.fields,field_description:account.field_account_payment__create_uid
+#: model:ir.model.fields,field_description:account.field_account_payment_method__create_uid
+#: model:ir.model.fields,field_description:account.field_account_payment_method_line__create_uid
+#: model:ir.model.fields,field_description:account.field_account_payment_register__create_uid
+#: model:ir.model.fields,field_description:account.field_account_payment_term__create_uid
+#: model:ir.model.fields,field_description:account.field_account_payment_term_line__create_uid
+#: model:ir.model.fields,field_description:account.field_account_reconcile_model__create_uid
+#: model:ir.model.fields,field_description:account.field_account_reconcile_model_line__create_uid
+#: model:ir.model.fields,field_description:account.field_account_report__create_uid
+#: model:ir.model.fields,field_description:account.field_account_report_column__create_uid
+#: model:ir.model.fields,field_description:account.field_account_report_expression__create_uid
+#: model:ir.model.fields,field_description:account.field_account_report_external_value__create_uid
+#: model:ir.model.fields,field_description:account.field_account_report_line__create_uid
+#: model:ir.model.fields,field_description:account.field_account_resequence_wizard__create_uid
+#: model:ir.model.fields,field_description:account.field_account_secure_entries_wizard__create_uid
+#: model:ir.model.fields,field_description:account.field_account_setup_bank_manual_config__create_uid
+#: model:ir.model.fields,field_description:account.field_account_tax__create_uid
+#: model:ir.model.fields,field_description:account.field_account_tax_group__create_uid
+#: model:ir.model.fields,field_description:account.field_account_tax_repartition_line__create_uid
+#: model:ir.model.fields,field_description:account.field_validate_account_move__create_uid
+msgid "Created by"
+msgstr "सिर्जना गर्ने"
+
+#. module: account
+#: model:ir.model.fields,field_description:account.field_account_account__create_date
+#: model:ir.model.fields,field_description:account.field_account_account_tag__create_date
+#: model:ir.model.fields,field_description:account.field_account_accrued_orders_wizard__create_date
+#: model:ir.model.fields,field_description:account.field_account_automatic_entry_wizard__create_date
+#: model:ir.model.fields,field_description:account.field_account_autopost_bills_wizard__create_date
+#: model:ir.model.fields,field_description:account.field_account_bank_statement__create_date
+#: model:ir.model.fields,field_description:account.field_account_bank_statement_line__create_date
+#: model:ir.model.fields,field_description:account.field_account_cash_rounding__create_date
+#: model:ir.model.fields,field_description:account.field_account_financial_year_op__create_date
+#: model:ir.model.fields,field_description:account.field_account_fiscal_position__create_date
+#: model:ir.model.fields,field_description:account.field_account_fiscal_position_account__create_date
+#: model:ir.model.fields,field_description:account.field_account_full_reconcile__create_date
+#: model:ir.model.fields,field_description:account.field_account_group__create_date
+#: model:ir.model.fields,field_description:account.field_account_incoterms__create_date
+#: model:ir.model.fields,field_description:account.field_account_journal__create_date
+#: model:ir.model.fields,field_description:account.field_account_journal_group__create_date
+#: model:ir.model.fields,field_description:account.field_account_lock_exception__create_date
+#: model:ir.model.fields,field_description:account.field_account_merge_wizard__create_date
+#: model:ir.model.fields,field_description:account.field_account_merge_wizard_line__create_date
+#: model:ir.model.fields,field_description:account.field_account_move__create_date
+#: model:ir.model.fields,field_description:account.field_account_move_line__create_date
+#: model:ir.model.fields,field_description:account.field_account_move_reversal__create_date
+#: model:ir.model.fields,field_description:account.field_account_move_send_batch_wizard__create_date
+#: model:ir.model.fields,field_description:account.field_account_move_send_wizard__create_date
+#: model:ir.model.fields,field_description:account.field_account_partial_reconcile__create_date
+#: model:ir.model.fields,field_description:account.field_account_payment__create_date
+#: model:ir.model.fields,field_description:account.field_account_payment_method__create_date
+#: model:ir.model.fields,field_description:account.field_account_payment_method_line__create_date
+#: model:ir.model.fields,field_description:account.field_account_payment_register__create_date
+#: model:ir.model.fields,field_description:account.field_account_payment_term__create_date
+#: model:ir.model.fields,field_description:account.field_account_payment_term_line__create_date
+#: model:ir.model.fields,field_description:account.field_account_reconcile_model__create_date
+#: model:ir.model.fields,field_description:account.field_account_reconcile_model_line__create_date
+#: model:ir.model.fields,field_description:account.field_account_report__create_date
+#: model:ir.model.fields,field_description:account.field_account_report_column__create_date
+#: model:ir.model.fields,field_description:account.field_account_report_expression__create_date
+#: model:ir.model.fields,field_description:account.field_account_report_external_value__create_date
+#: model:ir.model.fields,field_description:account.field_account_report_line__create_date
+#: model:ir.model.fields,field_description:account.field_account_resequence_wizard__create_date
+#: model:ir.model.fields,field_description:account.field_account_secure_entries_wizard__create_date
+#: model:ir.model.fields,field_description:account.field_account_setup_bank_manual_config__create_date
+#: model:ir.model.fields,field_description:account.field_account_tax__create_date
+#: model:ir.model.fields,field_description:account.field_account_tax_group__create_date
+#: model:ir.model.fields,field_description:account.field_account_tax_repartition_line__create_date
+#: model:ir.model.fields,field_description:account.field_validate_account_move__create_date
+msgid "Created on"
+msgstr "सिर्जना मिति"
 
 #. module: account
 #. odoo-python
@@ -416,10 +668,22 @@ msgid "Debit"
 msgstr "डेबिट"
 
 #. module: account
+#: model_terms:ir.ui.view,arch_db:account.view_tax_form
+msgid "Default"
+msgstr "पूर्वनिर्धारित"
+
+#. module: account
 #. odoo-javascript
 #: code:addons/account/static/src/components/section_and_note_fields_backend/section_and_note_fields_backend.xml:0
 msgid "Delete"
 msgstr "मेटाउनुहोस्"
+
+#. module: account
+#: model:ir.model.fields,field_description:account.field_account_bank_statement_line__partner_shipping_id
+#: model:ir.model.fields,field_description:account.field_account_move__partner_shipping_id
+#: model:res.groups,name:account.group_delivery_invoice_address
+msgid "Delivery Address"
+msgstr "डेलिभरी ठेगाना"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_account__description
@@ -446,6 +710,94 @@ msgstr "खारेज गर्नुहोस्"
 #: model:ir.model.fields.selection,name:account.selection__account_move_line__display_type__discount
 msgid "Discount"
 msgstr "छुट"
+
+#. module: account
+#: model:ir.model.fields,field_description:account.field_account_account__display_name
+#: model:ir.model.fields,field_description:account.field_account_account_tag__display_name
+#: model:ir.model.fields,field_description:account.field_account_accrued_orders_wizard__display_name
+#: model:ir.model.fields,field_description:account.field_account_analytic_account__display_name
+#: model:ir.model.fields,field_description:account.field_account_analytic_applicability__display_name
+#: model:ir.model.fields,field_description:account.field_account_analytic_distribution_model__display_name
+#: model:ir.model.fields,field_description:account.field_account_analytic_line__display_name
+#: model:ir.model.fields,field_description:account.field_account_automatic_entry_wizard__display_name
+#: model:ir.model.fields,field_description:account.field_account_autopost_bills_wizard__display_name
+#: model:ir.model.fields,field_description:account.field_account_bank_statement__display_name
+#: model:ir.model.fields,field_description:account.field_account_bank_statement_line__display_name
+#: model:ir.model.fields,field_description:account.field_account_cash_rounding__display_name
+#: model:ir.model.fields,field_description:account.field_account_chart_template__display_name
+#: model:ir.model.fields,field_description:account.field_account_code_mapping__display_name
+#: model:ir.model.fields,field_description:account.field_account_document_import_mixin__display_name
+#: model:ir.model.fields,field_description:account.field_account_financial_year_op__display_name
+#: model:ir.model.fields,field_description:account.field_account_fiscal_position__display_name
+#: model:ir.model.fields,field_description:account.field_account_fiscal_position_account__display_name
+#: model:ir.model.fields,field_description:account.field_account_full_reconcile__display_name
+#: model:ir.model.fields,field_description:account.field_account_group__display_name
+#: model:ir.model.fields,field_description:account.field_account_incoterms__display_name
+#: model:ir.model.fields,field_description:account.field_account_invoice_report__display_name
+#: model:ir.model.fields,field_description:account.field_account_journal__display_name
+#: model:ir.model.fields,field_description:account.field_account_journal_group__display_name
+#: model:ir.model.fields,field_description:account.field_account_lock_exception__display_name
+#: model:ir.model.fields,field_description:account.field_account_merge_wizard__display_name
+#: model:ir.model.fields,field_description:account.field_account_merge_wizard_line__display_name
+#: model:ir.model.fields,field_description:account.field_account_move__display_name
+#: model:ir.model.fields,field_description:account.field_account_move_line__display_name
+#: model:ir.model.fields,field_description:account.field_account_move_reversal__display_name
+#: model:ir.model.fields,field_description:account.field_account_move_send__display_name
+#: model:ir.model.fields,field_description:account.field_account_move_send_batch_wizard__display_name
+#: model:ir.model.fields,field_description:account.field_account_move_send_wizard__display_name
+#: model:ir.model.fields,field_description:account.field_account_partial_reconcile__display_name
+#: model:ir.model.fields,field_description:account.field_account_payment__display_name
+#: model:ir.model.fields,field_description:account.field_account_payment_method__display_name
+#: model:ir.model.fields,field_description:account.field_account_payment_method_line__display_name
+#: model:ir.model.fields,field_description:account.field_account_payment_register__display_name
+#: model:ir.model.fields,field_description:account.field_account_payment_term__display_name
+#: model:ir.model.fields,field_description:account.field_account_payment_term_line__display_name
+#: model:ir.model.fields,field_description:account.field_account_reconcile_model__display_name
+#: model:ir.model.fields,field_description:account.field_account_reconcile_model_line__display_name
+#: model:ir.model.fields,field_description:account.field_account_report__display_name
+#: model:ir.model.fields,field_description:account.field_account_report_column__display_name
+#: model:ir.model.fields,field_description:account.field_account_report_expression__display_name
+#: model:ir.model.fields,field_description:account.field_account_report_external_value__display_name
+#: model:ir.model.fields,field_description:account.field_account_report_line__display_name
+#: model:ir.model.fields,field_description:account.field_account_resequence_wizard__display_name
+#: model:ir.model.fields,field_description:account.field_account_root__display_name
+#: model:ir.model.fields,field_description:account.field_account_secure_entries_wizard__display_name
+#: model:ir.model.fields,field_description:account.field_account_setup_bank_manual_config__display_name
+#: model:ir.model.fields,field_description:account.field_account_tax__display_name
+#: model:ir.model.fields,field_description:account.field_account_tax_group__display_name
+#: model:ir.model.fields,field_description:account.field_account_tax_repartition_line__display_name
+#: model:ir.model.fields,field_description:account.field_base_document_layout__display_name
+#: model:ir.model.fields,field_description:account.field_base_partner_merge_automatic_wizard__display_name
+#: model:ir.model.fields,field_description:account.field_decimal_precision__display_name
+#: model:ir.model.fields,field_description:account.field_digest_digest__display_name
+#: model:ir.model.fields,field_description:account.field_ir_actions_report__display_name
+#: model:ir.model.fields,field_description:account.field_ir_attachment__display_name
+#: model:ir.model.fields,field_description:account.field_ir_http__display_name
+#: model:ir.model.fields,field_description:account.field_ir_module_module__display_name
+#: model:ir.model.fields,field_description:account.field_kpi_provider__display_name
+#: model:ir.model.fields,field_description:account.field_mail_message__display_name
+#: model:ir.model.fields,field_description:account.field_mail_template__display_name
+#: model:ir.model.fields,field_description:account.field_mail_tracking_value__display_name
+#: model:ir.model.fields,field_description:account.field_onboarding_onboarding_step__display_name
+#: model:ir.model.fields,field_description:account.field_product_catalog_mixin__display_name
+#: model:ir.model.fields,field_description:account.field_product_category__display_name
+#: model:ir.model.fields,field_description:account.field_product_product__display_name
+#: model:ir.model.fields,field_description:account.field_product_template__display_name
+#: model:ir.model.fields,field_description:account.field_report_account_report_hash_integrity__display_name
+#: model:ir.model.fields,field_description:account.field_report_account_report_invoice__display_name
+#: model:ir.model.fields,field_description:account.field_report_account_report_invoice_with_payments__display_name
+#: model:ir.model.fields,field_description:account.field_res_company__display_name
+#: model:ir.model.fields,field_description:account.field_res_config_settings__display_name
+#: model:ir.model.fields,field_description:account.field_res_country_group__display_name
+#: model:ir.model.fields,field_description:account.field_res_currency__display_name
+#: model:ir.model.fields,field_description:account.field_res_groups__display_name
+#: model:ir.model.fields,field_description:account.field_res_partner__display_name
+#: model:ir.model.fields,field_description:account.field_res_partner_bank__display_name
+#: model:ir.model.fields,field_description:account.field_sequence_mixin__display_name
+#: model:ir.model.fields,field_description:account.field_uom_uom__display_name
+#: model:ir.model.fields,field_description:account.field_validate_account_move__display_name
+msgid "Display Name"
+msgstr "प्रदर्शन नाम"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.portal_invoice_page
@@ -501,10 +853,33 @@ msgid "Favorites"
 msgstr "मनपर्ने"
 
 #. module: account
+#: model_terms:ir.ui.view,arch_db:account.view_message_tree_audit_log_search
+msgid "Field"
+msgstr "फिल्ड"
+
+#. module: account
 #. odoo-javascript
 #: code:addons/account/static/src/components/product_catalog/search/search_panel.xml:0
 msgid "Filter"
 msgstr "फिल्टर"
+
+#. module: account
+#: model:ir.model,name:account.model_account_fiscal_position
+#: model:ir.model.fields,field_description:account.field_account_bank_statement_line__fiscal_position_id
+#: model:ir.model.fields,field_description:account.field_account_fiscal_position__name
+#: model:ir.model.fields,field_description:account.field_account_fiscal_position_account__position_id
+#: model:ir.model.fields,field_description:account.field_account_invoice_report__fiscal_position_id
+#: model:ir.model.fields,field_description:account.field_account_move__fiscal_position_id
+#: model:ir.model.fields,field_description:account.field_account_tax__fiscal_position_ids
+#: model:ir.model.fields,field_description:account.field_res_company__fiscal_position_ids
+#: model:ir.model.fields,field_description:account.field_res_partner__property_account_position_id
+#: model:ir.model.fields,field_description:account.field_res_users__property_account_position_id
+#: model_terms:ir.ui.view,arch_db:account.view_account_position_filter
+#: model_terms:ir.ui.view,arch_db:account.view_account_position_form
+#: model_terms:ir.ui.view,arch_db:account.view_account_position_tree
+#: model_terms:ir.ui.view,arch_db:account.view_account_tax_search
+msgid "Fiscal Position"
+msgstr "वित्तीय स्थिति"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_account__message_follower_ids
@@ -521,6 +896,20 @@ msgid "Followers"
 msgstr "अनुयायीहरू"
 
 #. module: account
+#: model:ir.model.fields,field_description:account.field_account_account__message_partner_ids
+#: model:ir.model.fields,field_description:account.field_account_bank_statement_line__message_partner_ids
+#: model:ir.model.fields,field_description:account.field_account_journal__message_partner_ids
+#: model:ir.model.fields,field_description:account.field_account_move__message_partner_ids
+#: model:ir.model.fields,field_description:account.field_account_payment__message_partner_ids
+#: model:ir.model.fields,field_description:account.field_account_reconcile_model__message_partner_ids
+#: model:ir.model.fields,field_description:account.field_account_setup_bank_manual_config__message_partner_ids
+#: model:ir.model.fields,field_description:account.field_account_tax__message_partner_ids
+#: model:ir.model.fields,field_description:account.field_res_company__message_partner_ids
+#: model:ir.model.fields,field_description:account.field_res_partner_bank__message_partner_ids
+msgid "Followers (Partners)"
+msgstr "अनुयायीहरू (साझेदारहरू)"
+
+#. module: account
 #: model:ir.model.fields,field_description:account.field_account_account__group_id
 msgid "Group"
 msgstr "समूह"
@@ -531,11 +920,129 @@ msgid "Group By"
 msgstr "समूहअनुसार"
 
 #. module: account
+#: model:ir.model.fields,field_description:account.field_account_account__has_message
+#: model:ir.model.fields,field_description:account.field_account_bank_statement_line__has_message
+#: model:ir.model.fields,field_description:account.field_account_journal__has_message
+#: model:ir.model.fields,field_description:account.field_account_move__has_message
+#: model:ir.model.fields,field_description:account.field_account_payment__has_message
+#: model:ir.model.fields,field_description:account.field_account_reconcile_model__has_message
+#: model:ir.model.fields,field_description:account.field_account_setup_bank_manual_config__has_message
+#: model:ir.model.fields,field_description:account.field_account_tax__has_message
+#: model:ir.model.fields,field_description:account.field_res_company__has_message
+#: model:ir.model.fields,field_description:account.field_res_partner_bank__has_message
+msgid "Has Message"
+msgstr "सन्देश छ"
+
+#. module: account
+#: model:ir.model.fields,field_description:account.field_account_account__id
+#: model:ir.model.fields,field_description:account.field_account_account_tag__id
+#: model:ir.model.fields,field_description:account.field_account_accrued_orders_wizard__id
+#: model:ir.model.fields,field_description:account.field_account_analytic_account__id
+#: model:ir.model.fields,field_description:account.field_account_analytic_applicability__id
+#: model:ir.model.fields,field_description:account.field_account_analytic_distribution_model__id
+#: model:ir.model.fields,field_description:account.field_account_analytic_line__id
+#: model:ir.model.fields,field_description:account.field_account_automatic_entry_wizard__id
+#: model:ir.model.fields,field_description:account.field_account_autopost_bills_wizard__id
+#: model:ir.model.fields,field_description:account.field_account_bank_statement__id
+#: model:ir.model.fields,field_description:account.field_account_bank_statement_line__id
+#: model:ir.model.fields,field_description:account.field_account_cash_rounding__id
+#: model:ir.model.fields,field_description:account.field_account_chart_template__id
+#: model:ir.model.fields,field_description:account.field_account_code_mapping__id
+#: model:ir.model.fields,field_description:account.field_account_document_import_mixin__id
+#: model:ir.model.fields,field_description:account.field_account_financial_year_op__id
+#: model:ir.model.fields,field_description:account.field_account_fiscal_position__id
+#: model:ir.model.fields,field_description:account.field_account_fiscal_position_account__id
+#: model:ir.model.fields,field_description:account.field_account_full_reconcile__id
+#: model:ir.model.fields,field_description:account.field_account_group__id
+#: model:ir.model.fields,field_description:account.field_account_incoterms__id
+#: model:ir.model.fields,field_description:account.field_account_invoice_report__id
+#: model:ir.model.fields,field_description:account.field_account_journal__id
+#: model:ir.model.fields,field_description:account.field_account_journal_group__id
+#: model:ir.model.fields,field_description:account.field_account_lock_exception__id
+#: model:ir.model.fields,field_description:account.field_account_merge_wizard__id
+#: model:ir.model.fields,field_description:account.field_account_merge_wizard_line__id
+#: model:ir.model.fields,field_description:account.field_account_move__id
+#: model:ir.model.fields,field_description:account.field_account_move_line__id
+#: model:ir.model.fields,field_description:account.field_account_move_reversal__id
+#: model:ir.model.fields,field_description:account.field_account_move_send__id
+#: model:ir.model.fields,field_description:account.field_account_move_send_batch_wizard__id
+#: model:ir.model.fields,field_description:account.field_account_move_send_wizard__id
+#: model:ir.model.fields,field_description:account.field_account_partial_reconcile__id
+#: model:ir.model.fields,field_description:account.field_account_payment__id
+#: model:ir.model.fields,field_description:account.field_account_payment_method__id
+#: model:ir.model.fields,field_description:account.field_account_payment_method_line__id
+#: model:ir.model.fields,field_description:account.field_account_payment_register__id
+#: model:ir.model.fields,field_description:account.field_account_payment_term__id
+#: model:ir.model.fields,field_description:account.field_account_payment_term_line__id
+#: model:ir.model.fields,field_description:account.field_account_reconcile_model__id
+#: model:ir.model.fields,field_description:account.field_account_reconcile_model_line__id
+#: model:ir.model.fields,field_description:account.field_account_report__id
+#: model:ir.model.fields,field_description:account.field_account_report_column__id
+#: model:ir.model.fields,field_description:account.field_account_report_expression__id
+#: model:ir.model.fields,field_description:account.field_account_report_external_value__id
+#: model:ir.model.fields,field_description:account.field_account_report_line__id
+#: model:ir.model.fields,field_description:account.field_account_resequence_wizard__id
+#: model:ir.model.fields,field_description:account.field_account_root__id
+#: model:ir.model.fields,field_description:account.field_account_secure_entries_wizard__id
+#: model:ir.model.fields,field_description:account.field_account_setup_bank_manual_config__id
+#: model:ir.model.fields,field_description:account.field_account_tax__id
+#: model:ir.model.fields,field_description:account.field_account_tax_group__id
+#: model:ir.model.fields,field_description:account.field_account_tax_repartition_line__id
+#: model:ir.model.fields,field_description:account.field_base_document_layout__id
+#: model:ir.model.fields,field_description:account.field_base_partner_merge_automatic_wizard__id
+#: model:ir.model.fields,field_description:account.field_decimal_precision__id
+#: model:ir.model.fields,field_description:account.field_digest_digest__id
+#: model:ir.model.fields,field_description:account.field_ir_actions_report__id
+#: model:ir.model.fields,field_description:account.field_ir_attachment__id
+#: model:ir.model.fields,field_description:account.field_ir_http__id
+#: model:ir.model.fields,field_description:account.field_ir_module_module__id
+#: model:ir.model.fields,field_description:account.field_kpi_provider__id
+#: model:ir.model.fields,field_description:account.field_mail_message__id
+#: model:ir.model.fields,field_description:account.field_mail_template__id
+#: model:ir.model.fields,field_description:account.field_mail_tracking_value__id
+#: model:ir.model.fields,field_description:account.field_onboarding_onboarding_step__id
+#: model:ir.model.fields,field_description:account.field_product_catalog_mixin__id
+#: model:ir.model.fields,field_description:account.field_product_category__id
+#: model:ir.model.fields,field_description:account.field_product_product__id
+#: model:ir.model.fields,field_description:account.field_product_template__id
+#: model:ir.model.fields,field_description:account.field_report_account_report_hash_integrity__id
+#: model:ir.model.fields,field_description:account.field_report_account_report_invoice__id
+#: model:ir.model.fields,field_description:account.field_report_account_report_invoice_with_payments__id
+#: model:ir.model.fields,field_description:account.field_res_company__id
+#: model:ir.model.fields,field_description:account.field_res_config_settings__id
+#: model:ir.model.fields,field_description:account.field_res_country_group__id
+#: model:ir.model.fields,field_description:account.field_res_currency__id
+#: model:ir.model.fields,field_description:account.field_res_groups__id
+#: model:ir.model.fields,field_description:account.field_res_partner__id
+#: model:ir.model.fields,field_description:account.field_res_partner_bank__id
+#: model:ir.model.fields,field_description:account.field_sequence_mixin__id
+#: model:ir.model.fields,field_description:account.field_uom_uom__id
+#: model:ir.model.fields,field_description:account.field_validate_account_move__id
+msgid "ID"
+msgstr "आईडी"
+
+#. module: account
+#: model:ir.model.fields,field_description:account.field_account_account__activity_exception_icon
+#: model:ir.model.fields,field_description:account.field_account_bank_statement_line__activity_exception_icon
+#: model:ir.model.fields,field_description:account.field_account_journal__activity_exception_icon
+#: model:ir.model.fields,field_description:account.field_account_move__activity_exception_icon
+#: model:ir.model.fields,field_description:account.field_account_payment__activity_exception_icon
+#: model:ir.model.fields,field_description:account.field_account_setup_bank_manual_config__activity_exception_icon
+#: model:ir.model.fields,field_description:account.field_res_partner_bank__activity_exception_icon
+msgid "Icon"
+msgstr "आइकन"
+
+#. module: account
 #. odoo-javascript
 #: code:addons/account/static/src/components/account_payment_field/account_payment.xml:0
 #: model:ir.model.fields,field_description:account.field_account_merge_wizard_line__info
 msgid "Info"
 msgstr "जानकारी"
+
+#. module: account
+#: model:ir.model.fields,field_description:account.field_account_bank_statement_line__internal_index
+msgid "Internal Reference"
+msgstr "आन्तरिक सन्दर्भ"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.view_bank_statement_search
@@ -578,6 +1085,20 @@ msgstr "बीजक"
 #: model_terms:ir.ui.view,arch_db:account.view_move_form
 msgid "Invoices"
 msgstr "बीजकहरू"
+
+#. module: account
+#: model:ir.model.fields,field_description:account.field_account_account__message_is_follower
+#: model:ir.model.fields,field_description:account.field_account_bank_statement_line__message_is_follower
+#: model:ir.model.fields,field_description:account.field_account_journal__message_is_follower
+#: model:ir.model.fields,field_description:account.field_account_move__message_is_follower
+#: model:ir.model.fields,field_description:account.field_account_payment__message_is_follower
+#: model:ir.model.fields,field_description:account.field_account_reconcile_model__message_is_follower
+#: model:ir.model.fields,field_description:account.field_account_setup_bank_manual_config__message_is_follower
+#: model:ir.model.fields,field_description:account.field_account_tax__message_is_follower
+#: model:ir.model.fields,field_description:account.field_res_company__message_is_follower
+#: model:ir.model.fields,field_description:account.field_res_partner_bank__message_is_follower
+msgid "Is Follower"
+msgstr "अनुयायी हो"
 
 #. module: account
 #: model:ir.model,name:account.model_account_journal
@@ -641,6 +1162,19 @@ msgid "Journal Entry"
 msgstr "जर्नल प्रविष्टि"
 
 #. module: account
+#. odoo-python
+#: code:addons/account/wizard/account_automatic_entry_wizard.py:0
+#: code:addons/account/wizard/accrued_orders.py:0
+#: model:ir.model.fields,field_description:account.field_account_bank_statement_line__payment_ref
+#: model:ir.model.fields,field_description:account.field_account_move_line__name
+#: model:ir.model.fields,field_description:account.field_account_reconcile_model__match_label
+#: model:ir.model.fields,field_description:account.field_account_reconcile_model_line__label
+#: model:ir.model.fields,field_description:account.field_account_report_expression__label
+#: model_terms:ir.ui.view,arch_db:account.view_account_payment_register_form
+msgid "Label"
+msgstr "लेबल"
+
+#. module: account
 #: model:ir.model.fields,field_description:account.field_account_move_send_wizard__lang
 msgid "Language"
 msgstr "भाषा"
@@ -651,14 +1185,143 @@ msgid "Last Month"
 msgstr "गत महिना"
 
 #. module: account
+#: model:ir.model.fields,field_description:account.field_account_account__write_uid
+#: model:ir.model.fields,field_description:account.field_account_account_tag__write_uid
+#: model:ir.model.fields,field_description:account.field_account_accrued_orders_wizard__write_uid
+#: model:ir.model.fields,field_description:account.field_account_automatic_entry_wizard__write_uid
+#: model:ir.model.fields,field_description:account.field_account_autopost_bills_wizard__write_uid
+#: model:ir.model.fields,field_description:account.field_account_bank_statement__write_uid
+#: model:ir.model.fields,field_description:account.field_account_bank_statement_line__write_uid
+#: model:ir.model.fields,field_description:account.field_account_cash_rounding__write_uid
+#: model:ir.model.fields,field_description:account.field_account_financial_year_op__write_uid
+#: model:ir.model.fields,field_description:account.field_account_fiscal_position__write_uid
+#: model:ir.model.fields,field_description:account.field_account_fiscal_position_account__write_uid
+#: model:ir.model.fields,field_description:account.field_account_full_reconcile__write_uid
+#: model:ir.model.fields,field_description:account.field_account_group__write_uid
+#: model:ir.model.fields,field_description:account.field_account_incoterms__write_uid
+#: model:ir.model.fields,field_description:account.field_account_journal__write_uid
+#: model:ir.model.fields,field_description:account.field_account_journal_group__write_uid
+#: model:ir.model.fields,field_description:account.field_account_lock_exception__write_uid
+#: model:ir.model.fields,field_description:account.field_account_merge_wizard__write_uid
+#: model:ir.model.fields,field_description:account.field_account_merge_wizard_line__write_uid
+#: model:ir.model.fields,field_description:account.field_account_move__write_uid
+#: model:ir.model.fields,field_description:account.field_account_move_line__write_uid
+#: model:ir.model.fields,field_description:account.field_account_move_reversal__write_uid
+#: model:ir.model.fields,field_description:account.field_account_move_send_batch_wizard__write_uid
+#: model:ir.model.fields,field_description:account.field_account_move_send_wizard__write_uid
+#: model:ir.model.fields,field_description:account.field_account_partial_reconcile__write_uid
+#: model:ir.model.fields,field_description:account.field_account_payment__write_uid
+#: model:ir.model.fields,field_description:account.field_account_payment_method__write_uid
+#: model:ir.model.fields,field_description:account.field_account_payment_method_line__write_uid
+#: model:ir.model.fields,field_description:account.field_account_payment_register__write_uid
+#: model:ir.model.fields,field_description:account.field_account_payment_term__write_uid
+#: model:ir.model.fields,field_description:account.field_account_payment_term_line__write_uid
+#: model:ir.model.fields,field_description:account.field_account_reconcile_model__write_uid
+#: model:ir.model.fields,field_description:account.field_account_reconcile_model_line__write_uid
+#: model:ir.model.fields,field_description:account.field_account_report__write_uid
+#: model:ir.model.fields,field_description:account.field_account_report_column__write_uid
+#: model:ir.model.fields,field_description:account.field_account_report_expression__write_uid
+#: model:ir.model.fields,field_description:account.field_account_report_external_value__write_uid
+#: model:ir.model.fields,field_description:account.field_account_report_line__write_uid
+#: model:ir.model.fields,field_description:account.field_account_resequence_wizard__write_uid
+#: model:ir.model.fields,field_description:account.field_account_secure_entries_wizard__write_uid
+#: model:ir.model.fields,field_description:account.field_account_setup_bank_manual_config__write_uid
+#: model:ir.model.fields,field_description:account.field_account_tax__write_uid
+#: model:ir.model.fields,field_description:account.field_account_tax_group__write_uid
+#: model:ir.model.fields,field_description:account.field_account_tax_repartition_line__write_uid
+#: model:ir.model.fields,field_description:account.field_validate_account_move__write_uid
+msgid "Last Updated by"
+msgstr "अन्तिम अद्यावधिक गर्ने"
+
+#. module: account
+#: model:ir.model.fields,field_description:account.field_account_account__write_date
+#: model:ir.model.fields,field_description:account.field_account_account_tag__write_date
+#: model:ir.model.fields,field_description:account.field_account_accrued_orders_wizard__write_date
+#: model:ir.model.fields,field_description:account.field_account_automatic_entry_wizard__write_date
+#: model:ir.model.fields,field_description:account.field_account_autopost_bills_wizard__write_date
+#: model:ir.model.fields,field_description:account.field_account_bank_statement__write_date
+#: model:ir.model.fields,field_description:account.field_account_bank_statement_line__write_date
+#: model:ir.model.fields,field_description:account.field_account_cash_rounding__write_date
+#: model:ir.model.fields,field_description:account.field_account_financial_year_op__write_date
+#: model:ir.model.fields,field_description:account.field_account_fiscal_position__write_date
+#: model:ir.model.fields,field_description:account.field_account_fiscal_position_account__write_date
+#: model:ir.model.fields,field_description:account.field_account_full_reconcile__write_date
+#: model:ir.model.fields,field_description:account.field_account_group__write_date
+#: model:ir.model.fields,field_description:account.field_account_incoterms__write_date
+#: model:ir.model.fields,field_description:account.field_account_journal__write_date
+#: model:ir.model.fields,field_description:account.field_account_journal_group__write_date
+#: model:ir.model.fields,field_description:account.field_account_lock_exception__write_date
+#: model:ir.model.fields,field_description:account.field_account_merge_wizard__write_date
+#: model:ir.model.fields,field_description:account.field_account_merge_wizard_line__write_date
+#: model:ir.model.fields,field_description:account.field_account_move__write_date
+#: model:ir.model.fields,field_description:account.field_account_move_line__write_date
+#: model:ir.model.fields,field_description:account.field_account_move_reversal__write_date
+#: model:ir.model.fields,field_description:account.field_account_move_send_batch_wizard__write_date
+#: model:ir.model.fields,field_description:account.field_account_move_send_wizard__write_date
+#: model:ir.model.fields,field_description:account.field_account_partial_reconcile__write_date
+#: model:ir.model.fields,field_description:account.field_account_payment__write_date
+#: model:ir.model.fields,field_description:account.field_account_payment_method__write_date
+#: model:ir.model.fields,field_description:account.field_account_payment_method_line__write_date
+#: model:ir.model.fields,field_description:account.field_account_payment_register__write_date
+#: model:ir.model.fields,field_description:account.field_account_payment_term__write_date
+#: model:ir.model.fields,field_description:account.field_account_payment_term_line__write_date
+#: model:ir.model.fields,field_description:account.field_account_reconcile_model__write_date
+#: model:ir.model.fields,field_description:account.field_account_reconcile_model_line__write_date
+#: model:ir.model.fields,field_description:account.field_account_report__write_date
+#: model:ir.model.fields,field_description:account.field_account_report_column__write_date
+#: model:ir.model.fields,field_description:account.field_account_report_expression__write_date
+#: model:ir.model.fields,field_description:account.field_account_report_external_value__write_date
+#: model:ir.model.fields,field_description:account.field_account_report_line__write_date
+#: model:ir.model.fields,field_description:account.field_account_resequence_wizard__write_date
+#: model:ir.model.fields,field_description:account.field_account_secure_entries_wizard__write_date
+#: model:ir.model.fields,field_description:account.field_account_setup_bank_manual_config__write_date
+#: model:ir.model.fields,field_description:account.field_account_tax__write_date
+#: model:ir.model.fields,field_description:account.field_account_tax_group__write_date
+#: model:ir.model.fields,field_description:account.field_account_tax_repartition_line__write_date
+#: model:ir.model.fields,field_description:account.field_validate_account_move__write_date
+msgid "Last Updated on"
+msgstr "अन्तिम अद्यावधिक मिति"
+
+#. module: account
 #: model:ir.model.fields.selection,name:account.selection__account_report__default_opening_date_filter__previous_year
 msgid "Last Year"
 msgstr "गत वर्ष"
 
 #. module: account
+#: model:ir.model.fields.selection,name:account.selection__account_report_line__horizontal_split_side__left
+msgid "Left"
+msgstr "बायाँ"
+
+#. module: account
+#: model:ir.model.fields,field_description:account.field_account_report_line__hierarchy_level
+msgid "Level"
+msgstr "तह"
+
+#. module: account
+#: model:ir.model.fields,field_description:account.field_account_bank_statement_line__message_main_attachment_id
+#: model:ir.model.fields,field_description:account.field_account_move__message_main_attachment_id
+#: model:ir.model.fields,field_description:account.field_account_payment__message_main_attachment_id
+msgid "Main Attachment"
+msgstr "मुख्य संलग्न"
+
+#. module: account
 #: model:ir.model,name:account.model_mail_message
 msgid "Message"
 msgstr "सन्देश"
+
+#. module: account
+#: model:ir.model.fields,field_description:account.field_account_account__message_has_error
+#: model:ir.model.fields,field_description:account.field_account_bank_statement_line__message_has_error
+#: model:ir.model.fields,field_description:account.field_account_journal__message_has_error
+#: model:ir.model.fields,field_description:account.field_account_move__message_has_error
+#: model:ir.model.fields,field_description:account.field_account_payment__message_has_error
+#: model:ir.model.fields,field_description:account.field_account_reconcile_model__message_has_error
+#: model:ir.model.fields,field_description:account.field_account_setup_bank_manual_config__message_has_error
+#: model:ir.model.fields,field_description:account.field_account_tax__message_has_error
+#: model:ir.model.fields,field_description:account.field_res_company__message_has_error
+#: model:ir.model.fields,field_description:account.field_res_partner_bank__message_has_error
+msgid "Message Delivery error"
+msgstr "सन्देश पठाउन त्रुटि"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_account__message_ids
@@ -673,6 +1336,32 @@ msgstr "सन्देश"
 #: model:ir.model.fields,field_description:account.field_res_partner_bank__message_ids
 msgid "Messages"
 msgstr "सन्देशहरू"
+
+#. module: account
+#: model:ir.model.fields,field_description:account.field_account_payment__payment_method_id
+msgid "Method"
+msgstr "विधि"
+
+#. module: account
+#: model:ir.model.fields,field_description:account.field_account_reconcile_model_line__model_id
+msgid "Model"
+msgstr "मोडेल"
+
+#. module: account
+#: model_terms:ir.ui.view,arch_db:account.account_journal_dashboard_kanban_view
+msgid "Models"
+msgstr "मोडेलहरू"
+
+#. module: account
+#: model:ir.model.fields,field_description:account.field_account_account__my_activity_date_deadline
+#: model:ir.model.fields,field_description:account.field_account_bank_statement_line__my_activity_date_deadline
+#: model:ir.model.fields,field_description:account.field_account_journal__my_activity_date_deadline
+#: model:ir.model.fields,field_description:account.field_account_move__my_activity_date_deadline
+#: model:ir.model.fields,field_description:account.field_account_payment__my_activity_date_deadline
+#: model:ir.model.fields,field_description:account.field_account_setup_bank_manual_config__my_activity_date_deadline
+#: model:ir.model.fields,field_description:account.field_res_partner_bank__my_activity_date_deadline
+msgid "My Activity Deadline"
+msgstr "मेरो गतिविधि म्याद"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_autopost_bills_wizard__partner_name
@@ -713,6 +1402,50 @@ msgid "New"
 msgstr "नयाँ"
 
 #. module: account
+#: model:ir.model.fields,field_description:account.field_account_account__activity_calendar_event_id
+#: model:ir.model.fields,field_description:account.field_account_bank_statement_line__activity_calendar_event_id
+#: model:ir.model.fields,field_description:account.field_account_journal__activity_calendar_event_id
+#: model:ir.model.fields,field_description:account.field_account_move__activity_calendar_event_id
+#: model:ir.model.fields,field_description:account.field_account_payment__activity_calendar_event_id
+#: model:ir.model.fields,field_description:account.field_account_setup_bank_manual_config__activity_calendar_event_id
+#: model:ir.model.fields,field_description:account.field_res_partner_bank__activity_calendar_event_id
+msgid "Next Activity Calendar Event"
+msgstr "अर्को गतिविधि पात्रो कार्यक्रम"
+
+#. module: account
+#: model:ir.model.fields,field_description:account.field_account_account__activity_date_deadline
+#: model:ir.model.fields,field_description:account.field_account_bank_statement_line__activity_date_deadline
+#: model:ir.model.fields,field_description:account.field_account_journal__activity_date_deadline
+#: model:ir.model.fields,field_description:account.field_account_move__activity_date_deadline
+#: model:ir.model.fields,field_description:account.field_account_payment__activity_date_deadline
+#: model:ir.model.fields,field_description:account.field_account_setup_bank_manual_config__activity_date_deadline
+#: model:ir.model.fields,field_description:account.field_res_partner_bank__activity_date_deadline
+msgid "Next Activity Deadline"
+msgstr "अर्को गतिविधि म्याद"
+
+#. module: account
+#: model:ir.model.fields,field_description:account.field_account_account__activity_summary
+#: model:ir.model.fields,field_description:account.field_account_bank_statement_line__activity_summary
+#: model:ir.model.fields,field_description:account.field_account_journal__activity_summary
+#: model:ir.model.fields,field_description:account.field_account_move__activity_summary
+#: model:ir.model.fields,field_description:account.field_account_payment__activity_summary
+#: model:ir.model.fields,field_description:account.field_account_setup_bank_manual_config__activity_summary
+#: model:ir.model.fields,field_description:account.field_res_partner_bank__activity_summary
+msgid "Next Activity Summary"
+msgstr "अर्को गतिविधि सारांश"
+
+#. module: account
+#: model:ir.model.fields,field_description:account.field_account_account__activity_type_id
+#: model:ir.model.fields,field_description:account.field_account_bank_statement_line__activity_type_id
+#: model:ir.model.fields,field_description:account.field_account_journal__activity_type_id
+#: model:ir.model.fields,field_description:account.field_account_move__activity_type_id
+#: model:ir.model.fields,field_description:account.field_account_payment__activity_type_id
+#: model:ir.model.fields,field_description:account.field_account_setup_bank_manual_config__activity_type_id
+#: model:ir.model.fields,field_description:account.field_res_partner_bank__activity_type_id
+msgid "Next Activity Type"
+msgstr "अर्को गतिविधि प्रकार"
+
+#. module: account
 #: model:ir.model.fields.selection,name:account.selection__account_move__auto_post__no
 msgid "No"
 msgstr "होइन"
@@ -737,6 +1470,34 @@ msgid "Notes"
 msgstr "टिपोटहरू"
 
 #. module: account
+#: model:ir.model.fields,field_description:account.field_account_account__message_needaction_counter
+#: model:ir.model.fields,field_description:account.field_account_bank_statement_line__message_needaction_counter
+#: model:ir.model.fields,field_description:account.field_account_journal__message_needaction_counter
+#: model:ir.model.fields,field_description:account.field_account_move__message_needaction_counter
+#: model:ir.model.fields,field_description:account.field_account_payment__message_needaction_counter
+#: model:ir.model.fields,field_description:account.field_account_reconcile_model__message_needaction_counter
+#: model:ir.model.fields,field_description:account.field_account_setup_bank_manual_config__message_needaction_counter
+#: model:ir.model.fields,field_description:account.field_account_tax__message_needaction_counter
+#: model:ir.model.fields,field_description:account.field_res_company__message_needaction_counter
+#: model:ir.model.fields,field_description:account.field_res_partner_bank__message_needaction_counter
+msgid "Number of Actions"
+msgstr "कार्यहरूको संख्या"
+
+#. module: account
+#: model:ir.model.fields,field_description:account.field_account_account__message_has_error_counter
+#: model:ir.model.fields,field_description:account.field_account_bank_statement_line__message_has_error_counter
+#: model:ir.model.fields,field_description:account.field_account_journal__message_has_error_counter
+#: model:ir.model.fields,field_description:account.field_account_move__message_has_error_counter
+#: model:ir.model.fields,field_description:account.field_account_payment__message_has_error_counter
+#: model:ir.model.fields,field_description:account.field_account_reconcile_model__message_has_error_counter
+#: model:ir.model.fields,field_description:account.field_account_setup_bank_manual_config__message_has_error_counter
+#: model:ir.model.fields,field_description:account.field_account_tax__message_has_error_counter
+#: model:ir.model.fields,field_description:account.field_res_company__message_has_error_counter
+#: model:ir.model.fields,field_description:account.field_res_partner_bank__message_has_error_counter
+msgid "Number of errors"
+msgstr "त्रुटिहरूको संख्या"
+
+#. module: account
 #. odoo-python
 #: code:addons/account/models/account_move_send.py:0
 #: model:ir.model.fields.selection,name:account.selection__account_invoice_report__state__posted
@@ -756,6 +1517,13 @@ msgid "Other"
 msgstr "अन्य"
 
 #. module: account
+#: model_terms:ir.ui.view,arch_db:account.portal_invoice_page
+#: model_terms:ir.ui.view,arch_db:account.view_account_invoice_filter
+#: model_terms:ir.ui.view,arch_db:account.view_account_move_line_payment_filter
+msgid "Overdue"
+msgstr "म्याद नाघेको"
+
+#. module: account
 #: model:ir.model.fields.selection,name:account.selection__account_invoice_report__payment_state__paid
 #: model:ir.model.fields.selection,name:account.selection__account_move__payment_state__paid
 #: model:ir.model.fields.selection,name:account.selection__account_move__status_in_payment__paid
@@ -764,6 +1532,12 @@ msgstr "अन्य"
 #: model_terms:ir.ui.view,arch_db:account.view_move_form
 msgid "Paid"
 msgstr "भुक्तानी भएको"
+
+#. module: account
+#: model:ir.model.fields,field_description:account.field_account_group__parent_id
+#: model:ir.model.fields,field_description:account.field_account_root__parent_id
+msgid "Parent"
+msgstr "मूल"
 
 #. module: account
 #. odoo-python
@@ -797,6 +1571,38 @@ msgstr "साझेदार"
 #: model_terms:ir.ui.view,arch_db:account.view_account_payment_search
 msgid "Payment"
 msgstr "भुक्तानी"
+
+#. module: account
+#: model:ir.model.fields,field_description:account.field_account_payment__payment_method_line_id
+#: model:ir.model.fields,field_description:account.field_account_payment_method_line__payment_method_id
+#: model:ir.model.fields,field_description:account.field_account_payment_register__payment_method_line_id
+#: model_terms:ir.ui.view,arch_db:account.view_account_invoice_filter
+#: model_terms:ir.ui.view,arch_db:account.view_account_move_filter
+#: model_terms:ir.ui.view,arch_db:account.view_move_form
+#: model_terms:ir.ui.view,arch_db:account.view_partner_property_form
+msgid "Payment Method"
+msgstr "भुक्तानी विधि"
+
+#. module: account
+#: model:ir.model.fields.selection,name:account.selection__account_move_line__display_type__payment_term
+msgid "Payment Term"
+msgstr "भुक्तानी सर्त"
+
+#. module: account
+#: model:ir.actions.act_window,name:account.action_payment_term_form
+#: model:ir.model,name:account.model_account_payment_term
+#: model:ir.model.fields,field_description:account.field_account_bank_statement_line__invoice_payment_term_id
+#: model:ir.model.fields,field_description:account.field_account_move__invoice_payment_term_id
+#: model:ir.model.fields,field_description:account.field_account_payment_term__name
+#: model:ir.model.fields,field_description:account.field_account_payment_term_line__payment_id
+#: model:ir.ui.menu,name:account.menu_action_payment_term_form
+#: model_terms:ir.ui.view,arch_db:account.view_move_form
+#: model_terms:ir.ui.view,arch_db:account.view_partner_property_form
+#: model_terms:ir.ui.view,arch_db:account.view_payment_term_form
+#: model_terms:ir.ui.view,arch_db:account.view_payment_term_search
+#: model_terms:ir.ui.view,arch_db:account.view_payment_term_tree
+msgid "Payment Terms"
+msgstr "भुक्तानी सर्तहरू"
 
 #. module: account
 #. odoo-python
@@ -855,6 +1661,17 @@ msgid "Product"
 msgstr "उत्पादन"
 
 #. module: account
+#: model:ir.model,name:account.model_product_category
+#: model:ir.model.fields,field_description:account.field_account_analytic_applicability__product_categ_id
+#: model:ir.model.fields,field_description:account.field_account_analytic_distribution_model__product_categ_id
+#: model:ir.model.fields,field_description:account.field_account_analytic_line__product_category
+#: model:ir.model.fields,field_description:account.field_account_invoice_report__product_categ_id
+#: model:ir.model.fields,field_description:account.field_account_move_line__product_category_id
+#: model_terms:ir.ui.view,arch_db:account.view_account_invoice_report_search
+msgid "Product Category"
+msgstr "उत्पादन श्रेणी"
+
+#. module: account
 #: model:ir.actions.act_window,name:account.product_product_action_purchasable
 #: model:ir.actions.act_window,name:account.product_product_action_sellable
 #: model:ir.model.fields.selection,name:account.selection__account_account_tag__applicability__products
@@ -875,6 +1692,20 @@ msgid "Quantity"
 msgstr "परिमाण"
 
 #. module: account
+#: model:ir.model.fields,field_description:account.field_account_account__rating_ids
+#: model:ir.model.fields,field_description:account.field_account_bank_statement_line__rating_ids
+#: model:ir.model.fields,field_description:account.field_account_journal__rating_ids
+#: model:ir.model.fields,field_description:account.field_account_move__rating_ids
+#: model:ir.model.fields,field_description:account.field_account_payment__rating_ids
+#: model:ir.model.fields,field_description:account.field_account_reconcile_model__rating_ids
+#: model:ir.model.fields,field_description:account.field_account_setup_bank_manual_config__rating_ids
+#: model:ir.model.fields,field_description:account.field_account_tax__rating_ids
+#: model:ir.model.fields,field_description:account.field_res_company__rating_ids
+#: model:ir.model.fields,field_description:account.field_res_partner_bank__rating_ids
+msgid "Ratings"
+msgstr "मूल्याङ्कनहरू"
+
+#. module: account
 #. odoo-javascript
 #: code:addons/account/static/src/components/x2many_buttons/x2many_buttons.js:0
 msgid "Records"
@@ -891,11 +1722,46 @@ msgid "Reference"
 msgstr "सन्दर्भ"
 
 #. module: account
+#: model:ir.model.fields,field_description:account.field_account_report_column__report_id
+msgid "Report"
+msgstr "प्रतिवेदन"
+
+#. module: account
 #: model:ir.ui.menu,name:account.account_report_folder
 #: model:ir.ui.menu,name:account.menu_finance_reports
 #: model_terms:ir.ui.view,arch_db:account.res_config_settings_view_form
 msgid "Reporting"
 msgstr "प्रतिवेदन"
+
+#. module: account
+#: model:ir.model.fields,field_description:account.field_account_account__activity_user_id
+#: model:ir.model.fields,field_description:account.field_account_bank_statement_line__activity_user_id
+#: model:ir.model.fields,field_description:account.field_account_journal__activity_user_id
+#: model:ir.model.fields,field_description:account.field_account_move__activity_user_id
+#: model:ir.model.fields,field_description:account.field_account_payment__activity_user_id
+#: model:ir.model.fields,field_description:account.field_account_setup_bank_manual_config__activity_user_id
+#: model:ir.model.fields,field_description:account.field_res_partner_bank__activity_user_id
+msgid "Responsible User"
+msgstr "जिम्मेवार प्रयोगकर्ता"
+
+#. module: account
+#: model:ir.model.fields.selection,name:account.selection__account_report_line__horizontal_split_side__right
+msgid "Right"
+msgstr "दायाँ"
+
+#. module: account
+#: model:ir.model.fields,field_description:account.field_account_account__message_has_sms_error
+#: model:ir.model.fields,field_description:account.field_account_bank_statement_line__message_has_sms_error
+#: model:ir.model.fields,field_description:account.field_account_journal__message_has_sms_error
+#: model:ir.model.fields,field_description:account.field_account_move__message_has_sms_error
+#: model:ir.model.fields,field_description:account.field_account_payment__message_has_sms_error
+#: model:ir.model.fields,field_description:account.field_account_reconcile_model__message_has_sms_error
+#: model:ir.model.fields,field_description:account.field_account_setup_bank_manual_config__message_has_sms_error
+#: model:ir.model.fields,field_description:account.field_account_tax__message_has_sms_error
+#: model:ir.model.fields,field_description:account.field_res_company__message_has_sms_error
+#: model:ir.model.fields,field_description:account.field_res_partner_bank__message_has_sms_error
+msgid "SMS Delivery error"
+msgstr "एसएमएस पठाउन त्रुटि"
 
 #. module: account
 #. odoo-python
@@ -910,6 +1776,17 @@ msgstr "प्रतिवेदन"
 #: model_terms:ir.ui.view,arch_db:account.view_account_move_line_filter
 msgid "Sales"
 msgstr "बिक्री"
+
+#. module: account
+#: model:ir.model.fields,field_description:account.field_account_bank_statement_line__invoice_user_id
+#: model:ir.model.fields,field_description:account.field_account_invoice_report__invoice_user_id
+#: model:ir.model.fields,field_description:account.field_account_move__invoice_user_id
+#: model_terms:ir.ui.view,arch_db:account.portal_invoice_page
+#: model_terms:ir.ui.view,arch_db:account.view_account_invoice_filter
+#: model_terms:ir.ui.view,arch_db:account.view_account_invoice_report_search
+#: model_terms:ir.ui.view,arch_db:account.view_invoice_tree
+msgid "Salesperson"
+msgstr "बिक्रेता"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.res_company_form_view_onboarding
@@ -995,6 +1872,14 @@ msgid "Subtotal"
 msgstr "उप-जम्मा"
 
 #. module: account
+#: model:ir.model.fields,field_description:account.field_account_account__tag_ids
+#: model:ir.model.fields,field_description:account.field_account_move_line__tax_tag_ids
+#: model_terms:ir.ui.view,arch_db:account.account_tag_view_form
+#: model_terms:ir.ui.view,arch_db:account.account_tag_view_tree
+msgid "Tags"
+msgstr "ट्यागहरू"
+
+#. module: account
 #: model:account.report.column,name:account.generic_tax_report_account_tax_column_tax
 #: model:account.report.column,name:account.generic_tax_report_column_tax
 #: model:account.report.column,name:account.generic_tax_report_tax_account_column_tax
@@ -1010,6 +1895,12 @@ msgstr "उप-जम्मा"
 #: model_terms:ir.ui.view,arch_db:account.view_move_line_tax_audit_tree
 msgid "Tax"
 msgstr "कर"
+
+#. module: account
+#: model:ir.model.fields,field_description:account.field_base_document_layout__vat
+#: model_terms:ir.ui.view,arch_db:account.report_invoice_document
+msgid "Tax ID"
+msgstr "कर नम्बर"
 
 #. module: account
 #. odoo-python
@@ -1029,6 +1920,13 @@ msgstr "कर"
 #: model_terms:ir.ui.view,arch_db:account.view_move_line_form
 msgid "Taxes"
 msgstr "करहरू"
+
+#. module: account
+#: model:ir.model.fields,field_description:account.field_account_bank_statement_line__narration
+#: model:ir.model.fields,field_description:account.field_account_move__narration
+#: model_terms:ir.ui.view,arch_db:account.view_move_form
+msgid "Terms and Conditions"
+msgstr "नियम तथा सर्तहरू"
 
 #. module: account
 #: model:ir.model.fields.selection,name:account.selection__account_report__default_opening_date_filter__this_month
@@ -1067,6 +1965,12 @@ msgid "Total"
 msgstr "जम्मा"
 
 #. module: account
+#: model:ir.model.fields,field_description:account.field_account_automatic_entry_wizard__total_amount
+#: model_terms:ir.ui.view,arch_db:account.view_move_tree
+msgid "Total Amount"
+msgstr "कुल रकम"
+
+#. module: account
 #: model:ir.model.fields,field_description:account.field_account_account__account_type
 #: model:ir.model.fields,field_description:account.field_account_bank_statement_line__move_type
 #: model:ir.model.fields,field_description:account.field_account_journal__type
@@ -1077,9 +1981,29 @@ msgid "Type"
 msgstr "प्रकार"
 
 #. module: account
+#: model:ir.model.fields,field_description:account.field_account_invoice_report__product_uom_id
+#: model:ir.model.fields,field_description:account.field_account_move_line__product_uom_id
+#: model_terms:ir.ui.view,arch_db:account.report_invoice_document
+msgid "Unit"
+msgstr "एकाइ"
+
+#. module: account
 #: model:ir.model.fields,field_description:account.field_account_move_line__price_unit
 msgid "Unit Price"
 msgstr "एकाइ मूल्य"
+
+#. module: account
+#. odoo-javascript
+#. odoo-python
+#: code:addons/account/models/account_move.py:0
+#: code:addons/account/models/account_tax.py:0
+#: code:addons/account/static/src/helpers/account_tax.js:0
+#: model:ir.model.fields,field_description:account.field_account_bank_statement_line__amount_untaxed
+#: model:ir.model.fields,field_description:account.field_account_invoice_report__price_subtotal
+#: model:ir.model.fields,field_description:account.field_account_move__amount_untaxed
+#: model_terms:ir.ui.view,arch_db:account.document_tax_totals_template
+msgid "Untaxed Amount"
+msgstr "कर बिनाको रकम"
 
 #. module: account
 #. odoo-javascript
@@ -1095,6 +2019,11 @@ msgstr "अपलोड गर्नुहोस्"
 #: model:ir.model.fields,field_description:account.field_account_move__user_id
 msgid "User"
 msgstr "प्रयोगकर्ता"
+
+#. module: account
+#: model:ir.model.fields,field_description:account.field_account_payment_term_line__value
+msgid "Value"
+msgstr "मान"
 
 #. module: account
 #: model:ir.model.fields.selection,name:account.selection__account_payment__partner_type__supplier
@@ -1123,6 +2052,40 @@ msgid "View"
 msgstr "हेर्नुहोस्"
 
 #. module: account
+#: model_terms:ir.ui.view,arch_db:account.view_account_journal_group_tree
+#: model_terms:ir.ui.view,arch_db:account.view_payment_term_form
+msgid "Visible to all"
+msgstr "सबैलाई देखिने"
+
+#. module: account
 #: model_terms:ir.ui.view,arch_db:account.res_company_form_view_onboarding
 msgid "Website"
 msgstr "वेबसाइट"
+
+#. module: account
+#: model:ir.model.fields,field_description:account.field_account_account__website_message_ids
+#: model:ir.model.fields,field_description:account.field_account_bank_statement_line__website_message_ids
+#: model:ir.model.fields,field_description:account.field_account_journal__website_message_ids
+#: model:ir.model.fields,field_description:account.field_account_move__website_message_ids
+#: model:ir.model.fields,field_description:account.field_account_payment__website_message_ids
+#: model:ir.model.fields,field_description:account.field_account_reconcile_model__website_message_ids
+#: model:ir.model.fields,field_description:account.field_account_setup_bank_manual_config__website_message_ids
+#: model:ir.model.fields,field_description:account.field_account_tax__website_message_ids
+#: model:ir.model.fields,field_description:account.field_res_company__website_message_ids
+#: model:ir.model.fields,field_description:account.field_res_partner_bank__website_message_ids
+msgid "Website Messages"
+msgstr "वेबसाइट सन्देशहरू"
+
+#. module: account
+#: model:ir.model.fields,help:account.field_account_account__website_message_ids
+#: model:ir.model.fields,help:account.field_account_bank_statement_line__website_message_ids
+#: model:ir.model.fields,help:account.field_account_journal__website_message_ids
+#: model:ir.model.fields,help:account.field_account_move__website_message_ids
+#: model:ir.model.fields,help:account.field_account_payment__website_message_ids
+#: model:ir.model.fields,help:account.field_account_reconcile_model__website_message_ids
+#: model:ir.model.fields,help:account.field_account_setup_bank_manual_config__website_message_ids
+#: model:ir.model.fields,help:account.field_account_tax__website_message_ids
+#: model:ir.model.fields,help:account.field_res_company__website_message_ids
+#: model:ir.model.fields,help:account.field_res_partner_bank__website_message_ids
+msgid "Website communication history"
+msgstr "वेबसाइट सञ्चार इतिहास"

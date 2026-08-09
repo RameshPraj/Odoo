@@ -14,3 +14,13 @@ msgstr ""
 #: model:ir.model.fields,field_description:resource_mail.field_resource_resource__color
 msgid "Color"
 msgstr "रङ"
+
+#. module: resource_mail
+#: model:ir.model.fields,field_description:resource_mail.field_resource_resource__display_name
+msgid "Display Name"
+msgstr "प्रदर्शन नाम"
+
+#. module: resource_mail
+#: model:ir.model.fields,field_description:resource_mail.field_resource_resource__id
+msgid "ID"
+msgstr "आईडी"

@@ -28,6 +28,23 @@ msgid "Contacts"
 msgstr "सम्पर्कहरू"
 
 #. module: contacts
+#: model:ir.model,website_form_label:contacts.model_res_partner
+msgid "Create a Customer"
+msgstr "ग्राहक सिर्जना गर्नुहोस्"
+
+#. module: contacts
+#: model:ir.model.fields,field_description:contacts.field_res_partner__display_name
+#: model:ir.model.fields,field_description:contacts.field_res_users__display_name
+msgid "Display Name"
+msgstr "प्रदर्शन नाम"
+
+#. module: contacts
+#: model:ir.model.fields,field_description:contacts.field_res_partner__id
+#: model:ir.model.fields,field_description:contacts.field_res_users__id
+msgid "ID"
+msgstr "आईडी"
+
+#. module: contacts
 #: model:ir.model,name:contacts.model_res_users
 msgid "User"
 msgstr "प्रयोगकर्ता"

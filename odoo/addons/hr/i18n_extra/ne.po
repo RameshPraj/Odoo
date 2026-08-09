@@ -11,6 +11,14 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: hr
+#: model:ir.model.fields,field_description:hr.field_hr_department__message_needaction
+#: model:ir.model.fields,field_description:hr.field_hr_employee__message_needaction
+#: model:ir.model.fields,field_description:hr.field_hr_job__message_needaction
+#: model:ir.model.fields,field_description:hr.field_hr_version__message_needaction
+msgid "Action Needed"
+msgstr "कार्य आवश्यक"
+
+#. module: hr
 #: model:ir.model.fields,field_description:hr.field_hr_department__active
 #: model:ir.model.fields,field_description:hr.field_hr_employee__active
 #: model:ir.model.fields,field_description:hr.field_hr_employee_public__active
@@ -26,6 +34,27 @@ msgstr "सक्रिय"
 #: model:ir.model.fields,field_description:hr.field_hr_version__activity_ids
 msgid "Activities"
 msgstr "गतिविधिहरू"
+
+#. module: hr
+#: model:ir.model.fields,field_description:hr.field_hr_department__activity_exception_decoration
+#: model:ir.model.fields,field_description:hr.field_hr_employee__activity_exception_decoration
+#: model:ir.model.fields,field_description:hr.field_hr_version__activity_exception_decoration
+msgid "Activity Exception Decoration"
+msgstr "गतिविधि अपवाद सजावट"
+
+#. module: hr
+#: model:ir.model.fields,field_description:hr.field_hr_department__activity_state
+#: model:ir.model.fields,field_description:hr.field_hr_employee__activity_state
+#: model:ir.model.fields,field_description:hr.field_hr_version__activity_state
+msgid "Activity State"
+msgstr "गतिविधि अवस्था"
+
+#. module: hr
+#: model:ir.model.fields,field_description:hr.field_hr_department__activity_type_icon
+#: model:ir.model.fields,field_description:hr.field_hr_employee__activity_type_icon
+#: model:ir.model.fields,field_description:hr.field_hr_version__activity_type_icon
+msgid "Activity Type Icon"
+msgstr "गतिविधि प्रकार आइकन"
 
 #. module: hr
 #: model:ir.model.fields,field_description:hr.field_hr_employee_public__address_id
@@ -65,6 +94,19 @@ msgid "Archived"
 msgstr "संग्रहित"
 
 #. module: hr
+#: model:ir.model.fields,field_description:hr.field_hr_department__message_attachment_count
+#: model:ir.model.fields,field_description:hr.field_hr_employee__message_attachment_count
+#: model:ir.model.fields,field_description:hr.field_hr_job__message_attachment_count
+#: model:ir.model.fields,field_description:hr.field_hr_version__message_attachment_count
+msgid "Attachment Count"
+msgstr "संलग्न संख्या"
+
+#. module: hr
+#: model:ir.model.fields,field_description:hr.field_hr_bank_account_allocation_wizard_line__bank_account_id
+msgid "Bank Account"
+msgstr "बैंक खाता"
+
+#. module: hr
 #: model_terms:ir.ui.view,arch_db:hr.view_bank_account_allocation_wizard
 #: model_terms:ir.ui.view,arch_db:hr.view_users_simple_form
 msgid "Cancel"
@@ -78,6 +120,11 @@ msgstr "रद्द गर्नुहोस्"
 #: model_terms:ir.ui.view,arch_db:hr.view_partner_bank_form_inherit_hr
 msgid "City"
 msgstr "सहर"
+
+#. module: hr
+#: model:ir.model.fields,field_description:hr.field_hr_contract_type__code
+msgid "Code"
+msgstr "कोड"
 
 #. module: hr
 #: model:ir.model.fields,field_description:hr.field_hr_employee_public__color
@@ -105,6 +152,11 @@ msgid "Company"
 msgstr "कम्पनी"
 
 #. module: hr
+#: model:ir.model,name:hr.model_res_config_settings
+msgid "Config Settings"
+msgstr "कन्फिग सेटिङहरू"
+
+#. module: hr
 #: model:ir.ui.menu,name:hr.menu_human_resources_configuration
 #: model_terms:ir.ui.view,arch_db:hr.hr_department_view_kanban
 msgid "Configuration"
@@ -121,6 +173,11 @@ msgstr "पुष्टि गर्नुहोस्"
 #: model_terms:ir.ui.view,arch_db:hr.view_employee_form
 msgid "Contact"
 msgstr "सम्पर्क"
+
+#. module: hr
+#: model_terms:ir.ui.view,arch_db:hr.res_users_view_form_preferences
+msgid "Contact Name"
+msgstr "सम्पर्क नाम"
 
 #. module: hr
 #. odoo-python
@@ -149,6 +206,55 @@ msgstr "करार"
 #: model_terms:ir.ui.view,arch_db:hr.view_partner_bank_form_inherit_hr
 msgid "Country"
 msgstr "देश"
+
+#. module: hr
+#: model:ir.model.fields,field_description:hr.field_hr_departure_reason__country_code
+#: model:ir.model.fields,field_description:hr.field_hr_employee__country_code
+#: model:ir.model.fields,field_description:hr.field_hr_employee_public__country_code
+#: model:ir.model.fields,field_description:hr.field_hr_payroll_structure_type__country_code
+#: model:ir.model.fields,field_description:hr.field_hr_version__country_code
+msgid "Country Code"
+msgstr "देश कोड"
+
+#. module: hr
+#: model:ir.model,website_form_label:hr.model_res_partner
+msgid "Create a Customer"
+msgstr "ग्राहक सिर्जना गर्नुहोस्"
+
+#. module: hr
+#: model:ir.model.fields,field_description:hr.field_hr_bank_account_allocation_wizard__create_uid
+#: model:ir.model.fields,field_description:hr.field_hr_bank_account_allocation_wizard_line__create_uid
+#: model:ir.model.fields,field_description:hr.field_hr_contract_type__create_uid
+#: model:ir.model.fields,field_description:hr.field_hr_department__create_uid
+#: model:ir.model.fields,field_description:hr.field_hr_departure_reason__create_uid
+#: model:ir.model.fields,field_description:hr.field_hr_departure_wizard__create_uid
+#: model:ir.model.fields,field_description:hr.field_hr_employee__create_uid
+#: model:ir.model.fields,field_description:hr.field_hr_employee_category__create_uid
+#: model:ir.model.fields,field_description:hr.field_hr_employee_public__create_uid
+#: model:ir.model.fields,field_description:hr.field_hr_job__create_uid
+#: model:ir.model.fields,field_description:hr.field_hr_payroll_structure_type__create_uid
+#: model:ir.model.fields,field_description:hr.field_hr_version__create_uid
+#: model:ir.model.fields,field_description:hr.field_hr_version_wizard__create_uid
+#: model:ir.model.fields,field_description:hr.field_hr_work_location__create_uid
+msgid "Created by"
+msgstr "सिर्जना गर्ने"
+
+#. module: hr
+#: model:ir.model.fields,field_description:hr.field_hr_bank_account_allocation_wizard__create_date
+#: model:ir.model.fields,field_description:hr.field_hr_bank_account_allocation_wizard_line__create_date
+#: model:ir.model.fields,field_description:hr.field_hr_contract_type__create_date
+#: model:ir.model.fields,field_description:hr.field_hr_department__create_date
+#: model:ir.model.fields,field_description:hr.field_hr_departure_reason__create_date
+#: model:ir.model.fields,field_description:hr.field_hr_departure_wizard__create_date
+#: model:ir.model.fields,field_description:hr.field_hr_employee__create_date
+#: model:ir.model.fields,field_description:hr.field_hr_employee_category__create_date
+#: model:ir.model.fields,field_description:hr.field_hr_job__create_date
+#: model:ir.model.fields,field_description:hr.field_hr_payroll_structure_type__create_date
+#: model:ir.model.fields,field_description:hr.field_hr_version__create_date
+#: model:ir.model.fields,field_description:hr.field_hr_version_wizard__create_date
+#: model:ir.model.fields,field_description:hr.field_hr_work_location__create_date
+msgid "Created on"
+msgstr "सिर्जना मिति"
 
 #. module: hr
 #: model:ir.model.fields,field_description:hr.field_hr_employee__currency_id
@@ -189,6 +295,40 @@ msgstr "विभागहरू"
 #: model_terms:ir.ui.view,arch_db:hr.hr_version_wizard_view_form
 msgid "Discard"
 msgstr "खारेज गर्नुहोस्"
+
+#. module: hr
+#: model:ir.model.fields,field_description:hr.field_discuss_channel__display_name
+#: model:ir.model.fields,field_description:hr.field_hr_bank_account_allocation_wizard__display_name
+#: model:ir.model.fields,field_description:hr.field_hr_bank_account_allocation_wizard_line__display_name
+#: model:ir.model.fields,field_description:hr.field_hr_contract_type__display_name
+#: model:ir.model.fields,field_description:hr.field_hr_department__display_name
+#: model:ir.model.fields,field_description:hr.field_hr_departure_reason__display_name
+#: model:ir.model.fields,field_description:hr.field_hr_departure_wizard__display_name
+#: model:ir.model.fields,field_description:hr.field_hr_employee__display_name
+#: model:ir.model.fields,field_description:hr.field_hr_employee_category__display_name
+#: model:ir.model.fields,field_description:hr.field_hr_employee_public__display_name
+#: model:ir.model.fields,field_description:hr.field_hr_job__display_name
+#: model:ir.model.fields,field_description:hr.field_hr_manager_department_report__display_name
+#: model:ir.model.fields,field_description:hr.field_hr_mixin__display_name
+#: model:ir.model.fields,field_description:hr.field_hr_payroll_structure_type__display_name
+#: model:ir.model.fields,field_description:hr.field_hr_version__display_name
+#: model:ir.model.fields,field_description:hr.field_hr_version_wizard__display_name
+#: model:ir.model.fields,field_description:hr.field_hr_work_location__display_name
+#: model:ir.model.fields,field_description:hr.field_ir_ui_menu__display_name
+#: model:ir.model.fields,field_description:hr.field_mail_activity_plan__display_name
+#: model:ir.model.fields,field_description:hr.field_mail_activity_plan_template__display_name
+#: model:ir.model.fields,field_description:hr.field_mail_activity_schedule__display_name
+#: model:ir.model.fields,field_description:hr.field_mail_alias__display_name
+#: model:ir.model.fields,field_description:hr.field_res_company__display_name
+#: model:ir.model.fields,field_description:hr.field_res_config_settings__display_name
+#: model:ir.model.fields,field_description:hr.field_res_partner__display_name
+#: model:ir.model.fields,field_description:hr.field_res_partner_bank__display_name
+#: model:ir.model.fields,field_description:hr.field_res_users__display_name
+#: model:ir.model.fields,field_description:hr.field_resource_calendar__display_name
+#: model:ir.model.fields,field_description:hr.field_resource_calendar_leaves__display_name
+#: model:ir.model.fields,field_description:hr.field_resource_resource__display_name
+msgid "Display Name"
+msgstr "प्रदर्शन नाम"
 
 #. module: hr
 #: model:ir.model.fields,field_description:hr.field_account_setup_bank_manual_config__bank_email
@@ -268,6 +408,22 @@ msgid "Followers"
 msgstr "अनुयायीहरू"
 
 #. module: hr
+#: model:ir.model.fields,field_description:hr.field_hr_department__message_partner_ids
+#: model:ir.model.fields,field_description:hr.field_hr_employee__message_partner_ids
+#: model:ir.model.fields,field_description:hr.field_hr_job__message_partner_ids
+#: model:ir.model.fields,field_description:hr.field_hr_version__message_partner_ids
+msgid "Followers (Partners)"
+msgstr "अनुयायीहरू (साझेदारहरू)"
+
+#. module: hr
+#: model:ir.model.fields,field_description:hr.field_hr_department__has_message
+#: model:ir.model.fields,field_description:hr.field_hr_employee__has_message
+#: model:ir.model.fields,field_description:hr.field_hr_job__has_message
+#: model:ir.model.fields,field_description:hr.field_hr_version__has_message
+msgid "Has Message"
+msgstr "सन्देश छ"
+
+#. module: hr
 #: model_terms:ir.ui.view,arch_db:hr.view_employee_form
 msgid "History"
 msgstr "इतिहास"
@@ -279,10 +435,59 @@ msgid "Home"
 msgstr "गृहपृष्ठ"
 
 #. module: hr
+#: model:ir.model.fields,field_description:hr.field_discuss_channel__id
+#: model:ir.model.fields,field_description:hr.field_hr_bank_account_allocation_wizard__id
+#: model:ir.model.fields,field_description:hr.field_hr_bank_account_allocation_wizard_line__id
+#: model:ir.model.fields,field_description:hr.field_hr_contract_type__id
+#: model:ir.model.fields,field_description:hr.field_hr_department__id
+#: model:ir.model.fields,field_description:hr.field_hr_departure_reason__id
+#: model:ir.model.fields,field_description:hr.field_hr_departure_wizard__id
+#: model:ir.model.fields,field_description:hr.field_hr_employee__id
+#: model:ir.model.fields,field_description:hr.field_hr_employee_category__id
+#: model:ir.model.fields,field_description:hr.field_hr_employee_public__id
+#: model:ir.model.fields,field_description:hr.field_hr_job__id
+#: model:ir.model.fields,field_description:hr.field_hr_manager_department_report__id
+#: model:ir.model.fields,field_description:hr.field_hr_mixin__id
+#: model:ir.model.fields,field_description:hr.field_hr_payroll_structure_type__id
+#: model:ir.model.fields,field_description:hr.field_hr_version__id
+#: model:ir.model.fields,field_description:hr.field_hr_version_wizard__id
+#: model:ir.model.fields,field_description:hr.field_hr_work_location__id
+#: model:ir.model.fields,field_description:hr.field_ir_ui_menu__id
+#: model:ir.model.fields,field_description:hr.field_mail_activity_plan__id
+#: model:ir.model.fields,field_description:hr.field_mail_activity_plan_template__id
+#: model:ir.model.fields,field_description:hr.field_mail_activity_schedule__id
+#: model:ir.model.fields,field_description:hr.field_mail_alias__id
+#: model:ir.model.fields,field_description:hr.field_res_company__id
+#: model:ir.model.fields,field_description:hr.field_res_config_settings__id
+#: model:ir.model.fields,field_description:hr.field_res_partner__id
+#: model:ir.model.fields,field_description:hr.field_res_partner_bank__id
+#: model:ir.model.fields,field_description:hr.field_res_users__id
+#: model:ir.model.fields,field_description:hr.field_resource_calendar__id
+#: model:ir.model.fields,field_description:hr.field_resource_calendar_leaves__id
+#: model:ir.model.fields,field_description:hr.field_resource_resource__id
+msgid "ID"
+msgstr "आईडी"
+
+#. module: hr
+#: model:ir.model.fields,field_description:hr.field_hr_department__activity_exception_icon
+#: model:ir.model.fields,field_description:hr.field_hr_employee__activity_exception_icon
+#: model:ir.model.fields,field_description:hr.field_hr_version__activity_exception_icon
+msgid "Icon"
+msgstr "आइकन"
+
+#. module: hr
 #: model:ir.model.fields,field_description:hr.field_hr_employee__image_1920
 #: model:ir.model.fields,field_description:hr.field_hr_employee_public__image_1920
 msgid "Image"
 msgstr "तस्बिर"
+
+#. module: hr
+#: model:ir.model.fields,field_description:hr.field_hr_department__message_is_follower
+#: model:ir.model.fields,field_description:hr.field_hr_employee__message_is_follower
+#: model:ir.model.fields,field_description:hr.field_hr_job__message_is_follower
+#: model:ir.model.fields,field_description:hr.field_hr_version__message_is_follower
+msgid "Is Follower"
+msgstr "अनुयायी हो"
 
 #. module: hr
 #: model:ir.model,name:hr.model_hr_job
@@ -312,9 +517,62 @@ msgid "Job Title"
 msgstr "पदको नाम"
 
 #. module: hr
+#: model:ir.model.fields,field_description:hr.field_hr_employee__last_modified_date
+#: model:ir.model.fields,field_description:hr.field_hr_version__last_modified_date
+msgid "Last Modified on"
+msgstr "अन्तिम परिमार्जन मिति"
+
+#. module: hr
+#: model:ir.model.fields,field_description:hr.field_hr_bank_account_allocation_wizard__write_uid
+#: model:ir.model.fields,field_description:hr.field_hr_bank_account_allocation_wizard_line__write_uid
+#: model:ir.model.fields,field_description:hr.field_hr_contract_type__write_uid
+#: model:ir.model.fields,field_description:hr.field_hr_department__write_uid
+#: model:ir.model.fields,field_description:hr.field_hr_departure_reason__write_uid
+#: model:ir.model.fields,field_description:hr.field_hr_departure_wizard__write_uid
+#: model:ir.model.fields,field_description:hr.field_hr_employee__write_uid
+#: model:ir.model.fields,field_description:hr.field_hr_employee_category__write_uid
+#: model:ir.model.fields,field_description:hr.field_hr_employee_public__write_uid
+#: model:ir.model.fields,field_description:hr.field_hr_job__write_uid
+#: model:ir.model.fields,field_description:hr.field_hr_payroll_structure_type__write_uid
+#: model:ir.model.fields,field_description:hr.field_hr_version__write_uid
+#: model:ir.model.fields,field_description:hr.field_hr_version_wizard__write_uid
+#: model:ir.model.fields,field_description:hr.field_hr_work_location__write_uid
+msgid "Last Updated by"
+msgstr "अन्तिम अद्यावधिक गर्ने"
+
+#. module: hr
+#: model:ir.model.fields,field_description:hr.field_hr_bank_account_allocation_wizard__write_date
+#: model:ir.model.fields,field_description:hr.field_hr_bank_account_allocation_wizard_line__write_date
+#: model:ir.model.fields,field_description:hr.field_hr_contract_type__write_date
+#: model:ir.model.fields,field_description:hr.field_hr_department__write_date
+#: model:ir.model.fields,field_description:hr.field_hr_departure_reason__write_date
+#: model:ir.model.fields,field_description:hr.field_hr_departure_wizard__write_date
+#: model:ir.model.fields,field_description:hr.field_hr_employee__write_date
+#: model:ir.model.fields,field_description:hr.field_hr_employee_category__write_date
+#: model:ir.model.fields,field_description:hr.field_hr_employee_public__write_date
+#: model:ir.model.fields,field_description:hr.field_hr_job__write_date
+#: model:ir.model.fields,field_description:hr.field_hr_payroll_structure_type__write_date
+#: model:ir.model.fields,field_description:hr.field_hr_version__write_date
+#: model:ir.model.fields,field_description:hr.field_hr_version_wizard__write_date
+#: model:ir.model.fields,field_description:hr.field_hr_work_location__write_date
+msgid "Last Updated on"
+msgstr "अन्तिम अद्यावधिक मिति"
+
+#. module: hr
+#: model_terms:ir.ui.view,arch_db:hr.hr_employee_public_view_form
+#: model_terms:ir.ui.view,arch_db:hr.view_employee_form
+msgid "Location"
+msgstr "स्थान"
+
+#. module: hr
 #: model_terms:ir.ui.view,arch_db:hr.res_users_view_form
 msgid "Login"
 msgstr "लगइन"
+
+#. module: hr
+#: model:ir.model.fields,field_description:hr.field_hr_employee__message_main_attachment_id
+msgid "Main Attachment"
+msgstr "मुख्य संलग्न"
 
 #. module: hr
 #: model:ir.model.fields,field_description:hr.field_hr_department__manager_id
@@ -327,12 +585,27 @@ msgid "Manager"
 msgstr "प्रबन्धक"
 
 #. module: hr
+#: model:ir.model.fields,field_description:hr.field_hr_department__message_has_error
+#: model:ir.model.fields,field_description:hr.field_hr_employee__message_has_error
+#: model:ir.model.fields,field_description:hr.field_hr_job__message_has_error
+#: model:ir.model.fields,field_description:hr.field_hr_version__message_has_error
+msgid "Message Delivery error"
+msgstr "सन्देश पठाउन त्रुटि"
+
+#. module: hr
 #: model:ir.model.fields,field_description:hr.field_hr_department__message_ids
 #: model:ir.model.fields,field_description:hr.field_hr_employee__message_ids
 #: model:ir.model.fields,field_description:hr.field_hr_job__message_ids
 #: model:ir.model.fields,field_description:hr.field_hr_version__message_ids
 msgid "Messages"
 msgstr "सन्देशहरू"
+
+#. module: hr
+#: model:ir.model.fields,field_description:hr.field_hr_department__my_activity_date_deadline
+#: model:ir.model.fields,field_description:hr.field_hr_employee__my_activity_date_deadline
+#: model:ir.model.fields,field_description:hr.field_hr_version__my_activity_date_deadline
+msgid "My Activity Deadline"
+msgstr "मेरो गतिविधि म्याद"
 
 #. module: hr
 #: model:ir.model.fields,field_description:hr.field_hr_contract_type__name
@@ -342,11 +615,55 @@ msgid "Name"
 msgstr "नाम"
 
 #. module: hr
+#: model:ir.model.fields,field_description:hr.field_hr_department__activity_calendar_event_id
+#: model:ir.model.fields,field_description:hr.field_hr_employee__activity_calendar_event_id
+#: model:ir.model.fields,field_description:hr.field_hr_version__activity_calendar_event_id
+msgid "Next Activity Calendar Event"
+msgstr "अर्को गतिविधि पात्रो कार्यक्रम"
+
+#. module: hr
+#: model:ir.model.fields,field_description:hr.field_hr_department__activity_date_deadline
+#: model:ir.model.fields,field_description:hr.field_hr_employee__activity_date_deadline
+#: model:ir.model.fields,field_description:hr.field_hr_version__activity_date_deadline
+msgid "Next Activity Deadline"
+msgstr "अर्को गतिविधि म्याद"
+
+#. module: hr
+#: model:ir.model.fields,field_description:hr.field_hr_department__activity_summary
+#: model:ir.model.fields,field_description:hr.field_hr_employee__activity_summary
+#: model:ir.model.fields,field_description:hr.field_hr_version__activity_summary
+msgid "Next Activity Summary"
+msgstr "अर्को गतिविधि सारांश"
+
+#. module: hr
+#: model:ir.model.fields,field_description:hr.field_hr_department__activity_type_id
+#: model:ir.model.fields,field_description:hr.field_hr_employee__activity_type_id
+#: model:ir.model.fields,field_description:hr.field_hr_version__activity_type_id
+msgid "Next Activity Type"
+msgstr "अर्को गतिविधि प्रकार"
+
+#. module: hr
 #: model:ir.model.fields,field_description:hr.field_hr_department__note
 #: model_terms:ir.ui.view,arch_db:hr.hr_version_list_view
 #: model_terms:ir.ui.view,arch_db:hr.view_employee_form
 msgid "Note"
 msgstr "टिपोट"
+
+#. module: hr
+#: model:ir.model.fields,field_description:hr.field_hr_department__message_needaction_counter
+#: model:ir.model.fields,field_description:hr.field_hr_employee__message_needaction_counter
+#: model:ir.model.fields,field_description:hr.field_hr_job__message_needaction_counter
+#: model:ir.model.fields,field_description:hr.field_hr_version__message_needaction_counter
+msgid "Number of Actions"
+msgstr "कार्यहरूको संख्या"
+
+#. module: hr
+#: model:ir.model.fields,field_description:hr.field_hr_department__message_has_error_counter
+#: model:ir.model.fields,field_description:hr.field_hr_employee__message_has_error_counter
+#: model:ir.model.fields,field_description:hr.field_hr_job__message_has_error_counter
+#: model:ir.model.fields,field_description:hr.field_hr_version__message_has_error_counter
+msgid "Number of errors"
+msgstr "त्रुटिहरूको संख्या"
 
 #. module: hr
 #. odoo-python
@@ -382,6 +699,20 @@ msgid "Private Information"
 msgstr "व्यक्तिगत जानकारी"
 
 #. module: hr
+#: model:ir.model.fields,field_description:hr.field_hr_employee__employee_properties
+#: model_terms:ir.ui.view,arch_db:hr.view_employee_filter
+msgid "Properties"
+msgstr "गुणहरू"
+
+#. module: hr
+#: model:ir.model.fields,field_description:hr.field_hr_department__rating_ids
+#: model:ir.model.fields,field_description:hr.field_hr_employee__rating_ids
+#: model:ir.model.fields,field_description:hr.field_hr_job__rating_ids
+#: model:ir.model.fields,field_description:hr.field_hr_version__rating_ids
+msgid "Ratings"
+msgstr "मूल्याङ्कनहरू"
+
+#. module: hr
 #: model_terms:ir.ui.view,arch_db:hr.hr_version_list_view
 msgid "Records"
 msgstr "रेकर्डहरू"
@@ -397,10 +728,25 @@ msgid "Reporting"
 msgstr "प्रतिवेदन"
 
 #. module: hr
+#: model:ir.model.fields,field_description:hr.field_hr_department__activity_user_id
+#: model:ir.model.fields,field_description:hr.field_hr_employee__activity_user_id
+#: model:ir.model.fields,field_description:hr.field_hr_version__activity_user_id
+msgid "Responsible User"
+msgstr "जिम्मेवार प्रयोगकर्ता"
+
+#. module: hr
 #: model_terms:ir.ui.view,arch_db:hr.hr_employee_public_view_form
 #: model_terms:ir.ui.view,arch_db:hr.view_employee_form
 msgid "Resume"
 msgstr "बायोडाटा"
+
+#. module: hr
+#: model:ir.model.fields,field_description:hr.field_hr_department__message_has_sms_error
+#: model:ir.model.fields,field_description:hr.field_hr_employee__message_has_sms_error
+#: model:ir.model.fields,field_description:hr.field_hr_job__message_has_sms_error
+#: model:ir.model.fields,field_description:hr.field_hr_version__message_has_sms_error
+msgid "SMS Delivery error"
+msgstr "एसएमएस पठाउन त्रुटि"
 
 #. module: hr
 #: model:hr.department,name:hr.dep_sales
@@ -453,6 +799,24 @@ msgid "Street"
 msgstr "सडक"
 
 #. module: hr
+#: model:ir.model.fields,field_description:hr.field_account_setup_bank_manual_config__bank_street2
+#: model:ir.model.fields,field_description:hr.field_res_partner_bank__bank_street2
+msgid "Street2"
+msgstr "सडक २"
+
+#. module: hr
+#: model:ir.model.fields,field_description:hr.field_hr_employee__category_ids
+#: model:ir.ui.menu,name:hr.menu_view_employee_category_form
+#: model_terms:ir.ui.view,arch_db:hr.view_employee_filter
+msgid "Tags"
+msgstr "ट्यागहरू"
+
+#. module: hr
+#: model:ir.model.fields,field_description:hr.field_hr_job__no_of_recruitment
+msgid "Target"
+msgstr "लक्ष्य"
+
+#. module: hr
 #: model:ir.model.fields,field_description:hr.field_hr_employee__tz
 #: model:ir.model.fields,field_description:hr.field_hr_employee_public__tz
 #: model:ir.model.fields,field_description:hr.field_hr_version__tz
@@ -470,6 +834,13 @@ msgid "Unarchive"
 msgstr "संग्रहबाट फिर्ता गर्नुहोस्"
 
 #. module: hr
+#: model_terms:ir.ui.view,arch_db:hr.view_department_filter
+#: model_terms:ir.ui.view,arch_db:hr.view_employee_filter
+#: model_terms:ir.ui.view,arch_db:hr.view_job_filter
+msgid "Unread Messages"
+msgstr "नपढिएका सन्देशहरू"
+
+#. module: hr
 #: model:ir.model,name:hr.model_res_users
 #: model:ir.model.fields,field_description:hr.field_hr_employee__user_id
 #: model:ir.model.fields,field_description:hr.field_hr_employee_public__user_id
@@ -479,15 +850,42 @@ msgid "User"
 msgstr "प्रयोगकर्ता"
 
 #. module: hr
+#: model:ir.model.fields,field_description:hr.field_hr_employee__version_id
+msgid "Version"
+msgstr "संस्करण"
+
+#. module: hr
 #: model_terms:ir.ui.view,arch_db:hr.hr_version_list_view
 msgid "View"
 msgstr "हेर्नुहोस्"
+
+#. module: hr
+#: model_terms:ir.ui.view,arch_db:hr.view_department_form
+#: model_terms:ir.ui.view,arch_db:hr.view_hr_job_form
+msgid "Visible to all"
+msgstr "सबैलाई देखिने"
 
 #. module: hr
 #. odoo-python
 #: code:addons/hr/models/hr_employee.py:0
 msgid "Warning"
 msgstr "चेतावनी"
+
+#. module: hr
+#: model:ir.model.fields,field_description:hr.field_hr_department__website_message_ids
+#: model:ir.model.fields,field_description:hr.field_hr_employee__website_message_ids
+#: model:ir.model.fields,field_description:hr.field_hr_job__website_message_ids
+#: model:ir.model.fields,field_description:hr.field_hr_version__website_message_ids
+msgid "Website Messages"
+msgstr "वेबसाइट सन्देशहरू"
+
+#. module: hr
+#: model:ir.model.fields,help:hr.field_hr_department__website_message_ids
+#: model:ir.model.fields,help:hr.field_hr_employee__website_message_ids
+#: model:ir.model.fields,help:hr.field_hr_job__website_message_ids
+#: model:ir.model.fields,help:hr.field_hr_version__website_message_ids
+msgid "Website communication history"
+msgstr "वेबसाइट सञ्चार इतिहास"
 
 #. module: hr
 #: model:ir.model.fields,field_description:hr.field_hr_employee__address_id

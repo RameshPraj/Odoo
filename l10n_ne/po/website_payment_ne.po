@@ -24,16 +24,43 @@ msgid "Amount"
 msgstr "रकम"
 
 #. module: website_payment
+#: model:ir.model,name:website_payment.model_res_config_settings
+msgid "Config Settings"
+msgstr "कन्फिग सेटिङहरू"
+
+#. module: website_payment
 #. odoo-javascript
 #: code:addons/website_payment/static/src/interactions/payment_form.js:0
 msgid "Country"
 msgstr "देश"
 
 #. module: website_payment
+#: model:ir.model.fields,field_description:website_payment.field_account_payment__display_name
+#: model:ir.model.fields,field_description:website_payment.field_payment_provider__display_name
+#: model:ir.model.fields,field_description:website_payment.field_payment_transaction__display_name
+#: model:ir.model.fields,field_description:website_payment.field_res_config_settings__display_name
+msgid "Display Name"
+msgstr "प्रदर्शन नाम"
+
+#. module: website_payment
 #. odoo-javascript
 #: code:addons/website_payment/static/src/interactions/payment_form.js:0
 msgid "Email"
 msgstr "इमेल"
+
+#. module: website_payment
+#. odoo-javascript
+#: code:addons/website_payment/static/src/website_builder/supported_payment_methods_option.xml:0
+msgid "Height"
+msgstr "उचाइ"
+
+#. module: website_payment
+#: model:ir.model.fields,field_description:website_payment.field_account_payment__id
+#: model:ir.model.fields,field_description:website_payment.field_payment_provider__id
+#: model:ir.model.fields,field_description:website_payment.field_payment_transaction__id
+#: model:ir.model.fields,field_description:website_payment.field_res_config_settings__id
+msgid "ID"
+msgstr "आईडी"
 
 #. module: website_payment
 #. odoo-javascript

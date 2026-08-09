@@ -19,3 +19,15 @@ msgstr "खाता"
 #: model:ir.model,name:spreadsheet_account.model_res_company
 msgid "Companies"
 msgstr "कम्पनीहरू"
+
+#. module: spreadsheet_account
+#: model:ir.model.fields,field_description:spreadsheet_account.field_account_account__display_name
+#: model:ir.model.fields,field_description:spreadsheet_account.field_res_company__display_name
+msgid "Display Name"
+msgstr "प्रदर्शन नाम"
+
+#. module: spreadsheet_account
+#: model:ir.model.fields,field_description:spreadsheet_account.field_account_account__id
+#: model:ir.model.fields,field_description:spreadsheet_account.field_res_company__id
+msgid "ID"
+msgstr "आईडी"

@@ -29,9 +29,39 @@ msgid "Archived"
 msgstr "संग्रहित"
 
 #. module: utm
+#: model:ir.model.fields,field_description:utm.field_utm_campaign__create_uid
+#: model:ir.model.fields,field_description:utm.field_utm_medium__create_uid
+#: model:ir.model.fields,field_description:utm.field_utm_source__create_uid
+#: model:ir.model.fields,field_description:utm.field_utm_stage__create_uid
+#: model:ir.model.fields,field_description:utm.field_utm_tag__create_uid
+msgid "Created by"
+msgstr "सिर्जना गर्ने"
+
+#. module: utm
+#: model:ir.model.fields,field_description:utm.field_utm_campaign__create_date
+#: model:ir.model.fields,field_description:utm.field_utm_medium__create_date
+#: model:ir.model.fields,field_description:utm.field_utm_source__create_date
+#: model:ir.model.fields,field_description:utm.field_utm_stage__create_date
+#: model:ir.model.fields,field_description:utm.field_utm_tag__create_date
+msgid "Created on"
+msgstr "सिर्जना मिति"
+
+#. module: utm
 #: model_terms:ir.ui.view,arch_db:utm.utm_campaign_view_kanban
 msgid "Delete"
 msgstr "मेटाउनुहोस्"
+
+#. module: utm
+#: model:ir.model.fields,field_description:utm.field_ir_http__display_name
+#: model:ir.model.fields,field_description:utm.field_utm_campaign__display_name
+#: model:ir.model.fields,field_description:utm.field_utm_medium__display_name
+#: model:ir.model.fields,field_description:utm.field_utm_mixin__display_name
+#: model:ir.model.fields,field_description:utm.field_utm_source__display_name
+#: model:ir.model.fields,field_description:utm.field_utm_source_mixin__display_name
+#: model:ir.model.fields,field_description:utm.field_utm_stage__display_name
+#: model:ir.model.fields,field_description:utm.field_utm_tag__display_name
+msgid "Display Name"
+msgstr "प्रदर्शन नाम"
 
 #. module: utm
 #. odoo-javascript
@@ -43,6 +73,42 @@ msgstr "सम्पन्न"
 #: model_terms:ir.ui.view,arch_db:utm.utm_campaign_view_kanban
 msgid "Edit"
 msgstr "सम्पादन गर्नुहोस्"
+
+#. module: utm
+#: model:ir.model.fields,field_description:utm.field_ir_http__id
+#: model:ir.model.fields,field_description:utm.field_utm_campaign__id
+#: model:ir.model.fields,field_description:utm.field_utm_medium__id
+#: model:ir.model.fields,field_description:utm.field_utm_mixin__id
+#: model:ir.model.fields,field_description:utm.field_utm_source__id
+#: model:ir.model.fields,field_description:utm.field_utm_source_mixin__id
+#: model:ir.model.fields,field_description:utm.field_utm_stage__id
+#: model:ir.model.fields,field_description:utm.field_utm_tag__id
+msgid "ID"
+msgstr "आईडी"
+
+#. module: utm
+#: model:ir.model.fields,field_description:utm.field_utm_campaign__write_uid
+#: model:ir.model.fields,field_description:utm.field_utm_medium__write_uid
+#: model:ir.model.fields,field_description:utm.field_utm_source__write_uid
+#: model:ir.model.fields,field_description:utm.field_utm_stage__write_uid
+#: model:ir.model.fields,field_description:utm.field_utm_tag__write_uid
+msgid "Last Updated by"
+msgstr "अन्तिम अद्यावधिक गर्ने"
+
+#. module: utm
+#: model:ir.model.fields,field_description:utm.field_utm_campaign__write_date
+#: model:ir.model.fields,field_description:utm.field_utm_medium__write_date
+#: model:ir.model.fields,field_description:utm.field_utm_source__write_date
+#: model:ir.model.fields,field_description:utm.field_utm_stage__write_date
+#: model:ir.model.fields,field_description:utm.field_utm_tag__write_date
+msgid "Last Updated on"
+msgstr "अन्तिम अद्यावधिक मिति"
+
+#. module: utm
+#: model:ir.model.fields,field_description:utm.field_utm_mixin__medium_id
+#: model_terms:ir.ui.view,arch_db:utm.utm_medium_view_form
+msgid "Medium"
+msgstr "माध्यम"
 
 #. module: utm
 #: model:ir.model.fields,field_description:utm.field_utm_source_mixin__name
@@ -60,6 +126,18 @@ msgstr "नयाँ"
 #. module: utm
 #. odoo-javascript
 #: code:addons/utm/static/src/js/utm_campaign_kanban_examples.js:0
+msgid "Report"
+msgstr "प्रतिवेदन"
+
+#. module: utm
+#: model:ir.model.fields,field_description:utm.field_utm_campaign__user_id
+#: model_terms:ir.ui.view,arch_db:utm.view_utm_campaign_view_search
+msgid "Responsible"
+msgstr "जिम्मेवार"
+
+#. module: utm
+#. odoo-javascript
+#: code:addons/utm/static/src/js/utm_campaign_kanban_examples.js:0
 msgid "Send"
 msgstr "पठाउनुहोस्"
 
@@ -67,6 +145,20 @@ msgstr "पठाउनुहोस्"
 #: model:ir.model.fields,field_description:utm.field_utm_stage__sequence
 msgid "Sequence"
 msgstr "क्रम"
+
+#. module: utm
+#: model:ir.model.fields,field_description:utm.field_utm_mixin__source_id
+#: model:ir.model.fields,field_description:utm.field_utm_source_mixin__source_id
+#: model_terms:ir.ui.view,arch_db:utm.utm_source_view_form
+#: model_terms:ir.ui.view,arch_db:utm.utm_source_view_tree
+msgid "Source"
+msgstr "स्रोत"
+
+#. module: utm
+#: model:ir.model.fields,field_description:utm.field_utm_campaign__tag_ids
+#: model_terms:ir.ui.view,arch_db:utm.view_utm_campaign_view_search
+msgid "Tags"
+msgstr "ट्यागहरू"
 
 #. module: utm
 #. odoo-javascript

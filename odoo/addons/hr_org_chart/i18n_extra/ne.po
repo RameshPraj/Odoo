@@ -11,6 +11,12 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: hr_org_chart
+#: model:ir.model.fields,field_description:hr_org_chart.field_hr_employee__display_name
+#: model:ir.model.fields,field_description:hr_org_chart.field_hr_employee_public__display_name
+msgid "Display Name"
+msgstr "प्रदर्शन नाम"
+
+#. module: hr_org_chart
 #: model:ir.model,name:hr_org_chart.model_hr_employee
 msgid "Employee"
 msgstr "कर्मचारी"
@@ -19,6 +25,12 @@ msgstr "कर्मचारी"
 #: model_terms:ir.ui.view,arch_db:hr_org_chart.hr_department_hierarchy_view
 msgid "Employees"
 msgstr "कर्मचारीहरू"
+
+#. module: hr_org_chart
+#: model:ir.model.fields,field_description:hr_org_chart.field_hr_employee__id
+#: model:ir.model.fields,field_description:hr_org_chart.field_hr_employee_public__id
+msgid "ID"
+msgstr "आईडी"
 
 #. module: hr_org_chart
 #: model_terms:ir.ui.view,arch_db:hr_org_chart.hr_employee_view_form_inherit_org_chart
