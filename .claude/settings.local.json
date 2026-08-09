@@ -2,7 +2,9 @@
   "permissions": {
     "allow": [
       "PowerShell($body = '{\"jsonrpc\":\"2.0\",\"method\":\"call\",\"params\":{\"service\":\"common\",\"method\":\"login\",\"args\":[\"odoo19\",\"admin\",\"admin\"]}}'; $r = Invoke-RestMethod -Uri \"http://127.0.0.1:8069/jsonrpc\" -Method Post -ContentType \"application/json\" -Body $body -TimeoutSec 60; $uid = $r.result; $q = '{\"jsonrpc\":\"2.0\",\"method\":\"call\",\"params\":{\"service\":\"object\",\"method\":\"execute_kw\",\"args\":[\"odoo19\",' + $uid + ',\"admin\",\"ir.module.module\",\"read_group\",[[],[\"id\"],[\"state\"]]]}}'; $g = Invoke-RestMethod -Uri \"http://127.0.0.1:8069/jsonrpc\" -Method Post -ContentType \"application/json\" -Body $q -TimeoutSec 60; $g.result | ForEach-Object { Write-Output \"$\\($_.state\\) : $\\($_.state_count\\)\" })",
-      "PowerShell(git *)"
+      "PowerShell(git *)",
+      "PowerShell($env:PGPASSWORD=\"odoo\"; $psql=\"C:\\\\Program Files\\\\PostgreSQL\\\\17\\\\bin\\\\psql.exe\"; Write-Output \"=== INSTALLED MODULES \\(94\\) ===\"; & $psql -h localhost -p 5433 -U odoo -d odoo19 -P pager=off -t -A -F ' ' -c \"SELECT string_agg\\(name,' ' ORDER BY name\\) FROM ir_module_module WHERE state='installed';\")",
+      "PowerShell($env:PGPASSWORD=\"odoo\"; $psql=\"C:\\\\Program Files\\\\PostgreSQL\\\\17\\\\bin\\\\psql.exe\"; Write-Output \"=== PERSONAS: groups with real members \\(excl. system\\) ===\"; & $psql -h localhost -p 5433 -U odoo -d odoo19 -P pager=off -c \"SELECT c.name->>'en_US' AS category, g.name->>'en_US' AS grp, count\\(r.uid\\) AS members FROM res_groups g LEFT JOIN ir_module_category c ON c.id=g.category_id LEFT JOIN res_groups_users_rel r ON r.gid=g.id GROUP BY 1,2 HAVING count\\(r.uid\\)>0 ORDER BY members DESC, category NULLS LAST LIMIT 18;\")"
     ]
   }
 }

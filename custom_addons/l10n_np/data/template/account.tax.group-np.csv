@@ -1,0 +1,4 @@
+"id","country_id","name","tax_payable_account_id","tax_receivable_account_id"
+"tax_group_np_13","base.np","VAT 13%","l10n_np_200904","l10n_np_200903"
+"tax_group_np_0","base.np","VAT 0% (Zero-rated)","l10n_np_200904","l10n_np_200903"
+"tax_group_np_exempt","base.np","VAT Exempt","l10n_np_200904","l10n_np_200903"

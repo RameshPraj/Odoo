@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <!--
+            Nepal's 7 provinces. Verified absent from the base data:
+            SELECT count(*) FROM res_country_state s JOIN res_country c
+              ON c.id = s.country_id WHERE c.code = 'NP';   ->  0
+
+            Codes follow the ISO 3166-2:NP numbering (P1..P7). Province 1 was
+            formally named Koshi in 2023; the others carry their constitutional
+            names. NEEDS SME CONFIRMATION; see README.md.
+
+            NB: a double hyphen is illegal inside an XML comment and invalidates
+            the whole file. Use a semicolon or an em dash instead.
+        -->
+
+        <record id="state_np_p1" model="res.country.state">
+            <field name="country_id" ref="base.np"/>
+            <field name="name">Koshi</field>
+            <field name="code">P1</field>
+        </record>
+
+        <record id="state_np_p2" model="res.country.state">
+            <field name="country_id" ref="base.np"/>
+            <field name="name">Madhesh</field>
+            <field name="code">P2</field>
+        </record>
+
+        <record id="state_np_p3" model="res.country.state">
+            <field name="country_id" ref="base.np"/>
+            <field name="name">Bagmati</field>
+            <field name="code">P3</field>
+        </record>
+
+        <record id="state_np_p4" model="res.country.state">
+            <field name="country_id" ref="base.np"/>
+            <field name="name">Gandaki</field>
+            <field name="code">P4</field>
+        </record>
+
+        <record id="state_np_p5" model="res.country.state">
+            <field name="country_id" ref="base.np"/>
+            <field name="name">Lumbini</field>
+            <field name="code">P5</field>
+        </record>
+
+        <record id="state_np_p6" model="res.country.state">
+            <field name="country_id" ref="base.np"/>
+            <field name="name">Karnali</field>
+            <field name="code">P6</field>
+        </record>
+
+        <record id="state_np_p7" model="res.country.state">
+            <field name="country_id" ref="base.np"/>
+            <field name="name">Sudurpashchim</field>
+            <field name="code">P7</field>
+        </record>
+
+    </data>
+</odoo>
