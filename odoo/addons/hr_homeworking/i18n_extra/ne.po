@@ -77,6 +77,21 @@ msgid "Location"
 msgstr "स्थान"
 
 #. module: hr_homeworking
+#. odoo-javascript
+#: code:addons/hr_homeworking/static/src/components/hr_presence_status/hr_presence_status.js:0
+#: model_terms:ir.ui.view,arch_db:hr_homeworking.res_users_view_form
+#: model_terms:ir.ui.view,arch_db:hr_homeworking.res_useurs_view_form_profile
+#: model_terms:ir.ui.view,arch_db:hr_homeworking.view_employee_form
+msgid "Unspecified"
+msgstr "नतोकिएको"
+
+#. module: hr_homeworking
 #: model:ir.model,name:hr_homeworking.model_res_users
 msgid "User"
 msgstr "प्रयोगकर्ता"
+
+#. module: hr_homeworking
+#: model:ir.model,name:hr_homeworking.model_hr_work_location
+#: model_terms:ir.ui.view,arch_db:hr_homeworking.view_employee_tree
+msgid "Work Location"
+msgstr "कार्यस्थल"

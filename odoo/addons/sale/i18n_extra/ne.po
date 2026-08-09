@@ -27,6 +27,11 @@ msgid "Activity Exception Decoration"
 msgstr "गतिविधि अपवाद सजावट"
 
 #. module: sale
+#: model:ir.ui.menu,name:sale.sale_menu_config_activity_plan
+msgid "Activity Plans"
+msgstr "गतिविधि योजनाहरू"
+
+#. module: sale
 #: model:ir.model.fields,field_description:sale.field_sale_order__activity_state
 msgid "Activity State"
 msgstr "गतिविधि अवस्था"
@@ -35,6 +40,12 @@ msgstr "गतिविधि अवस्था"
 #: model:ir.model.fields,field_description:sale.field_sale_order__activity_type_icon
 msgid "Activity Type Icon"
 msgstr "गतिविधि प्रकार आइकन"
+
+#. module: sale
+#: model:ir.actions.act_window,name:sale.mail_activity_type_action_config_sale
+#: model:ir.ui.menu,name:sale.sale_menu_config_activity_type
+msgid "Activity Types"
+msgstr "गतिविधि प्रकारहरू"
 
 #. module: sale
 #. odoo-javascript
@@ -87,6 +98,11 @@ msgstr "रद्द गर्नुहोस्"
 #: model:ir.model.fields.selection,name:sale.selection__sale_report__state__cancel
 msgid "Cancelled"
 msgstr "रद्द गरिएको"
+
+#. module: sale
+#: model:ir.ui.menu,name:sale.menu_product_categories
+msgid "Categories"
+msgstr "श्रेणीहरू"
 
 #. module: sale
 #: model_terms:ir.ui.view,arch_db:sale.sale_order_portal_pay_modal
@@ -261,6 +277,11 @@ msgid "Documentation"
 msgstr "कागजात"
 
 #. module: sale
+#: model_terms:ir.ui.view,arch_db:sale.sale_order_portal_content
+msgid "Documents"
+msgstr "कागजातहरू"
+
+#. module: sale
 #: model:ir.model.fields,field_description:sale.field_sale_order__validity_date
 msgid "Expiration"
 msgstr "म्याद समाप्ति"
@@ -279,6 +300,11 @@ msgstr "अनुयायीहरू"
 #: model:ir.model.fields,field_description:sale.field_sale_order__message_partner_ids
 msgid "Followers (Partners)"
 msgstr "अनुयायीहरू (साझेदारहरू)"
+
+#. module: sale
+#: model_terms:ir.ui.view,arch_db:sale.view_sales_order_filter
+msgid "Future Activities"
+msgstr "भविष्यका गतिविधिहरू"
 
 #. module: sale
 #: model:ir.model.fields,field_description:sale.field_sale_order__has_message
@@ -336,6 +362,12 @@ msgid "Invoices"
 msgstr "बीजकहरू"
 
 #. module: sale
+#: model_terms:ir.ui.view,arch_db:sale.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:sale.view_order_form
+msgid "Invoicing"
+msgstr "बीजक प्रणाली"
+
+#. module: sale
 #: model:ir.model.fields,field_description:sale.field_sale_order__message_is_follower
 msgid "Is Follower"
 msgstr "अनुयायी हो"
@@ -364,6 +396,11 @@ msgid "Last Updated on"
 msgstr "अन्तिम अद्यावधिक मिति"
 
 #. module: sale
+#: model_terms:ir.ui.view,arch_db:sale.view_sales_order_filter
+msgid "Late Activities"
+msgstr "ढिलो गतिविधिहरू"
+
+#. module: sale
 #: model:ir.model.fields,field_description:sale.field_account_bank_statement_line__medium_id
 #: model:ir.model.fields,field_description:sale.field_account_move__medium_id
 #: model:ir.model.fields,field_description:sale.field_sale_order__medium_id
@@ -380,6 +417,11 @@ msgstr "सन्देश पठाउन त्रुटि"
 #: model:ir.model.fields,field_description:sale.field_sale_order__message_ids
 msgid "Messages"
 msgstr "सन्देशहरू"
+
+#. module: sale
+#: model_terms:ir.ui.view,arch_db:sale.view_sales_order_filter
+msgid "My Activities"
+msgstr "मेरा गतिविधिहरू"
 
 #. module: sale
 #: model:ir.model.fields,field_description:sale.field_sale_order__my_activity_date_deadline
@@ -712,6 +754,11 @@ msgstr "कर नम्बर"
 #: model:ir.model.fields,field_description:sale.field_sale_order_line__tax_ids
 msgid "Taxes"
 msgstr "करहरू"
+
+#. module: sale
+#: model_terms:ir.ui.view,arch_db:sale.view_sales_order_filter
+msgid "Today Activities"
+msgstr "आजका गतिविधिहरू"
 
 #. module: sale
 #: model:ir.model.fields,field_description:sale.field_sale_order__amount_total

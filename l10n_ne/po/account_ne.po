@@ -191,6 +191,17 @@ msgid "Analytic Account"
 msgstr "विश्लेषणात्मक खाता"
 
 #. module: account
+#: model:ir.ui.menu,name:account.menu_analytic_accounting
+msgid "Analytic Accounting"
+msgstr "विश्लेषणात्मक लेखा"
+
+#. module: account
+#: model:ir.ui.menu,name:account.account_analytic_def_account
+#: model_terms:ir.ui.view,arch_db:account.view_account_move_line_filter
+msgid "Analytic Accounts"
+msgstr "विश्लेषणात्मक खाताहरू"
+
+#. module: account
 #: model:ir.model.fields,field_description:account.field_account_move_line__analytic_distribution
 #: model:ir.model.fields,field_description:account.field_account_reconcile_model_line__analytic_distribution
 msgid "Analytic Distribution"
@@ -245,6 +256,12 @@ msgid "Attachments"
 msgstr "संलग्नहरू"
 
 #. module: account
+#: model_terms:ir.ui.view,arch_db:account.view_account_journal_form
+#: model_terms:ir.ui.view,arch_db:account.view_account_reconcile_model_search
+msgid "Automation"
+msgstr "स्वचालन"
+
+#. module: account
 #: model:ir.model.fields,field_description:account.field_account_move_line__balance
 msgid "Balance"
 msgstr "मौज्दात"
@@ -274,6 +291,18 @@ msgstr "बैंक"
 #: model_terms:ir.ui.view,arch_db:account.view_account_journal_form
 msgid "Bank Account"
 msgstr "बैंक खाता"
+
+#. module: account
+#: model:ir.actions.act_window,name:account.action_account_supplier_accounts
+#: model:ir.model,name:account.model_res_partner_bank
+msgid "Bank Accounts"
+msgstr "बैंक खाताहरू"
+
+#. module: account
+#. odoo-javascript
+#: code:addons/account/static/src/components/many2many_tags_banks/many2many_tags_banks.js:0
+msgid "Banks"
+msgstr "बैंकहरू"
 
 #. module: account
 #. odoo-javascript
@@ -585,6 +614,29 @@ msgid "Credit"
 msgstr "क्रेडिट"
 
 #. module: account
+#: model:ir.model.fields,field_description:account.field_res_partner__credit_limit
+#: model:ir.model.fields,field_description:account.field_res_users__credit_limit
+msgid "Credit Limit"
+msgstr "क्रेडिट सीमा"
+
+#. module: account
+#: model:ir.actions.act_window,name:account.action_move_out_refund_type
+#: model:ir.actions.act_window,name:account.action_move_out_refund_type_non_legacy
+#: model:ir.ui.menu,name:account.menu_action_move_out_refund_type
+#: model_terms:ir.ui.view,arch_db:account.account_journal_dashboard_kanban_view
+#: model_terms:ir.ui.view,arch_db:account.view_account_invoice_filter
+#: model_terms:ir.ui.view,arch_db:account.view_account_invoice_report_search
+#: model_terms:ir.ui.view,arch_db:account.view_account_move_line_payment_filter
+msgid "Credit Notes"
+msgstr "क्रेडिट नोटहरू"
+
+#. module: account
+#: model:ir.ui.menu,name:account.menu_action_currency_form
+#: model_terms:ir.ui.view,arch_db:account.res_config_settings_view_form
+msgid "Currencies"
+msgstr "मुद्राहरू"
+
+#. module: account
 #: model:ir.model,name:account.model_res_currency
 #: model:ir.model.fields,field_description:account.field_account_automatic_entry_wizard__company_currency_id
 #: model:ir.model.fields,field_description:account.field_account_bank_statement__currency_id
@@ -619,6 +671,18 @@ msgstr "मुद्रा"
 #: model_terms:ir.ui.view,arch_db:account.view_move_form
 msgid "Customer"
 msgstr "ग्राहक"
+
+#. module: account
+#. odoo-python
+#: code:addons/account/models/account_analytic_account.py:0
+#: code:addons/account/models/account_journal.py:0
+#: model:ir.model.fields.selection,name:account.selection__res_company__quick_edit_mode__out_invoices
+#: model_terms:ir.ui.view,arch_db:account.account_analytic_account_view_form_inherit
+#: model_terms:ir.ui.view,arch_db:account.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:account.res_partner_view_search
+#: model_terms:ir.ui.view,arch_db:account.view_partner_property_form
+msgid "Customer Invoices"
+msgstr "ग्राहक बीजकहरू"
 
 #. module: account
 #: model:ir.actions.act_window,name:account.res_partner_action_customer
@@ -910,6 +974,12 @@ msgid "Followers (Partners)"
 msgstr "अनुयायीहरू (साझेदारहरू)"
 
 #. module: account
+#: model_terms:ir.ui.view,arch_db:account.view_account_invoice_filter
+#: model_terms:ir.ui.view,arch_db:account.view_account_payment_search
+msgid "Future Activities"
+msgstr "भविष्यका गतिविधिहरू"
+
+#. module: account
 #: model:ir.model.fields,field_description:account.field_account_account__group_id
 msgid "Group"
 msgstr "समूह"
@@ -1085,6 +1155,16 @@ msgstr "बीजक"
 #: model_terms:ir.ui.view,arch_db:account.view_move_form
 msgid "Invoices"
 msgstr "बीजकहरू"
+
+#. module: account
+#: model:ir.ui.menu,name:account.account_invoicing_menu
+#: model:ir.ui.menu,name:account.menu_finance
+#: model:res.groups,name:account.group_account_invoice
+#: model_terms:ir.ui.view,arch_db:account.digest_digest_view_form
+#: model_terms:ir.ui.view,arch_db:account.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:account.view_partner_property_form
+msgid "Invoicing"
+msgstr "बीजक प्रणाली"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_account__message_is_follower
@@ -1288,6 +1368,12 @@ msgid "Last Year"
 msgstr "गत वर्ष"
 
 #. module: account
+#: model_terms:ir.ui.view,arch_db:account.view_account_invoice_filter
+#: model_terms:ir.ui.view,arch_db:account.view_account_payment_search
+msgid "Late Activities"
+msgstr "ढिलो गतिविधिहरू"
+
+#. module: account
 #: model:ir.model.fields.selection,name:account.selection__account_report_line__horizontal_split_side__left
 msgid "Left"
 msgstr "बायाँ"
@@ -1351,6 +1437,12 @@ msgstr "मोडेल"
 #: model_terms:ir.ui.view,arch_db:account.account_journal_dashboard_kanban_view
 msgid "Models"
 msgstr "मोडेलहरू"
+
+#. module: account
+#: model_terms:ir.ui.view,arch_db:account.view_account_invoice_filter
+#: model_terms:ir.ui.view,arch_db:account.view_account_payment_search
+msgid "My Activities"
+msgstr "मेरा गतिविधिहरू"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_account__my_activity_date_deadline
@@ -1561,6 +1653,13 @@ msgstr "मूल"
 #: model_terms:ir.ui.view,arch_db:account.view_account_various_payment_tree
 msgid "Partner"
 msgstr "साझेदार"
+
+#. module: account
+#: model:ir.model.fields,field_description:account.field_account_reconcile_model__match_partner_ids
+#: model:ir.model.fields,field_description:account.field_account_report__filter_partner
+#: model_terms:ir.ui.view,arch_db:account.view_message_tree_audit_log_search
+msgid "Partners"
+msgstr "साझेदारहरू"
 
 #. module: account
 #. odoo-python
@@ -1862,6 +1961,16 @@ msgid "Status"
 msgstr "स्थिति"
 
 #. module: account
+#: model_terms:ir.ui.view,arch_db:account.res_company_form_view_onboarding
+msgid "Street 2..."
+msgstr "सडक २..."
+
+#. module: account
+#: model_terms:ir.ui.view,arch_db:account.res_company_form_view_onboarding
+msgid "Street..."
+msgstr "सडक..."
+
+#. module: account
 #: model:ir.model.fields,field_description:account.field_account_move_send_wizard__subject
 msgid "Subject"
 msgstr "विषय"
@@ -1951,6 +2060,12 @@ msgid "Today"
 msgstr "आज"
 
 #. module: account
+#: model_terms:ir.ui.view,arch_db:account.view_account_invoice_filter
+#: model_terms:ir.ui.view,arch_db:account.view_account_payment_search
+msgid "Today Activities"
+msgstr "आजका गतिविधिहरू"
+
+#. module: account
 #. odoo-javascript
 #: code:addons/account/static/src/components/tax_totals/tax_totals.xml:0
 #: model:ir.model.fields,field_description:account.field_account_bank_statement_line__amount_total
@@ -1969,6 +2084,18 @@ msgstr "जम्मा"
 #: model_terms:ir.ui.view,arch_db:account.view_move_tree
 msgid "Total Amount"
 msgstr "कुल रकम"
+
+#. module: account
+#: model:ir.model.fields,field_description:account.field_res_partner__debit
+#: model:ir.model.fields,field_description:account.field_res_users__debit
+msgid "Total Payable"
+msgstr "कुल भुक्तान्य"
+
+#. module: account
+#: model:ir.model.fields,field_description:account.field_res_partner__credit
+#: model:ir.model.fields,field_description:account.field_res_users__credit
+msgid "Total Receivable"
+msgstr "कुल प्राप्य"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_account__account_type
@@ -2037,6 +2164,19 @@ msgid "Vendor"
 msgstr "विक्रेता"
 
 #. module: account
+#. odoo-python
+#: code:addons/account/models/account_analytic_account.py:0
+#: code:addons/account/models/account_journal.py:0
+#: model:ir.actions.act_window,name:account.res_partner_action_supplier_bills
+#: model:ir.model.fields.selection,name:account.selection__res_company__quick_edit_mode__in_invoices
+#: model_terms:ir.ui.view,arch_db:account.account_analytic_account_view_form_inherit
+#: model_terms:ir.ui.view,arch_db:account.partner_view_buttons
+#: model_terms:ir.ui.view,arch_db:account.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:account.res_partner_view_search
+msgid "Vendor Bills"
+msgstr "विक्रेता बिलहरू"
+
+#. module: account
 #: model:ir.actions.act_window,name:account.res_partner_action_supplier
 #: model:ir.ui.menu,name:account.menu_account_supplier
 #: model:ir.ui.menu,name:account.menu_finance_payables
@@ -2089,3 +2229,8 @@ msgstr "वेबसाइट सन्देशहरू"
 #: model:ir.model.fields,help:account.field_res_partner_bank__website_message_ids
 msgid "Website communication history"
 msgstr "वेबसाइट सञ्चार इतिहास"
+
+#. module: account
+#: model_terms:ir.ui.view,arch_db:account.res_company_form_view_onboarding
+msgid "ZIP"
+msgstr "पोस्ट कोड"

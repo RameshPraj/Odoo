@@ -11,6 +11,11 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: auth_passkey_portal
+#: model_terms:ir.ui.view,arch_db:auth_passkey_portal.passkeys_portal_hook
+msgid "Add Passkey"
+msgstr "पासकी थप्नुहोस्"
+
+#. module: auth_passkey_portal
 #. odoo-javascript
 #: code:addons/auth_passkey_portal/static/src/js/passkeys_portal.js:0
 #: code:addons/auth_passkey_portal/static/src/js/passkeys_portal_create.js:0
@@ -23,3 +28,10 @@ msgstr "खारेज गर्नुहोस्"
 #: model_terms:ir.ui.view,arch_db:auth_passkey_portal.passkeys_portal_hook
 msgid "Name"
 msgstr "नाम"
+
+#. module: auth_passkey_portal
+#. odoo-javascript
+#: code:addons/auth_passkey_portal/static/src/js/passkeys_portal.js:0
+#: model_terms:ir.ui.view,arch_db:auth_passkey_portal.passkeys_portal_hook
+msgid "Passkeys"
+msgstr "पासकीहरू"

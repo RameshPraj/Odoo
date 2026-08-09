@@ -115,6 +115,11 @@ msgid "Cancel"
 msgstr "रद्द गर्नुहोस्"
 
 #. module: website
+#: model_terms:ir.ui.view,arch_db:website.snippets
+msgid "Categories"
+msgstr "श्रेणीहरू"
+
+#. module: website
 #: model_terms:ir.ui.view,arch_db:website.theme_view_search
 msgid "Category"
 msgstr "श्रेणी"
@@ -870,6 +875,11 @@ msgstr "वैकल्पिक"
 #: model:ir.model.fields,field_description:website.field_theme_website_menu__parent_id
 msgid "Parent"
 msgstr "मूल"
+
+#. module: website
+#: model:ir.actions.act_window,name:website.visitor_partner_action
+msgid "Partners"
+msgstr "साझेदारहरू"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.website_page_properties_view_form

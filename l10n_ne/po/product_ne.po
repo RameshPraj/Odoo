@@ -111,6 +111,12 @@ msgid "Cancel"
 msgstr "रद्द गर्नुहोस्"
 
 #. module: product
+#: model:ir.actions.act_window,name:product.product_category_action_form
+#: model_terms:ir.ui.view,arch_db:product.product_view_search_catalog
+msgid "Categories"
+msgstr "श्रेणीहरू"
+
+#. module: product
 #: model:ir.model.fields,field_description:product.field_product_pricelist_item__categ_id
 #: model:ir.model.fields.selection,name:product.selection__product_pricelist_item__display_applied_on__2_product_category
 #: model_terms:ir.ui.view,arch_db:product.product_category_form_view
@@ -144,6 +150,11 @@ msgstr "कम्पनीहरू"
 #: model:ir.model.fields,field_description:product.field_product_uom__company_id
 msgid "Company"
 msgstr "कम्पनी"
+
+#. module: product
+#: model:ir.model.fields,field_description:product.field_product_category__complete_name
+msgid "Complete Name"
+msgstr "पूरा नाम"
 
 #. module: product
 #: model:ir.model,name:product.model_res_config_settings
@@ -308,6 +319,20 @@ msgstr "प्रदर्शन नाम"
 
 #. module: product
 #: model_terms:ir.ui.view,arch_db:product.product_document_kanban
+msgid "Document"
+msgstr "कागजात"
+
+#. module: product
+#. odoo-python
+#: code:addons/product/models/product_template.py:0
+#: model:ir.model.fields,field_description:product.field_product_product__product_document_ids
+#: model:ir.model.fields,field_description:product.field_product_template__product_document_ids
+#: model_terms:ir.ui.view,arch_db:product.product_template_form_view
+msgid "Documents"
+msgstr "कागजातहरू"
+
+#. module: product
+#: model_terms:ir.ui.view,arch_db:product.product_document_kanban
 msgid "Download"
 msgstr "डाउनलोड गर्नुहोस्"
 
@@ -354,6 +379,11 @@ msgstr "अनुयायीहरू (साझेदारहरू)"
 #: model:ir.model.fields,field_description:product.field_product_label_layout__print_format
 msgid "Format"
 msgstr "ढाँचा"
+
+#. module: product
+#: model_terms:ir.ui.view,arch_db:product.product_template_search_view
+msgid "Future Activities"
+msgstr "भविष्यका गतिविधिहरू"
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_category__has_message
@@ -492,6 +522,11 @@ msgid "Last Updated on"
 msgstr "अन्तिम अद्यावधिक मिति"
 
 #. module: product
+#: model_terms:ir.ui.view,arch_db:product.product_template_search_view
+msgid "Late Activities"
+msgstr "ढिलो गतिविधिहरू"
+
+#. module: product
 #: model:ir.model.fields,field_description:product.field_update_product_attribute_value__message
 msgid "Message"
 msgstr "सन्देश"
@@ -511,6 +546,11 @@ msgstr "सन्देश पठाउन त्रुटि"
 #: model:ir.model.fields,field_description:product.field_product_template__message_ids
 msgid "Messages"
 msgstr "सन्देशहरू"
+
+#. module: product
+#: model_terms:ir.ui.view,arch_db:product.product_template_search_view
+msgid "My Activities"
+msgstr "मेरा गतिविधिहरू"
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_pricelist__my_activity_date_deadline
@@ -779,6 +819,11 @@ msgid "Tags"
 msgstr "ट्यागहरू"
 
 #. module: product
+#: model_terms:ir.ui.view,arch_db:product.product_template_search_view
+msgid "Today Activities"
+msgstr "आजका गतिविधिहरू"
+
+#. module: product
 #: model:ir.model.fields,field_description:product.field_product_document__type
 msgid "Type"
 msgstr "प्रकार"
@@ -828,6 +873,11 @@ msgstr "मानहरू"
 #: model_terms:ir.ui.view,arch_db:product.product_supplierinfo_search_view
 msgid "Vendor"
 msgstr "विक्रेता"
+
+#. module: product
+#: model_terms:ir.ui.view,arch_db:product.product_template_form_view
+msgid "Vendor Bills"
+msgstr "विक्रेता बिलहरू"
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_product__seller_ids

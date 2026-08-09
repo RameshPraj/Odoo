@@ -102,6 +102,18 @@ msgid "Activity Exception Decoration"
 msgstr "गतिविधि अपवाद सजावट"
 
 #. module: mail
+#: model:ir.actions.act_window,name:mail.mail_activity_action
+#: model:ir.ui.menu,name:mail.menu_mail_activities
+msgid "Activity Overview"
+msgstr "गतिविधि सिंहावलोकन"
+
+#. module: mail
+#: model:ir.actions.act_window,name:mail.mail_activity_plan_action
+#: model:ir.ui.menu,name:mail.menu_mail_activity_plan
+msgid "Activity Plans"
+msgstr "गतिविधि योजनाहरू"
+
+#. module: mail
 #: model:ir.model.fields,field_description:mail.field_ir_actions_server__activity_state
 #: model:ir.model.fields,field_description:mail.field_ir_cron__activity_state
 #: model:ir.model.fields,field_description:mail.field_mail_activity_mixin__activity_state
@@ -129,6 +141,13 @@ msgstr "गतिविधि प्रकार"
 #: model:ir.model.fields,field_description:mail.field_res_users__activity_type_icon
 msgid "Activity Type Icon"
 msgstr "गतिविधि प्रकार आइकन"
+
+#. module: mail
+#: model:ir.actions.act_window,name:mail.mail_activity_type_action
+#: model:ir.ui.menu,name:mail.menu_mail_activity_type
+#: model_terms:ir.ui.view,arch_db:mail.res_config_settings_view_form
+msgid "Activity Types"
+msgstr "गतिविधि प्रकारहरू"
 
 #. module: mail
 #: model:ir.model.fields.selection,name:mail.selection__mail_followers_edit__operation__add
@@ -203,6 +222,12 @@ msgid "Alert"
 msgstr "सचेतना"
 
 #. module: mail
+#: model:ir.actions.act_window,name:mail.mail_alias_action
+#: model:ir.ui.menu,name:mail.mail_alias_menu
+msgid "Aliases"
+msgstr "उपनामहरू"
+
+#. module: mail
 #. odoo-javascript
 #: code:addons/mail/static/src/core/common/search_message_input.js:0
 msgid "All"
@@ -273,6 +298,17 @@ msgid "Attachments"
 msgstr "संलग्नहरू"
 
 #. module: mail
+#: model:ir.actions.act_window,name:mail.discuss_call_history_action
+#: model:ir.model.fields,field_description:mail.field_discuss_channel__call_history_ids
+#: model:ir.model.fields,field_description:mail.field_mail_mail__call_history_ids
+#: model:ir.model.fields,field_description:mail.field_mail_message__call_history_ids
+#: model:ir.ui.menu,name:mail.discuss_call_history_menu
+#: model_terms:ir.ui.view,arch_db:mail.discuss_call_history_view_form
+#: model_terms:ir.ui.view,arch_db:mail.discuss_call_history_view_tree
+msgid "Call History"
+msgstr "कल इतिहास"
+
+#. module: mail
 #. odoo-javascript
 #: code:addons/mail/static/src/chatter/web/scheduled_message.xml:0
 #: code:addons/mail/static/src/core/common/link_preview_confirm_delete.xml:0
@@ -294,6 +330,34 @@ msgstr "रद्द गर्नुहोस्"
 #: model:ir.model.fields.selection,name:mail.selection__mail_notification__notification_status__canceled
 msgid "Cancelled"
 msgstr "रद्द गरिएको"
+
+#. module: mail
+#: model:ir.actions.act_window,name:mail.mail_canned_response_action
+#: model:ir.ui.menu,name:mail.menu_canned_responses
+#: model:res.groups.privilege,name:mail.res_groups_privilege_canned_response
+msgid "Canned Responses"
+msgstr "तयारी जवाफहरू"
+
+#. module: mail
+#: model:ir.actions.act_window,name:mail.action_res_users_my_fullpage
+msgid "Change My Preferences"
+msgstr "मेरो प्राथमिकताहरू परिवर्तन गर्नुहोस्"
+
+#. module: mail
+#. odoo-javascript
+#: code:addons/mail/static/src/core/public_web/messaging_menu.js:0
+#: code:addons/mail/static/src/core/web/messaging_menu_patch.xml:0
+#: code:addons/mail/static/src/discuss/core/public_web/discuss_app_model_patch.js:0
+#: model:ir.actions.act_window,name:mail.discuss_channel_action
+#: model:ir.model.fields,field_description:mail.field_mail_guest__channel_ids
+#: model:ir.model.fields,field_description:mail.field_res_partner__channel_ids
+#: model:ir.model.fields,field_description:mail.field_res_users__channel_ids
+#: model:ir.ui.menu,name:mail.discuss_channel_menu_settings
+#: model:ir.ui.menu,name:mail.menu_channel
+#: model_terms:ir.ui.view,arch_db:mail.discuss_channel_member_view_tree
+#: model_terms:ir.ui.view,arch_db:mail.discuss_channel_view_list
+msgid "Channels"
+msgstr "च्यानलहरू"
 
 #. module: mail
 #. odoo-javascript
@@ -587,6 +651,14 @@ msgid "Display Name"
 msgstr "प्रदर्शन नाम"
 
 #. module: mail
+#: model:mail.activity.type,name:mail.mail_activity_data_upload_document
+#: model:mail.activity.type,summary:mail.mail_activity_data_upload_document
+#: model_terms:ir.ui.view,arch_db:mail.mail_activity_view_form
+#: model_terms:ir.ui.view,arch_db:mail.view_document_file_kanban
+msgid "Document"
+msgstr "कागजात"
+
+#. module: mail
 #. odoo-javascript
 #: code:addons/mail/static/src/core/web/activity_list_popover.xml:0
 #: code:addons/mail/static/src/core/web/activity_markasdone_popover.xml:0
@@ -763,6 +835,11 @@ msgstr "अनुयायीहरू"
 #: model:ir.model.fields,field_description:mail.field_res_users__message_partner_ids
 msgid "Followers (Partners)"
 msgstr "अनुयायीहरू (साझेदारहरू)"
+
+#. module: mail
+#: model_terms:ir.ui.view,arch_db:mail.res_partner_view_search_inherit_mail
+msgid "Future Activities"
+msgstr "भविष्यका गतिविधिहरू"
 
 #. module: mail
 #: model:ir.model.fields.selection,name:mail.selection__discuss_channel__channel_type__group
@@ -1030,6 +1107,11 @@ msgid "Last Updated on"
 msgstr "अन्तिम अद्यावधिक मिति"
 
 #. module: mail
+#: model_terms:ir.ui.view,arch_db:mail.res_partner_view_search_inherit_mail
+msgid "Late Activities"
+msgstr "ढिलो गतिविधिहरू"
+
+#. module: mail
 #. odoo-javascript
 #: code:addons/mail/static/src/core/web/recipients_input.js:0
 msgid "Loading..."
@@ -1120,6 +1202,13 @@ msgid "Models"
 msgstr "मोडेलहरू"
 
 #. module: mail
+#: model:ir.actions.act_window,name:mail.mail_activity_action_my
+#: model_terms:ir.ui.view,arch_db:mail.mail_activity_view_search
+#: model_terms:ir.ui.view,arch_db:mail.res_partner_view_search_inherit_mail
+msgid "My Activities"
+msgstr "मेरा गतिविधिहरू"
+
+#. module: mail
 #: model:ir.model.fields,field_description:mail.field_ir_actions_server__my_activity_date_deadline
 #: model:ir.model.fields,field_description:mail.field_ir_cron__my_activity_date_deadline
 #: model:ir.model.fields,field_description:mail.field_mail_activity_mixin__my_activity_date_deadline
@@ -1191,6 +1280,12 @@ msgstr "होइन"
 #: model_terms:ir.ui.view,arch_db:mail.mail_notification_layout
 msgid "None"
 msgstr "कुनै पनि होइन"
+
+#. module: mail
+#: model_terms:ir.ui.view,arch_db:mail.view_users_form_mail
+#: model_terms:ir.ui.view,arch_db:mail.view_users_form_simple_modif_mail
+msgid "None planned"
+msgstr "कुनै योजना छैन"
 
 #. module: mail
 #. odoo-javascript
@@ -1268,6 +1363,27 @@ msgid "Options"
 msgstr "विकल्पहरू"
 
 #. module: mail
+#. odoo-python
+#: code:addons/mail/models/res_users.py:0
+#: model:ir.actions.act_window,name:mail.mail_activity_without_access_action
+msgid "Other activities"
+msgstr "अन्य गतिविधिहरू"
+
+#. module: mail
+#: model_terms:ir.ui.view,arch_db:mail.view_users_form_mail
+#: model_terms:ir.ui.view,arch_db:mail.view_users_form_simple_modif_mail
+msgid "Out-of-office"
+msgstr "कार्यालय बाहिर"
+
+#. module: mail
+#: model:ir.model.fields,field_description:mail.field_mail_template__mail_server_id
+#: model:ir.model.fields,field_description:mail.field_res_users__outgoing_mail_server_id
+#: model_terms:ir.ui.view,arch_db:mail.view_users_form_mail
+#: model_terms:ir.ui.view,arch_db:mail.view_users_form_simple_modif_mail
+msgid "Outgoing Mail Server"
+msgstr "बहिर्गमन मेल सर्भर"
+
+#. module: mail
 #. odoo-javascript
 #: code:addons/mail/static/src/core/web/activity_list_popover.xml:0
 #: model:ir.model.fields.selection,name:mail.selection__account_account__activity_state__overdue
@@ -1343,6 +1459,11 @@ msgstr "मूल"
 #: model:ir.model.fields,field_description:mail.field_res_users_settings_volumes__partner_id
 msgid "Partner"
 msgstr "साझेदार"
+
+#. module: mail
+#: model:ir.model.fields,field_description:mail.field_discuss_channel__channel_partner_ids
+msgid "Partners"
+msgstr "साझेदारहरू"
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_fetchmail_server__password
@@ -1432,6 +1553,11 @@ msgid "Priority"
 msgstr "प्राथमिकता"
 
 #. module: mail
+#: model_terms:ir.ui.view,arch_db:mail.discuss_channel_view_form
+msgid "Privacy"
+msgstr "गोपनीयता"
+
+#. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_mail__partner_ids
 #: model:ir.model.fields,field_description:mail.field_mail_message__partner_ids
 #: model:ir.model.fields,field_description:mail.field_mail_scheduled_message__partner_ids
@@ -1444,6 +1570,12 @@ msgstr "प्राप्तकर्ताहरू"
 #: model:ir.model.fields,field_description:mail.field_mail_template_preview__resource_ref
 msgid "Record"
 msgstr "रेकर्ड"
+
+#. module: mail
+#: model:ir.model.fields,field_description:mail.field_res_partner__parent_id
+#: model:ir.model.fields,field_description:mail.field_res_users__parent_id
+msgid "Related Company"
+msgstr "सम्बन्धित कम्पनी"
 
 #. module: mail
 #. odoo-javascript
@@ -1497,6 +1629,14 @@ msgstr "बिक्रेता"
 #: model_terms:ir.ui.view,arch_db:mail.mail_scheduled_message_view_form
 msgid "Save"
 msgstr "सुरक्षित गर्नुहोस्"
+
+#. module: mail
+#: model:ir.model.fields,field_description:mail.field_mail_activity_type__delay_count
+#: model_terms:ir.ui.view,arch_db:mail.email_compose_message_wizard_form
+#: model_terms:ir.ui.view,arch_db:mail.mail_activity_schedule_view_form
+#: model_terms:ir.ui.view,arch_db:mail.mail_activity_view_form_popup
+msgid "Schedule"
+msgstr "तालिका"
 
 #. module: mail
 #. odoo-javascript
@@ -1599,6 +1739,15 @@ msgstr "रोक्नुहोस्"
 #: model:ir.model.fields,field_description:mail.field_mail_template_preview__subject
 msgid "Subject"
 msgstr "विषय"
+
+#. module: mail
+#: model:ir.model.fields,field_description:mail.field_mail_activity__summary
+#: model:ir.model.fields,field_description:mail.field_mail_activity_plan_template__summary
+#: model:ir.model.fields,field_description:mail.field_mail_activity_schedule__summary
+#: model_terms:ir.ui.view,arch_db:mail.mail_activity_schedule_view_form
+#: model_terms:ir.ui.view,arch_db:mail.mail_activity_view_tree
+msgid "Summary"
+msgstr "सारांश"
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_res_partner__vat
@@ -1705,6 +1854,11 @@ msgstr "शीर्षक"
 #: model_terms:ir.ui.view,arch_db:mail.mail_activity_view_tree
 msgid "Today"
 msgstr "आज"
+
+#. module: mail
+#: model_terms:ir.ui.view,arch_db:mail.res_partner_view_search_inherit_mail
+msgid "Today Activities"
+msgstr "आजका गतिविधिहरू"
 
 #. module: mail
 #. odoo-javascript

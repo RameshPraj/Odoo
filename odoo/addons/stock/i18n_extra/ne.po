@@ -128,6 +128,11 @@ msgid "Cancelled"
 msgstr "रद्द गरिएको"
 
 #. module: stock
+#: model:ir.ui.menu,name:stock.menu_product_category_config_stock
+msgid "Categories"
+msgstr "श्रेणीहरू"
+
+#. module: stock
 #: model_terms:ir.ui.view,arch_db:stock.product_search_form_view_stock_report
 #: model_terms:ir.ui.view,arch_db:stock.stock_move_line_view_search
 #: model_terms:ir.ui.view,arch_db:stock.stock_reorder_report_search
@@ -526,6 +531,12 @@ msgid "Format"
 msgstr "ढाँचा"
 
 #. module: stock
+#: model_terms:ir.ui.view,arch_db:stock.search_product_lot_filter
+#: model_terms:ir.ui.view,arch_db:stock.view_picking_internal_search
+msgid "Future Activities"
+msgstr "भविष्यका गतिविधिहरू"
+
+#. module: stock
 #: model:ir.model.fields,field_description:stock.field_stock_lot__has_message
 #: model:ir.model.fields,field_description:stock.field_stock_picking__has_message
 #: model:ir.model.fields,field_description:stock.field_stock_scrap__has_message
@@ -740,6 +751,12 @@ msgid "Last Updated on"
 msgstr "अन्तिम अद्यावधिक मिति"
 
 #. module: stock
+#: model_terms:ir.ui.view,arch_db:stock.search_product_lot_filter
+#: model_terms:ir.ui.view,arch_db:stock.view_picking_internal_search
+msgid "Late Activities"
+msgstr "ढिलो गतिविधिहरू"
+
+#. module: stock
 #: model:ir.model.fields,field_description:stock.field_product_product__location_id
 #: model:ir.model.fields,field_description:stock.field_product_template__location_id
 #: model:ir.model.fields,field_description:stock.field_stock_lot__location_id
@@ -799,6 +816,12 @@ msgstr "सन्देशहरू"
 #: model:ir.model.fields,field_description:stock.field_product_removal__method
 msgid "Method"
 msgstr "विधि"
+
+#. module: stock
+#: model_terms:ir.ui.view,arch_db:stock.search_product_lot_filter
+#: model_terms:ir.ui.view,arch_db:stock.view_picking_internal_search
+msgid "My Activities"
+msgstr "मेरा गतिविधिहरू"
 
 #. module: stock
 #: model:ir.model.fields,field_description:stock.field_stock_lot__my_activity_date_deadline
@@ -1178,6 +1201,12 @@ msgstr "स्थिति"
 #: model_terms:ir.ui.view,arch_db:stock.view_picking_internal_search
 msgid "Today"
 msgstr "आज"
+
+#. module: stock
+#: model_terms:ir.ui.view,arch_db:stock.search_product_lot_filter
+#: model_terms:ir.ui.view,arch_db:stock.view_picking_internal_search
+msgid "Today Activities"
+msgstr "आजका गतिविधिहरू"
 
 #. module: stock
 #. odoo-python

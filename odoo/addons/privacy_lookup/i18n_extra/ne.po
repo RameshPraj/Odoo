@@ -11,6 +11,11 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: privacy_lookup
+#: model:ir.model.fields,field_description:privacy_lookup.field_privacy_log__additional_note
+msgid "Additional Note"
+msgstr "थप टिपोट"
+
+#. module: privacy_lookup
 #. odoo-python
 #: code:addons/privacy_lookup/wizard/privacy_lookup_wizard.py:0
 #: model_terms:ir.ui.view,arch_db:privacy_lookup.privacy_lookup_wizard_line_view_search
@@ -96,6 +101,11 @@ msgstr "मोडेल"
 #: model:ir.model.fields,field_description:privacy_lookup.field_privacy_lookup_wizard__name
 msgid "Name"
 msgstr "नाम"
+
+#. module: privacy_lookup
+#: model:ir.ui.menu,name:privacy_lookup.privacy_menu
+msgid "Privacy"
+msgstr "गोपनीयता"
 
 #. module: privacy_lookup
 #: model:ir.model.fields,field_description:privacy_lookup.field_privacy_lookup_wizard_line__resource_ref

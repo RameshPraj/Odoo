@@ -11,6 +11,33 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: base
+#: model:ir.model.fields,field_description:base.field_res_users__api_key_ids
+#: model_terms:ir.ui.view,arch_db:base.view_users_form
+#: model_terms:ir.ui.view,arch_db:base.view_users_form_simple_modif
+msgid "API Keys"
+msgstr "एपीआई कुञ्जीहरू"
+
+#. module: base
+#. odoo-python
+#: code:addons/base/models/res_users.py:0
+#: model:ir.actions.act_window,name:base.ir_access_act
+#: model:ir.ui.menu,name:base.menu_ir_access_act
+#: model:res.groups,name:base.group_erp_manager
+#: model_terms:ir.ui.view,arch_db:base.ir_access_view_form
+#: model_terms:ir.ui.view,arch_db:base.ir_access_view_search
+#: model_terms:ir.ui.view,arch_db:base.ir_access_view_tree
+#: model_terms:ir.ui.view,arch_db:base.ir_access_view_tree_edition
+#: model_terms:ir.ui.view,arch_db:base.view_groups_form
+#: model_terms:ir.ui.view,arch_db:base.view_model_fields_form
+#: model_terms:ir.ui.view,arch_db:base.view_model_form
+#: model_terms:ir.ui.view,arch_db:base.view_rule_form
+#: model_terms:ir.ui.view,arch_db:base.view_users_form
+#: model_terms:ir.ui.view,arch_db:base.view_users_simple_form
+#: model_terms:ir.ui.view,arch_db:base.view_view_form
+msgid "Access Rights"
+msgstr "पहुँच अधिकार"
+
+#. module: base
 #: model:ir.module.category,name:base.module_category_accounting
 #: model:ir.module.module,shortdesc:base.module_accountant
 msgid "Accounting"
@@ -77,6 +104,18 @@ msgid "Add"
 msgstr "थप्नुहोस्"
 
 #. module: base
+#: model_terms:ir.ui.view,arch_db:base.view_users_form
+#: model_terms:ir.ui.view,arch_db:base.view_users_form_simple_modif
+msgid "Add API Key"
+msgstr "एपीआई कुञ्जी थप्नुहोस्"
+
+#. module: base
+#: model_terms:ir.ui.view,arch_db:base.view_users_form
+#: model_terms:ir.ui.view,arch_db:base.view_users_form_simple_modif
+msgid "Add a language"
+msgstr "भाषा थप्नुहोस्"
+
+#. module: base
 #. odoo-python
 #: code:addons/base/models/ir_qweb_fields.py:0
 #: code:addons/base/models/res_partner.py:0
@@ -91,6 +130,11 @@ msgstr "ठेगाना"
 #: model_terms:ir.ui.view,arch_db:base.ir_cron_view_search
 msgid "All"
 msgstr "सबै"
+
+#. module: base
+#: model:ir.module.module,shortdesc:base.module_analytic
+msgid "Analytic Accounting"
+msgstr "विश्लेषणात्मक लेखा"
 
 #. module: base
 #: model_terms:ir.ui.view,arch_db:base.res_config_view_base
@@ -149,6 +193,16 @@ msgid "Attachments"
 msgstr "संलग्नहरू"
 
 #. module: base
+#: model:ir.ui.menu,name:base.menu_automation
+msgid "Automation"
+msgstr "स्वचालन"
+
+#. module: base
+#: model:ir.model.fields,field_description:base.field_res_users__barcode
+msgid "Badge ID"
+msgstr "परिचयपत्र नम्बर"
+
+#. module: base
 #: model:ir.model,name:base.model_res_bank
 #: model:ir.model.fields,field_description:base.field_res_partner_bank__bank_id
 #: model_terms:ir.ui.view,arch_db:base.view_partner_bank_tree
@@ -157,12 +211,37 @@ msgid "Bank"
 msgstr "बैंक"
 
 #. module: base
+#: model:ir.actions.act_window,name:base.action_res_partner_bank_account_form
+#: model:ir.model,name:base.model_res_partner_bank
+#: model_terms:ir.ui.view,arch_db:base.view_partner_bank_search
+#: model_terms:ir.ui.view,arch_db:base.view_partner_bank_tree
+msgid "Bank Accounts"
+msgstr "बैंक खाताहरू"
+
+#. module: base
+#: model:ir.actions.act_window,name:base.action_res_bank_form
+#: model:ir.model.fields,field_description:base.field_res_company__bank_ids
+#: model:ir.model.fields,field_description:base.field_res_partner__bank_ids
+#: model:ir.model.fields,field_description:base.field_res_users__bank_ids
+#: model_terms:ir.ui.view,arch_db:base.view_res_bank_tree
+msgid "Banks"
+msgstr "बैंकहरू"
+
+#. module: base
 #: model:ir.model.fields,field_description:base.field_res_partner__barcode
 #: model:ir.module.category,name:base.module_category_human_resources_barcode
 #: model:ir.module.module,shortdesc:base.module_barcodes
 #: model:ir.module.module,shortdesc:base.module_stock_barcode
 msgid "Barcode"
 msgstr "बारकोड"
+
+#. module: base
+#. odoo-python
+#: code:addons/base/models/res_company.py:0
+#: model:ir.model.fields,field_description:base.field_res_company__child_ids
+#: model_terms:ir.ui.view,arch_db:base.view_company_form
+msgid "Branches"
+msgstr "शाखाहरू"
 
 #. module: base
 #: model:ir.model.fields.selection,name:base.selection__ir_actions_act_window_view__view_mode__calendar
@@ -192,6 +271,11 @@ msgstr "पात्रो"
 #: model_terms:ir.ui.view,arch_db:base.wizard_lang_export
 msgid "Cancel"
 msgstr "रद्द गर्नुहोस्"
+
+#. module: base
+#: model_terms:ir.ui.view,arch_db:base.view_module_filter
+msgid "Categories"
+msgstr "श्रेणीहरू"
 
 #. module: base
 #: model:ir.model.fields,field_description:base.field_ir_module_module__category_id
@@ -243,6 +327,17 @@ msgstr "श्रेणी"
 #: model:res.currency,currency_subunit_label:base.ZAR
 msgid "Cents"
 msgstr "सेन्ट"
+
+#. module: base
+#: model:ir.actions.act_window,name:base.action_res_users_my
+msgid "Change My Preferences"
+msgstr "मेरो प्राथमिकताहरू परिवर्तन गर्नुहोस्"
+
+#. module: base
+#: model_terms:ir.ui.view,arch_db:base.view_users_form
+#: model_terms:ir.ui.view,arch_db:base.view_users_form_simple_modif
+msgid "Change password"
+msgstr "पासवर्ड परिवर्तन गर्नुहोस्"
 
 #. module: base
 #: model:ir.model.fields,field_description:base.field_res_bank__city
@@ -320,11 +415,44 @@ msgid "Company"
 msgstr "कम्पनी"
 
 #. module: base
+#. odoo-python
+#: code:addons/base/models/res_partner.py:0
+#: model:ir.model.fields,field_description:base.field_res_company__company_registry
+#: model:ir.model.fields,field_description:base.field_res_partner__company_registry
+#: model:ir.model.fields,field_description:base.field_res_users__company_registry
+msgid "Company ID"
+msgstr "कम्पनी आईडी"
+
+#. module: base
 #: model:ir.model.fields,field_description:base.field_res_company__name
 #: model:ir.model.fields,field_description:base.field_res_partner__company_name
 #: model:ir.model.fields,field_description:base.field_res_users__company_name
 msgid "Company Name"
 msgstr "कम्पनीको नाम"
+
+#. module: base
+#: model_terms:ir.ui.view,arch_db:base.view_partner_form
+#: model_terms:ir.ui.view,arch_db:base.view_partner_simple_form
+msgid "Company Name..."
+msgstr "कम्पनीको नाम..."
+
+#. module: base
+#: model:ir.model.fields,field_description:base.field_res_partner__company_type
+#: model:ir.model.fields,field_description:base.field_res_users__company_type
+msgid "Company Type"
+msgstr "कम्पनी प्रकार"
+
+#. module: base
+#: model:ir.model.fields,field_description:base.field_res_partner__contact_address
+#: model:ir.model.fields,field_description:base.field_res_users__contact_address
+msgid "Complete Address"
+msgstr "पूरा ठेगाना"
+
+#. module: base
+#: model:ir.model.fields,field_description:base.field_res_partner__complete_name
+#: model:ir.model.fields,field_description:base.field_res_users__complete_name
+msgid "Complete Name"
+msgstr "पूरा नाम"
 
 #. module: base
 #: model:ir.model,name:base.model_res_config_settings
@@ -353,12 +481,25 @@ msgid "Contact"
 msgstr "सम्पर्क"
 
 #. module: base
+#: model:ir.actions.act_window,name:base.action_partner_category_form
+#: model_terms:ir.ui.view,arch_db:base.view_partner_category_list
+msgid "Contact Tags"
+msgstr "सम्पर्क ट्यागहरू"
+
+#. module: base
 #: model:ir.model.fields,field_description:base.field_base_partner_merge_automatic_wizard__partner_ids
 #: model:ir.module.module,shortdesc:base.module_contacts
 #: model_terms:ir.ui.view,arch_db:base.view_partner_form
 #: model_terms:ir.ui.view,arch_db:base.view_partner_tree
 msgid "Contacts"
 msgstr "सम्पर्कहरू"
+
+#. module: base
+#: model:ir.actions.act_window,name:base.action_country
+#: model:ir.model.fields,field_description:base.field_res_country_group__country_ids
+#: model_terms:ir.ui.view,arch_db:base.view_country_search
+msgid "Countries"
+msgstr "देशहरू"
 
 #. module: base
 #: model:ir.model,name:base.model_res_country
@@ -573,6 +714,13 @@ msgid "Created on"
 msgstr "सिर्जना मिति"
 
 #. module: base
+#: model:ir.actions.act_window,name:base.action_currency_form
+#: model_terms:ir.ui.view,arch_db:base.view_currency_search
+#: model_terms:ir.ui.view,arch_db:base.view_currency_tree
+msgid "Currencies"
+msgstr "मुद्राहरू"
+
+#. module: base
 #: model:ir.model,name:base.model_res_currency
 #: model:ir.model.fields,field_description:base.field_res_company__currency_id
 #: model:ir.model.fields,field_description:base.field_res_country__currency_id
@@ -602,6 +750,11 @@ msgstr "ग्राहकहरू"
 #: model:ir.module.category,name:base.module_category_productivity_dashboard
 msgid "Dashboard"
 msgstr "ड्यासबोर्ड"
+
+#. module: base
+#: model:ir.module.module,shortdesc:base.module_board
+msgid "Dashboards"
+msgstr "ड्यासबोर्डहरू"
 
 #. module: base
 #. odoo-python
@@ -642,6 +795,13 @@ msgstr "डेलिभरी ठेगाना"
 #: model_terms:ir.ui.view,arch_db:base.view_attachment_form
 msgid "Description"
 msgstr "विवरण"
+
+#. module: base
+#: model:ir.model,name:base.model_res_device
+#: model_terms:ir.ui.view,arch_db:base.view_users_form
+#: model_terms:ir.ui.view,arch_db:base.view_users_form_simple_modif
+msgid "Devices"
+msgstr "उपकरणहरू"
 
 #. module: base
 #: model_terms:ir.ui.view,arch_db:base.res_users_identitycheck_view_form
@@ -777,6 +937,17 @@ msgstr "खारेज गर्नुहोस्"
 #: model:ir.model.fields,field_description:base.field_wizard_ir_model_menu_create__display_name
 msgid "Display Name"
 msgstr "प्रदर्शन नाम"
+
+#. module: base
+#: model_terms:ir.ui.view,arch_db:base.view_base_module_uninstall
+msgid "Document"
+msgstr "कागजात"
+
+#. module: base
+#: model:ir.module.category,name:base.module_category_productivity_documents
+#: model:ir.module.module,shortdesc:base.module_documents
+msgid "Documents"
+msgstr "कागजातहरू"
 
 #. module: base
 #: model:res.currency,currency_unit_label:base.AUD
@@ -1130,6 +1301,21 @@ msgid "Import"
 msgstr "आयात गर्नुहोस्"
 
 #. module: base
+#: model:ir.model,name:base.model_res_partner_industry
+#: model:ir.model.fields,field_description:base.field_res_partner__industry_id
+#: model:ir.model.fields,field_description:base.field_res_users__industry_id
+#: model_terms:ir.ui.view,arch_db:base.res_partner_industry_view_form
+#: model_terms:ir.ui.view,arch_db:base.res_partner_industry_view_tree
+msgid "Industry"
+msgstr "उद्योग"
+
+#. module: base
+#: model_terms:ir.ui.view,arch_db:base.view_partner_bank_form
+#: model_terms:ir.ui.view,arch_db:base.view_partner_form
+msgid "Internal notes..."
+msgstr "आन्तरिक टिपोटहरू..."
+
+#. module: base
 #: model:ir.module.category,name:base.module_category_inventory
 #: model:ir.module.category,name:base.module_category_inventory_inventory
 #: model:ir.module.category,name:base.module_category_supply_chain_inventory
@@ -1147,6 +1333,19 @@ msgstr "बीजक"
 #: code:addons/base/models/res_partner.py:0
 msgid "Invoice Address"
 msgstr "बीजक ठेगाना"
+
+#. module: base
+#: model:ir.module.category,name:base.module_category_accounting_accounting
+#: model:ir.module.module,shortdesc:base.module_account
+#: model:ir.module.module,shortdesc:base.module_account_accountant
+msgid "Invoicing"
+msgstr "बीजक प्रणाली"
+
+#. module: base
+#: model:ir.model.fields,field_description:base.field_res_partner__is_company
+#: model:ir.model.fields,field_description:base.field_res_users__is_company
+msgid "Is a Company"
+msgstr "कम्पनी हो"
 
 #. module: base
 #: model:ir.model.fields,field_description:base.field_res_partner__function
@@ -1384,11 +1583,23 @@ msgid "Log out"
 msgstr "लगआउट"
 
 #. module: base
+#: model_terms:ir.ui.view,arch_db:base.view_users_form
+#: model_terms:ir.ui.view,arch_db:base.view_users_form_simple_modif
+msgid "Log out from all devices"
+msgstr "सबै उपकरणबाट लगआउट गर्नुहोस्"
+
+#. module: base
 #: model:ir.model.fields,field_description:base.field_res_users__login
 #: model_terms:ir.ui.view,arch_db:base.view_res_users_kanban
 #: model_terms:ir.ui.view,arch_db:base.view_users_form
 msgid "Login"
 msgstr "लगइन"
+
+#. module: base
+#: model:ir.model.fields,field_description:base.field_res_partner__main_user_id
+#: model:ir.model.fields,field_description:base.field_res_users__main_user_id
+msgid "Main User"
+msgstr "मुख्य प्रयोगकर्ता"
 
 #. module: base
 #: model:ir.model.fields,field_description:base.field_ir_logging__message
@@ -1535,6 +1746,11 @@ msgid "Other"
 msgstr "अन्य"
 
 #. module: base
+#: model_terms:ir.ui.view,arch_db:base.view_ir_mail_server_search
+msgid "Outgoing Mail Server"
+msgstr "बहिर्गमन मेल सर्भर"
+
+#. module: base
 #: model:ir.model.fields,field_description:base.field_ir_model_inherit__parent_id
 #: model:ir.model.fields,field_description:base.field_res_company__parent_ids
 msgid "Parent"
@@ -1545,6 +1761,18 @@ msgstr "मूल"
 #: model_terms:ir.ui.view,arch_db:base.view_partner_address_form
 msgid "Partner"
 msgstr "साझेदार"
+
+#. module: base
+#: model:ir.model.fields,field_description:base.field_res_partner_category__partner_ids
+#: model_terms:ir.ui.view,arch_db:base.base_partner_merge_automatic_wizard_form
+#: model_terms:ir.ui.view,arch_db:base.view_partner_form
+msgid "Partners"
+msgstr "साझेदारहरू"
+
+#. module: base
+#: model:ir.module.module,shortdesc:base.module_auth_passkey
+msgid "Passkeys"
+msgstr "पासकीहरू"
 
 #. module: base
 #: model:ir.model.fields,field_description:base.field_ir_mail_server__smtp_pass
@@ -1609,6 +1837,11 @@ msgid "Priority"
 msgstr "प्राथमिकता"
 
 #. module: base
+#: model:ir.module.module,shortdesc:base.module_privacy_lookup
+msgid "Privacy"
+msgstr "गोपनीयता"
+
+#. module: base
 #: model:ir.module.category,name:base.module_category_services_project
 #: model:ir.module.module,shortdesc:base.module_project
 msgid "Project"
@@ -1652,6 +1885,12 @@ msgstr "कर्मचारी भर्ना"
 #: model_terms:ir.ui.view,arch_db:base.view_partner_form
 msgid "Reference"
 msgstr "सन्दर्भ"
+
+#. module: base
+#: model:ir.model.fields,field_description:base.field_res_partner__parent_id
+#: model:ir.model.fields,field_description:base.field_res_users__parent_id
+msgid "Related Company"
+msgstr "सम्बन्धित कम्पनी"
 
 #. module: base
 #: model:ir.model.fields.selection,name:base.selection__ir_asset__directive__remove
@@ -1717,6 +1956,13 @@ msgid "Search"
 msgstr "खोज्नुहोस्"
 
 #. module: base
+#: model:ir.ui.menu,name:base.menu_security
+#: model_terms:ir.ui.view,arch_db:base.view_users_form
+#: model_terms:ir.ui.view,arch_db:base.view_users_form_simple_modif
+msgid "Security"
+msgstr "सुरक्षा"
+
+#. module: base
 #: model:ir.model,name:base.model_ir_sequence
 #: model:ir.model.fields,field_description:base.field_ir_actions_act_window_view__sequence
 #: model:ir.model.fields,field_description:base.field_ir_actions_server__sequence
@@ -1748,6 +1994,11 @@ msgstr "क्रम"
 #: model_terms:ir.ui.view,arch_db:base.res_config_settings_view_form
 msgid "Settings"
 msgstr "सेटिङहरू"
+
+#. module: base
+#: model:ir.model.fields,field_description:base.field_res_users__share
+msgid "Share User"
+msgstr "साझा प्रयोगकर्ता"
 
 #. module: base
 #: model:ir.model.fields,field_description:base.field_ir_model_fields__size
@@ -1833,6 +2084,12 @@ msgid "State Code"
 msgstr "प्रदेश कोड"
 
 #. module: base
+#: model:ir.model.fields,field_description:base.field_res_partner__application_statistics
+#: model:ir.model.fields,field_description:base.field_res_users__application_statistics
+msgid "Stats"
+msgstr "तथ्याङ्क"
+
+#. module: base
 #: model:ir.model.fields,field_description:base.field_base_module_update__state
 #: model:ir.model.fields,field_description:base.field_ir_actions_todo__state
 #: model:ir.model.fields,field_description:base.field_ir_module_module__state
@@ -1851,12 +2108,33 @@ msgid "Street"
 msgstr "सडक"
 
 #. module: base
+#: model_terms:ir.ui.view,arch_db:base.view_company_form
+#: model_terms:ir.ui.view,arch_db:base.view_partner_address_form
+#: model_terms:ir.ui.view,arch_db:base.view_partner_form
+#: model_terms:ir.ui.view,arch_db:base.view_res_bank_form
+msgid "Street 2..."
+msgstr "सडक २..."
+
+#. module: base
+#: model_terms:ir.ui.view,arch_db:base.view_company_form
+#: model_terms:ir.ui.view,arch_db:base.view_partner_address_form
+#: model_terms:ir.ui.view,arch_db:base.view_partner_form
+#: model_terms:ir.ui.view,arch_db:base.view_res_bank_form
+msgid "Street..."
+msgstr "सडक..."
+
+#. module: base
 #: model:ir.model.fields,field_description:base.field_res_bank__street2
 #: model:ir.model.fields,field_description:base.field_res_company__street2
 #: model:ir.model.fields,field_description:base.field_res_partner__street2
 #: model:ir.model.fields,field_description:base.field_res_users__street2
 msgid "Street2"
 msgstr "सडक २"
+
+#. module: base
+#: model:ir.model.fields,field_description:base.field_ir_module_module__summary
+msgid "Summary"
+msgstr "सारांश"
 
 #. module: base
 #: model_terms:ir.ui.view,arch_db:base.view_res_partner_filter
@@ -2048,10 +2326,25 @@ msgid "Website"
 msgstr "वेबसाइट"
 
 #. module: base
+#: model:ir.model.fields,field_description:base.field_res_company__website
+#: model:ir.model.fields,field_description:base.field_res_partner__website
+#: model:ir.model.fields,field_description:base.field_res_users__website
+msgid "Website Link"
+msgstr "वेबसाइट लिङ्क"
+
+#. module: base
 #. odoo-python
 #: code:addons/base/models/ir_qweb_fields.py:0
 msgid "Width"
 msgstr "चौडाइ"
+
+#. module: base
+#: model_terms:ir.ui.view,arch_db:base.view_company_form
+#: model_terms:ir.ui.view,arch_db:base.view_partner_address_form
+#: model_terms:ir.ui.view,arch_db:base.view_partner_form
+#: model_terms:ir.ui.view,arch_db:base.view_res_bank_form
+msgid "ZIP"
+msgstr "पोस्ट कोड"
 
 #. module: base
 #: model:ir.model.fields,field_description:base.field_res_bank__zip

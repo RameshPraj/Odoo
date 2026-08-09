@@ -33,6 +33,12 @@ msgid "ID"
 msgstr "आईडी"
 
 #. module: hr_org_chart
+#: model:ir.actions.act_window,name:hr_org_chart.action_hr_employee_org_chart
+#: model:ir.actions.act_window,name:hr_org_chart.action_hr_employee_public_org_chart
+msgid "Org Chart"
+msgstr "संगठन चित्र"
+
+#. module: hr_org_chart
 #: model_terms:ir.ui.view,arch_db:hr_org_chart.hr_employee_view_form_inherit_org_chart
 msgid "Organization Chart"
 msgstr "संगठन चित्र"

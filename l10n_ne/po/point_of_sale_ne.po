@@ -112,6 +112,11 @@ msgid "Back"
 msgstr "पछाडि"
 
 #. module: point_of_sale
+#: model_terms:ir.ui.view,arch_db:point_of_sale.report_userlabel
+msgid "Badge ID"
+msgstr "परिचयपत्र नम्बर"
+
+#. module: point_of_sale
 #: model_terms:ir.ui.view,arch_db:point_of_sale.view_pos_config_tree
 msgid "Balance"
 msgstr "मौज्दात"
@@ -323,6 +328,12 @@ msgid "Customer"
 msgstr "ग्राहक"
 
 #. module: point_of_sale
+#. odoo-python
+#: code:addons/point_of_sale/models/pos_order.py:0
+msgid "Customer Invoices"
+msgstr "ग्राहक बीजकहरू"
+
+#. module: point_of_sale
 #: model:ir.ui.menu,name:point_of_sale.menu_point_of_sale_customer
 msgid "Customers"
 msgstr "ग्राहकहरू"
@@ -464,6 +475,11 @@ msgstr "डाउनलोड गर्नुहोस्"
 #: code:addons/point_of_sale/static/src/app/components/popups/product_info_popup/product_info_popup.xml:0
 msgid "Edit"
 msgstr "सम्पादन गर्नुहोस्"
+
+#. module: point_of_sale
+#: model:ir.actions.act_window,name:point_of_sale.res_partner_action_edit_pos
+msgid "Edit Partner"
+msgstr "साझेदार सम्पादन गर्नुहोस्"
 
 #. module: point_of_sale
 #: model:ir.model.fields,field_description:point_of_sale.field_pos_order__email
@@ -1043,6 +1059,11 @@ msgstr "बिक्री"
 #: model_terms:ir.ui.view,arch_db:point_of_sale.pos_config_view_form
 msgid "Save"
 msgstr "सुरक्षित गर्नुहोस्"
+
+#. module: point_of_sale
+#: model_terms:ir.ui.view,arch_db:point_of_sale.view_pos_preset_form
+msgid "Schedule"
+msgstr "तालिका"
 
 #. module: point_of_sale
 #. odoo-javascript

@@ -168,6 +168,11 @@ msgid "Link"
 msgstr "लिङ्क"
 
 #. module: portal
+#: model_terms:ir.ui.view,arch_db:portal.portal_my_security
+msgid "Log out from all devices"
+msgstr "सबै उपकरणबाट लगआउट गर्नुहोस्"
+
+#. module: portal
 #: model:ir.model,name:portal.model_mail_message
 msgid "Message"
 msgstr "सन्देश"
@@ -182,6 +187,11 @@ msgstr "अर्को"
 #: model:ir.model.fields,field_description:portal.field_portal_share__note
 msgid "Note"
 msgstr "टिपोट"
+
+#. module: portal
+#: model:ir.model.fields,field_description:portal.field_portal_wizard__partner_ids
+msgid "Partners"
+msgstr "साझेदारहरू"
 
 #. module: portal
 #: model_terms:ir.ui.view,arch_db:portal.portal_my_security
@@ -208,6 +218,11 @@ msgstr "प्राप्तकर्ताहरू"
 #: model_terms:ir.ui.view,arch_db:portal.portal_searchbar
 msgid "Search"
 msgstr "खोज्नुहोस्"
+
+#. module: portal
+#: model_terms:ir.ui.view,arch_db:portal.portal_my_security
+msgid "Security"
+msgstr "सुरक्षा"
 
 #. module: portal
 #. odoo-javascript

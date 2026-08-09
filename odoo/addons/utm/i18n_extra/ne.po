@@ -29,6 +29,13 @@ msgid "Archived"
 msgstr "संग्रहित"
 
 #. module: utm
+#: model:ir.actions.act_window,name:utm.utm_campaign_action
+#: model:ir.ui.menu,name:utm.menu_utm_campaign_act
+#: model_terms:ir.ui.view,arch_db:utm.view_utm_campaign_view_search
+msgid "Campaigns"
+msgstr "अभियानहरू"
+
+#. module: utm
 #: model:ir.model.fields,field_description:utm.field_utm_campaign__create_uid
 #: model:ir.model.fields,field_description:utm.field_utm_medium__create_uid
 #: model:ir.model.fields,field_description:utm.field_utm_source__create_uid
@@ -134,6 +141,11 @@ msgstr "प्रतिवेदन"
 #: model_terms:ir.ui.view,arch_db:utm.view_utm_campaign_view_search
 msgid "Responsible"
 msgstr "जिम्मेवार"
+
+#. module: utm
+#: model:utm.stage,name:utm.campaign_stage_1
+msgid "Schedule"
+msgstr "तालिका"
 
 #. module: utm
 #. odoo-javascript

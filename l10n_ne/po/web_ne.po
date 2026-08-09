@@ -13,6 +13,12 @@ msgstr ""
 #. module: web
 #. odoo-javascript
 #: code:addons/web/static/src/webclient/actions/debug_items.js:0
+msgid "Access Rights"
+msgstr "पहुँच अधिकार"
+
+#. module: web
+#. odoo-javascript
+#: code:addons/web/static/src/webclient/actions/debug_items.js:0
 msgid "Action"
 msgstr "कार्य"
 
@@ -751,6 +757,12 @@ msgstr "खोज्नुहोस्..."
 
 #. module: web
 #. odoo-javascript
+#: code:addons/web/static/src/core/debug/debug_menu_basic.js:0
+msgid "Security"
+msgstr "सुरक्षा"
+
+#. module: web
+#. odoo-javascript
 #: code:addons/web/static/src/views/kanban/kanban_cover_image_dialog.xml:0
 #: code:addons/web/static/src/views/view_dialogs/select_create_dialog.xml:0
 msgid "Select"
@@ -890,6 +902,11 @@ msgstr "हेर्नुहोस्"
 #: code:addons/web/static/src/views/fields/json_checkboxes/json_checkboxes_field.xml:0
 msgid "Warning"
 msgstr "चेतावनी"
+
+#. module: web
+#: model:ir.model.fields,field_description:web.field_base_document_layout__website
+msgid "Website Link"
+msgstr "वेबसाइट लिङ्क"
 
 #. module: web
 #. odoo-javascript
