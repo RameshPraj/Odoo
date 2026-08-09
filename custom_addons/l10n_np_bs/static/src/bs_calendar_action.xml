@@ -8,16 +8,6 @@
         <div class="o_action o_bs_calendar_action">
             <Layout display="display" className="'o_bs_calendar_layout'">
 
-                <t t-set-slot="layout-buttons">
-                    <button class="btn btn-primary" type="button" t-on-click="goToday">
-                        आज / Today
-                    </button>
-                    <button class="btn btn-secondary ms-1" type="button" t-on-click="toggleDigits">
-                        <t t-if="state.npDigits">123</t>
-                        <t t-else="">१२३</t>
-                    </button>
-                </t>
-
                 <div class="o_bs_cal_scroll p-3">
                     <div class="o_bs_cal_card mx-auto bg-view border rounded shadow-sm p-3">
 
@@ -41,6 +31,18 @@
                             </div>
                         </div>
 
+                        <!-- NB: Layout only renders the `layout-buttons` slot when
+                             env.inDialog is true, so these live in the content. -->
+                        <div class="d-flex justify-content-center gap-2 my-2">
+                            <button class="btn btn-sm btn-primary" type="button" t-on-click="goToday">
+                                आज / Today
+                            </button>
+                            <button class="btn btn-sm btn-secondary" type="button" t-on-click="toggleDigits">
+                                <t t-if="state.npDigits">123</t>
+                                <t t-else="">१२३</t>
+                            </button>
+                        </div>
+
                         <!-- grid -->
                         <div class="o_bs_cal_grid mt-2">
                             <div t-foreach="weekdays" t-as="wd" t-key="wd"
@@ -49,7 +51,7 @@
                                  t-esc="wd"/>
                             <t t-foreach="cells" t-as="c" t-key="c.key">
                                 <div t-if="c.blank" class="o_bs_cal_cell o_bs_cal_blank"/>
-                                <!-- OWL supports `and`/`or` but NOT `not` -- use `!` -->
+                                <!-- OWL supports `and`/`or` but NOT `not`; use `!` instead. -->
                                 <div t-else=""
                                      class="o_bs_cal_cell border rounded"
                                      t-att-class="{

@@ -47,7 +47,7 @@
                          t-esc="wd"/>
                     <t t-foreach="monthCells" t-as="cell" t-key="cell.key">
                         <div t-if="cell.blank" class="o_bs_cell"/>
-                        <!-- OWL expressions support `and`/`or` but NOT `not` -- use `!` -->
+                        <!-- OWL expressions support `and`/`or` but NOT `not`; use `!` instead. -->
                         <button t-else=""
                                 type="button"
                                 class="o_bs_cell btn btn-sm"

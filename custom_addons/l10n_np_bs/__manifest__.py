@@ -47,6 +47,9 @@ Dates outside it raise instead of guessing.
             'l10n_np_bs/static/src/bs_calendar_action.js',
             'l10n_np_bs/static/src/bs_calendar_action.xml',
             'l10n_np_bs/static/src/bs_calendar_action.scss',
+            # temporary diagnostics -- remove with their menu items
+            'l10n_np_bs/static/src/bs_diag_action.js',
+            'l10n_np_bs/static/src/bs_diag_action.xml',
         ],
         'web.assets_unit_tests': [
             'l10n_np_bs/static/tests/**/*',
