@@ -34,7 +34,9 @@ Dates outside it raise instead of guessing.
     'license': 'LGPL-3',
     'depends': ['web'],
     'external_dependencies': {'python': ['nepali_datetime']},
-    'data': [],
+    'data': [
+        'views/bs_calendar_menus.xml',
+    ],
     'assets': {
         'web.assets_backend': [
             'l10n_np_bs/static/src/bs_calendar_data.js',
@@ -42,6 +44,9 @@ Dates outside it raise instead of guessing.
             'l10n_np_bs/static/src/bs_date_field.js',
             'l10n_np_bs/static/src/bs_date_field.xml',
             'l10n_np_bs/static/src/bs_date_field.scss',
+            'l10n_np_bs/static/src/bs_calendar_action.js',
+            'l10n_np_bs/static/src/bs_calendar_action.xml',
+            'l10n_np_bs/static/src/bs_calendar_action.scss',
         ],
         'web.assets_unit_tests': [
             'l10n_np_bs/static/tests/**/*',
