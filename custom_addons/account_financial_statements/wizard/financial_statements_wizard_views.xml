@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_financial_statements_wizard_form" model="ir.ui.view">
+        <field name="name">account.financial.statements.wizard.form</field>
+        <field name="model">account.financial.statements.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Financial Statements">
+                <group>
+                    <group>
+                        <field name="company_id" options="{'no_create': True}"/>
+                        <field name="date_from"/>
+                        <field name="date_to"/>
+                    </group>
+                    <group>
+                        <field name="target_move" widget="radio"/>
+                        <field name="hide_zero"/>
+                    </group>
+                </group>
+                <div class="text-muted">
+                    <small>The Balance Sheet is cumulative to the end date and ignores
+                    the start date. The Profit and Loss covers the period between both dates.</small>
+                </div>
+                <footer>
+                    <button name="action_balance_sheet" string="Balance Sheet"
+                            type="object" class="btn-primary"/>
+                    <button name="action_profit_loss" string="Profit and Loss"
+                            type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_financial_statements" model="ir.actions.act_window">
+        <field name="name">Balance Sheet / Profit and Loss</field>
+        <field name="res_model">account.financial.statements.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem id="menu_financial_statements"
+              name="Balance Sheet / P&amp;L"
+              parent="account.menu_finance_reports"
+              action="action_financial_statements"
+              groups="account.group_account_readonly"
+              sequence="2"/>
+
+</odoo>

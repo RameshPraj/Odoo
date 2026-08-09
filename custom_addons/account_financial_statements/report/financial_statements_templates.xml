@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Shared: one section with its account blocks -->
+    <template id="section_block">
+        <t t-foreach="section['blocks']" t-as="block">
+            <tr>
+                <td colspan="2" style="padding-left:12px;"><i t-esc="block['label']"/></td>
+                <td/>
+            </tr>
+            <tr t-foreach="block['lines']" t-as="line">
+                <td style="padding-left:32px;" t-esc="line['code']"/>
+                <td t-esc="line['name']"/>
+                <td class="text-end">
+                    <span t-esc="line['amount']"
+                          t-options="{'widget': 'monetary', 'display_currency': wizard.company_id.currency_id}"/>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" style="padding-left:12px;" class="text-muted">
+                    <small>Subtotal <t t-esc="block['label']"/></small>
+                </td>
+                <td class="text-end text-muted" style="border-top:1px solid #ddd;">
+                    <small><span t-esc="block['subtotal']"
+                          t-options="{'widget': 'monetary', 'display_currency': wizard.company_id.currency_id}"/></small>
+                </td>
+            </tr>
+        </t>
+    </template>
+
+    <!-- ============================ BALANCE SHEET ============================ -->
+    <template id="report_balance_sheet_document">
+        <t t-call="web.html_container">
+            <t t-call="web.internal_layout">
+                <div class="page">
+                    <h2 class="mb-0">Balance Sheet</h2>
+                    <p class="text-muted">
+                        <span t-field="wizard.company_id.name"/> &#8212;
+                        as at <span t-field="wizard.date_to"/><br/>
+                        <small>
+                            Fiscal year <span t-esc="fy_from"/> to <span t-esc="fy_to"/>
+                            &#183; <span t-esc="dict(wizard._fields['target_move'].selection).get(wizard.target_move)"/>
+                        </small>
+                    </p>
+
+                    <table class="table table-sm">
+                        <thead>
+                            <tr>
+                                <th style="width:12%;">Code</th>
+                                <th>Account</th>
+                                <th class="text-end" style="width:22%;">Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td colspan="3"><b>ASSETS</b></td></tr>
+                            <t t-call="account_financial_statements.section_block">
+                                <t t-set="section" t-value="assets"/>
+                            </t>
+                            <tr style="border-top:2px solid #333;">
+                                <td colspan="2"><b>TOTAL ASSETS</b></td>
+                                <td class="text-end"><b>
+                                    <span t-esc="assets['total']"
+                                          t-options="{'widget': 'monetary', 'display_currency': wizard.company_id.currency_id}"/>
+                                </b></td>
+                            </tr>
+
+                            <tr><td colspan="3" style="padding-top:14px;"><b>LIABILITIES</b></td></tr>
+                            <t t-call="account_financial_statements.section_block">
+                                <t t-set="section" t-value="liabilities"/>
+                            </t>
+                            <tr>
+                                <td colspan="2"><b>Total Liabilities</b></td>
+                                <td class="text-end"><b>
+                                    <span t-esc="liabilities['total']"
+                                          t-options="{'widget': 'monetary', 'display_currency': wizard.company_id.currency_id}"/>
+                                </b></td>
+                            </tr>
+
+                            <tr><td colspan="3" style="padding-top:14px;"><b>EQUITY</b></td></tr>
+                            <t t-call="account_financial_statements.section_block">
+                                <t t-set="section" t-value="equity"/>
+                            </t>
+                            <tr>
+                                <td colspan="2" style="padding-left:12px;"><i t-esc="result_label"/></td>
+                                <td class="text-end">
+                                    <span t-esc="result"
+                                          t-options="{'widget': 'monetary', 'display_currency': wizard.company_id.currency_id}"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2"><b>Total Equity</b></td>
+                                <td class="text-end"><b>
+                                    <span t-esc="total_equity"
+                                          t-options="{'widget': 'monetary', 'display_currency': wizard.company_id.currency_id}"/>
+                                </b></td>
+                            </tr>
+
+                            <tr style="border-top:2px solid #333;">
+                                <td colspan="2"><b>TOTAL LIABILITIES AND EQUITY</b></td>
+                                <td class="text-end"><b>
+                                    <span t-esc="total_liab_equity"
+                                          t-options="{'widget': 'monetary', 'display_currency': wizard.company_id.currency_id}"/>
+                                </b></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div t-if="balanced" class="alert alert-success py-2">
+                        Balanced: assets equal liabilities plus equity.
+                    </div>
+                    <div t-else="" class="alert alert-danger py-2">
+                        <b>Out of balance by
+                        <span t-esc="difference"
+                              t-options="{'widget': 'monetary', 'display_currency': wizard.company_id.currency_id}"/>.</b>
+                        Check for entries posted to accounts with no type, or an
+                        incomplete opening balance.
+                    </div>
+                </div>
+            </t>
+        </t>
+    </template>
+
+    <!-- ============================ PROFIT AND LOSS ============================ -->
+    <template id="report_profit_loss_document">
+        <t t-call="web.html_container">
+            <t t-call="web.internal_layout">
+                <div class="page">
+                    <h2 class="mb-0">Profit and Loss</h2>
+                    <p class="text-muted">
+                        <span t-field="wizard.company_id.name"/> &#8212;
+                        <span t-field="wizard.date_from"/> to <span t-field="wizard.date_to"/><br/>
+                        <small t-esc="dict(wizard._fields['target_move'].selection).get(wizard.target_move)"/>
+                    </p>
+
+                    <table class="table table-sm">
+                        <thead>
+                            <tr>
+                                <th style="width:12%;">Code</th>
+                                <th>Account</th>
+                                <th class="text-end" style="width:22%;">Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td colspan="3"><b>INCOME</b></td></tr>
+                            <t t-call="account_financial_statements.section_block">
+                                <t t-set="section" t-value="income"/>
+                            </t>
+                            <tr>
+                                <td colspan="2"><b>Total Income</b></td>
+                                <td class="text-end"><b>
+                                    <span t-esc="income['total']"
+                                          t-options="{'widget': 'monetary', 'display_currency': wizard.company_id.currency_id}"/>
+                                </b></td>
+                            </tr>
+
+                            <tr><td colspan="3" style="padding-top:14px;"><b>COST OF SALES</b></td></tr>
+                            <t t-call="account_financial_statements.section_block">
+                                <t t-set="section" t-value="cost_of_sales"/>
+                            </t>
+                            <tr style="border-top:2px solid #333;">
+                                <td colspan="2"><b>GROSS PROFIT</b></td>
+                                <td class="text-end"><b>
+                                    <span t-esc="gross"
+                                          t-options="{'widget': 'monetary', 'display_currency': wizard.company_id.currency_id}"/>
+                                </b></td>
+                            </tr>
+
+                            <tr><td colspan="3" style="padding-top:14px;"><b>OPERATING EXPENSES</b></td></tr>
+                            <t t-call="account_financial_statements.section_block">
+                                <t t-set="section" t-value="expenses"/>
+                            </t>
+                            <tr>
+                                <td colspan="2"><b>Total Expenses</b></td>
+                                <td class="text-end"><b>
+                                    <span t-esc="expenses['total']"
+                                          t-options="{'widget': 'monetary', 'display_currency': wizard.company_id.currency_id}"/>
+                                </b></td>
+                            </tr>
+
+                            <tr style="border-top:2px solid #333;">
+                                <td colspan="2"><b>NET PROFIT</b></td>
+                                <td class="text-end"><b>
+                                    <span t-esc="net"
+                                          t-options="{'widget': 'monetary', 'display_currency': wizard.company_id.currency_id}"/>
+                                </b></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </t>
+        </t>
+    </template>
+
+    <!-- ============================ ACTIONS ============================ -->
+    <record id="action_report_balance_sheet" model="ir.actions.report">
+        <field name="name">Balance Sheet</field>
+        <field name="model">account.financial.statements.wizard</field>
+        <field name="report_type">qweb-html</field>
+        <field name="report_name">account_financial_statements.report_balance_sheet_document</field>
+        <field name="report_file">account_financial_statements.report_balance_sheet_document</field>
+    </record>
+
+    <record id="action_report_profit_loss" model="ir.actions.report">
+        <field name="name">Profit and Loss</field>
+        <field name="model">account.financial.statements.wizard</field>
+        <field name="report_type">qweb-html</field>
+        <field name="report_name">account_financial_statements.report_profit_loss_document</field>
+        <field name="report_file">account_financial_statements.report_profit_loss_document</field>
+    </record>
+
+</odoo>
