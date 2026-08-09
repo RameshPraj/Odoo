@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_generate_np_fiscal_year_form" model="ir.ui.view">
+        <field name="name">l10n_np.generate.fiscal.year.form</field>
+        <field name="model">l10n_np.generate.fiscal.year</field>
+        <field name="arch" type="xml">
+            <form string="Generate Nepali Fiscal Years">
+                <div class="alert alert-info" role="alert">
+                    Nepal's fiscal year runs Shrawan 1 to Ashar end. The Gregorian
+                    end date shifts between 15 and 16 July depending on the year,
+                    so explicit fiscal year records are generated from the Bikram
+                    Sambat calendar.
+                </div>
+                <group>
+                    <group>
+                        <field name="company_id" options="{'no_create': True}"/>
+                        <field name="bs_year_from"/>
+                        <field name="bs_year_to"/>
+                    </group>
+                    <group>
+                        <field name="overwrite"/>
+                    </group>
+                </group>
+                <group string="Preview">
+                    <field name="preview" nolabel="1" readonly="1" widget="text"/>
+                </group>
+                <footer>
+                    <button name="action_generate" string="Generate" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_generate_np_fiscal_year" model="ir.actions.act_window">
+        <field name="name">Generate Nepali Fiscal Years</field>
+        <field name="res_model">l10n_np.generate.fiscal.year</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem id="menu_generate_np_fiscal_year"
+              name="Generate Nepali Fiscal Years"
+              parent="account.account_account_menu"
+              action="action_generate_np_fiscal_year"
+              groups="account.group_account_manager"
+              sequence="90"/>
+
+</odoo>
