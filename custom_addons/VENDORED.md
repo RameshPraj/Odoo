@@ -8,7 +8,15 @@ code that was tested.
 |---|---|---|---|---|
 | `account_financial_report` | 19.0.0.0.19 | **AGPL-3** | [OCA/account-financial-reporting @19.0](https://github.com/OCA/account-financial-reporting/tree/19.0/account_financial_report) | 2026-08-09 |
 | `report_xlsx` | 19.0.1.0.2 | **AGPL-3** | [OCA/reporting-engine @19.0](https://github.com/OCA/reporting-engine/tree/19.0/report_xlsx) | 2026-08-09 |
-| `date_range` | 19.0.1.0.0 | LGPL-3 | [OCA/server-ux @19.0](https://github.com/OCA/server-ux/tree/19.0/date_range) | 2026-08-09 |
+| `report_xlsx_helper` | 19.0.x | **AGPL-3** | [OCA/reporting-engine @19.0](https://github.com/OCA/reporting-engine/tree/19.0/report_xlsx_helper) | 2026-08-09 |
+| `account_asset_management` | 19.0.1.0.2 | **AGPL-3** | [OCA/account-financial-tools @19.0](https://github.com/OCA/account-financial-tools/tree/19.0/account_asset_management) | 2026-08-09 |
+| `account_fiscal_year` | 19.0.1.0.0 | **AGPL-3** | [OCA/account-financial-tools @19.0](https://github.com/OCA/account-financial-tools/tree/19.0/account_fiscal_year) | 2026-08-09 |
+| `account_budget_oca` | 19.0.1.1.0 | LGPL-3 | [OCA/account-budgeting @19.0](https://github.com/OCA/account-budgeting/tree/19.0/account_budget_oca) | 2026-08-09 |
+
+Also enabled: **`l10n_account_withholding_tax`** (LGPL-3) — not vendored, it was
+already present in the Odoo tree and simply uninstalled. Provides the TDS
+framework: `account.withholding.line`, `account.payment.withholding.line`,
+withholding at payment registration.
 
 Locally authored modules in this directory — `l10n_np`, `l10n_np_bs` — are LGPL-3
 and are **not** covered by the notes below.
