@@ -15,31 +15,4 @@
               action="action_bs_calendar"
               sequence="95"/>
 
-    <!-- ===================================================================
-         Diagnostics. Temporary: remove once the calendar is confirmed good.
-         =================================================================== -->
-    <record id="action_bs_diag_plain" model="ir.actions.client">
-        <field name="name">BS Diag (plain)</field>
-        <field name="tag">l10n_np_bs.diag_plain</field>
-        <field name="target">main</field>
-    </record>
-
-    <record id="action_bs_diag_layout" model="ir.actions.client">
-        <field name="name">BS Diag (layout)</field>
-        <field name="tag">l10n_np_bs.diag_layout</field>
-        <field name="target">main</field>
-    </record>
-
-    <menuitem id="menu_bs_diag_plain"
-              name="Diag: plain"
-              parent="menu_bs_calendar_root"
-              action="action_bs_diag_plain"
-              sequence="10"/>
-
-    <menuitem id="menu_bs_diag_layout"
-              name="Diag: layout"
-              parent="menu_bs_calendar_root"
-              action="action_bs_diag_layout"
-              sequence="20"/>
-
 </odoo>
