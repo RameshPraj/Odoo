@@ -38,6 +38,15 @@ __pycache__/
 /odoo.conf
 
 # ---------------------------------------------------------------------------
+# Local tooling
+#   .claude/settings.local.json holds per-machine tool permissions. It is
+#   personal configuration, not project code, so it stays untracked.
+#   If the team ever wants a SHARED Claude Code config, that belongs in
+#   .claude/settings.json (no .local) -- add a negation here at that point.
+# ---------------------------------------------------------------------------
+.claude/
+
+# ---------------------------------------------------------------------------
 # Editors / OS
 # ---------------------------------------------------------------------------
 .idea/
