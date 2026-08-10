@@ -45,6 +45,28 @@ gevent_port = 8072
 workers = 0
 max_cron_threads = 2
 
+; --- Wall-clock request watchdog ---
+; MUST be 0 on Windows, where the default of 120s makes an idle server kill
+; itself:
+;
+;   1. In the threaded server, thread.start_time is stamped once per TCP
+;      *connection*, not per request (odoo/service/server.py:294).
+;   2. A browser keeps its connection alive between requests, so the thread
+;      sits in socket.recv_into() accruing wall-clock time with no request in
+;      flight -- the give-away in the log is "(db:n/a) (uid:n/a) (url:n/a)".
+;   3. Past limit_time_real the watchdog flags that thread and calls reload().
+;   4. reload() is os.kill(pid, signal.SIGHUP), and on Windows Odoo shims
+;      SIGHUP to -1 (server.py:40). os.kill(pid, -1) on Windows is
+;      TerminateProcess, so the server does not reload -- it dies.
+;
+; On Linux the same watchdog works as intended, because SIGHUP is a real
+; signal there and triggers a graceful reload. Restore the 120 default when
+; deploying to Linux with workers > 0.
+;
+; limit_time_real_cron stays at its default of -1, meaning "follow
+; limit_time_real", so cron threads are covered by this single setting.
+limit_time_real = 0
+
 ; --- Logging ---
 log_level = info
 log_handler = :INFO

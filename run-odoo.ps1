@@ -33,3 +33,21 @@ if (-not ($Install -or $Update -or $Shell)) {
     Write-Host "  http://localhost:8069   (admin / admin)" -ForegroundColor Cyan
 }
 & $python @cmd
+$code = $LASTEXITCODE
+
+# A native command's failure does not trip $ErrorActionPreference, so without
+# this the server vanishing looks like a clean exit.
+if ($code -ne 0) {
+    Write-Host ""
+    Write-Host "Odoo exited with code $code." -ForegroundColor Yellow
+
+    # -1 (0xFFFFFFFF) is the wall-clock watchdog killing the server: its
+    # reload() is os.kill(pid, SIGHUP), and Odoo shims SIGHUP to -1 on
+    # Windows, where os.kill means TerminateProcess. See limit_time_real in
+    # odoo.conf.
+    if ($code -eq -1 -or $code -eq 4294967295) {
+        Write-Host "This is the limit_time_real watchdog terminating the process," -ForegroundColor Yellow
+        Write-Host "not a crash in your code. Set 'limit_time_real = 0' in odoo.conf." -ForegroundColor Yellow
+    }
+}
+exit $code
