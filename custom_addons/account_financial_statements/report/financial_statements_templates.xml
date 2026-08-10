@@ -208,4 +208,88 @@
         <field name="report_file">account_financial_statements.report_profit_loss_document</field>
     </record>
 
+
+    <!-- ============================ CASH FLOW ============================ -->
+    <template id="report_cash_flow_document">
+        <t t-call="web.html_container">
+            <t t-call="web.internal_layout">
+                <div class="page">
+                    <h2 class="mb-0">Cash Flow Statement</h2>
+                    <p class="text-muted">
+                        <span t-field="wizard.company_id.name"/> &#8212;
+                        <span t-field="wizard.date_from"/> to <span t-field="wizard.date_to"/><br/>
+                        <small t-esc="dict(wizard._fields['target_move'].selection).get(wizard.target_move)"/>
+                    </p>
+
+                    <table class="table table-sm">
+                        <thead>
+                            <tr><th>Item</th><th class="text-end" style="width:24%;">Amount</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><b>Cash at beginning of period</b></td>
+                                <td class="text-end"><b>
+                                    <span t-esc="opening"
+                                          t-options="{'widget': 'monetary', 'display_currency': wizard.company_id.currency_id}"/>
+                                </b></td>
+                            </tr>
+
+                            <t t-foreach="sections" t-as="section">
+                                <t t-if="section['lines']">
+                                    <tr><td colspan="2" style="padding-top:12px;"><b t-esc="section['label']"/></td></tr>
+                                    <tr t-foreach="section['lines']" t-as="line">
+                                        <td style="padding-left:28px;" t-esc="line['label']"/>
+                                        <td class="text-end">
+                                            <span t-esc="line['amount']"
+                                                  t-options="{'widget': 'monetary', 'display_currency': wizard.company_id.currency_id}"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding-left:12px;"><i>Net cash from <t t-esc="section['label']"/></i></td>
+                                        <td class="text-end" style="border-top:1px solid #ddd;">
+                                            <span t-esc="section['total']"
+                                                  t-options="{'widget': 'monetary', 'display_currency': wizard.company_id.currency_id}"/>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </t>
+
+                            <tr style="border-top:2px solid #333;">
+                                <td><b>Net increase / decrease in cash</b></td>
+                                <td class="text-end"><b>
+                                    <span t-esc="net_change"
+                                          t-options="{'widget': 'monetary', 'display_currency': wizard.company_id.currency_id}"/>
+                                </b></td>
+                            </tr>
+                            <tr>
+                                <td><b>Cash at end of period</b></td>
+                                <td class="text-end"><b>
+                                    <span t-esc="closing"
+                                          t-options="{'widget': 'monetary', 'display_currency': wizard.company_id.currency_id}"/>
+                                </b></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div t-if="reconciled" class="alert alert-success py-2">
+                        Reconciled: classified movements equal the change in cash.
+                    </div>
+                    <div t-else="" class="alert alert-danger py-2">
+                        <b>Unreconciled by
+                        <span t-esc="difference"
+                              t-options="{'widget': 'monetary', 'display_currency': wizard.company_id.currency_id}"/>.</b>
+                        Some cash movement could not be classified.
+                    </div>
+                </div>
+            </t>
+        </t>
+    </template>
+
+    <record id="action_report_cash_flow" model="ir.actions.report">
+        <field name="name">Cash Flow Statement</field>
+        <field name="model">account.financial.statements.wizard</field>
+        <field name="report_type">qweb-html</field>
+        <field name="report_name">account_financial_statements.report_cash_flow_document</field>
+        <field name="report_file">account_financial_statements.report_cash_flow_document</field>
+    </record>
 </odoo>

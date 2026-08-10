@@ -26,6 +26,8 @@
                             type="object" class="btn-primary"/>
                     <button name="action_profit_loss" string="Profit and Loss"
                             type="object" class="btn-primary"/>
+                    <button name="action_cash_flow" string="Cash Flow"
+                            type="object" class="btn-primary"/>
                     <button string="Cancel" class="btn-secondary" special="cancel"/>
                 </footer>
             </form>

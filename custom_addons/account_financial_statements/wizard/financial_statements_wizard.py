@@ -47,3 +47,9 @@ class FinancialStatementsWizard(models.TransientModel):
         return self.env.ref(
             'account_financial_statements.action_report_profit_loss'
         ).report_action(self, data=self._data())
+
+    def action_cash_flow(self):
+        self._check()
+        return self.env.ref(
+            'account_financial_statements.action_report_cash_flow'
+        ).report_action(self, data=self._data())

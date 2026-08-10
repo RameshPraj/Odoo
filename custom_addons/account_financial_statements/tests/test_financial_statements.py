@@ -142,3 +142,76 @@ class TestFinancialStatements(TransactionCase):
         wiz = self._wizard(date_from="2026-08-31", date_to="2026-07-17")
         with self.assertRaises(UserError):
             wiz.action_profit_loss()
+
+    # ---------------- cash flow -----------------------------------------
+    def _cash_entry(self, cash_account, other_account, amount, date, label):
+        """Debit cash / credit other for a positive amount, and vice versa."""
+        lines = [
+            Command.create({"account_id": cash_account.id, "name": label,
+                            "debit": amount if amount > 0 else 0.0,
+                            "credit": -amount if amount < 0 else 0.0}),
+            Command.create({"account_id": other_account.id, "name": label,
+                            "debit": -amount if amount < 0 else 0.0,
+                            "credit": amount if amount > 0 else 0.0}),
+        ]
+        move = self.env["account.move"].create({
+            "move_type": "entry", "date": date,
+            "journal_id": self.env["account.journal"].search(
+                [("type", "=", "general")], limit=1).id,
+            "line_ids": lines,
+        })
+        move.action_post()
+        return move
+
+    def _accounts_for_cash_flow(self):
+        A = self.env["account.account"]
+        return {
+            "cash": A.search([("account_type", "=", "asset_cash")], limit=1),
+            "income": A.search([("account_type", "=", "income")], limit=1),
+            "fixed": A.search([("account_type", "=", "asset_fixed")], limit=1),
+            "loan": A.search([("account_type", "=", "liability_non_current")], limit=1),
+        }
+
+    def test_cash_flow_reconciles(self):
+        """The core guarantee: classified movements must equal the change in cash."""
+        a = self._accounts_for_cash_flow()
+        if not all(a.values()):
+            self.skipTest("chart lacks one of cash/income/fixed/non-current-liability")
+        self._cash_entry(a["cash"], a["income"], 300000.0, "2026-08-02", "Cash sale")
+        self._cash_entry(a["cash"], a["fixed"], -500000.0, "2026-08-06", "Equipment")
+        self._cash_entry(a["cash"], a["loan"], 800000.0, "2026-08-10", "Loan")
+
+        wiz = self._wizard()
+        cf = self.env["report.account_financial_statements.cash_flow"]._get_report_values(
+            None, {"wizard_id": wiz.id})
+        self.assertTrue(
+            cf["reconciled"],
+            f"unreconciled by {cf['difference']}: movements={cf['movement_total']} "
+            f"net_change={cf['net_change']}",
+        )
+        self.assertAlmostEqual(cf["net_change"], 600000.0, places=2)
+        self.assertAlmostEqual(cf["closing"] - cf["opening"], cf["net_change"], places=2)
+
+    def test_cash_flow_classification(self):
+        """Each counterpart type must land in the right section."""
+        a = self._accounts_for_cash_flow()
+        if not all(a.values()):
+            self.skipTest("chart lacks required account types")
+        self._cash_entry(a["cash"], a["income"], 300000.0, "2026-08-02", "Cash sale")
+        self._cash_entry(a["cash"], a["fixed"], -500000.0, "2026-08-06", "Equipment")
+        self._cash_entry(a["cash"], a["loan"], 800000.0, "2026-08-10", "Loan")
+
+        wiz = self._wizard()
+        cf = self.env["report.account_financial_statements.cash_flow"]._get_report_values(
+            None, {"wizard_id": wiz.id})
+        by_total = {s["label"]: s["total"] for s in cf["sections"]}
+        totals = list(by_total.values())
+        self.assertIn(300000.0, [round(t, 2) for t in totals], "operating inflow missing")
+        self.assertIn(-500000.0, [round(t, 2) for t in totals], "investing outflow missing")
+        self.assertIn(800000.0, [round(t, 2) for t in totals], "financing inflow missing")
+
+    def test_cash_flow_empty_period_reconciles(self):
+        wiz = self._wizard()
+        cf = self.env["report.account_financial_statements.cash_flow"]._get_report_values(
+            None, {"wizard_id": wiz.id})
+        self.assertTrue(cf["reconciled"])
