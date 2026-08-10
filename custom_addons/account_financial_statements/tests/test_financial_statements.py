@@ -11,6 +11,7 @@ current-period result must be added to equity or the sheet will not tie.
 """
 from odoo import Command
 from odoo.tests import TransactionCase, tagged
+from odoo.tools.safe_eval import safe_eval
 
 
 @tagged("-at_install", "post_install")
@@ -215,3 +216,64 @@ class TestFinancialStatements(TransactionCase):
         cf = self.env["report.account_financial_statements.cash_flow"]._get_report_values(
             None, {"wizard_id": wiz.id})
         self.assertTrue(cf["reconciled"])
+
+
+@tagged("-at_install", "post_install")
+class TestStatementActions(TransactionCase):
+    """The three Reporting menu items must each open the wizard pre-aimed.
+
+    Enterprise presents Balance Sheet, Profit and Loss and Cash Flow as three
+    separate reports. Here they share one wizard, so each menu item carries its
+    own action whose context presets ``report_type``. If that wiring breaks the
+    menus silently all print the same statement, which is the kind of bug nobody
+    notices until a filing is wrong.
+    """
+
+    PRESETS = {
+        "action_balance_sheet": "balance_sheet",
+        "action_profit_loss": "profit_loss",
+        "action_cash_flow": "cash_flow",
+    }
+
+    def test_each_action_presets_its_statement(self):
+        for xmlid, expected in self.PRESETS.items():
+            action = self.env.ref(f"account_financial_statements.{xmlid}")
+            wizard = self.env["account.financial.statements.wizard"] \
+                .with_context(**safe_eval(action.context)).create({})
+            self.assertEqual(wizard.report_type, expected, xmlid)
+            self.assertTrue(wizard.report_type_locked,
+                            f"{xmlid} should hide the redundant selector")
+
+    def test_action_print_dispatches_on_report_type(self):
+        """action_print must reach the report the user asked for.
+
+        A single Print button serving three reports fails silently if the
+        dispatch is wrong -- the wrong statement prints under the right title.
+        """
+        prefix = "account_financial_statements.report_"
+        expected_report_name = {
+            "balance_sheet": prefix + "balance_sheet_document",
+            "profit_loss": prefix + "profit_loss_document",
+            "cash_flow": prefix + "cash_flow_document",
+        }
+        for report_type, report_name in expected_report_name.items():
+            wizard = self.env["account.financial.statements.wizard"].create(
+                {"report_type": report_type})
+            result = wizard.action_print()
+            # When the company has never configured its document layout,
+            # report_action() nests the real report inside the layout
+            # configurator's context. Unwrap that and assert on report_name,
+            # which is present in both shapes (the report action carries no id).
+            if result.get("type") != "ir.actions.report":
+                self.assertEqual(result.get("type"), "ir.actions.act_window",
+                                 f"unexpected action for {report_type}: {result}")
+                result = result["context"]["report_action"]
+            self.assertEqual(result["report_name"], report_name,
+                             f"Print sent {report_type} to the wrong report")
+
+    def test_default_is_a_real_statement(self):
+        """The combined entry point must open on something printable."""
+        wizard = self.env["account.financial.statements.wizard"].create({})
+        self.assertIn(wizard.report_type, self.PRESETS.values())
+        self.assertFalse(wizard.report_type_locked,
+                         "the combined action must leave the selector visible")

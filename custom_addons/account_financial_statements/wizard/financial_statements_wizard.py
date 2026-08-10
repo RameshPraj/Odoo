@@ -7,6 +7,19 @@ class FinancialStatementsWizard(models.TransientModel):
     _name = 'account.financial.statements.wizard'
     _description = 'Balance Sheet / Profit and Loss'
 
+    # Which statement to print. Defaulted from the context so that one menu item
+    # per statement can open this same wizard pre-aimed, instead of offering a
+    # row of three buttons and making the user pick again.
+    report_type = fields.Selection(
+        [('balance_sheet', 'Balance Sheet'),
+         ('profit_loss', 'Profit and Loss'),
+         ('cash_flow', 'Cash Flow Statement')],
+        required=True, default='balance_sheet',
+    )
+    # True when the caller already chose the statement, so the selector is
+    # redundant and is hidden. Purely presentational.
+    report_type_locked = fields.Boolean(default=False)
+
     company_id = fields.Many2one(
         'res.company', required=True, default=lambda self: self.env.company,
     )
@@ -35,6 +48,15 @@ class FinancialStatementsWizard(models.TransientModel):
 
     def _data(self):
         return {'wizard_id': self.id}
+
+    def action_print(self):
+        """Print whichever statement report_type names."""
+        self.ensure_one()
+        return {
+            'balance_sheet': self.action_balance_sheet,
+            'profit_loss': self.action_profit_loss,
+            'cash_flow': self.action_cash_flow,
+        }[self.report_type]()
 
     def action_balance_sheet(self):
         self._check()

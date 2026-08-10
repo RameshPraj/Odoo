@@ -6,8 +6,11 @@
         <field name="model">account.financial.statements.wizard</field>
         <field name="arch" type="xml">
             <form string="Financial Statements">
+                <field name="report_type_locked" invisible="1"/>
                 <group>
                     <group>
+                        <field name="report_type" widget="radio"
+                               invisible="report_type_locked"/>
                         <field name="company_id" options="{'no_create': True}"/>
                         <field name="date_from"/>
                         <field name="date_to"/>
@@ -22,11 +25,7 @@
                     the start date. The Profit and Loss covers the period between both dates.</small>
                 </div>
                 <footer>
-                    <button name="action_balance_sheet" string="Balance Sheet"
-                            type="object" class="btn-primary"/>
-                    <button name="action_profit_loss" string="Profit and Loss"
-                            type="object" class="btn-primary"/>
-                    <button name="action_cash_flow" string="Cash Flow"
+                    <button name="action_print" string="Print"
                             type="object" class="btn-primary"/>
                     <button string="Cancel" class="btn-secondary" special="cancel"/>
                 </footer>
@@ -34,15 +33,41 @@
         </field>
     </record>
 
+    <!-- Combined entry point: the user picks the statement on the form. -->
     <record id="action_financial_statements" model="ir.actions.act_window">
-        <field name="name">Balance Sheet / Profit and Loss</field>
+        <field name="name">Financial Statements</field>
         <field name="res_model">account.financial.statements.wizard</field>
         <field name="view_mode">form</field>
         <field name="target">new</field>
     </record>
 
+    <!-- One action per statement, so each can carry its own menu item. -->
+    <record id="action_balance_sheet" model="ir.actions.act_window">
+        <field name="name">Balance Sheet</field>
+        <field name="res_model">account.financial.statements.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="context">{'default_report_type': 'balance_sheet', 'default_report_type_locked': True}</field>
+    </record>
+
+    <record id="action_profit_loss" model="ir.actions.act_window">
+        <field name="name">Profit and Loss</field>
+        <field name="res_model">account.financial.statements.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="context">{'default_report_type': 'profit_loss', 'default_report_type_locked': True}</field>
+    </record>
+
+    <record id="action_cash_flow" model="ir.actions.act_window">
+        <field name="name">Cash Flow Statement</field>
+        <field name="res_model">account.financial.statements.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="context">{'default_report_type': 'cash_flow', 'default_report_type_locked': True}</field>
+    </record>
+
     <menuitem id="menu_financial_statements"
-              name="Balance Sheet / P&amp;L"
+              name="Financial Statements"
               parent="account.menu_finance_reports"
               action="action_financial_statements"
               groups="account.group_account_readonly"
