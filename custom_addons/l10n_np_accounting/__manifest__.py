@@ -58,6 +58,7 @@ authoritative: post test transactions freely, file nothing.
         'l10n_np_fiscal_year',
         'l10n_np_tds',
         'l10n_np_vat_return',
+        'l10n_np_loan',
         'account_financial_statements',
         # Referenced by the menu tree, so declared rather than assumed present.
         'account_financial_report',      # OCA: GL, TB, aged, open items, VAT report
@@ -69,6 +70,13 @@ authoritative: post test transactions freely, file nothing.
         'hr_expense',                    # Employee Expenses, as in the Invoicing app
     ],
     'data': [
+        'security/account_groups.xml',
+        'security/bs_date_group.xml',
+        'security/ir.model.access.csv',
+        'wizard/account_lock_dates_views.xml',
+        'views/account_reconcile_views.xml',
+        'views/account_aged_reports_views.xml',
+        'views/res_config_settings_views.xml',
         'views/np_accounting_menus.xml',
     ],
     'author': 'local',

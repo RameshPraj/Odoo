@@ -99,17 +99,28 @@
               action="analytic.account_analytic_line_action_entries"
               groups="analytic.group_analytic_accounting" sequence="20"/>
 
+    <!-- Registers only, as in Enterprise: this section lists asset and
+         liability *records*, not actions performed on them. The batch
+         depreciation wizard therefore sits under Closing, where period-end
+         postings belong. -->
     <menuitem id="menu_np_acc_assets_liab" name="Assets and Liabilities"
               parent="menu_np_accounting" sequence="20"/>
     <menuitem id="menu_np_acc_assets" name="Assets"
               parent="menu_np_acc_assets_liab"
               action="account_asset_management.account_asset_action" sequence="10"/>
-    <menuitem id="menu_np_acc_assets_compute" name="Compute Assets"
+    <menuitem id="menu_np_acc_loans" name="Loans"
               parent="menu_np_acc_assets_liab"
-              action="account_asset_management.account_asset_compute_action" sequence="20"/>
+              action="l10n_np_loan.action_loan" sequence="20"/>
 
     <menuitem id="menu_np_acc_closing" name="Closing"
               parent="menu_np_accounting" sequence="30"/>
+    <menuitem id="menu_np_acc_assets_compute" name="Compute Assets"
+              parent="menu_np_acc_closing"
+              action="account_asset_management.account_asset_compute_action"
+              sequence="15"/>
+    <menuitem id="menu_np_acc_reconcile" name="Reconcile"
+              parent="menu_np_acc_closing" action="action_account_reconcile"
+              sequence="5"/>
     <menuitem id="menu_np_acc_bank_statements" name="Bank Statements"
               parent="menu_np_acc_closing" action="account.action_bank_statement_tree"
               sequence="10"/>
@@ -123,6 +134,9 @@
               parent="menu_np_acc_closing"
               action="account.action_view_account_secure_entries_wizard"
               groups="account.group_account_manager" sequence="40"/>
+    <menuitem id="menu_np_acc_lock_dates" name="Lock Dates"
+              parent="menu_np_acc_closing" action="action_account_lock_dates"
+              groups="account.group_account_manager" sequence="50"/>
 
     <!-- ================================================================
          REVIEW
@@ -152,6 +166,9 @@
     <menuitem id="menu_np_rev_asset_groups" name="Asset Groups"
               parent="menu_np_rev_inventory"
               action="account_asset_management.account_asset_group_action" sequence="20"/>
+    <menuitem id="menu_np_rev_loans_analysis" name="Loans Analysis"
+              parent="menu_np_rev_inventory"
+              action="l10n_np_loan.action_loan_analysis" sequence="30"/>
 
     <menuitem id="menu_np_rev_logs" name="Logs"
               parent="menu_np_review" sequence="30"/>
@@ -168,9 +185,15 @@
 
     <menuitem id="menu_np_rep_statements" name="Statement Reports"
               parent="menu_np_reporting" sequence="10"/>
-    <menuitem id="menu_np_rep_bs_pl_cf" name="Balance Sheet / P&amp;L / Cash Flow"
+    <menuitem id="menu_np_rep_balance_sheet" name="Balance Sheet"
               parent="menu_np_rep_statements"
-              action="account_financial_statements.action_financial_statements" sequence="10"/>
+              action="account_financial_statements.action_balance_sheet" sequence="10"/>
+    <menuitem id="menu_np_rep_profit_loss" name="Profit and Loss"
+              parent="menu_np_rep_statements"
+              action="account_financial_statements.action_profit_loss" sequence="20"/>
+    <menuitem id="menu_np_rep_cash_flow" name="Cash Flow Statement"
+              parent="menu_np_rep_statements"
+              action="account_financial_statements.action_cash_flow" sequence="30"/>
 
     <menuitem id="menu_np_rep_ledgers" name="Ledgers"
               parent="menu_np_reporting" sequence="20"/>
@@ -186,12 +209,15 @@
     <menuitem id="menu_np_rep_partner_ledger" name="Partner Ledger"
               parent="menu_np_rep_partner" action="account.action_account_moves_ledger_partner"
               sequence="10"/>
-    <menuitem id="menu_np_rep_aged" name="Aged Receivable / Payable"
+    <menuitem id="menu_np_rep_aged_receivable" name="Aged Receivable"
               parent="menu_np_rep_partner"
-              action="account_financial_report.action_aged_partner_balance_wizard" sequence="20"/>
+              action="action_aged_receivable" sequence="20"/>
+    <menuitem id="menu_np_rep_aged_payable" name="Aged Payable"
+              parent="menu_np_rep_partner"
+              action="action_aged_payable" sequence="30"/>
     <menuitem id="menu_np_rep_open_items" name="Open Items"
               parent="menu_np_rep_partner"
-              action="account_financial_report.action_open_items_wizard" sequence="30"/>
+              action="account_financial_report.action_open_items_wizard" sequence="40"/>
 
     <menuitem id="menu_np_rep_tax" name="Taxes and Fiscal"
               parent="menu_np_reporting" sequence="40"/>
