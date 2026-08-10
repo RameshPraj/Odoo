@@ -15,8 +15,15 @@ class TestNPFiscalYear(TransactionCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        cls.company = cls.env.company
         cls.Wizard = cls.env["l10n_np.generate.fiscal.year"]
+        # A dedicated company per test class. Fiscal years are company-scoped and
+        # the generator refuses to overwrite existing ones, so testing against
+        # env.company would fail on any database that already has them -- which
+        # is exactly what happened once real fiscal years were generated.
+        cls.company = cls.env["res.company"].create({
+            "name": "FY Test Co",
+            "country_id": cls.env.ref("base.np").id,
+        })
 
     def test_known_fiscal_year_ranges(self):
         """Endpoints must match the Bikram Sambat calendar exactly.
@@ -70,9 +77,10 @@ class TestNPFiscalYear(TransactionCase):
         wiz.action_generate()
         fys = self.env["account.fiscal.year"].search([
             ("company_id", "=", self.company.id),
-            ("date_from", ">=", datetime.date(2026, 1, 1)),
         ])
-        self.assertGreaterEqual(len(fys), 3)
+        self.assertEqual(len(fys), 3, "expected exactly the three requested years")
+        self.assertEqual(
+            fys.sorted("date_from")[0].date_from, datetime.date(2026, 7, 17))
 
     def test_company_fiscal_year_lookup_follows_nepal(self):
         """compute_fiscalyear_dates must return the Nepali year, not Jan-Dec."""
@@ -89,8 +97,19 @@ class TestNPFiscalYear(TransactionCase):
     def test_duplicate_generation_is_skipped(self):
         vals = {"company_id": self.company.id, "bs_year_from": 2083, "bs_year_to": 2083}
         self.Wizard.create(vals).action_generate()
-        before = self.env["account.fiscal.year"].search_count([])
+        domain = [("company_id", "=", self.company.id)]
+        before = self.env["account.fiscal.year"].search_count(domain)
         from odoo.exceptions import UserError  # noqa: PLC0415
         with self.assertRaises(UserError):
             self.Wizard.create(vals).action_generate()
-        self.assertEqual(self.env["account.fiscal.year"].search_count([]), before)
+        self.assertEqual(self.env["account.fiscal.year"].search_count(domain), before)
+
+    def test_overwrite_regenerates(self):
+        """With 'Replace existing' ticked, regeneration must succeed."""
+        vals = {"company_id": self.company.id, "bs_year_from": 2083, "bs_year_to": 2083}
+        self.Wizard.create(vals).action_generate()
+        self.Wizard.create(dict(vals, overwrite=True)).action_generate()
+        self.assertEqual(
+            self.env["account.fiscal.year"].search_count(
+                [("company_id", "=", self.company.id)]),
+            1, "overwrite should replace, not duplicate")
