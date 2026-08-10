@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!--
+        A single entry point for everything Nepal-specific. The individual
+        modules already place their menus inside Odoo's own Accounting tree; this
+        root menu gathers the Nepal configuration and returns in one place so an
+        accountant does not have to hunt for them.
+
+        NB: never use a double hyphen inside an XML comment. It is illegal XML and
+        invalidates the whole file, which in Odoo can blank the entire web client.
+        Use "=" for separators.
+    -->
+
+    <menuitem id="menu_np_accounting_root"
+              name="Accounting Nepal"
+              web_icon="l10n_np_accounting,static/description/icon.png"
+              sequence="11"/>
+
+    <!-- ================ Returns and filings ================ -->
+    <menuitem id="menu_np_filings"
+              name="Filings"
+              parent="menu_np_accounting_root"
+              sequence="10"/>
+
+    <menuitem id="menu_np_vat_return"
+              name="VAT Returns"
+              parent="menu_np_filings"
+              action="l10n_np_vat_return.action_vat_return"
+              groups="account.group_account_invoice"
+              sequence="10"/>
+
+    <menuitem id="menu_np_tds_certificate"
+              name="TDS Certificates"
+              parent="menu_np_filings"
+              action="l10n_np_tds.action_tds_certificate"
+              groups="account.group_account_invoice"
+              sequence="20"/>
+
+    <menuitem id="menu_np_tds_return"
+              name="TDS Returns"
+              parent="menu_np_filings"
+              action="l10n_np_tds.action_tds_return"
+              groups="account.group_account_invoice"
+              sequence="30"/>
+
+    <!-- ================ Statements ================ -->
+    <menuitem id="menu_np_statements"
+              name="Statements"
+              parent="menu_np_accounting_root"
+              sequence="20"/>
+
+    <menuitem id="menu_np_financial_statements"
+              name="Balance Sheet / P&amp;L / Cash Flow"
+              parent="menu_np_statements"
+              action="account_financial_statements.action_financial_statements"
+              groups="account.group_account_readonly"
+              sequence="10"/>
+
+    <!-- ================ Nepali calendar ================ -->
+    <menuitem id="menu_np_calendar"
+              name="Nepali Calendar"
+              parent="menu_np_accounting_root"
+              action="l10n_np_bs.action_bs_calendar"
+              sequence="30"/>
+
+    <!-- ================ Configuration ================ -->
+    <menuitem id="menu_np_config"
+              name="Configuration"
+              parent="menu_np_accounting_root"
+              groups="account.group_account_manager"
+              sequence="90"/>
+
+    <menuitem id="menu_np_config_tds"
+              name="TDS Categories (rates)"
+              parent="menu_np_config"
+              action="l10n_np_tds.action_tds_category"
+              groups="account.group_account_manager"
+              sequence="10"/>
+
+    <menuitem id="menu_np_config_vat_form"
+              name="VAT Return Forms"
+              parent="menu_np_config"
+              action="l10n_np_vat_return.action_vat_return_form"
+              groups="account.group_account_manager"
+              sequence="20"/>
+
+    <menuitem id="menu_np_config_fiscal_year"
+              name="Generate Nepali Fiscal Years"
+              parent="menu_np_config"
+              action="l10n_np_fiscal_year.action_generate_np_fiscal_year"
+              groups="account.group_account_manager"
+              sequence="30"/>
+
+</odoo>
