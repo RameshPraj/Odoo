@@ -2,12 +2,19 @@
 <odoo>
 
     <!--
-        A single entry point for everything Nepal-specific. The individual
-        modules already place their menus inside Odoo's own Accounting tree; this
-        root menu gathers the Nepal configuration and returns in one place so an
-        accountant does not have to hunt for them.
+        Full "Accounting Nepal" application tree, mirroring the structure of the
+        Enterprise Accounting app but built entirely from Community, OCA and local
+        actions.
 
-        NB: never use a double hyphen inside an XML comment. It is illegal XML and
+        Every action referenced here already exists; this file only arranges them.
+        Nothing is duplicated: the same act_window can be reached from Odoo's own
+        Invoicing menu as well.
+
+        Items the Enterprise app has that are NOT reachable here, because no
+        Community or OCA implementation exists, are listed in README.md rather
+        than shown as dead menu entries.
+
+        NB: never put a double hyphen inside an XML comment. It is illegal XML and
         invalidates the whole file, which in Odoo can blank the entire web client.
         Use "=" for separators.
     -->
@@ -17,79 +24,280 @@
               web_icon="l10n_np_accounting,static/description/icon.png"
               sequence="11"/>
 
-    <!-- ================ Returns and filings ================ -->
-    <menuitem id="menu_np_filings"
-              name="Filings"
+    <!-- ================================================================
+         CUSTOMERS
+         ================================================================ -->
+    <menuitem id="menu_np_customers" name="Customers"
+              parent="menu_np_accounting_root" sequence="10"/>
+
+    <menuitem id="menu_np_cust_invoices" name="Invoices"
+              parent="menu_np_customers" action="account.action_move_out_invoice_type"
+              sequence="10"/>
+    <menuitem id="menu_np_cust_credit_notes" name="Credit Notes"
+              parent="menu_np_customers" action="account.action_move_out_refund_type"
+              sequence="20"/>
+    <menuitem id="menu_np_cust_payments" name="Payments"
+              parent="menu_np_customers" action="account.action_account_payments"
+              sequence="30"/>
+    <menuitem id="menu_np_cust_products" name="Products"
+              parent="menu_np_customers" action="account.product_product_action_sellable"
+              sequence="40"/>
+    <menuitem id="menu_np_cust_partners" name="Customers"
+              parent="menu_np_customers" action="account.res_partner_action_customer"
+              sequence="50"/>
+
+    <!-- ================================================================
+         VENDORS
+         ================================================================ -->
+    <menuitem id="menu_np_vendors" name="Vendors"
+              parent="menu_np_accounting_root" sequence="20"/>
+
+    <menuitem id="menu_np_vend_bills" name="Bills"
+              parent="menu_np_vendors" action="account.action_move_in_invoice_type"
+              sequence="10"/>
+    <menuitem id="menu_np_vend_refunds" name="Refunds"
+              parent="menu_np_vendors" action="account.action_move_in_refund_type"
+              sequence="20"/>
+    <menuitem id="menu_np_vend_payments" name="Payments"
+              parent="menu_np_vendors" action="account.action_account_payments_payable"
+              sequence="30"/>
+    <menuitem id="menu_np_vend_products" name="Products"
+              parent="menu_np_vendors" action="account.product_product_action_purchasable"
+              sequence="40"/>
+    <menuitem id="menu_np_vend_partners" name="Vendors"
+              parent="menu_np_vendors" action="account.res_partner_action_supplier"
+              sequence="50"/>
+
+    <!-- ================================================================
+         ACCOUNTING
+         ================================================================ -->
+    <menuitem id="menu_np_accounting" name="Accounting"
               parent="menu_np_accounting_root"
+              groups="account.group_account_user" sequence="30"/>
+
+    <menuitem id="menu_np_acc_transactions" name="Transactions"
+              parent="menu_np_accounting" sequence="10"/>
+    <menuitem id="menu_np_acc_journal_entries" name="Journal Entries"
+              parent="menu_np_acc_transactions" action="account.action_move_journal_line"
+              sequence="10"/>
+    <menuitem id="menu_np_acc_analytic_items" name="Analytic Items"
+              parent="menu_np_acc_transactions"
+              action="analytic.account_analytic_line_action_entries"
+              groups="analytic.group_analytic_accounting" sequence="20"/>
+
+    <menuitem id="menu_np_acc_assets_liab" name="Assets and Liabilities"
+              parent="menu_np_accounting" sequence="20"/>
+    <menuitem id="menu_np_acc_assets" name="Assets"
+              parent="menu_np_acc_assets_liab"
+              action="account_asset_management.account_asset_action" sequence="10"/>
+    <menuitem id="menu_np_acc_assets_compute" name="Compute Assets"
+              parent="menu_np_acc_assets_liab"
+              action="account_asset_management.account_asset_compute_action" sequence="20"/>
+
+    <menuitem id="menu_np_acc_closing" name="Closing"
+              parent="menu_np_accounting" sequence="30"/>
+    <menuitem id="menu_np_acc_bank_statements" name="Bank Statements"
+              parent="menu_np_acc_closing" action="account.action_bank_statement_tree"
+              sequence="10"/>
+    <menuitem id="menu_np_acc_vat_returns" name="VAT Returns"
+              parent="menu_np_acc_closing" action="l10n_np_vat_return.action_vat_return"
+              sequence="20"/>
+    <menuitem id="menu_np_acc_tds_returns" name="TDS Returns"
+              parent="menu_np_acc_closing" action="l10n_np_tds.action_tds_return"
+              sequence="30"/>
+    <menuitem id="menu_np_acc_secure" name="Secure Entries"
+              parent="menu_np_acc_closing"
+              action="account.action_view_account_secure_entries_wizard"
+              groups="account.group_account_manager" sequence="40"/>
+
+    <!-- ================================================================
+         REVIEW
+         ================================================================ -->
+    <menuitem id="menu_np_review" name="Review"
+              parent="menu_np_accounting_root"
+              groups="account.group_account_readonly" sequence="40"/>
+
+    <menuitem id="menu_np_rev_control" name="Control"
+              parent="menu_np_review" sequence="10"/>
+    <menuitem id="menu_np_rev_journal_items" name="Journal Items"
+              parent="menu_np_rev_control" action="account.action_account_moves_all"
+              sequence="10"/>
+    <menuitem id="menu_np_rev_journal_audit" name="Journal Audit"
+              parent="menu_np_rev_control"
+              action="account_financial_report.action_journal_ledger_wizard" sequence="20"/>
+    <menuitem id="menu_np_rev_transfer" name="Transfer Journal Items"
+              parent="menu_np_rev_control"
+              action="account.account_automatic_entry_wizard_action"
+              groups="account.group_account_manager" sequence="30"/>
+
+    <menuitem id="menu_np_rev_inventory" name="Fixed Assets"
+              parent="menu_np_review" sequence="20"/>
+    <menuitem id="menu_np_rev_depreciation" name="Depreciation Schedule"
+              parent="menu_np_rev_inventory"
+              action="account_asset_management.wiz_account_asset_report_action" sequence="10"/>
+    <menuitem id="menu_np_rev_asset_groups" name="Asset Groups"
+              parent="menu_np_rev_inventory"
+              action="account_asset_management.account_asset_group_action" sequence="20"/>
+
+    <menuitem id="menu_np_rev_logs" name="Logs"
+              parent="menu_np_review" sequence="30"/>
+    <menuitem id="menu_np_rev_audit_trail" name="Audit Trail"
+              parent="menu_np_rev_logs" action="account.action_account_audit_trail_report"
               sequence="10"/>
 
-    <menuitem id="menu_np_vat_return"
-              name="VAT Returns"
-              parent="menu_np_filings"
-              action="l10n_np_vat_return.action_vat_return"
-              groups="account.group_account_invoice"
-              sequence="10"/>
+    <!-- ================================================================
+         REPORTING
+         ================================================================ -->
+    <menuitem id="menu_np_reporting" name="Reporting"
+              parent="menu_np_accounting_root"
+              groups="account.group_account_readonly" sequence="50"/>
 
-    <menuitem id="menu_np_tds_certificate"
-              name="TDS Certificates"
-              parent="menu_np_filings"
-              action="l10n_np_tds.action_tds_certificate"
-              groups="account.group_account_invoice"
+    <menuitem id="menu_np_rep_statements" name="Statement Reports"
+              parent="menu_np_reporting" sequence="10"/>
+    <menuitem id="menu_np_rep_bs_pl_cf" name="Balance Sheet / P&amp;L / Cash Flow"
+              parent="menu_np_rep_statements"
+              action="account_financial_statements.action_financial_statements" sequence="10"/>
+
+    <menuitem id="menu_np_rep_ledgers" name="Ledgers"
+              parent="menu_np_reporting" sequence="20"/>
+    <menuitem id="menu_np_rep_trial_balance" name="Trial Balance"
+              parent="menu_np_rep_ledgers"
+              action="account_financial_report.action_trial_balance_wizard" sequence="10"/>
+    <menuitem id="menu_np_rep_general_ledger" name="General Ledger"
+              parent="menu_np_rep_ledgers"
+              action="account_financial_report.action_general_ledger_wizard" sequence="20"/>
+
+    <menuitem id="menu_np_rep_partner" name="Partner Reports"
+              parent="menu_np_reporting" sequence="30"/>
+    <menuitem id="menu_np_rep_partner_ledger" name="Partner Ledger"
+              parent="menu_np_rep_partner" action="account.action_account_moves_ledger_partner"
+              sequence="10"/>
+    <menuitem id="menu_np_rep_aged" name="Aged Receivable / Payable"
+              parent="menu_np_rep_partner"
+              action="account_financial_report.action_aged_partner_balance_wizard" sequence="20"/>
+    <menuitem id="menu_np_rep_open_items" name="Open Items"
+              parent="menu_np_rep_partner"
+              action="account_financial_report.action_open_items_wizard" sequence="30"/>
+
+    <menuitem id="menu_np_rep_tax" name="Taxes and Fiscal"
+              parent="menu_np_reporting" sequence="40"/>
+    <menuitem id="menu_np_rep_vat_return" name="VAT Returns (IRD)"
+              parent="menu_np_rep_tax" action="l10n_np_vat_return.action_vat_return"
+              sequence="10"/>
+    <menuitem id="menu_np_rep_tds_cert" name="TDS Certificates"
+              parent="menu_np_rep_tax" action="l10n_np_tds.action_tds_certificate"
               sequence="20"/>
 
-    <menuitem id="menu_np_tds_return"
-              name="TDS Returns"
-              parent="menu_np_filings"
-              action="l10n_np_tds.action_tds_return"
-              groups="account.group_account_invoice"
-              sequence="30"/>
-
-    <!-- ================ Statements ================ -->
-    <menuitem id="menu_np_statements"
-              name="Statements"
-              parent="menu_np_accounting_root"
-              sequence="20"/>
-
-    <menuitem id="menu_np_financial_statements"
-              name="Balance Sheet / P&amp;L / Cash Flow"
-              parent="menu_np_statements"
-              action="account_financial_statements.action_financial_statements"
-              groups="account.group_account_readonly"
+    <menuitem id="menu_np_rep_management" name="Management"
+              parent="menu_np_reporting" sequence="50"/>
+    <menuitem id="menu_np_rep_invoice_analysis" name="Invoice Analysis"
+              parent="menu_np_rep_management" action="account.action_account_invoice_report_all"
               sequence="10"/>
+    <menuitem id="menu_np_rep_bills_analysis" name="Bills Analysis"
+              parent="menu_np_rep_management"
+              action="account.action_account_invoice_report_all_supp" sequence="20"/>
+    <menuitem id="menu_np_rep_analytic" name="Analytic Report"
+              parent="menu_np_rep_management" action="account.action_analytic_reporting"
+              groups="analytic.group_analytic_accounting" sequence="30"/>
+    <menuitem id="menu_np_rep_budgets" name="Budgets"
+              parent="menu_np_rep_management"
+              action="account_budget_oca.act_crossovered_budget_view" sequence="40"/>
 
-    <!-- ================ Nepali calendar ================ -->
-    <menuitem id="menu_np_calendar"
-              name="Nepali Calendar"
+    <!-- ================================================================
+         NEPALI CALENDAR
+         ================================================================ -->
+    <menuitem id="menu_np_calendar" name="Nepali Calendar"
               parent="menu_np_accounting_root"
-              action="l10n_np_bs.action_bs_calendar"
+              action="l10n_np_bs.action_bs_calendar" sequence="60"/>
+
+    <!-- ================================================================
+         CONFIGURATION
+         ================================================================ -->
+    <menuitem id="menu_np_config" name="Configuration"
+              parent="menu_np_accounting_root"
+              groups="account.group_account_manager" sequence="90"/>
+
+    <menuitem id="menu_np_cfg_settings" name="Settings"
+              parent="menu_np_config" action="account.action_account_config"
+              groups="base.group_system" sequence="1"/>
+
+    <menuitem id="menu_np_cfg_accounting" name="Accounting"
+              parent="menu_np_config" sequence="10"/>
+    <menuitem id="menu_np_cfg_coa" name="Chart of Accounts"
+              parent="menu_np_cfg_accounting" action="account.action_account_form"
+              sequence="10"/>
+    <menuitem id="menu_np_cfg_taxes" name="Taxes"
+              parent="menu_np_cfg_accounting" action="account.action_tax_form"
+              sequence="20"/>
+    <menuitem id="menu_np_cfg_tax_groups" name="Tax Groups"
+              parent="menu_np_cfg_accounting" action="account.action_tax_group"
+              sequence="25"/>
+    <menuitem id="menu_np_cfg_journals" name="Journals"
+              parent="menu_np_cfg_accounting" action="account.action_account_journal_form"
               sequence="30"/>
-
-    <!-- ================ Configuration ================ -->
-    <menuitem id="menu_np_config"
-              name="Configuration"
-              parent="menu_np_accounting_root"
-              groups="account.group_account_manager"
+    <menuitem id="menu_np_cfg_currencies" name="Currencies"
+              parent="menu_np_cfg_accounting" action="base.action_currency_form"
+              sequence="40"/>
+    <menuitem id="menu_np_cfg_fiscal_positions" name="Fiscal Positions"
+              parent="menu_np_cfg_accounting" action="account.action_account_fiscal_position_form"
+              sequence="50"/>
+    <menuitem id="menu_np_cfg_fiscal_years" name="Fiscal Years"
+              parent="menu_np_cfg_accounting" action="account_fiscal_year.actions_account_fiscal_year"
+              sequence="60"/>
+    <menuitem id="menu_np_cfg_gen_fiscal_years" name="Generate Nepali Fiscal Years"
+              parent="menu_np_cfg_accounting"
+              action="l10n_np_fiscal_year.action_generate_np_fiscal_year" sequence="65"/>
+    <menuitem id="menu_np_cfg_depreciation_models" name="Depreciation Models"
+              parent="menu_np_cfg_accounting"
+              action="account_asset_management.account_asset_profile_action" sequence="70"/>
+    <menuitem id="menu_np_cfg_reconcile_models" name="Reconciliation Models"
+              parent="menu_np_cfg_accounting" action="account.action_account_reconcile_model"
+              sequence="80"/>
+    <menuitem id="menu_np_cfg_multi_ledger" name="Multi-Ledger"
+              parent="menu_np_cfg_accounting" action="account.action_account_journal_group_list"
               sequence="90"/>
 
-    <menuitem id="menu_np_config_tds"
-              name="TDS Categories (rates)"
-              parent="menu_np_config"
-              action="l10n_np_tds.action_tds_category"
-              groups="account.group_account_manager"
+    <menuitem id="menu_np_cfg_nepal" name="Nepal Specific"
+              parent="menu_np_config" sequence="15"/>
+    <menuitem id="menu_np_cfg_tds_categories" name="TDS Categories (rates)"
+              parent="menu_np_cfg_nepal" action="l10n_np_tds.action_tds_category"
               sequence="10"/>
-
-    <menuitem id="menu_np_config_vat_form"
-              name="VAT Return Forms"
-              parent="menu_np_config"
-              action="l10n_np_vat_return.action_vat_return_form"
-              groups="account.group_account_manager"
+    <menuitem id="menu_np_cfg_vat_forms" name="VAT Return Forms (IRD)"
+              parent="menu_np_cfg_nepal" action="l10n_np_vat_return.action_vat_return_form"
               sequence="20"/>
 
-    <menuitem id="menu_np_config_fiscal_year"
-              name="Generate Nepali Fiscal Years"
+    <menuitem id="menu_np_cfg_invoicing" name="Invoicing"
+              parent="menu_np_config" sequence="20"/>
+    <menuitem id="menu_np_cfg_payment_terms" name="Payment Terms"
+              parent="menu_np_cfg_invoicing" action="account.action_payment_term_form"
+              sequence="10"/>
+    <menuitem id="menu_np_cfg_incoterms" name="Incoterms"
+              parent="menu_np_cfg_invoicing" action="account.action_incoterms_tree"
+              sequence="20"/>
+    <menuitem id="menu_np_cfg_product_categories" name="Product Categories"
+              parent="menu_np_cfg_invoicing" action="product.product_category_action_form"
+              sequence="30"/>
+
+    <menuitem id="menu_np_cfg_online_payment" name="Online Payments"
+              parent="menu_np_config" sequence="30"/>
+    <menuitem id="menu_np_cfg_payment_providers" name="Payment Providers"
+              parent="menu_np_cfg_online_payment" action="payment.action_payment_provider"
+              sequence="10"/>
+    <menuitem id="menu_np_cfg_payment_methods" name="Payment Methods"
+              parent="menu_np_cfg_online_payment" action="payment.action_payment_method"
+              sequence="20"/>
+
+    <menuitem id="menu_np_cfg_analytic" name="Analytic"
               parent="menu_np_config"
-              action="l10n_np_fiscal_year.action_generate_np_fiscal_year"
-              groups="account.group_account_manager"
+              groups="analytic.group_analytic_accounting" sequence="40"/>
+    <menuitem id="menu_np_cfg_analytic_plans" name="Analytic Plans"
+              parent="menu_np_cfg_analytic" action="analytic.account_analytic_plan_action"
+              sequence="10"/>
+    <menuitem id="menu_np_cfg_analytic_accounts" name="Analytic Accounts"
+              parent="menu_np_cfg_analytic" action="analytic.action_account_analytic_account_form"
+              sequence="20"/>
+    <menuitem id="menu_np_cfg_budget_positions" name="Budgetary Positions"
+              parent="menu_np_cfg_analytic" action="account_budget_oca.open_budget_post_form"
               sequence="30"/>
 
 </odoo>
