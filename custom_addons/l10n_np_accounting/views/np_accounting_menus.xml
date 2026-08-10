@@ -25,16 +25,27 @@
               sequence="11"/>
 
     <!-- ================================================================
+         DASHBOARD
+         ================================================================ -->
+    <menuitem id="menu_np_dashboard" name="Dashboard"
+              parent="menu_np_accounting_root"
+              action="account.open_account_journal_dashboard_kanban"
+              sequence="1"/>
+
+    <!-- ================================================================
          CUSTOMERS
+         Action variants match those the Invoicing app uses, so both menus
+         open the same view rather than near-duplicates.
          ================================================================ -->
     <menuitem id="menu_np_customers" name="Customers"
               parent="menu_np_accounting_root" sequence="10"/>
 
     <menuitem id="menu_np_cust_invoices" name="Invoices"
-              parent="menu_np_customers" action="account.action_move_out_invoice_type"
+              parent="menu_np_customers" action="account.action_move_out_invoice"
               sequence="10"/>
     <menuitem id="menu_np_cust_credit_notes" name="Credit Notes"
-              parent="menu_np_customers" action="account.action_move_out_refund_type"
+              parent="menu_np_customers"
+              action="account.action_move_out_refund_type_non_legacy"
               sequence="20"/>
     <menuitem id="menu_np_cust_payments" name="Payments"
               parent="menu_np_customers" action="account.action_account_payments"
@@ -53,7 +64,7 @@
               parent="menu_np_accounting_root" sequence="20"/>
 
     <menuitem id="menu_np_vend_bills" name="Bills"
-              parent="menu_np_vendors" action="account.action_move_in_invoice_type"
+              parent="menu_np_vendors" action="account.action_move_in_invoice"
               sequence="10"/>
     <menuitem id="menu_np_vend_refunds" name="Refunds"
               parent="menu_np_vendors" action="account.action_move_in_refund_type"
@@ -61,6 +72,9 @@
     <menuitem id="menu_np_vend_payments" name="Payments"
               parent="menu_np_vendors" action="account.action_account_payments_payable"
               sequence="30"/>
+    <menuitem id="menu_np_vend_expenses" name="Employee Expenses"
+              parent="menu_np_vendors" action="hr_expense.action_hr_expense_account"
+              sequence="35"/>
     <menuitem id="menu_np_vend_products" name="Products"
               parent="menu_np_vendors" action="account.product_product_action_purchasable"
               sequence="40"/>
@@ -187,6 +201,9 @@
     <menuitem id="menu_np_rep_tds_cert" name="TDS Certificates"
               parent="menu_np_rep_tax" action="l10n_np_tds.action_tds_certificate"
               sequence="20"/>
+    <menuitem id="menu_np_rep_vat_report" name="VAT Report (OCA)"
+              parent="menu_np_rep_tax"
+              action="account_financial_report.action_vat_report_wizard" sequence="30"/>
 
     <menuitem id="menu_np_rep_management" name="Management"
               parent="menu_np_reporting" sequence="50"/>
@@ -202,6 +219,9 @@
     <menuitem id="menu_np_rep_budgets" name="Budgets"
               parent="menu_np_rep_management"
               action="account_budget_oca.act_crossovered_budget_view" sequence="40"/>
+    <menuitem id="menu_np_rep_budget_lines" name="Budget Analysis"
+              parent="menu_np_rep_management"
+              action="account_budget_oca.act_crossovered_budget_lines_view" sequence="45"/>
 
     <!-- ================================================================
          NEPALI CALENDAR
@@ -256,6 +276,9 @@
     <menuitem id="menu_np_cfg_multi_ledger" name="Multi-Ledger"
               parent="menu_np_cfg_accounting" action="account.action_account_journal_group_list"
               sequence="90"/>
+    <menuitem id="menu_np_cfg_cash_roundings" name="Cash Roundings"
+              parent="menu_np_cfg_accounting" action="account.rounding_list_action"
+              sequence="95"/>
 
     <menuitem id="menu_np_cfg_nepal" name="Nepal Specific"
               parent="menu_np_config" sequence="15"/>
@@ -286,6 +309,12 @@
     <menuitem id="menu_np_cfg_payment_methods" name="Payment Methods"
               parent="menu_np_cfg_online_payment" action="payment.action_payment_method"
               sequence="20"/>
+    <menuitem id="menu_np_cfg_payment_tokens" name="Payment Tokens"
+              parent="menu_np_cfg_online_payment" action="payment.action_payment_token"
+              sequence="30"/>
+    <menuitem id="menu_np_cfg_payment_transactions" name="Payment Transactions"
+              parent="menu_np_cfg_online_payment" action="payment.action_payment_transaction"
+              sequence="40"/>
 
     <menuitem id="menu_np_cfg_analytic" name="Analytic"
               parent="menu_np_config"
@@ -296,6 +325,9 @@
     <menuitem id="menu_np_cfg_analytic_accounts" name="Analytic Accounts"
               parent="menu_np_cfg_analytic" action="analytic.action_account_analytic_account_form"
               sequence="20"/>
+    <menuitem id="menu_np_cfg_analytic_distribution" name="Analytic Distribution Models"
+              parent="menu_np_cfg_analytic"
+              action="analytic.action_analytic_distribution_model" sequence="25"/>
     <menuitem id="menu_np_cfg_budget_positions" name="Budgetary Positions"
               parent="menu_np_cfg_analytic" action="account_budget_oca.open_budget_post_form"
               sequence="30"/>

@@ -59,6 +59,14 @@ authoritative: post test transactions freely, file nothing.
         'l10n_np_tds',
         'l10n_np_vat_return',
         'account_financial_statements',
+        # Referenced by the menu tree, so declared rather than assumed present.
+        'account_financial_report',      # OCA: GL, TB, aged, open items, VAT report
+        'account_asset_management',      # OCA: assets and depreciation
+        'account_budget_oca',            # OCA: budgets
+        'account_fiscal_year',           # OCA: explicit fiscal year records
+        'analytic',
+        'payment',
+        'hr_expense',                    # Employee Expenses, as in the Invoicing app
     ],
     'data': [
         'views/np_accounting_menus.xml',
