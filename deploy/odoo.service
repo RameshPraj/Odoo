@@ -1,0 +1,58 @@
+[Unit]
+Description=Odoo 19 (Accounting Nepal)
+Documentation=https://www.odoo.com/documentation/19.0/
+# Odoo opens its database connections at startup and exits if PostgreSQL is
+# absent, so ordering after it matters on a reboot. Use postgresql.service on
+# both RHEL and Ubuntu; on RHEL with the PGDG packages the unit is versioned
+# (postgresql-17.service), so adjust both lines to match.
+After=network-online.target postgresql.service
+Wants=network-online.target
+Requires=postgresql.service
+
+[Service]
+Type=simple
+User=odoo
+Group=odoo
+
+# Adjust these three to the real install location.
+WorkingDirectory=/opt/odoo
+Environment=PYTHONUNBUFFERED=1
+ExecStart=/opt/odoo/venv/bin/python3 -m odoo -c /etc/odoo/odoo.conf
+
+# SIGHUP sets Odoo's `server_phoenix` flag: it shuts down cleanly and re-execs
+# itself, so config and code are re-read. That is a graceful *restart*, not a
+# zero-downtime worker reload -- expect a few seconds of unavailability.
+# This is also the whole point of running on Linux rather than Windows, where
+# SIGHUP is shimmed to -1 and os.kill means TerminateProcess, so the same code
+# path kills the server outright (see limit_time_real in odoo.conf.example).
+ExecReload=/bin/kill -HUP $MAINPID
+
+# SIGTERM (systemd's default) and SIGINT take the same branch in Odoo's handler:
+# a clean shutdown, with a second signal forcing os._exit(0). KillMode=mixed
+# signals only the main process, letting Odoo stop its own workers, and reserves
+# SIGKILL for anything still alive after the timeout.
+KillMode=mixed
+TimeoutStopSec=60
+
+Restart=on-failure
+RestartSec=5s
+
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=odoo
+
+# Odoo holds a file descriptor per database connection, per worker, plus the
+# filestore; the default 1024 is easy to exhaust under load.
+LimitNOFILE=65536
+
+# --- Hardening ---------------------------------------------------------------
+# ReadWritePaths must list every path Odoo writes to, or ProtectSystem will make
+# them read-only and the filestore will fail at runtime rather than at start.
+ProtectSystem=full
+ProtectHome=true
+PrivateTmp=true
+NoNewPrivileges=true
+ReadWritePaths=/var/lib/odoo /var/log/odoo
+
+[Install]
+WantedBy=multi-user.target
