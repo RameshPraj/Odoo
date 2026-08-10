@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <menuitem id="menu_tds_certificate"
+              name="TDS Certificates"
+              parent="account.menu_finance_entries"
+              action="action_tds_certificate"
+              groups="account.group_account_invoice"
+              sequence="60"/>
+
+    <menuitem id="menu_tds_return"
+              name="TDS Returns"
+              parent="account.menu_finance_reports"
+              action="action_tds_return"
+              groups="account.group_account_readonly"
+              sequence="61"/>
+
+    <menuitem id="menu_tds_category"
+              name="TDS Categories"
+              parent="account.account_account_menu"
+              action="action_tds_category"
+              groups="account.group_account_manager"
+              sequence="80"/>
+
+</odoo>
