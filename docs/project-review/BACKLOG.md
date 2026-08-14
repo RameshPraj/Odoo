@@ -412,13 +412,31 @@ is manual and needs `polib`, which is undeclared. **Fix** Scripted upgrade runbo
 check counting deployed files. **Effort M.**
 
 ## CI-1 · No CI of any kind — 121 tests, nothing runs them
-**CONFIRMED** · Build
+**PARTIALLY RESOLVED 2026-08-15** · Build
 
 No `.github/`, `.gitlab-ci.yml`, `Jenkinsfile`, `tox.ini`, `pytest.ini`, pre-commit or Makefile.
 Neither launcher passes `--test-enable`. There is no single command that runs all eight suites.
 
 **Impact** Verification theatre. Four consecutive commits (`b2570489`, `d9b0bc4a`, `fcb814f3`,
 `cb96ff96`) are same-day fixes for defects a test run would have caught. **Effort M.**
+
+### The second half is fixed; the first is not
+
+There is now a single command:
+
+```
+.un-odoo.ps1 test -Db <database>          # every custom module suite
+.un-odoo.ps1 test-module <module> -Db <database>
+```
+
+`run-odoo.sh` takes the same verbs. It passes `-u <modules> --test-enable --test-tags /<mod>,...` —
+both halves are required, because `--test-enable` alone runs nothing for modules already up to date —
+and it **propagates Odoo's exit code unchanged**, so a failing suite cannot be mistaken for a pass. It
+demands an explicit `--db`, because `-u` modifies the named database.
+
+**Still open: nothing runs it automatically.** There is no CI, and this repository still has no remote
+to run one against (**SUP-2**). The command existing is a precondition for CI, not a substitute for it.
+Remaining effort **M**.
 
 ## DEP-1 · `nepali_datetime` undeclared — a clean build cannot install the suite
 **RESOLVED** · Dependencies · was `l10n_np_bs/__manifest__.py:36`, now `nepali_calendar_core`
@@ -438,6 +456,35 @@ drifts from the installed version, or is loosened to `>=`; the guard was verifie
 and confirming the suite goes red. `deploy/README.md` no longer carries a separate unpinned
 `pip install`. **COD-10 is narrowed but not closed:** the private `_days_in_month` is still private,
 and there is now a test asserting it exists.
+
+## OPS-6 · Unbounded logs: Odoo has no rotation, and nothing supplied it
+**CONFIRMED (by inspection)** · Operations · `odoo/netsvc.py:260-275`; `odoo.conf`;
+`deploy/odoo.conf.linux.example:58-62`
+
+Odoo ships **no size-based rotation at any point** — an exhaustive read of `netsvc.py` finds
+`WatchedFileHandler` (POSIX) and `logging.FileHandler` (Windows), never a `RotatingFileHandler`. Both
+only ever append.
+
+Compounding it, the dev `odoo.conf` sets **no `logfile` at all**, so a hand-started server logs to
+stderr and the output is lost unless the caller redirects it. That is why `.odoo_data/` accumulated nine
+hand-redirected files (`server.log`, `srv.out`, `tests.log`, `ne_boot.log`, …): log capture was unowned.
+`deploy/odoo.conf.linux.example:62` advised adding logrotate but no configuration was ever shipped, and
+`/var/log/odoo` is created by `deploy/README.md:46` and then never written to.
+
+**Impact** A long-lived instance with `logfile` set fills its disk, which takes PostgreSQL and the
+filestore down with it. Recorded before only as an unnumbered table row,
+`PRODUCTION_READINESS.md:110`: "Logs | stdout → journald. No aggregation, retention or rotation".
+
+**Fix** Applied 2026-08-15. `run-odoo.ps1`/`run-odoo.sh` pass `--logfile logs/odoo.log`, so the log has
+an owner. `deploy/logrotate.d/odoo` ships the rotation config, with a note explaining why
+`copytruncate` is **wrong** here (POSIX Odoo reopens on rename; copytruncate loses lines). Windows
+cannot rename an open file and gets no `WatchedFileHandler`, so the script rotates at **start**, above
+`ODOO_LOG_MAX_MB`, keeping `ODOO_LOG_KEEP` generations.
+
+**Still open** journald's own `SystemMaxUse` is unset, and nothing aggregates or ships logs anywhere.
+**Effort XS** (done) **+ S** (retention policy). 
+
+---
 
 ## TST-2 · Five suites assert on live database state; three break when the modules are used
 **CONFIRMED** · Testing

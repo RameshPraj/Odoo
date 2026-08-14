@@ -59,7 +59,10 @@ limit_request = 65536
 ; --- Logging ---
 ; Leave logfile unset to log to stdout and let systemd capture it in the
 ; journal (StandardOutput=journal). Set a path only if you want a file, and
-; then add logrotate, because Odoo does not rotate it itself.
+; then install deploy/logrotate.d/odoo, because Odoo has no size-based rotation
+; at any point and the file will otherwise grow without bound (finding OPS-6).
+; A plain rename is safe: on POSIX Odoo uses WatchedFileHandler, which reopens
+; on inode change, so do NOT use copytruncate.
 ; logfile = /var/log/odoo/odoo.log
 log_level = info
 log_handler = :INFO

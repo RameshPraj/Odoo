@@ -1,0 +1,41 @@
+# logrotate configuration for Odoo 19.
+#
+#   sudo cp deploy/logrotate.d/odoo /etc/logrotate.d/odoo
+#   sudo logrotate --debug /etc/logrotate.d/odoo     # dry run, changes nothing
+#
+# This is only needed when `logfile` is SET in odoo.conf. The shipped
+# deploy/odoo.conf.linux.example deliberately leaves it unset so Odoo logs to
+# stdout and systemd captures it in the journal, which rotates itself via
+# journald's SystemMaxUse. Use this file if you have chosen a real log file
+# instead -- Odoo has no size-based rotation of its own at any point, so without
+# something like this the file grows without bound (audit finding OPS-6).
+#
+# Adjust the path if your logfile= differs.
+
+/var/log/odoo/*.log {
+    daily
+    rotate 14
+    missingok
+    notifempty
+    compress
+    delaycompress
+    su odoo odoo
+    create 0640 odoo odoo
+
+    # NOT copytruncate.
+    #
+    # On POSIX, Odoo installs a WatchedFileHandler (odoo/netsvc.py:268-272),
+    # which stats the path on every emit and reopens the file when the inode
+    # changes. A plain rename is therefore safe and loses nothing: Odoo notices
+    # and reopens by itself, with no signal required.
+    #
+    # copytruncate would copy the file and truncate the original in place, and
+    # any line written between the copy and the truncate is lost. It exists for
+    # daemons that hold a handle and never reopen -- which is what Odoo does on
+    # *Windows*, where it falls back to a plain FileHandler. There, rotation has
+    # to happen while the server is stopped, and run-odoo.ps1 does it at start.
+    #
+    # Note that this reopen-on-rename behaviour is also why no postrotate
+    # script is needed here. Do not add `kill -HUP`: on Odoo that means
+    # server_phoenix, a full graceful re-exec of the server, not a log reopen.
+}

@@ -27,6 +27,12 @@ __pycache__/
 *.log
 *.pid
 .gunicorn.pid
+#   logs/ and .runtime/ are created by run-odoo.ps1 / run-odoo.sh: the
+#   Odoo log and the pidfile plus the start lock. The two globs above
+#   already match their contents; these entries state the intent, and cover
+#   anything else that lands there (a boot log, a lock directory).
+/logs/
+/.runtime/
 
 # ---------------------------------------------------------------------------
 # Local configuration

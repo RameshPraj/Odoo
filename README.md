@@ -22,6 +22,45 @@ The main Odoo Apps include an [Open Source CRM](https://www.odoo.com/page/crm),
 Odoo Apps can be used as stand-alone applications, but they also integrate seamlessly so you get
 a full-featured [Open Source ERP](https://www.odoo.com) when you install several Apps.
 
+## This checkout
+
+Odoo 19 Community plus a Nepal localisation suite in [`custom_addons/`](custom_addons) — chart of
+accounts and VAT, Bikram Sambat as a platform-wide calendar, Shrawan–Ashar fiscal years, TDS, the IRD
+VAT return, loans, and financial statements. Configuration lives in `odoo.conf` (untracked; copy
+`odoo.conf.example`).
+
+### Running the server
+
+```powershell
+.\run-odoo.ps1 start          # background, waits until genuinely healthy
+.\run-odoo.ps1 status         # RUNNING / STOPPED / DEGRADED, with detail
+.\run-odoo.ps1 logs-follow
+.\run-odoo.ps1 doctor         # read-only diagnostic; changes nothing
+.\run-odoo.ps1 stop
+```
+```bash
+./run-odoo.sh start           # same verbs, same exit codes
+./run-odoo.sh doctor
+./run-odoo.sh stop
+```
+
+`help` lists every command. Anything that modifies a database requires naming it explicitly — there is
+no default and no "all databases" mode:
+
+```powershell
+.\run-odoo.ps1 test    -Db odoo19                        # all custom module suites
+.\run-odoo.ps1 upgrade l10n_np_accounting -Db odoo19
+```
+
+These scripts are a developer/operator convenience layer, **not** a service manager. In production the
+service is systemd — see [`deploy/README.md`](deploy/README.md) — and `run-odoo.sh` refuses to start
+when it can see that unit is active.
+
+* [`docs/operations/ODOO_SERVICE_MANAGEMENT.md`](docs/operations/ODOO_SERVICE_MANAGEMENT.md) —
+  commands, configuration, safety rules, exit codes
+* [`docs/operations/TROUBLESHOOTING.md`](docs/operations/TROUBLESHOOTING.md) — symptom-first fixes
+* [`docs/project-review/`](docs/project-review) — the repository audit and its backlog
+
 ## Getting started with Odoo
 
 For a standard installation please follow the [Setup instructions](https://www.odoo.com/documentation/master/administration/install/install.html)

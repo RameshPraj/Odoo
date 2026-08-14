@@ -107,12 +107,20 @@ Effectively none beyond Odoo's own log.
 
 | Concern | State |
 |---|---|
-| Logs | stdout → journald. No aggregation, retention or rotation |
+| Logs | stdout → journald; **`--logfile` when started through the launchers, with rotation** (OPS-6). Still no aggregation and no retention policy |
 | Metrics | None |
 | Tracing | None |
-| Health check | None — no endpoint, no probe |
+| Health check | **Endpoint exists and always did**; there is now a probe. See the correction below |
 | Alerting | None |
 | Per-tenant attribution | **Partial** — SAAS-15: the log carries `dbname`, but it is `?` on the nodb path, i.e. exactly for failed logins, database-manager access and `X-Odoo-Database` probing |
+
+> **Correction to this section, recorded rather than silently amended.** The row above previously read
+> "Health check | None — **no endpoint**, no probe". The endpoint half was wrong: Odoo 19 ships
+> `/web/health` (`odoo/addons/web/controllers/home.py:172`), `auth='none'` and `save_session=False`, and
+> `?db_server_status=1` additionally opens a `postgres` connection and returns HTTP 500 when PostgreSQL is
+> unreachable. What was genuinely missing was a *probe*, which `run-odoo.ps1 health` /
+> `./run-odoo.sh health` now provides, with exit codes 0/1/2 for automation. `save_session=False` matters:
+> polling it does not litter `data_dir/sessions`, which a naive probe against `/web/login` would.
 
 **Five failures would currently be silent**: SUP-3 (translations reverting after an upgrade),
 FIN-1 (a return reporting nil), FIN-2 (reports raising for a user but not in tests), OPS-1

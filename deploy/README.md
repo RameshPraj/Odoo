@@ -1,16 +1,28 @@
 # Deploying to a Linux server
 
-`run-odoo.ps1` (Windows) and `run-odoo.sh` (Linux) are **development** launchers: they run in
-the foreground and stop on Ctrl-C. Neither is a service. On Linux the service is systemd, and
-`odoo.service` here is the unit.
+`run-odoo.ps1` (Windows) and `run-odoo.sh` (Linux) are **development/operator** launchers. They now
+offer `start`/`stop`/`restart`/`status`/`health`/`doctor` and can run Odoo in the background, but they
+are still not a service: no supervision, no restart-on-crash, no boot integration. On Linux the service
+is systemd, and `odoo.service` here is the unit.
+
+`run-odoo.sh` knows about that unit and **refuses to start when it is active**, rather than racing it
+for the port. It never calls `systemctl` for you, because the unit runs as another user from a
+different config against a different `data_dir`. Full command reference:
+[`docs/operations/ODOO_SERVICE_MANAGEMENT.md`](../docs/operations/ODOO_SERVICE_MANAGEMENT.md).
 
 Nothing in the application code needs changing — the custom modules contain no
 platform-specific calls. What changes is the configuration and the process manager.
 
 ## 1. Packages
 
-The system Python must be 3.10–3.12 (Odoo 19 does not support 3.13 yet — check with
-`python3 -V`).
+Odoo 19 declares its own supported range in `odoo/release.py`: `MIN_PY_VERSION = (3, 10)` and
+`MAX_PY_VERSION = (3, 14)`, and it only warns above the maximum (`odoo/cli/server.py:69-73`).
+`requirements.txt` also carries `python_version >= '3.13'` markers, `gevent` among them. So
+**3.10 to 3.14** is the supported range; check with `python3 -V`.
+
+> An earlier version of this file said "3.10-3.12 (Odoo 19 does not support 3.13 yet)", which
+> contradicted the tree it ships with. `run-odoo.sh doctor` reads the constants rather than
+> hard-coding a range, so it cannot go stale the same way.
 
 **Ubuntu 24.04 / 22.04**
 
