@@ -13,10 +13,11 @@
  *      Gregorian even for a BS user, because they are cross-referenced against
  *      server logs, which are AD.
  *
- * The registry override is applied at *module load* time, keyed on
- * `session.calendar_system`. A test cannot re-run that, so these tests exercise
- * the dispatcher component and the exclusion predicate directly rather than
- * mutating the session and hoping the module re-evaluates.
+ * The module-load override is keyed on `session.calendar_system`, which a test
+ * cannot change after import. So the override was refactored into an exported,
+ * idempotent `installCalendarOverrides(calendar)` and these tests call it
+ * directly. Odoo's test framework restores every registry after each test, so
+ * that exercises the real production path and leaks into nothing.
  */
 import { beforeEach, describe, expect, test } from "@odoo/hoot";
 import { queryFirst } from "@odoo/hoot-dom";
@@ -30,7 +31,10 @@ import {
     serverState,
 } from "@web/../tests/web_test_helpers";
 
+import { registry } from "@web/core/registry";
+
 import { isExcluded } from "@nepali_calendar_core/exclusions";
+import { installCalendarOverrides } from "@nepali_calendar_core/registry_overrides";
 
 describe.current.tags("desktop");
 
@@ -262,17 +266,131 @@ describe("BS rendering, through the widget", () => {
     });
 });
 
-/* What these tests deliberately do NOT cover
- * ------------------------------------------
- * The *selection* itself: that with `session.calendar_system === "bs"`, a plain
- * `<field name="entry_date"/>` picks BSDateField while `create_date` picks Odoo's
- * own widget. The override runs once at module import, so a test cannot set the
- * session and have it re-evaluate; and mutating the global `fields` registry from
- * a test would leak into every suite that follows.
- *
- * The two halves of that behaviour ARE each covered -- the predicate above, the
- * rendering below -- but their composition is not. Closing it properly means
- * making the override an exported, idempotent `install(calendar)` that a test can
- * call against a scoped registry. Tracked as BSD-9; it is a refactor of shipped
- * code, not a test-only change, so it is not being done as a drive-by.
- */
+describe("selection -- the composition", () => {
+    // The test that was previously impossible, and the reason
+    // `installCalendarOverrides` is exported.
+    //
+    // Odoo's test framework snapshots every registry before each test and
+    // restores it after (`env_test_helpers.js`), so calling the real installer
+    // against the real `fields` registry is safe here and leaks into nothing.
+    // That means these tests exercise the actual production code path rather than
+    // a re-implementation of it.
+
+    test("a business date picks the BS widget, an audit column does not", async () => {
+        expect(installCalendarOverrides("bs")).toEqual(["date", "datetime", "daterange"]);
+
+        await mountView({
+            type: "form",
+            resModel: "ledger",
+            resId: 1,
+            arch: `
+                <form>
+                    <field name="entry_date"/>
+                    <field name="create_date"/>
+                </form>`,
+        });
+        await animationFrame();
+
+        // No `widget=` anywhere in that arch: the choice is entirely the
+        // dispatcher's, which is the point.
+        expect(".o_field_widget[name=entry_date] .o_field_bs_date_input").toHaveCount(1, {
+            message: "a business date must render Bikram Sambat for a BS user",
+        });
+        expect(".o_field_widget[name=create_date] .o_field_bs_date_input").toHaveCount(0, {
+            message: "create_date is on the exclusion list and must stay Gregorian; "
+                + "users cross-reference it against server logs, which are AD",
+        });
+        expect(visibleText()).toInclude(BS_9TH);
+    });
+
+    test("a datetime business field also follows the preference", async () => {
+        // 94 of the 237 business date fields are datetimes, so this is not an
+        // afterthought -- it is 40% of the surface.
+        serverState.timezone = "Asia/Kathmandu";
+        installCalendarOverrides("bs");
+
+        await mountView({
+            type: "form",
+            resModel: "ledger",
+            resId: 1,
+            arch: `<form><field name="posted_at"/></form>`,
+        });
+        await animationFrame();
+
+        expect(".o_field_widget[name=posted_at] .o_field_bs_date_input").toHaveCount(1);
+        // And still timezone-correct through the dispatcher, not just through an
+        // explicit widget=.
+        expect(".o_field_bs_date_input").toHaveValue(BS_9TH);
+    });
+
+    test("an AD user gets Odoo's own widgets untouched", () => {
+        const before = registry.category("fields").get("date");
+        expect(installCalendarOverrides("ad")).toEqual([]);
+        expect(registry.category("fields").get("date")).toBe(before, {
+            message: "installing with calendar='ad' must be a complete no-op, so an "
+                + "AD user's client is identical to one without this module",
+        });
+    });
+
+    test("installing twice does not wrap the wrapper", async () => {
+        // Without the guard this recurses forever at render time: the wrapper's
+        // native fallback would be the wrapper itself.
+        installCalendarOverrides("bs");
+        installCalendarOverrides("bs");
+
+        await mountView({
+            type: "form",
+            resModel: "ledger",
+            resId: 1,
+            arch: `<form><field name="create_date"/></form>`,
+        });
+        await animationFrame();
+
+        // create_date is excluded, so it renders through the NATIVE fallback --
+        // exactly the path double-installation would have broken.
+        expect(".o_field_widget[name=create_date]").toHaveCount(1);
+        expect(".o_field_widget[name=create_date] .o_field_bs_date_input").toHaveCount(0);
+        expect(visibleText()).toInclude("2026");
+    });
+
+    test("the native extractProps is preserved", async () => {
+        // Options already written into existing views must keep working; the
+        // wrapper spreads the native descriptor's extracted props rather than
+        // replacing them. `required` is the cheapest observable one.
+        installCalendarOverrides("bs");
+
+        await mountView({
+            type: "form",
+            resModel: "ledger",
+            resId: 1,
+            arch: `<form><field name="entry_date" required="1"/></form>`,
+        });
+        await animationFrame();
+        expect(".o_field_widget[name=entry_date]").toHaveClass("o_required_modifier");
+    });
+
+    test("the parser accepts Bikram Sambat and still accepts Gregorian", () => {
+        installCalendarOverrides("bs");
+        const parse = registry.category("parsers").get("date");
+
+        // BS in.
+        const fromBs = parse("2083-05-24");
+        expect(fromBs.year).toBe(2026);
+        expect(fromBs.month).toBe(9);
+        expect(fromBs.day).toBe(9);
+
+        // Gregorian must still work: a BS user typing an AD date, or any saved
+        // filter and automated action already in the database, must not break.
+        expect(() => parse("09/09/2026")).not.toThrow();
+    });
+
+    test("the parser override is not applied twice", () => {
+        installCalendarOverrides("bs");
+        const once = registry.category("parsers").get("date");
+        installCalendarOverrides("bs");
+        expect(registry.category("parsers").get("date")).toBe(once, {
+            message: "a doubly-wrapped parser still works but each call pays for "
+                + "two failed BS parses; the guard keeps it at one",
+        });
+    });
+});

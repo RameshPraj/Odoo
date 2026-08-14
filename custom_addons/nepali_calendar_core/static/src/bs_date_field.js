@@ -5,7 +5,7 @@
  * The record value stays a normal Gregorian date; only the rendering and the
  * typed input are BS. Options:
  *     monthName  show "२०८३ भदौ २४" instead of "२०८३-०५-२४"
- *     npDigits   Devanagari digits (default true)
+ *     npDigits   Devanagari digits; defaults to the company setting
  */
 import { Component, useState, useRef } from "@odoo/owl";
 import { registry } from "@web/core/registry";
@@ -25,6 +25,13 @@ export class BSDateField extends Component {
         ...standardFieldProps,
         monthName: { type: Boolean, optional: true },
         npDigits: { type: Boolean, optional: true },
+        // Tolerate props this widget does not use. When the dispatcher replaces
+        // Odoo's `date`/`datetime` entry it preserves the native `extractProps`,
+        // which emits options like `warnFuture`, `maxDate` and `rounding`. Those
+        // are meaningless for a BS picker, but Owl validates props strictly, so
+        // without this they are a hard `Invalid props` error rather than an
+        // ignored extra -- i.e. the field does not render at all.
+        "*": true,
     };
     // Latin digits by default, matching tools/bs.py's `np_digits=False`. The two
     // sides used to disagree, so the same date printed differently depending on
