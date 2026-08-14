@@ -254,7 +254,7 @@
          ================================================================ -->
     <menuitem id="menu_np_calendar" name="Nepali Calendar"
               parent="menu_np_accounting_root"
-              action="l10n_np_bs.action_bs_calendar" sequence="60"/>
+              action="nepali_calendar_core.action_bs_calendar" sequence="60"/>
 
     <!-- ================================================================
          CONFIGURATION

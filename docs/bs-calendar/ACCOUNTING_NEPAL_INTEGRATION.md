@@ -1,0 +1,103 @@
+# Accounting Nepal integration
+
+**The non-negotiable requirement: existing Accounting Nepal behaviour must not regress.** It has a
+working test suite and real users; the migration is judged against it.
+
+## What Accounting Nepal owns today
+
+| Component | File | Disposition |
+|---|---|---|
+| `BsDateViewMixin` — arch injection | `models/bs_accounting_dates.py:33-82` | **Deleted.** Superseded by the registry override |
+| 13 model bindings, 20 field slots | `:85-175` | **Deleted.** Covered by the global default |
+| `group_bs_accounting_dates` | `security/bs_date_group.xml:13-16` | **Moves to core**, then retired after migration |
+| `res.company.l10n_np_bs_digits` | `models/res_company.py:13-18` | **Moves to core** as `bs_digits` |
+| Settings checkbox + digit selector | `models/res_config_settings.py:11-27`, `views/res_config_settings_views.xml:10-31` | **Rewritten** to point at core; the Nepal block stays where it is |
+| `tests/test_bs_accounting_dates.py` (16 tests) | | **Kept and re-pointed.** These are the regression net |
+
+Net effect: `l10n_np_accounting` **loses** ~150 lines of BS machinery and gains a dependency. It
+keeps only what is genuinely Nepal-accounting-specific.
+
+## Three cycle-blockers, and the fixes
+
+A naive move of the mixin fails, because it reaches *upward* three times:
+
+| # | Upward reference | Fix |
+|---|---|---|
+| 1 | `GROUP = 'l10n_np_accounting.group_bs_accounting_dates'` hard-coded (`:30`), read at `:51`, `:61` | Define the group in core; point the settings `implied_group` at the core xml-id — a one-line change |
+| 2 | `self.env.company.l10n_np_bs_digits` (`:52`, `:67`) — a field owned by `l10n_np_accounting` | Move the field to core; keep only the `related` settings mirror upstream |
+| 3 | 13 `_inherit` bindings naming `account.*` and `l10n_np.*` models | Only the abstract mechanism is portable. With the registry override these bindings simply cease to exist |
+
+Because the new mechanism is a **JS registry override**, blocker 3 dissolves entirely — there is no
+per-model binding to relocate.
+
+## Import-path compatibility
+
+Three sites import `odoo.addons.l10n_np_bs.tools.bs`:
+
+- `l10n_np_fiscal_year/wizard/generate_np_fiscal_year.py:39` and `:50` — production
+- `l10n_np_bs/tests/test_calendar_ui.py:70` — test
+
+A **one-line re-export shim** left in `l10n_np_bs/tools/bs.py` means `l10n_np_fiscal_year` is not
+touched at all. Only `ad_to_bs`, `bs_to_ad` and `month_length` are actually used in production —
+3 of the 7 public functions.
+
+## Migration — preserving current behaviour
+
+Today's group is granted to `base.group_user`, so BS is on for **every internal user**. Resetting
+everyone to AD would be a visible regression, so:
+
+```
+post-migrate:
+  if group_bs_accounting_dates ∈ base.group_user.implied_ids:
+      company.calendar_system = 'bs'          # everyone keeps BS
+  for each user explicitly REMOVED from the group:
+      user.calendar_system = 'ad'             # their opt-out survives
+  retire the group
+```
+
+This needs a **module version bump** to run at all — the modules are all frozen at `19.0.1.0.0` and
+have no `migrations/` directory, so Odoo never fires an upgrade. That is a prerequisite, not an
+afterthought.
+
+**It must be tested against a database that actually has the group set.** A migration verified only
+on a database where the feature was off is untested in the only state that matters.
+
+## Behaviour changes a user would notice
+
+Stated honestly rather than buried:
+
+| Change | Effect |
+|---|---|
+| **Coverage widens from 20 to ~177 fields** | The point of the exercise — but an accounting user who saw BS only on invoice dates will now see it on stock, purchase, HR and CRM dates too. Company-wide, this is what "platform capability" means |
+| **Default numerals become Latin** | Today a hand-written `widget="bs_date"` and the calendar action both force Devanagari regardless of the company setting. Unifying on the setting, defaulting Latin, is a visible change for anyone relying on the inconsistency |
+| **`datetime` fields start showing BS** | 94 fields that previously showed AD. Correct, and the reason the timezone fix precedes the rollout |
+| **Per-user opt-out becomes possible** | Previously required editing `group_ids` |
+| Reports gain BS | Previously Gregorian-only |
+
+## Accounting correctness — the invariant
+
+**Accounting correctness must never depend on a formatted BS string.** Nothing in the design lets a
+BS value reach the ORM: the widget converts through `bsToAd` before any write, and domains are built
+from ISO strings.
+
+The regression suite must prove this rather than assume it:
+
+- **ORM invariance** — create an invoice as a BS user and as an AD user; assert the raw PostgreSQL
+  `date` columns are identical.
+- Existing 16 BS-date tests still pass, re-pointed at core.
+- VAT return, TDS certificate and loan schedule figures are byte-identical before and after.
+- Fiscal-year generation is unaffected — it uses `bs_to_ad` server-side, which does not move.
+- The five lock dates still enforce correctly; a BS-mode user cannot post into a locked period.
+
+## Ordering
+
+1. Bump module versions (prerequisite for any migration)
+2. Build core, with the **timezone fix first**
+3. Add the preference; migrate the group → company default
+4. Switch on the registry override
+5. Delete the local mixin and bindings
+6. Re-point and run the 16 existing tests, plus the new invariance tests
+7. Only then extend to reports
+
+Steps 3 and 5 must not be combined: land the preference and prove behaviour is unchanged *before*
+removing the old mechanism, so a regression is attributable to one change.

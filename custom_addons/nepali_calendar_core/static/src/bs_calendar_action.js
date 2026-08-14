@@ -1,6 +1,6 @@
 /** "Nepali Calendar" client action -- a browsable Bikram Sambat month grid.
  *
- * Registered as the client action tag `l10n_np_bs.calendar`, reachable from the
+ * Registered as the client action tag `nepali_calendar_core.calendar`, reachable from the
  * Nepali Calendar menu item. Purely a reference/lookup view: it renders BS
  * months, highlights today, and shows the Gregorian equivalent of every day.
  */
@@ -19,7 +19,7 @@ const AD_MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
                    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
 export class BSCalendar extends Component {
-    static template = "l10n_np_bs.Calendar";
+    static template = "nepali_calendar_core.Calendar";
     static components = { Layout };
     static props = { ...standardActionServiceProps };
 
@@ -132,4 +132,4 @@ export class BSCalendar extends Component {
     }
 }
 
-registry.category("actions").add("l10n_np_bs.calendar", BSCalendar);
+registry.category("actions").add("nepali_calendar_core.calendar", BSCalendar);

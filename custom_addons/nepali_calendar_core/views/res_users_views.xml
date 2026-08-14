@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Preferences > Calendar. Core places an empty
+         <group name="other_calendar_preferences"/> here for exactly this kind of
+         extension, next to the timezone field it belongs beside. -->
+    <record id="view_users_form_preferences_calendar" model="ir.ui.view">
+        <field name="name">res.users.preferences.form.calendar.system</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form_simple_modif"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='other_calendar_preferences']" position="inside">
+                <field name="calendar_system"
+                       placeholder="Follow the company default"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Same field on the full administrator form. -->
+    <record id="view_users_form_calendar" model="ir.ui.view">
+        <field name="name">res.users.form.calendar.system</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='other_calendar_preferences']" position="inside">
+                <field name="calendar_system"
+                       placeholder="Follow the company default"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

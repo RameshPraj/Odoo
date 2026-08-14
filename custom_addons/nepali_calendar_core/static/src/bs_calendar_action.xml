@@ -4,7 +4,7 @@
     <!-- Client actions must render inside <Layout>. Without it the action
          container establishes no height, so the page renders blank with no
          error. Modelled on mrp.MoOverview. -->
-    <t t-name="l10n_np_bs.Calendar">
+    <t t-name="nepali_calendar_core.Calendar">
         <div class="o_action o_bs_calendar_action">
             <Layout display="display" className="'o_bs_calendar_layout'">
 

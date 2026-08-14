@@ -2,7 +2,7 @@
 """Tests for the Nepali (Bikram Sambat) calendar module.
 
     venv\\Scripts\\python.exe -m odoo -c odoo.conf -d odoo19 \\
-        --test-enable --test-tags /l10n_np_bs --stop-after-init
+        --test-enable --test-tags /nepali_calendar_core --stop-after-init
 
 Three layers, cheapest first:
 
@@ -52,10 +52,10 @@ class TestBSAssets(TransactionCase):
 
     def test_assets_are_declared(self):
         """Every asset listed in the manifest must exist on disk."""
-        module = self.env["ir.module.module"].search([("name", "=", "l10n_np_bs")])
+        module = self.env["ir.module.module"].search([("name", "=", "nepali_calendar_core")])
         self.assertEqual(module.state, "installed")
         paths = self.env["ir.asset"]._get_asset_paths("web.assets_backend", {})
-        ours = [str(p[0]) for p in paths if "l10n_np_bs" in str(p[0])]
+        ours = [str(p[0]) for p in paths if "nepali_calendar_core" in str(p[0])]
         self.assertTrue(ours, "module contributes nothing to web.assets_backend")
         for rel in ours:
             disk = os.path.join(os.path.dirname(MODULE_DIR), rel.lstrip("/").replace("/", os.sep))
@@ -67,7 +67,7 @@ class TestBSConversion(TransactionCase):
 
     def setUp(self):
         super().setUp()
-        from odoo.addons.l10n_np_bs.tools import bs  # noqa: PLC0415
+        from odoo.addons.nepali_calendar_core.tools import bs  # noqa: PLC0415
         self.bs = bs
 
     def test_known_dates(self):
@@ -89,8 +89,11 @@ class TestBSConversion(TransactionCase):
             d += step
 
     def test_devanagari_formatting(self):
+        # Space-separated, not hyphenated: a month *name* joined by hyphens reads
+        # as a range. This matches formatBs() in bs_convert.js, which is the whole
+        # point -- the previous hyphenated form existed only on the Python side.
         out = self.bs.format_bs(datetime.date(2026, 9, 9), np_digits=True, month_names=True)
-        self.assertEqual(out, "२०८३-भदौ-२४")
+        self.assertEqual(out, "२०८३ भदौ २४")
         self.assertEqual(self.bs.parse_bs("२०८३-०५-२४"), datetime.date(2026, 9, 9))
 
     def test_out_of_range_raises(self):
@@ -103,7 +106,7 @@ class TestBSConversion(TransactionCase):
 class TestBSCalendarUI(HttpCase):
 
     def test_calendar_renders(self):
-        action = self.env.ref("l10n_np_bs.action_bs_calendar")
+        action = self.env.ref("nepali_calendar_core.action_bs_calendar")
         self.browser_js(
             f"/odoo/action-{action.id}",
             """

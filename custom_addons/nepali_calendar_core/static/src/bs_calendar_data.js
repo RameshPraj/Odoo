@@ -5,7 +5,7 @@
  * the server always agree.
  *
  * Regenerate with:
- *   venv\Scripts\python.exe custom_addons/l10n_np_bs/tools/gen_js_data.py
+ *   venv\Scripts\python.exe custom_addons/nepali_calendar_core/tools/gen_js_data.py
  */
 
 export const BS_MIN_YEAR = 1975;
@@ -155,6 +155,19 @@ export const BS_MONTHS_EN = [
 ];
 
 // Sunday first -- Bikram Sambat weeks start on Sunday
-export const BS_WEEKDAYS_NE = [
+export const BS_WEEKDAYS_NE_SHORT = [
     "आइत", "सोम", "मंगल", "बुध", "बिहि", "शुक्र", "शनि",
 ];
+
+export const BS_WEEKDAYS_NE_LONG = [
+    "आइतबार", "सोमबार", "मंगलबार", "बुधबार", "बिहिबार", "शुक्रबार", "शनिबार",
+];
+
+// Historical alias: the picker imported the short form under this name.
+export const BS_WEEKDAYS_NE = BS_WEEKDAYS_NE_SHORT;
+
+// Saturday, not Sunday, is the weekly holiday in Nepal.
+export const BS_WEEKEND_WEEKDAY = 6;
+
+// Devanagari digits, index 0..9.
+export const BS_NP_DIGITS = "०१२३४५६७८९";

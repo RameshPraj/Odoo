@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <!-- Dispatches per field: Bikram Sambat, or Odoo's own widget when the field
+         is on the exclusion list. The choice needs the record's model and the
+         field name, so it cannot be made when the registry is populated. -->
+    <t t-name="nepali_calendar_core.CalendarAwareDateField">
+        <BSDateField t-if="useBS" t-props="props"/>
+        <t t-else="" t-component="NativeComponent" t-props="props"/>
+    </t>
+
+</templates>

@@ -6,10 +6,11 @@ table, or a date shown in the browser will not match what the server stores.
 Rather than maintaining two copies, the JS file is generated from the CSV that
 ships with nepali-datetime.
 
-    venv\\Scripts\\python.exe custom_addons/l10n_np_bs/tools/gen_js_data.py
+    venv\\Scripts\\python.exe custom_addons/nepali_calendar_core/tools/gen_js_data.py
 """
 import csv
 import datetime
+import importlib.util
 import os
 import sys
 
@@ -18,6 +19,38 @@ from nepali_datetime import config
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(os.path.dirname(HERE), "static", "src", "bs_calendar_data.js")
+
+
+def _load_names():
+    """Load ``names.py`` by path.
+
+    This script runs outside an Odoo process, so ``from .names import ...`` is
+    not available -- there is no package context. Loading by path keeps the name
+    tables in exactly one file while still letting the generator run standalone.
+    ``names.py`` imports nothing, which is what makes this safe.
+    """
+    path = os.path.join(HERE, "names.py")
+    spec = importlib.util.spec_from_file_location("_bs_names", path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def _js_array(name, values, comment=None, per_line=6):
+    """Render a Python list of strings as an exported JS array."""
+    out = []
+    if comment:
+        out.append(comment)
+    out.append(f"export const {name} = [")
+    # `None` pads the 1-based month lists on the Python side; JS indexes months
+    # 0-based via `BS_MONTHS_NE[month - 1]`, so the padding is dropped here.
+    items = [v for v in values if v is not None]
+    for i in range(0, len(items), per_line):
+        chunk = ", ".join(f'"{v}"' for v in items[i:i + per_line])
+        out.append(f"    {chunk},")
+    out.append("];")
+    out.append("")
+    return out
 
 
 def main():
@@ -76,7 +109,7 @@ def main():
         " * the server always agree.",
         " *",
         " * Regenerate with:",
-        " *   venv\\Scripts\\python.exe custom_addons/l10n_np_bs/tools/gen_js_data.py",
+        " *   venv\\Scripts\\python.exe custom_addons/nepali_calendar_core/tools/gen_js_data.py",
         " */",
         "",
         f"export const BS_MIN_YEAR = {min_year};",
@@ -90,23 +123,27 @@ def main():
     ]
     for y in range(min_year, max_year + 1):
         lines.append(f"    /* {y} */ [{', '.join(str(v) for v in years[y])}],")
+    lines += ["];", ""]
+
+    # Names are emitted from tools/names.py rather than written out here, so the
+    # generator cannot disagree with the Python side it is supposed to mirror.
+    names = _load_names()
+    lines += _js_array("BS_MONTHS_NE", names.MONTHS_NE)
+    lines += _js_array("BS_MONTHS_EN", names.MONTHS_EN)
+    lines += _js_array(
+        "BS_WEEKDAYS_NE_SHORT", names.WEEKDAYS_NE_SHORT, per_line=7,
+        comment="// Sunday first -- Bikram Sambat weeks start on Sunday",
+    )
+    lines += _js_array("BS_WEEKDAYS_NE_LONG", names.WEEKDAYS_NE_LONG, per_line=7)
     lines += [
-        "];",
+        "// Historical alias: the picker imported the short form under this name.",
+        "export const BS_WEEKDAYS_NE = BS_WEEKDAYS_NE_SHORT;",
         "",
-        "export const BS_MONTHS_NE = [",
-        '    "बैशाख", "जेठ", "असार", "साउन", "भदौ", "असोज",',
-        '    "कार्तिक", "मंसिर", "पुष", "माघ", "फागुन", "चैत",',
-        "];",
+        "// Saturday, not Sunday, is the weekly holiday in Nepal.",
+        f"export const BS_WEEKEND_WEEKDAY = {names.WEEKEND_WEEKDAY};",
         "",
-        "export const BS_MONTHS_EN = [",
-        '    "Baisakh", "Jestha", "Ashar", "Shrawan", "Bhadra", "Asoj",',
-        '    "Kartik", "Mangsir", "Poush", "Magh", "Falgun", "Chaitra",',
-        "];",
-        "",
-        "// Sunday first -- Bikram Sambat weeks start on Sunday",
-        "export const BS_WEEKDAYS_NE = [",
-        '    "आइत", "सोम", "मंगल", "बुध", "बिहि", "शुक्र", "शनि",',
-        "];",
+        "// Devanagari digits, index 0..9.",
+        f'export const BS_NP_DIGITS = "{names.NP_DIGITS}";',
         "",
     ]
 

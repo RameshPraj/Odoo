@@ -54,7 +54,9 @@ authoritative: post test transactions freely, file nothing.
 """,
     'depends': [
         'l10n_np',
-        'l10n_np_bs',
+        # The Bikram Sambat platform module. `l10n_np_bs` is now only a
+        # backward-compatibility shim over it, so depend on the real one.
+        'nepali_calendar_core',
         'l10n_np_fiscal_year',
         'l10n_np_tds',
         'l10n_np_vat_return',

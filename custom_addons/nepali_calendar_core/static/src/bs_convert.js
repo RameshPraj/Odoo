@@ -9,10 +9,13 @@
  */
 import {
     BS_MIN_YEAR, BS_MAX_YEAR, BS_EPOCH_AD, BS_MONTH_DAYS,
-    BS_MONTHS_NE, BS_WEEKDAYS_NE,
+    BS_MONTHS_NE, BS_NP_DIGITS,
+    BS_WEEKDAYS_NE_SHORT, BS_WEEKDAYS_NE_LONG,
 } from "./bs_calendar_data";
 
-const NP_DIGITS = "०१२३४५६७८९";
+// From the generated table, which gets it from tools/names.py -- the same source
+// the server uses. Previously declared literally here, i.e. a second copy.
+const NP_DIGITS = BS_NP_DIGITS;
 const MS_PER_DAY = 86400000;
 
 export class BSRangeError extends Error {}
@@ -110,8 +113,12 @@ export function bsMonthName(month) {
     return BS_MONTHS_NE[month - 1];
 }
 
-export function bsWeekdayNames() {
-    return BS_WEEKDAYS_NE;
+/**
+ * Weekday names, Sunday first.
+ * @param {boolean} long the long form (आइतबार) rather than the short (आइत)
+ */
+export function bsWeekdayNames({ long = false } = {}) {
+    return long ? BS_WEEKDAYS_NE_LONG : BS_WEEKDAYS_NE_SHORT;
 }
 
 /**
@@ -119,13 +126,19 @@ export function bsWeekdayNames() {
  * @param {object} bs {year, month, day}
  * @param {object} opts {monthName:boolean, npDigits:boolean}
  */
-export function formatBs(bs, { monthName = false, npDigits = true } = {}) {
+// npDigits defaults to FALSE, matching tools/bs.py's `np_digits=False`. The two
+// sides previously disagreed, so the same date rendered differently depending on
+// which layer produced it. Devanagari is opt-in via the company setting.
+export function formatBs(bs, { monthName = false, npDigits = false } = {}) {
     if (!bs) {
         return "";
     }
     const pad = (n) => String(n).padStart(2, "0");
+    // The day is zero-padded in BOTH forms, matching tools/bs.py's `%02d`. The two
+    // sides disagreed here (`2083 भदौ 9` in the browser, `2083 भदौ 09` on a PDF of
+    // the same record), and padding is the form that lines up in a list column.
     const out = monthName
-        ? `${bs.year} ${bsMonthName(bs.month)} ${bs.day}`
+        ? `${bs.year} ${bsMonthName(bs.month)} ${pad(bs.day)}`
         : `${bs.year}-${pad(bs.month)}-${pad(bs.day)}`;
     return npDigits ? toNpDigits(out) : out;
 }

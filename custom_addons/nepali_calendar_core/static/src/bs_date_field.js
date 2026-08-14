@@ -11,6 +11,7 @@ import { Component, useState, useRef } from "@odoo/owl";
 import { registry } from "@web/core/registry";
 import { standardFieldProps } from "@web/views/fields/standard_field_props";
 import { useService } from "@web/core/utils/hooks";
+import { user } from "@web/core/user";
 import { _t } from "@web/core/l10n/translation";
 import {
     adToBs, bsToAd, bsMonthLength, bsMonthName, bsWeekdayNames,
@@ -18,13 +19,16 @@ import {
 } from "./bs_convert";
 
 export class BSDateField extends Component {
-    static template = "l10n_np_bs.BSDateField";
+    static template = "nepali_calendar_core.BSDateField";
     static props = {
         ...standardFieldProps,
         monthName: { type: Boolean, optional: true },
         npDigits: { type: Boolean, optional: true },
     };
-    static defaultProps = { monthName: false, npDigits: true };
+    // Latin digits by default, matching tools/bs.py's `np_digits=False`. The two
+    // sides used to disagree, so the same date printed differently depending on
+    // which layer produced it.
+    static defaultProps = { monthName: false, npDigits: false };
 
     setup() {
         this.notification = useService("notification");
@@ -38,6 +42,33 @@ export class BSDateField extends Component {
         });
     }
 
+    // -- timezone ---------------------------------------------------------
+
+    /** True when this field carries a time, and therefore a timezone. */
+    get isDatetime() {
+        return this.props.record.fields[this.props.name].type === "datetime";
+    }
+
+    /**
+     * The value as the *user* sees it on the wall clock.
+     *
+     * A Datetime is stored UTC and deserialised by core with
+     * `.setZone("default")`, which resolves to the **browser** zone -- Odoo never
+     * assigns `luxon.Settings.defaultZone` in production. For a calendar widget
+     * that is wrong: a value at 19:00 UTC is the 9th in Kathmandu (UTC+05:45) and
+     * the 8th in UTC, so the BS day flipped depending on the viewer's laptop.
+     *
+     * Re-zoning to `user.tz` makes the day the user's own day. A plain Date needs
+     * no shift -- it has no instant, so shifting it would invent one.
+     */
+    get localValue() {
+        const v = this.props.record.data[this.props.name] || null;
+        if (!v || !this.isDatetime || !user.tz) {
+            return v;
+        }
+        return v.setZone(user.tz);
+    }
+
     // -- current value ----------------------------------------------------
 
     /** The record's Gregorian value as a Luxon DateTime, or null. */
@@ -47,7 +78,7 @@ export class BSDateField extends Component {
 
     /** The value as {year, month, day} in BS, or null if unset/out of range. */
     get bsValue() {
-        const v = this.value;
+        const v = this.localValue;
         if (!v) {
             return null;
         }
@@ -80,12 +111,22 @@ export class BSDateField extends Component {
             this.notification.add(e.message, { type: "warning" });
             return;
         }
-        // Build the Luxon DateTime from the field's existing one so we keep its
-        // zone behaviour, rather than constructing a raw JS Date.
-        const current = this.value;
-        const next = current
-            ? current.set({ year: ad.year, month: ad.month, day: ad.day })
-            : luxon.DateTime.local(ad.year, ad.month, ad.day);
+        const parts = { year: ad.year, month: ad.month, day: ad.day };
+        let next;
+        if (this.isDatetime) {
+            // Set the calendar fields in the USER's zone, then hand back a value
+            // in the zone core expects. Setting them on a browser-zoned DateTime
+            // would store an instant that is a different day in Kathmandu -- the
+            // mirror image of the read-side bug.
+            const base = this.localValue || luxon.DateTime.now().setZone(user.tz || "default");
+            next = base.set(parts);
+        } else {
+            // A plain Date carries no instant; `.set` on the existing value keeps
+            // core's own zone handling intact.
+            next = this.value
+                ? this.value.set(parts)
+                : luxon.DateTime.local(ad.year, ad.month, ad.day);
+        }
         await this.props.record.update({ [this.props.name]: next });
     }
 
@@ -124,9 +165,17 @@ export class BSDateField extends Component {
         this.state.open = !this.state.open;
     }
 
+    /**
+     * Today, in the user's timezone.
+     *
+     * Previously `new Date()` -- the raw browser clock. For a Nepali accountant on
+     * a laptop set to UTC, that made the widget's highlighted "today" a day behind
+     * Nepal between 18:15 and midnight UTC, and disagree with the server's
+     * `fields.Date.context_today`, which uses `res.users.tz`.
+     */
     todayParts() {
-        const n = new Date();
-        return [n.getFullYear(), n.getMonth() + 1, n.getDate()];
+        const now = luxon.DateTime.now().setZone(user.tz || "default");
+        return [now.year, now.month, now.day];
     }
 
     shiftMonth(delta) {

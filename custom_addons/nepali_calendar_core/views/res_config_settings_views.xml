@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="res_config_settings_view_form" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.nepali.calendar</field>
+        <field name="model">res.config.settings</field>
+        <field name="priority" eval="60"/>
+        <field name="inherit_id" ref="base_setup.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <!-- Placed after Languages: a calendar is a locale setting, and it sits
+                 next to the field it is most often confused with. Calendar and
+                 language stay independent here, so English+BS and Nepali+AD are
+                 both valid. Anchored on `name`, which is what core actually sets
+                 on these blocks; there is no `id` to match. -->
+            <xpath expr="//block[@name='languages_setting_container']" position="after">
+                <block title="Nepali Calendar" name="nepali_calendar_setting_container">
+                    <setting id="calendar_system_setting"
+                             string="Default calendar"
+                             help="Applies to staff who have not chosen a calendar of their own. Individuals override it in their own Preferences.">
+                        <field name="calendar_system"/>
+                    </setting>
+                    <setting id="bs_digits_setting"
+                             string="Bikram Sambat numerals"
+                             help="Latin digits tie back to a bank statement more easily; Devanagari reads as properly Nepali on a printed document."
+                             invisible="calendar_system != 'bs'">
+                        <field name="bs_digits"/>
+                    </setting>
+                    <setting id="bs_report_output_setting"
+                             string="Dates on printed documents"
+                             help="Printed output follows this company setting rather than the reader's own preference, so a document does not change depending on who pressed Print."
+                             invisible="calendar_system != 'bs'">
+                        <field name="bs_report_output"/>
+                    </setting>
+                </block>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
