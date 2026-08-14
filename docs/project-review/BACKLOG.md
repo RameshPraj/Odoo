@@ -158,22 +158,61 @@ whole ledger) and session material replicated to a cloud tenant. *Integrity* —
 exclusive local-filesystem semantics; a `gc`/`repack` racing the sync client is the classic
 corruption case, and with no remote (SUP-2) the corrupted copy is the only copy.
 
+**Refinement (2026-08-14, measured during the OPS-1 fix).** The **113 MB filestore is 98%
+regenerable build artefacts** — 69 asset-bundle rows account for the 113 MB, while the actual
+business content is **1.8 MB across 921 rows**. This lowers the *data-sensitivity* weight of the
+filestore specifically. It changes **nothing else**: the two full `pg_dump` images, the 75 live
+session files, `odoo.conf` with credentials, and the `.git` corruption risk are unaffected and
+remain P0. Excluding `.odoo_data` from sync is now clearly the right call — it is mostly churn.
+
 **Fix** Move the tree outside the sync root, or exclude `.git`, `.odoo_data`, `venv`; relocate the
 dumps. **Effort S–M.**
 
 ## OPS-1 · Config points at deleted directories; attachments splitting across two filestores
-**CONFIRMED** · Runtime configuration · `odoo.conf:24,27`
+**RESOLVED 2026-08-14** · Runtime configuration · `odoo.conf:24,27`
 
-`addons_path` and `data_dir` reference `C:\Users\i81129\Downloads\odoo-19.0\…`, which no longer
-exists. Loading the registry emits `Some modules are not loaded…` for all 15 custom modules —
-reproduced again during this audit.
+`addons_path` and `data_dir` referenced `C:\Users\i81129\Downloads\odoo-19.0\…`, which no longer
+exists. Loading the registry emitted `Some modules are not loaded…` for all 15 custom modules, and
+attachment reads raised `FileNotFoundError` against the stale filestore.
 
-**Impact** `data_dir` resolves to an orphaned filestore holding 11 blobs while the database
-references **572** elsewhere; 12 files were written to the orphan on 2026-08-14. Existing
-attachments unreadable, new ones written where nothing looks. Silent and ongoing.
+### Reconciliation result — no data was lost
 
-**Fix** Correct both paths; reconcile the filestores against `ir_attachment.store_fname`
-**before deleting anything**. **Effort S + M.**
+Measured before any change, so it is not re-investigated:
+
+| Measure | Value |
+|---|---|
+| `ir_attachment` rows | 1,276 (0 in `db_datas` — all filestore) |
+| Rows with a blob | 991 → **574 unique** (Odoo dedupes by checksum) |
+| Referenced blobs present **nowhere** | **0** |
+| Referenced blobs only in `Downloads` | 2 unique / 5 rows |
+| **Business attachments missing from OneDrive** | **0** (all 921 resolve) |
+
+The 5 `Downloads`-only rows (ids 2108–2112, created 2026-08-14) are **compiled web asset bundles**
+written during the broken window. Rows for the same bundle names from 2026-08-09/08-10 still exist
+with present blobs.
+
+### Fix applied
+`addons_path` and `data_dir` corrected to the OneDrive paths. `odoo.conf` is gitignored, so this is
+a local change. Both launchers now **refuse to start** if either path is missing — see the
+prevention note below.
+
+**Verified:** 134 modules load (was 125), zero `no such directory` warnings, zero
+`FileNotFoundError`, 986/991 blobs resolve, and three real business attachments download over HTTP
+with byte-exact sizes.
+
+### Two corrections to this entry's original text
+1. It said the orphan held business documents. It did not — only regenerable asset bundles.
+2. An intermediate note claimed Odoo *regenerates* the missing bundles on demand. It did not:
+   it served the **older, still-present** bundle versions. The 5 stale rows persist and now point
+   at blobs that exist only in `Downloads`. They are harmless because `_file_read` catches
+   `OSError`, logs at INFO and returns `b''` (`ir_attachment.py:151-155`) — which is precisely why
+   this failure was silent rather than a 500.
+
+### Prevention
+Odoo treats both paths as non-fatal: a missing `addons_path` entry is logged and skipped, a stale
+`data_dir` surfaces only as per-attachment INFO tracebacks. Both look like a healthy server.
+`run-odoo.ps1` and `run-odoo.sh` now parse both settings and exit non-zero if any entry is absent,
+tested at every failure position (first entry, last entry, `data_dir`, and both at once).
 
 ---
 
@@ -486,7 +525,7 @@ unenforceable folklore. **Effort S.**
 | **UPG-2** | CONFIRMED | Upgrade | all 8 manifests | Zero migration scripts; every module frozen at `19.0.1.0.0` | Odoo never fires "outdated"; a deploy relying on version comparison skips them, leaving stale views and **ACLs** | Bump versions; add `migrations/` | S |
 | **UPG-3** | CONFIRMED | Upgrade | `res_config_settings_views.xml:10` | xpath `//block[@id='analytic']` `position="before"` — sibling-relative into the most-churned arch in Odoo | A rename → `ParseError` → **the module fails to install** | Target the ancestor with `position="inside"` | S |
 | **UPG-4** | POSSIBLE | Upgrade | `wizard/account_lock_dates.py:18` | New model named `account.lock.dates` — inside core's namespace | If Odoo 20 adds that name, this silently *extends* it and the fields collide | Rename `l10n_np.account.lock.dates` | XS |
-| **DAT-2** | CONFIRMED | Data | `…\Downloads\odoo-19.0\.odoo_data` | Orphaned 12 MB filestore, no repo/config/owner, **12 files written 2026-08-14** | Business documents with no backup, retention or access policy. Caused by OPS-1 | Reconcile, then remove | S |
+| **DAT-2** | CONFIRMED | Data | `…\Downloads\odoo-19.0\.odoo_data` | Orphaned filestore, 11 files, no repo/config/owner. Caused by OPS-1, which is now fixed so it receives no further writes | **Reconciled 2026-08-14: contains nothing of value** — 5 regenerable asset bundles + 6 blobs referenced by no database row. **Zero business attachments.** Originally rated as holding business documents; that was wrong | Safe to delete. The 5 dangling rows then return `b''` per `ir_attachment.py:151-155` | XS |
 | **SCH-1** | CONFIRMED | Schema | custom tables | Business FKs unindexed (`vat_return_line.return_id`, `.box_id`, `loan.partner_id`, `company_id`) | Low at present volume; `company_id` becomes hot once SEC-2 adds rules | `index=True` | XS |
 | **SCH-2** | CONFIRMED | Schema | all custom tables | **0 rows**; 3 posted journal entries cluster-wide | Nothing exercised at volume; no performance claim is evidence-based | Load representative data | M |
 | **COD-1** | CONFIRMED | Tests | `test_loan.py` (10 sites) | Money compared with `assertEqual`; the `currency.round()` mitigation appears in exactly one test | Brittle across rate/term combinations | Round consistently | S |

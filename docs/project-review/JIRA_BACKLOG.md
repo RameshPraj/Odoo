@@ -183,12 +183,34 @@ untested, and uses `getattr(line, 'base_amount', 0.0)` — a renamed field yield
 **Findings** SEC-1, DAT-1, DAT-2, OPS-1, OPS-2, PG-1, PG-2, PG-4
 
 ### BUG-13 — Config points at deleted directories; attachments splitting
-**Bug · Blocker · S + M · OPS-1**
-`addons_path` and `data_dir` reference a path that no longer exists; `data_dir` resolves to an
-orphaned filestore holding 11 blobs while the database references 572 elsewhere — 12 files written
-there on 2026-08-14. **Acceptance** Both paths resolve; every referenced blob present; a startup
-check fails fast if `data_dir` is missing. **Risks** **Do not delete the orphan before
-reconciling** — it may hold the only copy of recent attachments.
+**Bug · Blocker · ~~S + M~~ · OPS-1 · ✅ DONE 2026-08-14**
+
+`addons_path` and `data_dir` referenced a path that no longer existed, so all 15 custom modules were
+skipped and attachment reads failed against a stale filestore.
+
+**Resolved.** Both paths corrected in `odoo.conf` (gitignored). Reconciliation proved **no data
+loss**: 0 referenced blobs missing from both trees, and **0 business attachments** absent from the
+live filestore. The only `Downloads`-exclusive content was 5 rows of compiled asset bundles written
+during the broken window.
+
+**Verified** 134 modules load (was 125) · zero `no such directory` warnings · zero
+`FileNotFoundError` · 986/991 blobs resolve · three real business attachments download over HTTP
+with byte-exact sizes.
+
+**Prevention shipped** `run-odoo.ps1` and `run-odoo.sh` now parse `addons_path` and `data_dir` and
+exit non-zero if any entry is missing — tested at every failure position. Necessary because Odoo
+treats both as non-fatal: `_file_read` catches `OSError`, logs at INFO and returns `b''`
+(`ir_attachment.py:151-155`), so the server looked healthy throughout.
+
+**Risk note now closed** The original warning — *"do not delete the orphan, it may hold the only
+copy of recent attachments"* — was **disproven by measurement**. It holds nothing of value. See
+TASK-4b.
+
+### TASK-4b — Delete the orphaned `Downloads` tree
+**Task · Minor · XS · DAT-2 · awaiting approval**
+Reconciled: 11 files, all either regenerable asset bundles or referenced by no database row. **Zero
+business attachments.** Deleting it leaves 5 dangling `ir_attachment` rows which return `b''`
+harmlessly. Destructive, so not done without explicit approval.
 
 ### TASK-2 — Rotate credentials
 **Task · Blocker · S · SEC-1**

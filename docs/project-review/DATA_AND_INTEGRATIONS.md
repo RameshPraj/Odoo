@@ -2,7 +2,13 @@
 
 Findings referenced by ID; full evidence in [`BACKLOG.md`](BACKLOG.md).
 
-## 1. The live data-integrity defect — OPS-1
+## 1. The data-integrity defect — OPS-1 (**RESOLVED 2026-08-14**)
+
+> Fixed. `addons_path` and `data_dir` corrected; reconciliation proved **no data loss** (0 business
+> attachments missing, the only `Downloads`-exclusive content being regenerable asset bundles); both
+> launchers now refuse to start on a missing path. Verified by downloading real attachments with
+> byte-exact sizes. Full evidence in `BACKLOG.md` under OPS-1. Original description retained below.
+
 
 The running `odoo.conf` points at directories that no longer exist:
 
@@ -22,8 +28,11 @@ consequences, of different severity:
   were written to the orphan on 2026-08-14. Existing attachments are unreadable; new ones land
   where nothing else looks.
 
-This is silent and ongoing. **Reconcile before deleting anything** — the orphan may hold the only
-copy of recently written attachments. Match `ir_attachment.store_fname` against both trees.
+This was silent and ongoing. **Update (2026-08-14): reconciled and fixed.** Matching
+`ir_attachment.store_fname` against both trees showed **0** referenced blobs missing from both and
+**0** business attachments absent from the live filestore — the orphan held only regenerable asset
+bundles. The warning that it "may hold the only copy of recently written attachments" was
+disproven by measurement.
 
 ## 2. Schema
 
@@ -68,7 +77,7 @@ explaining why. See TST-7 for the residual question.
 | Data | Source of truth | Risk |
 |---|---|---|
 | Accounting ledger | PostgreSQL `odoo19` | — |
-| Attachments | filestore on disk | **split across two trees today** (OPS-1) |
+| Attachments | filestore on disk | ~~split across two trees~~ — single tree since the OPS-1 fix |
 | Code translations | `.po` on disk inside vendored core | wiped by any Odoo upgrade (SUP-3) |
 | Model translations | jsonb columns | survives upgrades — hence the *asymmetry* that makes SUP-3 hard to spot |
 | Nepali translation corpus | `l10n_ne/po/*.po` (committed) | two copies exist — `l10n_ne/po/` and `odoo/addons/*/i18n_extra/` — reconciled only by manually re-running `apply.py`; nothing detects divergence |
@@ -85,7 +94,7 @@ Inside the corporate OneDrive sync root:
 |---|---|---|
 | `.odoo_data/odoo19_before_oca.dump` | 9.3 MB | **full database image** — user password hashes, partner PII, whole ledger |
 | `.odoo_data/odoo19_before_phase1.dump` | 9.5 MB | as above |
-| `.odoo_data/filestore/` | 113 MB / 572 blobs | accounting documents |
+| `.odoo_data/filestore/` | 113 MB / 572 blobs | **98% regenerable asset bundles**; the business content is 1.8 MB across 921 rows |
 | `.odoo_data/sessions/` | 299 KB / 75 files | **live server-side session material** |
 | `odoo.conf` | 2.9 KB | master + database passwords |
 | `.git` | 337 MB | full history |
@@ -107,8 +116,9 @@ The `.odoo_data` filestore is also *not* a backup even though it is being synced
 meaningful paired with a database dump taken at the same instant. A continuously drifting copy
 creates false confidence in a restore path that does not work.
 
-**DAT-2** — a second, orphaned 12 MB filestore sits at the old `Downloads` path with no repo,
-config or owner, and is receiving writes because of OPS-1.
+**DAT-2** — a second, orphaned filestore sits at the old `Downloads` path with no repo, config or
+owner. It stopped receiving writes when OPS-1 was fixed, and reconciliation showed it holds nothing
+of value: 5 regenerable asset bundles plus 6 blobs referenced by no database row. Safe to delete.
 
 ## 5. External dependencies
 
@@ -151,9 +161,9 @@ oversight.
 
 ## Recommended sequence
 
-1. **OPS-1** — correct the paths; reconcile the two filestores. **Do this before further use.**
+1. ~~**OPS-1**~~ — **done 2026-08-14**; paths corrected, reconciled, launcher guard added.
 2. **DAT-1** — move out of sync, or exclude `.git`/`.odoo_data`/`venv`; relocate the dumps.
 3. **DEP-1** — declare and pin `nepali-datetime` (and `polib`, `websocket-client`).
-4. **DAT-2** — reconcile, then remove the orphan.
+4. **DAT-2** — reconciled (nothing of value); removal awaiting approval.
 5. **SCH-1** — add indexes, ideally alongside SEC-2's record rules.
 6. **SCH-2** — load a representative dataset and re-measure before go-live.

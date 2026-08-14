@@ -25,8 +25,9 @@ monkeypatching, uniformly parameterised SQL, and a Bikram Sambat conversion I ve
 46,022 supported days with zero divergence. Someone who knew what they were doing wrote this.
 
 What surrounds it is not ready. There is a **live one-request cluster takeover**, three of the
-four things an accountant would actually use are broken, no CI, no backup, no remote, no tenant
-isolation layer, and a running configuration pointing at directories that no longer exist.
+four things an accountant would actually use are broken, no CI, no backup, no remote, and no tenant
+isolation layer. (A running configuration pointing at deleted directories was fixed on 2026-08-14;
+no data was lost.)
 
 The single most important observation: **all four correctness defects are covered by green tests.**
 The suite tests mechanism thoroughly and outcomes barely at all.
@@ -40,7 +41,7 @@ The suite tests mechanism thoroughly and outcomes barely at all.
 | Application security | 6/10 | No injection, ACLs complete; no record rules |
 | Perimeter security | **1/10** | SAAS-2 is live and exploitable in one request |
 | Tenant isolation | **2/10** | Substrate primitives are good; nothing above them exists |
-| Data integrity | **2/10** | OPS-1 is splitting the attachment layer today |
+| Data integrity | **5/10** | OPS-1 **fixed 2026-08-14** — no data was lost; reconciliation confirmed 0 business attachments missing. Remaining: no rehearsed backup (SUP-2, DAT-1) |
 | Testing | 4/10 | Good volume, wrong layer |
 | CI/CD | 0/10 | None |
 | Documentation | 4/10 | Thorough but stale by 8× |
@@ -54,7 +55,7 @@ The suite tests mechanism thoroughly and outcomes barely at all.
 | 1 | **One unauthenticated POST claims the cluster master password**, which then authorises a full backup of every database. `verify_admin_password('admin')` is **True** today | SAAS-2 |
 | 2 | **A filed VAT return reports nil while sales exist** — zero tag→repartition links in the live database | FIN-1 |
 | 3 | **Balance Sheet, P&L and Cash Flow cannot render at all** — verified `QWebError` on all three | FIN-2 |
-| 4 | **Attachments are being written to an orphaned filestore** — 12 files landed there on 2026-08-14 while the database references 572 elsewhere | OPS-1 |
+| 4 | ~~Attachments written to an orphaned filestore~~ — **FIXED 2026-08-14.** Reconciliation proved no data loss; the orphan held only regenerable asset bundles | OPS-1 |
 | 5 | **Total loss of the codebase** — 28 commits on one disk, and the sync substituting for a backup is also the corruption risk | SUP-2, DAT-1 |
 | 6 | **Client accounting data in corporate cloud sync** — two full database dumps, 572 attachments, 75 live sessions, plaintext credentials | DAT-1 |
 | 7 | **Any client can select any tenant** once `dbfilter` is unset, and `X-Forwarded-Host` is unpinned | SAAS-1, SAAS-3 |
@@ -69,7 +70,7 @@ The suite tests mechanism thoroughly and outcomes barely at all.
 | # | Action | Addresses | Effort |
 |---|---|---|---|
 | 1 | Set a strong `admin_passwd`, `list_db = False`, block `/web/database/*` | SAAS-2, OPS-2 | XS |
-| 2 | Correct `addons_path`/`data_dir`; reconcile the two filestores **before deleting anything** | OPS-1, DAT-2 | S+M |
+| 2 | ~~Correct `addons_path`/`data_dir`~~ — **DONE 2026-08-14**, with a fail-fast guard added to both launchers | OPS-1 | done |
 | 3 | Create a remote and push | SUP-2 | XS |
 | 4 | Rotate both credentials | SEC-1 | S |
 | 5 | Move client data and credentials out of cloud sync | DAT-1 | S–M |

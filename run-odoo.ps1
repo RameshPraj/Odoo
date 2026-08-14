@@ -19,6 +19,48 @@ $python = Join-Path $root "venv\Scripts\python.exe"
 $conf   = Join-Path $root "odoo.conf"
 
 if (-not (Test-Path $python)) { throw "venv not found at $python -- run: py -3.12 -m venv venv" }
+if (-not (Test-Path $conf))   { throw "$conf not found -- copy odoo.conf.example and edit it for this host" }
+
+# Refuse to start on a stale addons_path or data_dir.
+#
+# Odoo treats neither as fatal: a missing addons_path entry is logged as
+# "no such directory ... skipped" and the server starts with those modules simply
+# absent, while a stale data_dir surfaces only later as a FileNotFoundError per
+# attachment. Both failures look like a healthy server. Moving the project
+# directory without updating odoo.conf has already caused exactly this.
+function Get-ConfValue([string] $key) {
+    # Last occurrence wins, matching Odoo's own parsing. Values run to
+    # end-of-line and may contain spaces, so they are never quoted.
+    $line = Select-String -Path $conf -Pattern "^\s*$key\s*=\s*(.+?)\s*$" |
+            Select-Object -Last 1
+    if ($line) { return $line.Matches[0].Groups[1].Value }
+    return $null
+}
+
+$badPaths = @()
+$addonsPath = Get-ConfValue "addons_path"
+if ($addonsPath) {
+    # Comma-separated; entries may contain spaces, so split only on commas.
+    foreach ($entry in $addonsPath.Split(',')) {
+        $entry = $entry.Trim()
+        if ($entry -and -not (Test-Path -LiteralPath $entry -PathType Container)) {
+            $badPaths += "addons_path: $entry"
+        }
+    }
+}
+$dataDir = Get-ConfValue "data_dir"
+if ($dataDir -and -not (Test-Path -LiteralPath $dataDir -PathType Container)) {
+    $badPaths += "data_dir: $dataDir"
+}
+
+if ($badPaths.Count -gt 0) {
+    Write-Host "$conf references paths that do not exist:" -ForegroundColor Red
+    $badPaths | ForEach-Object { Write-Host "  $_" -ForegroundColor Red }
+    Write-Host ""
+    Write-Host "Odoo would start anyway -- with those modules missing, or raising" -ForegroundColor Yellow
+    Write-Host "FileNotFoundError per attachment. Fix odoo.conf before starting." -ForegroundColor Yellow
+    exit 1
+}
 
 $cmd  = @("-m", "odoo")
 if ($Shell) { $cmd += "shell" }

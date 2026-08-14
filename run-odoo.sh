@@ -43,6 +43,46 @@ if [[ ! -f "$conf" ]]; then
     exit 1
 fi
 
+# Refuse to start on a stale addons_path or data_dir.
+#
+# Odoo does not treat either as fatal: a missing addons_path entry is logged as
+# "no such directory ... skipped" and the server starts with those modules simply
+# absent, while a stale data_dir surfaces only later as a FileNotFoundError per
+# attachment. Both failures look like a healthy server. Moving the project
+# directory without updating odoo.conf has already caused exactly this.
+conf_value() {  # last occurrence wins, matching Odoo's own parsing
+    sed -nE "s/^[[:space:]]*$1[[:space:]]*=[[:space:]]*(.*[^[:space:]])[[:space:]]*$/\1/p" "$conf" | tail -1
+}
+
+bad_paths=()
+addons_path="$(conf_value addons_path)"
+if [[ -n "$addons_path" ]]; then
+    # Comma-separated; entries may contain spaces, so split only on commas.
+    # Note the trailing newline in printf: without it `read` returns non-zero on
+    # the final entry and the loop drops it -- which would silently skip
+    # custom_addons, the very entry most likely to be wrong.
+    while IFS= read -r entry; do
+        entry="${entry#"${entry%%[![:space:]]*}"}"   # trim leading space
+        entry="${entry%"${entry##*[![:space:]]}"}"   # trim trailing space
+        [[ -z "$entry" ]] && continue
+        [[ -d "$entry" ]] || bad_paths+=("addons_path: $entry")
+    done < <(printf '%s\n' "$addons_path" | tr ',' '\n')
+fi
+
+data_dir="$(conf_value data_dir)"
+if [[ -n "$data_dir" && ! -d "$data_dir" ]]; then
+    bad_paths+=("data_dir: $data_dir")
+fi
+
+if (( ${#bad_paths[@]} )); then
+    echo "$conf references paths that do not exist:" >&2
+    printf '  %s\n' "${bad_paths[@]}" >&2
+    echo "" >&2
+    echo "Odoo would start anyway -- with those modules missing, or raising" >&2
+    echo "FileNotFoundError per attachment. Fix odoo.conf before starting." >&2
+    exit 1
+fi
+
 cmd=(-m odoo)
 [[ $shell -eq 1 ]] && cmd+=(shell)
 cmd+=(-c "$conf")

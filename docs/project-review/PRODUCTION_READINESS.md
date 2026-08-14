@@ -4,14 +4,15 @@ Findings by ID in [`BACKLOG.md`](BACKLOG.md).
 
 ## Verdict: **No-go**, single-tenant or multi-tenant
 
-Six blockers. None requires a redesign; four are configuration.
+**Five** open blockers — one of the original six (OPS-1) was fixed on 2026-08-14. None requires a
+redesign; four are configuration.
 
 | # | Blocker | ID | Why |
 |---|---|---|---|
 | 1 | Live one-request cluster takeover | SAAS-2 | `verify_admin_password('admin')` is `True`; one unauthenticated POST claims the master password, which then authorises backup of every database |
 | 2 | Statutory reports cannot render | FIN-2 | Balance Sheet, P&L and Cash Flow all raise `QWebError` — verified |
 | 3 | VAT return computes nil | FIN-1 | Zero tag→repartition links in the live database |
-| 4 | Attachment storage is splitting | OPS-1 | `data_dir` points at a deleted tree; writes landed in the orphan on 2026-08-14 |
+| ~~4~~ | ~~Attachment storage is splitting~~ **RESOLVED 2026-08-14** | OPS-1 | Paths corrected; reconciliation proved no data loss; launchers now fail fast |
 | 5 | No recoverable backup of code or data | SUP-2, DAT-1 | 28 commits on one disk; the sync substituting for a backup is also the corruption risk |
 | 6 | Known credentials, database manager exposed | SEC-1, OPS-2 | Values in immutable git history |
 
@@ -50,7 +51,7 @@ before a second tenant exists. They are not go-live blockers for a single-tenant
 - [ ] Provisioning and offboarding are scripted and tested, including session purge
 
 ### Operations
-- [ ] **OPS-1** — config paths corrected, filestores reconciled
+- [x] **OPS-1** — config paths corrected, filestores reconciled, launcher guard added (2026-08-14)
 - [ ] **SUP-2** — remote created, history pushed
 - [ ] **DEP-1** — `nepali-datetime` declared and pinned so a rebuild is possible at all
 - [ ] Backup **and restore** rehearsed, per tenant
@@ -115,7 +116,8 @@ Effectively none beyond Odoo's own log.
 
 **Five failures would currently be silent**: SUP-3 (translations reverting after an upgrade),
 FIN-1 (a return reporting nil), FIN-2 (reports raising for a user but not in tests), OPS-1
-(attachments written to the wrong store), and any cross-tenant routing anomaly. None raises an
+(attachments written to the wrong store — fixed, but the *class* of failure is unmonitored and
+`_file_read` returns `b''` rather than raising), and any cross-tenant routing anomaly. None raises an
 alert; all look like normal operation.
 
 Monitoring should start with checks for exactly these, because they are the failures this system
@@ -132,7 +134,7 @@ artefact** (CI-2). They are related by a well-written prose table, not by anythi
 
 ## Operational risks not covered elsewhere
 
-- **DAT-2** — an orphaned 12 MB filestore in `Downloads`, no owner, receiving writes today
+- **DAT-2** — an orphaned filestore in `Downloads`; no longer receiving writes since OPS-1 was fixed. Reconciled: nothing of value. Safe to delete, awaiting approval
 - **N-1** — `l10n_ne/` shadows upstream Niger's localisation if the repo root ever joins `addons_path`
 - **OPS-5** — `Restart=on-failure` with no `StartLimitBurst`: indefinite crash loop
 - **SUP-3** — no upgrade procedure regenerates the translations it destroys
