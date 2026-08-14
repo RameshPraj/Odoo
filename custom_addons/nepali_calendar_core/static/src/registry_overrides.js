@@ -38,6 +38,12 @@ const parsers = registry.category("parsers");
 // Resolved server-side as user -> company -> AD and shipped in `session_info`.
 // Read once at module load: changing the preference triggers Odoo's own
 // `reload_context` client action, so there is no live-switch case to handle.
+//
+// Read from `session` directly rather than through a service. A `nepali_calendar`
+// service was written for this and then deleted: registry overrides run at module
+// import, which is *before* any service has started, so a service cannot answer
+// the one question that has to be answered here. Keeping an accessor that no
+// caller could use would have been a decorative abstraction.
 const CALENDAR = session.calendar_system || "ad";
 
 /**

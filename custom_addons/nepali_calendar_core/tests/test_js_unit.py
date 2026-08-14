@@ -32,6 +32,14 @@ MODULE = "nepali_calendar_core"
 MODULE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 JS_TESTS_DIR = os.path.join(MODULE_DIR, "static", "tests")
 
+#: Suite names, i.e. `static/tests/<name>.test.js` addressed as `@<module>/<name>`.
+#: `test_every_js_test_file_is_run` checks this against the directory, so adding a
+#: file without adding it here fails rather than being quietly skipped.
+SUITES = [
+    "bs_convert",
+    "registry_overrides",
+]
+
 
 def hoot_hash(text):
     """Reimplementation of hoot's suite-id hash.
@@ -60,55 +68,44 @@ class TestJsUnit(HttpCase):
         self.assertEqual(hoot_hash("@web/core"), "e39ce9ba")
         self.assertEqual(hoot_hash("@web/core/autocomplete"), "69a6561d")
 
-    def test_every_js_test_file_is_covered(self):
+    def test_every_js_test_file_is_run(self):
         """A new .test.js file must not be silently left unrun.
 
-        `test_bs_convert_unit_tests` names one suite explicitly. Without this,
-        adding a second test file would look covered and never execute.
+        The filter is built from `SUITES`, so a file nobody added there would be
+        bundled, compiled, and never executed -- indistinguishable from passing.
+        Deriving the expectation from disk means the omission fails loudly.
         """
-        found = sorted(
-            os.path.basename(p)
+        on_disk = sorted(
+            os.path.relpath(p, JS_TESTS_DIR).replace(os.sep, "/")[: -len(".test.js")]
             for p in glob.glob(os.path.join(JS_TESTS_DIR, "**", "*.test.js"),
                                recursive=True)
         )
         self.assertEqual(
-            found, ["bs_convert.test.js"],
-            "the set of JS test files changed; add the new suite to this class so "
-            "it actually runs, then update this assertion"
+            on_disk, sorted(SUITES),
+            "the set of JS test files no longer matches SUITES in this file; add "
+            "the new suite there so it actually runs"
         )
 
-    def test_bs_convert_unit_tests(self):
-        """The conversion contract, executed in a browser.
+    def test_js_unit_tests(self):
+        """Every suite in this module, executed in a browser.
 
         The Python suite can only assert the JS half by pattern-matching its
-        source. This is the half that actually runs it.
+        source. This is what actually runs it.
+
+        All suites go in one `browser_js` call: each one costs a fresh Chrome
+        launch and asset load, so per-suite tests would multiply a ~40s fixed cost
+        by the number of files for no extra signal.
         """
-        suite = f"@{MODULE}/bs_convert"
+        ids = "".join(f"&id={hoot_hash(f'@{MODULE}/{s}')}" for s in SUITES)
         url = (
-            "/web/tests?headless&loglevel=2&preset=desktop&timeout=15000"
-            f"&id={hoot_hash(suite)}"
+            "/web/tests?headless&loglevel=2&preset=desktop&timeout=15000" + ids
         )
         self.browser_js(
             url, "", "",
             login="admin",
-            timeout=600,
+            timeout=900,
             success_signal="[HOOT] Test suite succeeded",
             error_checker=unit_test_error_checker,
-        )
-
-    def test_the_suite_name_matches_the_file_on_disk(self):
-        """Guard the filter against a rename.
-
-        `static/tests/bs_convert.test.js` is addressed as
-        `@nepali_calendar_core/bs_convert`. Renaming the file without updating the
-        filter would leave `test_bs_convert_unit_tests` passing over zero tests --
-        the worst possible outcome for a test, so it is checked separately.
-        """
-        expected = os.path.join(JS_TESTS_DIR, "bs_convert.test.js")
-        self.assertTrue(
-            os.path.exists(expected),
-            f"{expected} is missing, but the hoot filter still points at "
-            f"@{MODULE}/bs_convert"
         )
 
     def test_no_focused_tests_are_committed(self):

@@ -96,8 +96,20 @@ an emoji name). Babel has no calendar parameter; Intl's `ca-` extension has no B
 luxon's `outputCalendar` — which looks like the obvious hook — cannot deliver BS.
 
 **This is the first alternate-calendar layer in this codebase.** Every seam is our maintenance burden,
-and each Odoo major upgrade needs a smoke test of: the three registry overrides, the widget's
-`standardFieldProps` shape, `session_info`, and the `ir.qweb.field.*` converters.
+and each Odoo major upgrade needs a smoke test of: the **two** registry overrides (`fields` and
+`parsers` — the planned `formatters` one was dropped, see
+[`02_ARCHITECTURE.md`](02_ARCHITECTURE.md)), the widget's `standardFieldProps` shape, `session_info`,
+and the `ir.qweb.field.*` converters.
+
+Two of those seams have now failed once each during development, which is the best available evidence
+of how they will fail again:
+
+- `DateTimeField` imports `formatDate` **statically**, so a `formatters` registry entry is dead. A
+  rename or re-export upstream would break the `fields` override the same way — silently, with dates
+  still rendering, just in the wrong calendar.
+- Core does **not** define `format_date` in the QWeb render environment, contrary to a reasonable
+  assumption; `mail.render.mixin` and the EDI modules each inject their own. Anything built on
+  "core provides X in the template context" needs checking against the source, not intuition.
 
 ## 12. Dependency fragility
 

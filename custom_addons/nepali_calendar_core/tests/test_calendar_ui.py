@@ -6,11 +6,14 @@
 
 Three layers, cheapest first:
 
-  TestBSAssets      pure Python. Parses every XML file in the module. This is
-                    the one that matters most: Odoo merges all modules' asset
-                    templates into a single document, so one malformed file
-                    blanks the entire backend with no console error. That is
-                    exactly the bug this module shipped once.
+  TestBSAssets      pure Python. Parses every XML **and JS** file in the module.
+                    This is the one that matters most: Odoo merges all modules'
+                    asset templates into a single document and minifies the JS
+                    into one bundle, so a single malformed file blanks the entire
+                    backend, reported as a line number in a minified bundle that
+                    names no file. Both halves of this have now happened here --
+                    a `--` inside an XML comment, and Python's implicit string
+                    concatenation written into JavaScript.
   TestBSConversion  pure Python. AD <-> BS correctness.
   TestBSCalendarUI  headless Chrome. Confirms the page actually renders.
 
@@ -24,6 +27,8 @@ The browser test needs:
 import datetime
 import glob
 import os
+import shutil
+import subprocess
 
 from lxml import etree
 
@@ -49,6 +54,47 @@ class TestBSAssets(TransactionCase):
                     etree.parse(path)
                 except etree.XMLSyntaxError as exc:
                     self.fail(f"{os.path.relpath(path, MODULE_DIR)} is not well-formed: {exc}")
+
+    def test_all_js_parses_as_a_module(self):
+        """Every .js file must parse as an ES module.
+
+        Odoo concatenates and minifies the whole backend bundle, so ONE bad file
+        takes down the entire web client -- and the browser reports it as a line
+        number in a minified bundle, naming no file. That is a genuinely expensive
+        five minutes to debug.
+
+        The failure this catches happened: Python's implicit string concatenation
+
+            _t("first part "
+               "second part")
+
+        is a `SyntaxError` in JavaScript, and it is an easy habit to carry across
+        in a codebase where both languages sit side by side.
+
+        Note the invocation. `node --check <path>` treats a `.js` file as CommonJS
+        and reports this file as fine; only `--input-type=module` on **stdin**
+        parses it as the module Odoo will serve. Skipped when node is unavailable,
+        because a missing dev tool must not fail the suite.
+        """
+        node = shutil.which("node")
+        if not node:
+            self.skipTest("node is not on PATH; cannot parse-check JavaScript")
+
+        files = glob.glob(os.path.join(MODULE_DIR, "**", "*.js"), recursive=True)
+        self.assertTrue(files, "no .js files found -- is MODULE_DIR wrong?")
+        for path in files:
+            rel = os.path.relpath(path, MODULE_DIR)
+            with self.subTest(file=rel):
+                with open(path, "rb") as fh:
+                    source = fh.read()
+                proc = subprocess.run(
+                    [node, "--input-type=module", "--check"],
+                    input=source,
+                    capture_output=True,
+                )
+                if proc.returncode:
+                    detail = proc.stderr.decode("utf-8", "replace").strip()
+                    self.fail(f"{rel} is not a valid ES module:\n{detail}")
 
     def test_assets_are_declared(self):
         """Every asset listed in the manifest must exist on disk."""

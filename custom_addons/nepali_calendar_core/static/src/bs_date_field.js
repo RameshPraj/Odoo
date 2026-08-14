@@ -12,6 +12,7 @@ import { registry } from "@web/core/registry";
 import { standardFieldProps } from "@web/views/fields/standard_field_props";
 import { useService } from "@web/core/utils/hooks";
 import { user } from "@web/core/user";
+import { session } from "@web/session";
 import { _t } from "@web/core/l10n/translation";
 import {
     adToBs, bsToAd, bsMonthLength, bsMonthName, bsWeekdayNames,
@@ -263,12 +264,21 @@ export const bsDateField = {
             label: _t("Nepali digits"),
             name: "np_digits",
             type: "boolean",
-            help: _t("Render digits in Devanagari. Enabled by default."),
+            help: _t(
+                "Render digits in Devanagari. Defaults to the company's Bikram Sambat numerals setting."
+            ),
         },
     ],
     extractProps: ({ options }) => ({
         monthName: Boolean(options.month_name),
-        npDigits: options.np_digits === undefined ? true : Boolean(options.np_digits),
+        // Falls back to the COMPANY setting, not to a hard-coded `true`. It was
+        // `true` here while `defaultProps`, `formatBs` and `tools/bs.py` all
+        // defaulted to Latin, so an explicit `widget="bs_date"` rendered
+        // Devanagari and every other route rendered ASCII -- the same date in two
+        // scripts on one screen. An explicit option still wins.
+        npDigits: options.np_digits === undefined
+            ? session.bs_digits === "devanagari"
+            : Boolean(options.np_digits),
     }),
 };
 

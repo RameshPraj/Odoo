@@ -17,36 +17,54 @@ The existing conversion was replayed in full against `nepali_datetime` 1.0.8.5:
 `BS_EPOCH_AD = [1918, 4, 13]`. Month lengths are table-driven (29/30/31/32 days) — there is no
 formula, so the table *is* the algorithm.
 
-**This guarantee is currently enforced by nothing.** `tools/selftest.py` performs exactly the sweep
-above and is imported by no test, referenced only in its own docstring. Wiring it in is the single
-cheapest high-value item in this project — the verification already exists and already works.
+> **This is now enforced.** `tools/selftest.py` was refactored from a `print`/`sys.exit` script into
+> `check() -> dict`, and `tests/test_conversion_contract.py` asserts on it. The full 46,022-day sweep
+> takes **0.9s**, so it runs in its entirety rather than sampled, and it parses the *generated*
+> `bs_calendar_data.js` rather than the generator — which is what catches the failure that actually
+> happens, a stale checked-in table. A `checked > 45000` assertion guards against the sweep silently
+> covering nothing and the other two assertions passing vacuously.
 
 ## The two APIs must agree
 
-Python and JavaScript are today two "shared" implementations that disagree. The central module
-reconciles them; these are the decisions:
+Python and JavaScript were two "shared" implementations that disagreed. All of the following is now
+done and asserted, from both sides, in `tests/test_conversion_contract.py` and
+`static/tests/bs_convert.test.js` — deliberately over the *same* dates, so the two files cross-check
+one contract rather than testing two things that each happen to pass.
 
-| Concern | Python today | JS today | **Decision** |
+| Concern | Python before | JS before | Decision, as built |
 |---|---|---|---|
 | Digit default | `np_digits=False` | `npDigits: true` | **Latin by default** on both. Devanagari is opt-in via the company setting — a smaller change to an existing ledger |
-| Separators accepted on parse | `-` `/` | `-` `/` `.` whitespace | **Accept all four on both.** Being liberal on input is right; the output format is what must be canonical |
-| Failure contract | raises `UserError` | returns `null` | **Keep both, deliberately.** Python raises (server-side a bad date is a bug or a validation error); JS returns `null` (the widget must show a notification, not crash the UI). Documented rather than unified |
-| Weekday names | long — `आइतबार` | short — `आइत` | **Both, as separate accessors.** `weekday_short()` / `weekday_long()`. The picker needs short, a report may want long |
-| Range constants | absent; hard-coded in an error string | `BS_MIN_YEAR` / `BS_MAX_YEAR` exported | **Export from Python too**, and interpolate them into the error message instead of hard-coding "1975…2100" |
-| Month-name format | `२०८३-भदौ-२४` | `२०८३ भदौ २४` | **Spaces**, matching the JS and normal Nepali usage |
+| Separators accepted on parse | `-` `/` | `-` `/` `.` whitespace | **All four on both.** Being liberal on input is right; the output format is what must be canonical |
+| Failure contract | raises `UserError` | returns `null` | **Both kept, deliberately.** Python raises (server-side a bad date is a bug or a validation error); JS returns `null` (the widget must show a notification, not crash the UI). Documented and asserted rather than unified |
+| Weekday names | long — `आइतबार` | short — `आइत` | **Both, everywhere.** `WEEKDAYS_NE_LONG` / `_SHORT` in Python, `bsWeekdayNames({ long })` in JS |
+| Range constants | absent; hard-coded in an error string | `BS_MIN_YEAR` / `BS_MAX_YEAR` exported | **Exported from Python too**, and interpolated into the error message |
+| Month-name format | `२०८३-भदौ-२४` | `२०८३ भदौ २४` | **Spaces**, matching normal Nepali usage |
+| Day padding in month-name form | `%02d` — `भदौ 09` | unpadded — `भदौ 9` | **Padded on both.** Found while writing the tests; it was the last surviving divergence, and it meant a PDF and a list view disagreed about the same record |
 
-**Single source for names.** Month and weekday tables exist three times today —
-`bs.py`, `bs_calendar_data.js`, and hard-coded *again* in the generator `gen_js_data.py:96-109`.
-That third copy is the root cause of the long/short divergence, because the generator does not derive
-names from the library. The generator becomes the only author; Python and JS both consume what it
-emits.
+**Single source for names — done, but not where the plan put it.** The tables existed three times:
+`bs.py`, `bs_calendar_data.js`, and hard-coded *again* inside the generator meant to be producing
+them. The plan made the generator the sole author; in practice the generator is a standalone script
+run outside an Odoo process, so it cannot import `bs.py` (which imports `odoo.exceptions`).
+
+The names therefore live in a new **`tools/names.py`** that imports nothing at all. `bs.py` imports
+it normally; `gen_js_data.py` loads it by path and *emits* it into the JS table. One source, three
+consumers, and a test asserting the generated arrays are byte-equal to the Python lists — including
+both weekday lengths, which is the specific pair that had drifted.
 
 ## Error handling
 
-`month_length()` is the one function that does not wrap library exceptions — it raises a raw
-`KeyError` at BS 2101 and a raw `AssertionError` for month 13. That escapes the fiscal-year wizard's
-`UserError`-only catch and surfaces as a traceback, **reachable by default** from BS 2097 onward
-because the wizard defaults to `current + 4`. It gets the same wrapping as its siblings.
+`month_length()` was the one function that did not wrap library exceptions — it raised a raw
+`KeyError` at BS 2101 and a raw `AssertionError` for month 13. That escaped the fiscal-year wizard's
+`UserError`-only catch and surfaced as a traceback, **reachable by default** from BS 2097 onward
+because the wizard defaults to `current + 4`.
+
+**Fixed and asserted** (`TestRangeContract.test_month_length_out_of_range_raises_user_error`): it now
+bound-checks the year and month itself and wraps anything the library throws, like its siblings. The
+test asserts `UserError` specifically, not just "raises" — a bare `IndexError` reaching a user is a
+server error with a traceback, which is the behaviour being removed.
+
+The wizard's own bound check (BSD-7) is still open; this change means it now fails with a readable
+message rather than a traceback, which is a mitigation, not the fix.
 
 ## Timezone — the rule
 

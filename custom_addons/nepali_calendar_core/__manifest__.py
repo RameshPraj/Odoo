@@ -57,7 +57,6 @@ the algorithm, and there is no formula to extrapolate.
             # Order matters: the generated table, then conversion, then consumers.
             'nepali_calendar_core/static/src/bs_calendar_data.js',
             'nepali_calendar_core/static/src/bs_convert.js',
-            'nepali_calendar_core/static/src/calendar_service.js',
             'nepali_calendar_core/static/src/exclusions.js',
             'nepali_calendar_core/static/src/bs_date_field.js',
             'nepali_calendar_core/static/src/bs_date_field.xml',

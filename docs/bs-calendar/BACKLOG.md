@@ -77,8 +77,11 @@ The largest remaining gap; without it BS stops where periodic reporting starts.
 | BSD-6 | `gen_js_data.py` hard-coded a third copy of the name tables — the root cause of the long/short weekday divergence | P3 | S | **Done** — one source (`tools/names.py`), asserted byte-equal across layers |
 | BSD-7 | Fiscal-year wizard bound-checks BS year; it approaches the 2100 ceiling by default from BS 2097 | P2 | XS | Not started |
 | BSD-8 | Guard the arch walk by field **type** if any `_get_view` path is retained | P3 | XS | Moot — no `_get_view` path is retained |
-| BSD-9 | **The dispatcher component is untested.** Nothing asserts a BS user gets `BSDateField` on a business field and Odoo's own widget on `create_date`. It is the mechanism all coverage rests on | **P1** | M | Open |
-| BSD-10 | `bs_date_field` behaviour untested: render, type-and-commit, picker click, rejected input, and the timezone cases *through the widget* | **P1** | M | Open |
+| BSD-9 | The dispatcher's **selection** is untested. Both halves are covered (exclusion predicate directly; BS rendering via `widget="bs_date"`) but not their composition. Blocked on exporting an idempotent `install(calendar)` so a test can key it without leaking a global registry mutation | **P1** | M | Partly — see [`TEST_PLAN.md`](TEST_PLAN.md) |
+| BSD-10 | `bs_date_field` **interaction** untested: type-and-commit, picker click, rejected input. Render and the timezone matrix are now covered | P2 | S | Partly |
+| BSD-12 | `extractProps` defaulted `npDigits` to `true` while every other layer had moved to Latin, so `widget="bs_date"` rendered Devanagari and the dispatcher rendered ASCII | P2 | XS | **Fixed** — now falls back to the company setting |
+| BSD-13 | Nothing parse-checked the JavaScript. A Python-style implicit string concatenation in a `_t()` call blanked the whole web client, reported only as a line number in a minified bundle | P2 | XS | **Fixed** — `TestBSAssets.test_all_js_parses_as_a_module` runs `node --input-type=module --check` over every `.js` file. Note `node --check <path>` does **not** catch it; the file must be piped as a module |
+| BSD-14 | `calendar_service.js` was written to centralise "is BS active" but nothing could use it: registry overrides run at module import, before any service starts | P4 | XS | **Removed** rather than left as a decorative abstraction |
 | BSD-11 | `res_company.calendar_system` is `required=True`, so the resolver's `or 'ad'` third level is unreachable from the database. Kept as defence in depth and tested on in-memory records; if `required` is ever dropped, the SQL-level test must come back | P4 | XS | Documented |
 
 ## Explicitly not planned

@@ -3,8 +3,18 @@
 Discovered from the **live database** (134 installed modules), not from the brief's wish list.
 Field counts exclude `create_date`/`write_date` and technical models.
 
-**"BS Support" is stated as of today, before this pass.** Nothing is marked supported that has not
-been verified, per the brief's rule.
+**"BS Support" is stated as of *before* this pass, and has not been re-marked.** Nothing is marked
+supported that has not been verified, per the brief's rule — and that rule is what stops this table
+being updated now.
+
+> The registry override that would move most of these rows to *Planned → Supported* is written, but
+> its **selection** logic is not yet tested (BSD-9): the exclusion predicate is verified, and BS
+> rendering is verified, but nothing yet asserts that a bare `<field name="…"/>` on a given model
+> picks the BS widget. Marking a module supported on that basis would be exactly the "mark a module
+> supported without testing it" the brief prohibits.
+>
+> The per-module sweep is **BSV-2**, and it is the work that earns the *Tested* column. Until then
+> these rows stand as written.
 
 ## Legend
 

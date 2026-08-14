@@ -1,6 +1,17 @@
 # Reporting
 
-## Current state: no BS in any report, anywhere
+> **Built.** `models/ir_qweb_fields.py` implements the design below: both
+> `value_to_html` overrides, the `bs_report_output` company setting with `ad` / `bs` / `both`, a
+> per-field `t-options="{'calendar': 'ad'}"` escape hatch, and `format_date_bs` as a new template
+> name. Asserted in `tests/test_timezone_and_reports.py`, including that two readers with opposite
+> personal calendars are handed the identical document.
+>
+> One correction to what follows: the plan asserted that core supplies a `format_date` in the QWeb
+> environment which we must be careful not to shadow. It does not — `mail.render.mixin` and the EDI
+> modules each inject their own into their own values dict. So there is nothing to shadow; the
+> requirement is simply that we never claim the name, which is now tested.
+
+## State before this pass: no BS in any report, anywhere
 
 Stated as a measured absence:
 

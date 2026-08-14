@@ -24,7 +24,7 @@ headless Chrome).
 | 3 | Preference | `tests/test_calendar_preference.py` | **Done,** including cache invalidation and self-service rights |
 | 4 | ORM invariance | `tests/test_calendar_preference.py` | **Done** via raw SQL on `res_currency_rate.name`, plus domain and `export_data` |
 | 5 | Reports | `tests/test_timezone_and_reports.py` | **Done** for all three output modes, the per-field `calendar` override, digits, and reader-independence |
-| 9 | JavaScript | `static/tests/bs_convert.test.js`, run by `tests/test_js_unit.py` | **`bs_convert` done** (19 tests). Widget and registry-override suites still to write |
+| 9 | JavaScript | `static/tests/*.test.js`, run by `tests/test_js_unit.py` | **31 tests**, executed in headless Chrome: `bs_convert` (19) and `registry_overrides` (12) |
 
 Two things worth recording about how this was reached, because both were wrong in the original plan:
 
@@ -35,13 +35,35 @@ Two things worth recording about how this was reached, because both were wrong i
   EDI modules each inject their own. The assertion now checks that the name stays free, which is the
   actual requirement.
 
+### Two bugs these tests found in the tests themselves
+
+Recorded because both were the failure mode where a test reports success while
+proving nothing, which is worse than a red build:
+
+1. **Assertions read `textContent` for a value living in `input.value`.** Every negative assertion
+   (`not.toInclude("2083-…")`) was comparing against the empty string and passing. Fixed by reading
+   input values, and each negative is now preceded by a **positive** assertion so it cannot pass over
+   an empty render.
+2. **A preference test wrote `NULL` over a `NOT NULL` column.** The AD-fallback test was asserting a
+   state PostgreSQL forbids. The constraint is the stronger guarantee, so it is now asserted directly
+   and the fallback is exercised on in-memory records instead. See BSD-11.
+
+A third, in shipped code rather than a test: `bs_date_field.js`'s `extractProps` still defaulted
+`npDigits` to `true` while `defaultProps`, `formatBs` and `tools/bs.py` had all been moved to Latin —
+so an explicit `widget="bs_date"` rendered Devanagari and every other route rendered ASCII. It now
+falls back to the company setting.
+
 ### Not yet covered, and not to be mistaken for covered
 
-- **The dispatcher component** (`registry_overrides.js`) has no test. It is the mechanism the whole
-  coverage model rests on, so this is the largest remaining gap: nothing yet asserts that a BS user
-  gets `BSDateField` on `account.move.invoice_date` and Odoo's own widget on `create_date`.
-- **`bs_date_field` behaviour** — render, type-and-commit, picker click, rejected input, and the §2
-  timezone cases *through the widget*.
+- **The dispatcher's *selection*.** Its two halves are each tested — the exclusion predicate directly
+  (6 tests), and BS rendering through `widget="bs_date"` (4 tests, including the timezone matrix) —
+  but not their composition: that with `session.calendar_system === "bs"` a bare
+  `<field name="invoice_date"/>` picks `BSDateField` while `create_date` does not. The override runs
+  once at module import, so a test cannot re-key it, and mutating the global `fields` registry from a
+  test would leak into every later suite. Closing it means exporting an idempotent
+  `install(calendar)`, which is a refactor of shipped code. **BSD-9.**
+- **`bs_date_field` interaction** — type-and-commit, picker click, rejected input. Rendering and
+  timezone are now covered; behaviour is not. **BSD-10.**
 - §6 Accounting Nepal regression, §7 security, §8 SaaS isolation — all still pending.
 
 ## 1. Conversion
