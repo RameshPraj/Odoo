@@ -2,13 +2,22 @@
 
 ## Prerequisites
 
-**1. Pin the Python dependency.** `nepali_datetime` is declared in `external_dependencies` but is
-**absent from `requirements.txt`**. A fresh environment cannot install the suite at all — Odoo's
-dependency check refuses `nepali_calendar_core`, and everything depending on it follows.
+**1. Pin the Python dependency — done.** `nepali_datetime` was declared in `external_dependencies` but
+absent from `requirements.txt`, so a fresh environment could not install the suite at all: Odoo's
+dependency check refused `nepali_calendar_core`, and everything depending on it followed.
 
 ```
 nepali-datetime==1.0.8.5      # pip name uses a hyphen; the import name uses an underscore
 ```
+
+It now sits in a marked **project additions** block at the end of `requirements.txt`, appended rather
+than merged alphabetically so the stock-Odoo section stays byte-identical and a future upstream refresh
+is a clean diff. `pip install -r requirements.txt` is therefore the only dependency step; the separate
+`pip install nepali_datetime` line that used to be in `deploy/README.md` is gone.
+
+`nepali_calendar_core/tests/test_requirements.py` fails if the pin disappears, drifts from the
+installed version, or is loosened to `>=` — checked by actually removing the line and confirming the
+suite goes red, because a guard that never fails guards nothing.
 
 **2. Module versions.** ~~Everything is frozen at `19.0.1.0.0`~~ — **done.** `l10n_np_accounting` is now
 `19.0.1.1.0` with `migrations/19.0.1.1.0/pre-migration.py`, which is what makes the upgrade fire at all.

@@ -113,8 +113,15 @@ of how they will fail again:
 
 ## 12. Dependency fragility
 
-`nepali_datetime` is unpinned, absent from `requirements.txt`, and we call a **private** symbol
-(`_days_in_month`). A minor upstream change can break fiscal-year generation at runtime.
+We call a **private** symbol, `nepali_datetime._days_in_month`. A minor upstream change can still
+break fiscal-year generation, and no pin prevents that — it only makes the change deliberate.
 
-Mitigated, not eliminated: pinning it and wiring the 46,022-day selftest into CI means a library
-change fails the build instead of silently producing wrong dates.
+**Now mitigated as far as it can be.** The package is pinned exactly
+(`nepali-datetime==1.0.8.5`) and the 46,022-day selftest runs in the suite, so a version change fails
+the build rather than silently producing wrong dates. `tests/test_requirements.py` additionally asserts
+that the pin matches what is installed — otherwise the suite would be green against a version the
+deployment never gets — and that `_days_in_month` still exists, which is the cheapest available early
+warning for the private-symbol risk.
+
+What remains: the symbol is still private, and pinning means security fixes now require a deliberate
+bump rather than arriving on their own.

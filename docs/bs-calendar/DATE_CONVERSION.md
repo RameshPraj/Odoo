@@ -109,10 +109,15 @@ widget's today-highlight disagrees with the server's `context_today` for part of
 ## Library dependency
 
 `nepali_datetime` is used for the authoritative table and for `_days_in_month` — a **private**
-symbol, acknowledged with `# noqa: SLF001`. It is declared in `external_dependencies` but **absent
-from `requirements.txt`** and unpinned, so a fresh environment cannot install the suite at all and
-any upgrade may remove the symbol.
+symbol, acknowledged with `# noqa: SLF001`. It was declared in `external_dependencies` but absent from
+`requirements.txt` and unpinned, so a fresh environment could not install the suite at all, and any
+upgrade might remove the symbol.
 
-Mitigation: pin it in a project-owned requirements file, and let the wired-in selftest be the
-detector — if a library upgrade changes the table or removes the symbol, the 46,022-day sweep fails
-in CI instead of silently producing wrong dates in a fiscal year.
+**Both halves are now closed.** `nepali-datetime==1.0.8.5` is pinned in the project-additions block at
+the end of `requirements.txt`, and the 46,022-day sweep runs in the suite — so a library upgrade that
+changed the table would fail the build rather than silently producing wrong dates in a fiscal year.
+`tests/test_requirements.py` also asserts the pin matches the *installed* version (otherwise the sweep
+validates a version the deployment never gets) and that `_days_in_month` still exists.
+
+The private symbol remains a private symbol. Pinning makes its removal a deliberate, visible event
+instead of a surprise; it does not make the dependency safe.

@@ -421,7 +421,7 @@ Neither launcher passes `--test-enable`. There is no single command that runs al
 `cb96ff96`) are same-day fixes for defects a test run would have caught. **Effort M.**
 
 ## DEP-1 · `nepali_datetime` undeclared — a clean build cannot install the suite
-**CONFIRMED** · Dependencies · `l10n_np_bs/__manifest__.py:36`
+**RESOLVED** · Dependencies · was `l10n_np_bs/__manifest__.py:36`, now `nepali_calendar_core`
 
 Declared in `external_dependencies`, which pip never reads; absent from `requirements.txt`;
 present in the venv only because it was installed by hand; unpinned.
@@ -429,6 +429,15 @@ present in the venv only because it was installed by hand; unpinned.
 **Impact** `l10n_np_bs` refuses to install on a fresh machine, and the umbrella depends on it, so
 **the entire suite is uninstallable**. Blocks CI, DR restore and any second developer.
 **Effort XS.**
+
+**Fixed.** `nepali-datetime==1.0.8.5` pinned in a marked project-additions block at the end of
+`requirements.txt` — appended rather than merged alphabetically, so the stock-Odoo section stays
+byte-identical and refreshing it from a newer Odoo release remains a readable diff.
+`nepali_calendar_core/tests/test_requirements.py` fails if the pin is dropped by such a refresh,
+drifts from the installed version, or is loosened to `>=`; the guard was verified by removing the line
+and confirming the suite goes red. `deploy/README.md` no longer carries a separate unpinned
+`pip install`. **COD-10 is narrowed but not closed:** the private `_days_in_month` is still private,
+and there is now a test asserting it exists.
 
 ## TST-2 · Five suites assert on live database state; three break when the modules are used
 **CONFIRMED** · Testing

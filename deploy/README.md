@@ -51,11 +51,21 @@ cd /opt/odoo
 sudo -u odoo python3 -m venv venv
 sudo -u odoo ./venv/bin/pip install --upgrade pip wheel
 sudo -u odoo ./venv/bin/pip install -r requirements.txt
-sudo -u odoo ./venv/bin/pip install nepali_datetime   # required by l10n_np_bs
 ```
 
-`nepali_datetime` is declared in `l10n_np_bs`'s `external_dependencies`, so the module
-refuses to install without it rather than failing later.
+`requirements.txt` now covers everything, including `nepali-datetime`. The separate
+`pip install nepali_datetime` step that used to be here is gone: it was unpinned,
+and it named `l10n_np_bs`, which is now only a compatibility shim.
+
+The package is pinned exactly (`nepali-datetime==1.0.8.5`) in the project-additions
+block at the end of `requirements.txt`. It is also declared in
+`nepali_calendar_core`'s `external_dependencies`, so if it is ever missing the
+module refuses to install rather than failing mid-request — but note that Odoo,
+not pip, reads that declaration, which is why the pin is what actually installs it.
+
+`nepali_calendar_core/tests/test_requirements.py` fails if the pin goes missing or
+drifts from the installed version, so re-vendoring `requirements.txt` from a newer
+Odoo release cannot silently drop it.
 
 ## 3. Database role
 

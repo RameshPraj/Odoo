@@ -148,10 +148,17 @@ Create the same records as a BS user and an AD user; assert the raw PostgreSQL c
 **Acceptance** Holds for `account.move` (date), `stock.picking` (datetime) and `l10n_np.loan`.
 This is the test that proves the canonical-storage principle.
 
-### BS-114 — Pin `nepali_datetime`
+### BS-114 — Pin `nepali_datetime` · **DONE**
 **Task · P1 · XS**
 Declared in `external_dependencies`, **absent from `requirements.txt`**, unpinned, and we call the
 private `_days_in_month`. A fresh environment cannot install the suite at all.
+**Delivered** `nepali-datetime==1.0.8.5` appended to `requirements.txt` in a marked project-additions
+block, so the stock-Odoo section stays byte-identical and an upstream refresh is a clean diff.
+`nepali_calendar_core/tests/test_requirements.py` (6 tests) fails if the pin is removed, drifts from
+the installed version, or is loosened to `>=`. The redundant unpinned `pip install` in
+`deploy/README.md` is gone.
+**Acceptance** met: `pip install -r requirements.txt` alone installs the suite; guard verified by
+deleting the line and confirming the suite goes red.
 
 ### BS-115 — Security and SaaS isolation tests
 **Task · P2 · S**
