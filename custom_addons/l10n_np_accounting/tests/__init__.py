@@ -3,4 +3,5 @@ from . import test_lock_dates
 from . import test_reconcile
 from . import test_menu_integrity
 from . import test_menu_visibility
-from . import test_bs_accounting_dates
+from . import test_bs_calendar_integration
+from . import test_bs_migration

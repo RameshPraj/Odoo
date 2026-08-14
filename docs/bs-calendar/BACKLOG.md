@@ -9,18 +9,20 @@ major workflow · **P2** important missing coverage · **P3** UX · **P4** clean
 ## In this pass — status
 
 Verified by `-u nepali_calendar_core --test-enable --test-tags /nepali_calendar_core`:
-**116 tests, 0 failed, 0 errors**, and the whole custom suite at **132 / 0 / 0** (baseline was 121).
+**116 Python tests plus 38 JavaScript tests, 0 failed, 0 errors.** The whole custom suite runs at
+**138 / 0 / 0** (baseline was 121), including on a `TEMPLATE` copy of the live database with the
+legacy setting switched on and the migration applied.
 
 | ID | Item | Pri | Effort | State |
 |---|---|---|---|---|
 | BSC-1 | `nepali_calendar_core`: move conversion, widget, calendar action; shim in `l10n_np_bs` | P1 | M | **Done.** Moved with `git mv` so history follows; `l10n_np_bs` re-exports `tools.bs`, leaving `l10n_np_fiscal_year` untouched |
-| BSC-2 | **Timezone fix — prerequisite.** `datetime` must resolve UTC → user tz → BS; "today" from `res.users.tz` | **P1** | M | **Done** both sides. Server asserted on the discriminating instant (`2026-09-08 18:30 UTC` → BS 2083-05-24 in Kathmandu, 2083-05-23 in UTC); widget code fixed but not yet asserted |
+| BSC-2 | **Timezone fix — prerequisite.** `datetime` must resolve UTC → user tz → BS; "today" from `res.users.tz` | **P1** | M | **Done and asserted on both sides,** on the discriminating instant (`2026-09-08 18:30 UTC` → BS 2083-05-24 in Kathmandu, 2083-05-23 in UTC) — server-side via the QWeb converter, browser-side through the widget *and* through the dispatcher |
 | BSC-3 | Reconcile the Python/JS contract | P2 | S | **Done.** Names collapsed into `tools/names.py`, which the generator now *emits*; `npDigits` defaulted to `false` on both sides; JS day padding added; both weekday lengths exposed everywhere |
 | BSC-4 | Wrap `month_length()` so BS 2101 raises `UserError`, not `KeyError` | P2 | XS | **Done** |
 | BSC-5 | `calendar_system` on user + company; precedence, `SELF_*_FIELDS`, `context_get`, `_get_invalidation_fields`, `session_info` | P1 | M | **Done,** with the invalidation and self-service rights asserted |
-| BSC-6 | Registry override + the exclusion list | P1 | M | **Code written, untested.** `formatters` dropped (see below); the dispatcher has no test — the largest open gap |
-| BSC-7 | Migrate the group → company default; retire the group; **needs a version bump** | P1 | S | Not started |
-| BSC-8 | Delete the local mixin and 13 bindings from `l10n_np_accounting` | P2 | S | Not started |
+| BSC-6 | Registry override + the exclusion list | P1 | M | **Done and tested.** `formatters` dropped (see below). Testing the selection exposed that the dispatcher **did not work at all** — see BSD-15 |
+| BSC-7 | Migrate the group → company default; retire the group; **needs a version bump** | P1 | S | **Done** as `19.0.1.1.0`. Verified on a `TEMPLATE` copy of the live database, which had the checkbox **on** — the only state that proves anything. Live `odoo19` deliberately not upgraded |
+| BSC-8 | Delete the local mixin and 13 bindings from `l10n_np_accounting` | P2 | S | **Done.** ~150 lines of BS machinery removed; the module keeps only what is Nepal-accounting-specific |
 | BSC-9 | `ir.qweb.field.date` / `.datetime` override + output-mode setting | P1 | M | **Done,** all three modes plus the per-field `calendar` escape hatch |
 | BSC-10 | Wire `selftest.py` into the suite (`check() -> list[mismatch]`) | P1 | S | **Done.** 46,022 days in 0.9s, so it runs in full rather than sampled |
 | BSC-11 | Test matrix per [`TEST_PLAN.md`](TEST_PLAN.md) | P1 | L | Partly — see the status table there |
@@ -71,13 +73,13 @@ The largest remaining gap; without it BS stops where periodic reporting starts.
 |---|---|---|---|---|
 | BSD-1 | Adopt `useInputField` — the input is uncontrolled (`t-att-value` → `setAttribute`), so the DOM diverges from the record after typing | P2 | S | Open |
 | BSD-2 | Weekend shading in the date picker — the calendar action flags Saturday, the picker flags nothing. Two grids in one module disagree | P3 | XS | Open |
-| BSD-3 | JS unit-test suite | **P1** | M | **Done for `bs_convert`** — 19 tests, executed in headless Chrome by `tests/test_js_unit.py`. Declaring a bundle only *compiles* it; nothing ran it before |
+| BSD-3 | JS unit-test suite | **P1** | M | **Done** — 38 tests in two suites, executed in headless Chrome by `tests/test_js_unit.py`. Declaring an `assets_unit_tests` bundle only *compiles* it; nothing ran it before |
 | BSD-4 | Generator drift test — nothing asserts the checked-in table still matches the library | P2 | S | **Done** — `selftest.check()` parses the generated artefact, so a stale checked-in file fails |
-| BSD-5 | Pin `nepali_datetime` in a project-owned requirements file; it is declared in `external_dependencies` but absent from `requirements.txt`, so a fresh env cannot install the suite | **P1** | XS | Not started |
+| BSD-5 | Pin `nepali_datetime` in a project-owned requirements file; it is declared in `external_dependencies` but absent from `requirements.txt`, so a fresh env cannot install the suite | **P1** | XS | Open — the highest-value item left, and XS |
 | BSD-6 | `gen_js_data.py` hard-coded a third copy of the name tables — the root cause of the long/short weekday divergence | P3 | S | **Done** — one source (`tools/names.py`), asserted byte-equal across layers |
 | BSD-7 | Fiscal-year wizard bound-checks BS year; it approaches the 2100 ceiling by default from BS 2097 | P2 | XS | Not started |
 | BSD-8 | Guard the arch walk by field **type** if any `_get_view` path is retained | P3 | XS | Moot — no `_get_view` path is retained |
-| BSD-9 | The dispatcher's **selection** is untested. Both halves are covered (exclusion predicate directly; BS rendering via `widget="bs_date"`) but not their composition. Blocked on exporting an idempotent `install(calendar)` so a test can key it without leaking a global registry mutation | **P1** | M | Partly — see [`TEST_PLAN.md`](TEST_PLAN.md) |
+| BSD-9 | The dispatcher's **selection** was untested — the exclusion predicate and BS rendering were each covered, their composition was not | **P1** | M | **Closed.** The override became an exported idempotent `installCalendarOverrides(calendar)`; Odoo restores registries per test, so the tests drive the real production path. It immediately found BSD-15 |
 | BSD-10 | `bs_date_field` **interaction** untested: type-and-commit, picker click, rejected input. Render and the timezone matrix are now covered | P2 | S | Partly |
 | BSD-12 | `extractProps` defaulted `npDigits` to `true` while every other layer had moved to Latin, so `widget="bs_date"` rendered Devanagari and the dispatcher rendered ASCII | P2 | XS | **Fixed** — now falls back to the company setting |
 | BSD-13 | Nothing parse-checked the JavaScript. A Python-style implicit string concatenation in a `_t()` call blanked the whole web client, reported only as a line number in a minified bundle | P2 | XS | **Fixed** — `TestBSAssets.test_all_js_parses_as_a_module` runs `node --input-type=module --check` over every `.js` file. Note `node --check <path>` does **not** catch it; the file must be piped as a module |
@@ -94,6 +96,15 @@ The largest remaining gap; without it BS stops where periodic reporting starts.
 | Modelling BS as a `res.lang` variant | `date_format` is a 9-value Gregorian `Selection`; lang also selects the `.po` and asset bundle, so `English + BS` would become impossible |
 | Storing BS values in the database | Violates the canonical-storage principle; nothing needs it |
 | Overriding `convert_to_export` / `convert_to_display_name` | `convert_to_export` calls `convert_to_display_name`, so this silently corrupts every export and breaks re-import |
+
+## Discovered while building, not planned for
+
+| ID | Item | Pri | Effort | State |
+|---|---|---|---|---|
+| BSD-15 | **The dispatcher did not work at all.** Owl validates props strictly and the wrapper forwarded its own synthetic props to components declaring neither, so with `calendar_system='bs'` every date field raised `Invalid props` and failed to render. The primary path was dead and nothing caught it, because the only untested seam was the one choosing the widget | **P0** | S | **Fixed** — per-branch prop filtering, plus the selection tests that would have caught it |
+| BSD-16 | The plan's Phase 4b said to move the group into core and re-point `implied_group`. There is no group in core — the preference replaced it. Two mechanisms gating one behaviour would let a user satisfy one and not the other | P3 | XS | **Resolved** by deleting the group outright |
+| BSD-17 | The plan's migration was to detect users individually removed from the group and pin them to AD. That state cannot exist: `has_group` is True for a group implied by `base.group_user` regardless of direct membership, so the old mechanism never supported an individual opt-out | P4 | XS | **Dropped** — code for it would have looked thorough and done nothing |
+| BSD-18 | Migration tests depended on whether the host database had already been upgraded, so "must stay Gregorian" failed on a migrated one for reasons unrelated to the migration | P3 | XS | **Fixed** — the fixture defines its own "before" |
 
 ## Top risks
 

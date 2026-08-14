@@ -10,9 +10,11 @@ dependency check refuses `nepali_calendar_core`, and everything depending on it 
 nepali-datetime==1.0.8.5      # pip name uses a hyphen; the import name uses an underscore
 ```
 
-**2. Bump module versions.** Everything is frozen at `19.0.1.0.0` with no `migrations/` directory, so
-Odoo never fires an upgrade — which means the group→company migration **cannot run**. The version bump
-is a prerequisite, not housekeeping.
+**2. Module versions.** ~~Everything is frozen at `19.0.1.0.0`~~ — **done.** `l10n_np_accounting` is now
+`19.0.1.1.0` with `migrations/19.0.1.1.0/pre-migration.py`, which is what makes the upgrade fire at all.
+`test_bs_migration.py::test_the_version_was_bumped` pins the two together, because a migration in an
+un-bumped module sits on disk and never runs — and the first anyone would know is a user whose calendar
+reverted.
 
 **3. Take a backup and rehearse the restore.** The migration writes `res.company` and `res.users`.
 Note that `res.company` writes are flushed through `cr.precommit` and can outlive `cr.rollback()`, so
@@ -33,15 +35,37 @@ start and verify before letting users in.
 ## What the migration does
 
 ```
-if group_bs_accounting_dates ∈ base.group_user.implied_ids:
-    company.calendar_system = 'bs'      # everyone keeps seeing BS — no visible change
-for each user explicitly REMOVED from that group:
-    user.calendar_system = 'ad'         # their opt-out survives
-retire the group
+migrations/19.0.1.1.0/pre-migration.py
+  if not version:                                  -> return   (fresh install)
+  if group_bs_accounting_dates ∈ base.group_user.implied_ids:
+      UPDATE res_company SET calendar_system = 'bs'
+  UPDATE res_company SET bs_digits = l10n_np_bs_digits
+  (the group and the old column are then removed by the reload)
 ```
 
-**Verify on a copy that actually has the group set** before running it on the real database. A
-migration tested only where the feature was off proves nothing.
+It does **not** write `res.users`. The plan called for detecting users individually removed from the
+group and pinning them to AD; that state cannot exist, because `has_group` is True for a group implied
+by `base.group_user` regardless of direct membership. So the migration touches one table, which also
+makes the backup note above narrower than it was.
+
+**Verified on a `CREATE DATABASE … TEMPLATE` copy of the live database, which had the checkbox on.**
+That is the only state where the migration does anything. Result: `calendar_system='bs'` for every
+company, digit style preserved, group gone, suite green.
+
+### The visible change this causes
+
+Worth saying to users *before* the upgrade, not after:
+
+| | Before | After |
+|---|---|---|
+| Accounting dates (20 fields) | BS | BS |
+| **All other business dates (~215)** | AD | **BS** |
+| **Printed invoices, statements, certificates** | AD | **BS (AD)** — `bs_report_output` defaults to `both` |
+| Numerals | Devanagari where hand-forced | the company `bs_digits` setting, default Latin |
+
+If a narrower rollout is wanted, set `bs_report_output = 'ad'` **before** letting users in: screens
+follow the preference while every outgoing document stays exactly as it is. Reports can be switched on
+later, per company, without touching anything else.
 
 ## Post-deployment verification
 

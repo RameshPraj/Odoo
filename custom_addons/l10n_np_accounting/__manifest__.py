@@ -1,7 +1,9 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 {
     'name': 'Accounting Nepal',
-    'version': '19.0.1.0.0',
+    # Bumped so migrations/19.0.1.1.0 runs: the Bikram Sambat group is
+    # retired in favour of the calendar preference in nepali_calendar_core.
+    'version': '19.0.1.1.0',
     'countries': ['np'],
     'category': 'Accounting/Accounting',
     'sequence': 11,
@@ -15,8 +17,9 @@ Umbrella module. Installing this pulls in the whole Nepal accounting suite:
 
 * ``l10n_np`` -- chart of accounts, VAT 13%/0%/exempt, fiscal positions,
   tax tags, the 7 provinces
-* ``l10n_np_bs`` -- Bikram Sambat conversion, date widget, browsable
-  Nepali calendar
+* ``nepali_calendar_core`` -- Bikram Sambat as a platform capability: a per-user
+  calendar preference, every date field, date widget, browsable Nepali calendar,
+  and BS on printed documents
 * ``l10n_np_fiscal_year`` -- Shrawan-Ashar fiscal years generated from the
   Bikram Sambat calendar
 * ``l10n_np_tds`` -- withholding tax: configurable rate schedule,
@@ -24,6 +27,18 @@ Umbrella module. Installing this pulls in the whole Nepal accounting suite:
 * ``l10n_np_vat_return`` -- IRD VAT return from a versioned, configurable
   form definition
 * ``account_financial_statements`` -- Balance Sheet, Profit & Loss, Cash Flow
+
+Bikram Sambat
+-------------
+BS is no longer an accounting-only feature gated by a security group. It is a
+per-user preference resolved **user -> company -> AD**, provided by
+``nepali_calendar_core`` and covering every date field in Odoo. Set the company
+default under Accounting Settings or General Settings; individuals override it in
+their own Preferences.
+
+Upgrading from 19.0.1.0.0 carries the old group across: if the "Bikram Sambat
+accounting dates" checkbox was ticked, the company default becomes BS, so nobody
+loses the calendar they were using.
 
 Built entirely on Odoo Community (LGPL-3). No Enterprise module is used.
 
@@ -73,7 +88,6 @@ authoritative: post test transactions freely, file nothing.
     ],
     'data': [
         'security/account_groups.xml',
-        'security/bs_date_group.xml',
         'security/ir.model.access.csv',
         'wizard/account_lock_dates_views.xml',
         'views/account_reconcile_views.xml',

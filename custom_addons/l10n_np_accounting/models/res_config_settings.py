@@ -1,28 +1,18 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-from odoo import fields, models
+"""Surface the calendar settings where an accountant looks for them.
 
+Bikram Sambat used to be an accounting feature switched on by a group defined
+here. It is now a platform preference owned by ``nepali_calendar_core``:
+per-user, resolved user -> company -> AD, and covering every date field rather
+than a 20-field allowlist.
 
-class ResConfigSettings(models.TransientModel):
-    _inherit = 'res.config.settings'
+Nothing is redefined here. The three fields below already exist on
+``res.config.settings`` courtesy of core, so this module only needs to place them
+in the Accounting settings page as well as General Settings -- one company field,
+two doors. An accountant configuring a Nepali ledger should not have to know that
+the calendar lives under General Settings.
 
-    # A `group_`-prefixed settings field with `implied_group` is Odoo's own
-    # mechanism for "a checkbox that grants a group": ticking it adds the group
-    # to `base.group_user`, unticking removes it. No extra code needed.
-    group_l10n_np_bs_accounting_dates = fields.Boolean(
-        string="Bikram Sambat accounting dates",
-        implied_group='l10n_np_accounting.group_bs_accounting_dates',
-        help="Show and accept accounting dates in Bikram Sambat: the Accounting "
-             "Date and due dates on entries, invoices and bills, journal item "
-             "dates, payment dates, lock dates and the date ranges on the Nepal "
-             "reports and returns.\n\n"
-             "Dates are still stored as Gregorian, so reports, filters, "
-             "group-by and reconciliation are unaffected. This changes only what "
-             "is displayed and what may be typed.",
-    )
-
-    l10n_np_bs_digits = fields.Selection(
-        related='company_id.l10n_np_bs_digits', readonly=False,
-        help="Numerals used to draw Bikram Sambat dates. Latin ties back to a "
-             "bank statement more easily; Devanagari reads as properly Nepali "
-             "on a printed document.",
-    )
+The old ``group_l10n_np_bs_accounting_dates`` checkbox and
+``l10n_np_bs_digits`` field are gone; ``migrations/19.0.1.1.0/pre-migration.py``
+carries their values onto the new fields.
+"""

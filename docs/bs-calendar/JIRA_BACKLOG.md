@@ -3,6 +3,19 @@
 Tickets for every **P0/P1** in [`BACKLOG.md`](BACKLOG.md), plus the P2s that share an epic.
 Effort XS <½d · S ½–1d · M 2–3d · L 1–2w · XL >2w.
 
+> **Status is tracked in [`BACKLOG.md`](BACKLOG.md#in-this-pass--status), not here.** These tickets are
+> the original written-up work items and are kept as written, so that what was planned can be compared
+> against what was built. Several are now done, two were dropped as based on a misreading, and one new
+> **P0** was found that no ticket anticipated:
+>
+> | | |
+> |---|---|
+> | Done | BS-101, BS-102, BS-103, BS-104, BS-105, BS-106, BS-107, BS-108, BS-110 |
+> | Dropped | the `formatters` registry override (could not work); per-user opt-out detection in the migration (the state cannot exist) |
+> | **New P0** | the dispatcher raised `Invalid props` and **no date field rendered** for a BS user — the primary path was dead. Found only when the selection was finally tested. Fixed; see BSD-15 |
+>
+> Acceptance criteria referring to "121 tests green" now read **138**.
+
 ---
 
 ## EPIC-BS-1 · Central framework

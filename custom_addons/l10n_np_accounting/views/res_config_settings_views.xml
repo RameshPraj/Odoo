@@ -10,20 +10,25 @@
             <xpath expr="//block[@id='analytic']" position="before">
                 <block title="Nepal" id="l10n_np_accounting"
                        groups="account.group_account_readonly">
-                    <setting id="l10n_np_bs_accounting_dates"
-                             string="Bikram Sambat dates"
-                             help="Enter and read accounting dates in the Nepali calendar">
-                        <field name="group_l10n_np_bs_accounting_dates"/>
+                    <setting id="l10n_np_calendar_system"
+                             string="Calendar"
+                             help="Default calendar for staff who have not chosen one in their own Preferences. Bikram Sambat covers every date in Odoo, not only accounting.">
+                        <field name="calendar_system"/>
                         <div class="content-group mt-2"
-                             invisible="not group_l10n_np_bs_accounting_dates">
+                             invisible="calendar_system != 'bs'">
                             <div class="row">
-                                <label for="l10n_np_bs_digits" class="col-lg-4 o_light_label"/>
-                                <field name="l10n_np_bs_digits"/>
+                                <label for="bs_digits" class="col-lg-4 o_light_label"/>
+                                <field name="bs_digits"/>
+                            </div>
+                            <div class="row">
+                                <label for="bs_report_output" class="col-lg-4 o_light_label"/>
+                                <field name="bs_report_output"/>
                             </div>
                             <div class="text-muted mt-2">
                                 Dates remain stored as Gregorian, so reports, filters and
-                                reconciliation are unaffected. Browse the calendar itself
-                                under <b>Accounting Nepal &gt; Nepali Calendar</b>.
+                                reconciliation are unaffected. Individuals can choose their
+                                own calendar under <b>Preferences</b>. Browse the calendar
+                                itself under <b>Accounting Nepal &gt; Nepali Calendar</b>.
                             </div>
                         </div>
                     </setting>
