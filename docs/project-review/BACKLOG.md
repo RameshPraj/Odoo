@@ -302,6 +302,54 @@ revert them either. This is core modification wearing a data costume.
 **Fix** Move to an idempotent `post_init_hook`; add a test asserting the implication holds, run
 after `-u account`. **Effort S.**
 
+## BS-20 · List views bypassed the whole Bikram Sambat layer
+**RESOLVED 2026-08-15** · Bikram Sambat · `nepali_calendar_core/static/src/registry_overrides.js`;
+`web/static/src/views/list/list_renderer.xml:299`; `web/static/src/views/utils.js:139-151`
+
+With the calendar set to BS, invoice and bill **list** columns still rendered Gregorian
+(`Aug 14`, `5 days ago`) while the same fields rendered BS in the form view.
+
+Odoo 19 renders a date by two routes. A readonly list cell takes the one that instantiates **no
+component at all**: `canUseFormatter` (`list_renderer.js:501-511`) is true for any column without an
+explicit `widget=`, and the cell is then plain text from the **`formatters`** registry. The module
+overrode only the `fields` registry, so the dispatcher was never reached. Kanban
+(`kanban_record.js:216-219`) had the identical defect.
+
+The module's own comment asserted the `formatters` registry served only aggregates and carried no
+field metadata. Both halves were wrong, and that premise is why the gap existed.
+
+Separately, the **Due Date** column is `widget="remaining_days"`
+(`account/views/account_move_views.xml:536`), whose component imports `formatDate` statically
+(`remaining_days_field.js:9,61`) and is reachable by neither registry.
+
+**Impact** The headline feature was absent from the highest-traffic surface in an accounting system.
+It presented as an inconsistency rather than a failure, so it read as "partly implemented".
+
+**Fix** Applied. `formatters` `date`/`datetime` overridden — one place, covering list cells, kanban
+and aggregates — plus a narrow patch of the two `remaining_days` getters. Timezone rule preserved:
+datetimes are re-zoned to `user.tz` before the BS day is taken, plain dates are not. Exclusions on
+the formatter route are by field name only, because that call site has no model; documented in
+[`BIKRAM_SAMBAT.md`](BIKRAM_SAMBAT.md). **Effort S.**
+
+**Why it shipped** The only list-view test asserted `expect(".o_data_row").toHaveCount(1)` and
+nothing about rendered text, so it stayed green throughout. Eleven tests now assert the rendered
+value on that path, including that **no component is mounted** — which pins the fix to the route it
+was written for.
+
+## BS-21 · Pivot cells and the calendar popover remain Gregorian
+**CONFIRMED** · Bikram Sambat · `web/static/src/views/pivot/pivot_renderer.js:90`;
+`web/static/src/views/calendar/calendar_common/calendar_common_popover.js:71`
+
+Both carry a private `getFormattedValue` that does not consult the `formatters` registry, so they
+are unaffected by the BS-20 fix.
+
+**Impact** Low and bounded. Pivot date *cells* are rare — pivot's real BS problem is group-by bucket
+boundaries, which is BSF-3 and a much larger piece of work. The calendar popover shows a date the
+user just clicked on.
+
+**Fix** Patch each if it becomes visible in practice; not worth two more patched core methods
+otherwise. **Effort XS. P4.**
+
 ## BS-1 · The exhaustive Python↔JS cross-check is dead code
 **CONFIRMED** · Bikram Sambat · `l10n_np_bs/tools/selftest.py`
 
@@ -425,8 +473,10 @@ Neither launcher passes `--test-enable`. There is no single command that runs al
 There is now a single command:
 
 ```
-.un-odoo.ps1 test -Db <database>          # every custom module suite
-.un-odoo.ps1 test-module <module> -Db <database>
+.
+un-odoo.ps1 test -Db <database>          # every custom module suite
+.
+un-odoo.ps1 test-module <module> -Db <database>
 ```
 
 `run-odoo.sh` takes the same verbs. It passes `-u <modules> --test-enable --test-tags /<mod>,...` —

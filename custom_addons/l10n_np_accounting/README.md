@@ -35,29 +35,31 @@ Items* and *Analytic Report*. That gate is a normal Odoo setting and is correct 
 
 ## Bikram Sambat accounting dates
 
-**Accounting → Configuration → Settings → Nepal → Bikram Sambat dates.**
+**Accounting → Configuration → Nepali Calendar**, or the same settings under
+General Settings.
 
-With the checkbox on, accounting date fields are displayed and typed in Bikram
-Sambat: the Accounting Date, invoice and due dates, delivery date, journal item
-dates and maturity, payment dates, bank statement dates, the five lock dates, and
-the period fields on the Nepal statements, VAT return and TDS return. A second
-option chooses the numerals — Latin `2083-05-24` (default) or Devanagari
-`२०८३-०५-२४`.
+The calendar is a per-user preference resolved **user → company → Gregorian**, and
+it is no longer specific to accounting: with Bikram Sambat selected, *every*
+user-facing date field in Odoo displays BS, not a hand-maintained allowlist. A
+second option chooses the numerals — Latin `2083-05-24` (default) or Devanagari
+`२०८३-०५-२४` — and a third governs printed documents independently, so an invoice
+does not change depending on who pressed Print.
 
 **Dates are still stored as Gregorian `date` columns.** Nothing about domains,
 group-by, sorting, reporting or reconciliation changes; only the rendering and
-the accepted input do. `tests/test_bs_accounting_dates.py` asserts the stored
-column directly.
+the accepted input do. `tests/test_bs_calendar_integration.py` asserts the stored
+column directly, and `nepali_calendar_core` asserts it again against raw SQL.
 
-How it works, and why not view inheritance: `models/bs_accounting_dates.py`
-overrides `_get_view` to set `widget="bs_date"` on an allowlist of fields, the
-same seam core uses in `base/models/res_currency.py`. Gating with `group_ids` on
-inherited views also works but needs one xpath per occurrence, and
-`account.view_move_form` alone carries two `invoice_date` nodes and two
-`delivery_date` nodes — a name-based xpath patches the first and silently misses
-the rest. `_get_view_cache_key` is extended with both the group and the company's
-digit style, otherwise the first user to open a form would fix the rendering for
-everyone else.
+The implementation lives entirely in `nepali_calendar_core`; this module only
+surfaces the settings and depends on it. See
+[`docs/project-review/BIKRAM_SAMBAT.md`](../../docs/project-review/BIKRAM_SAMBAT.md)
+for the architecture.
+
+> Earlier versions of this file described a security group plus a `_get_view`
+> override that wrote `widget="bs_date"` onto an allowlist of 20 fields. Both were
+> removed in `a80f8313`; the group became the calendar preference, and the arch
+> injection became a registry override. The description is kept here only to
+> explain what an upgraded database is migrating *from*.
 
 Two caveats:
 

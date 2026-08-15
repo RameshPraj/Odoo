@@ -26,9 +26,15 @@ Coverage
 --------
 Rather than enumerating date fields, this module replaces the ``date``,
 ``datetime`` and ``daterange`` entries in the web client's ``fields``,
-``formatters`` and ``parsers`` registries. Every date field therefore follows the
-preference, minus a curated exclusion list (audit columns, cron scheduling,
-technical timestamps).
+``formatters`` and ``parsers`` registries. Odoo renders a date by two routes and
+both are covered: a real component (form views, and any column with an explicit
+``widget=``) and a plain formatted string (readonly list cells, kanban cards,
+column aggregates). Every date field therefore follows the preference, minus a
+curated exclusion list (audit columns, cron scheduling, technical timestamps).
+
+One widget needs its own patch: ``remaining_days``, used by the invoice and bill
+Due Date column, imports ``formatDate`` statically and so is reachable by neither
+registry.
 
 What this does NOT do
 ---------------------
@@ -64,6 +70,7 @@ the algorithm, and there is no formula to extrapolate.
             # Registry overrides load last: they replace the native date widgets.
             'nepali_calendar_core/static/src/registry_overrides.js',
             'nepali_calendar_core/static/src/registry_overrides.xml',
+            'nepali_calendar_core/static/src/remaining_days_patch.js',
             'nepali_calendar_core/static/src/bs_calendar_action.js',
             'nepali_calendar_core/static/src/bs_calendar_action.xml',
             'nepali_calendar_core/static/src/bs_calendar_action.scss',

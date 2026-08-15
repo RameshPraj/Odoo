@@ -1,25 +1,46 @@
 /** Make every date field follow the user's calendar preference.
  *
- * Odoo 19 has ONE component behind the `date`, `datetime` and `daterange` field
- * widgets (`DateTimeField`), and form views, list cells and kanban cards all
- * render through it. Replacing that component covers all three in a single place
- * -- no per-model registration, no field enumeration, and nothing to keep in step
- * as modules are installed.
+ * Odoo 19 renders a date in a user-facing view by exactly TWO routes, and both
+ * have to be covered. Getting this wrong is what made Bikram Sambat work in form
+ * views while invoice *lists* stayed Gregorian.
+ *
+ *   1. The `fields` registry -- a real Owl component. Used by form views always,
+ *      and by a list column ONLY when the arch sets an explicit `widget=`.
+ *   2. The `formatters` registry -- a plain string, no component at all. This is
+ *      the path a readonly list cell and a kanban card take.
+ *
+ * Route 2 is the one that matters most by volume, and it is easy to miss because
+ * it never instantiates anything:
+ *
+ *     list_renderer.xml:299   <t t-if="canUseFormatter(column, record)"
+ *                                 t-out="getFormattedValue(column, record)"/>
+ *     list_renderer.xml:300   <Field t-else="" .../>
+ *
+ * `canUseFormatter` (list_renderer.js:501-511) is true for any column without a
+ * `widget=` on a row that is not being edited, and `getFormattedValue` resolves
+ * through `views/utils.js:139-151` to `formatters.get(field.type)`. Kanban does
+ * the same at `kanban_record.js:216-219`.
+ *
+ * > Correction, recorded rather than quietly amended. This comment previously
+ * > claimed the `formatters` registry was used only for list *aggregates* and
+ * > carried no field metadata, and concluded that overriding it "would buy
+ * > nothing". Both halves were wrong -- it is the primary readonly-cell path, and
+ * > `views/utils.js:146-147` passes `data` and `field`. That mistake is precisely
+ * > why list views kept showing Gregorian dates.
+ *
+ * What the formatter route cannot do is see the *model*: `getFormattedValue`
+ * passes the field descriptor but not the record, so exclusions there are by
+ * field NAME only. That covers `create_date`/`write_date` and the other technical
+ * names, which is the overwhelming majority; model-scoped pairs like
+ * `mail.message/date` apply on the component route only. Documented in
+ * docs/project-review/BIKRAM_SAMBAT.md rather than silently accepted.
  *
  * Why not mutate view architecture instead (the approach this replaced):
  * `_get_view_cache` returns an arch shared between users whose default cache key
  * contains **no uid**. Keying a widget swap on a per-user preference through that
  * path leaks one user's calendar into another user's form unless the cache key is
- * also extended. Going through the registry avoids the question entirely, and
+ * also extended. Going through the registries avoids the question entirely, and
  * costs no server work at all.
- *
- * Why the `formatters` registry is deliberately NOT overridden: `DateTimeField`
- * imports `formatDate` **statically** from `@web/views/fields/formatters`, so a
- * registry entry would not affect field rendering at all. The registry is used for
- * list *aggregates*, and that call site passes no field metadata
- * (`list_renderer.js:767-770` supplies only `digits`/`escape`/`currencyId`), so
- * exclusions could not be honoured there. Overriding it would buy nothing and
- * would silently ignore the exclusion list.
  *
  * `force: true` is the documented way to replace an existing registry entry.
  */
@@ -27,13 +48,15 @@ import { Component } from "@odoo/owl";
 import { registry } from "@web/core/registry";
 import { session } from "@web/session";
 import { user } from "@web/core/user";
+import { localization } from "@web/core/l10n/localization";
 import { standardFieldProps } from "@web/views/fields/standard_field_props";
 import { BSDateField } from "./bs_date_field";
-import { isExcluded } from "./exclusions";
-import { bsToAd, parseBs } from "./bs_convert";
+import { EXCLUDED_FIELDS, isExcluded } from "./exclusions";
+import { adToBs, bsToAd, formatBs, parseBs } from "./bs_convert";
 
 const fields = registry.category("fields");
 const parsers = registry.category("parsers");
+const formatters = registry.category("formatters");
 
 // Resolved server-side as user -> company -> AD and shipped in `session_info`.
 // Read once at module load: changing the preference triggers Odoo's own
@@ -96,6 +119,16 @@ export const OVERRIDDEN_FIELDS = ["date", "datetime", "daterange"];
 
 /** Parser names for typed date input, including the search bar. */
 export const OVERRIDDEN_PARSERS = ["date", "datetime"];
+
+/**
+ * Formatter names for the readonly render path.
+ *
+ * Only `date` and `datetime` exist upstream (`formatters.js:462-463`); there is
+ * deliberately no `daterange` formatter, because a daterange column is a plain
+ * date/datetime ORM field and only becomes a component when the arch asks for
+ * `widget="daterange"`.
+ */
+export const OVERRIDDEN_FORMATTERS = ["date", "datetime"];
 
 /**
  * Point the date registries at the calendar-aware wrappers.
@@ -201,7 +234,105 @@ export function installCalendarOverrides(calendar, deps = {}) {
         parsersRegistry.add(name, bsParse, { force: true });
     }
 
+    // -- formatters ----------------------------------------------------------
+    // The readonly path: list cells, kanban cards and column aggregates. No
+    // component is involved, so this is the only way to reach them. See the
+    // header comment for why this was missed the first time.
+    const formattersRegistry = deps.formatters || formatters;
+    for (const name of OVERRIDDEN_FORMATTERS) {
+        const nativeFormat = formattersRegistry.get(name, null);
+        if (!nativeFormat || nativeFormat.__isBsFormatter__) {
+            continue;   // absent upstream, or already installed
+        }
+        const bsFormat = (value, options = {}) => {
+            if (!value) {
+                return nativeFormat(value, options);
+            }
+            // Exclusions here are by field NAME only: `getFormattedValue`
+            // (views/utils.js:139-151) hands over the field descriptor but not the
+            // record, so there is no model to match on. That still covers
+            // create_date/write_date and the other technical names, which are what
+            // actually appear as optional list columns.
+            const fieldName = options.field && options.field.name;
+            if (fieldName && EXCLUDED_FIELDS.has(fieldName)) {
+                return nativeFormat(value, options);
+            }
+            const bs = toBsParts(value, name === "datetime", options);
+            if (!bs) {
+                // Outside the supported table. Showing the Gregorian date is far
+                // better than showing nothing or a guess.
+                return nativeFormat(value, options);
+            }
+            const text = formatBs(bs, { npDigits });
+            if (name === "datetime" && options.showTime !== false) {
+                // Keep the time component: only the calendar changes, not the
+                // clock. Rendered from the same user-zone value the date came
+                // from, so the two cannot disagree.
+                return `${text} ${localTimeText(value, options)}`;
+            }
+            return text;
+        };
+        // Preserve the native descriptor's own metadata. `extractOptions` is what
+        // carries `numeric` / `show_time` from the arch into the formatter
+        // (formatters.js:93,107); dropping it would silently ignore those options.
+        bsFormat.extractOptions = nativeFormat.extractOptions;
+        bsFormat.__isBsFormatter__ = true;
+        formattersRegistry.add(name, bsFormat, { force: true });
+    }
+
     return installed;
+}
+
+/**
+ * The value as the USER sees it on the wall clock.
+ *
+ * A Datetime is stored UTC, and core formats it with
+ * `value.setZone(options.tz || "default")` (`core/l10n/dates.js:434`) -- where
+ * "default" is the **browser** zone, because Odoo never assigns
+ * `luxon.Settings.defaultZone` in production. Deriving a BS day from that is
+ * wrong for the 5h45m before midnight in Kathmandu: 2026-09-08 18:30 UTC is
+ * already the 9th there, and the 8th in UTC.
+ *
+ * A plain Date carries no instant, so re-zoning it would invent one and shift
+ * the day for anyone west of UTC. Hence the explicit `isDatetime` flag rather
+ * than sniffing the value.
+ */
+function localTime(value, options = {}) {
+    return value.setZone(options.tz || user.tz || "default");
+}
+
+/**
+ * The clock part of a datetime, in the user's own time format.
+ *
+ * `localization` is a **throwing Proxy** (`core/l10n/localization.js:26-40`):
+ * reading a key before `localization_service` has populated it raises rather than
+ * returning undefined. A formatter can be called from anywhere, so the read is
+ * guarded and falls back to an unambiguous 24-hour clock. Hard-coding the format
+ * outright would ignore a user who has chosen a 12-hour locale.
+ */
+function localTimeText(value, options = {}) {
+    const local = localTime(value, options);
+    let format = "HH:mm:ss";
+    try {
+        if (localization.timeFormat) {
+            format = localization.timeFormat;
+        }
+    } catch {
+        // Parameters not ready; the fallback above stands.
+    }
+    if (options.showSeconds === false) {
+        format = format.replace(/[:.]ss/, "");
+    }
+    return local.toFormat(format);
+}
+
+function toBsParts(value, isDatetime, options = {}) {
+    const local = isDatetime ? localTime(value, options) : value;
+    try {
+        return adToBs(local.year, local.month, local.day);
+    } catch {
+        return null;
+    }
 }
 
 installCalendarOverrides(CALENDAR);

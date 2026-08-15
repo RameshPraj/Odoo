@@ -1,177 +1,233 @@
 # Bikram Sambat
 
-Findings by ID in [`BACKLOG.md`](BACKLOG.md).
+The architecture reference for BS date display. Findings by ID in [`BACKLOG.md`](BACKLOG.md).
 
-## Verdict
-
-**The mathematics is flawless. The periphery is not.**
-
-Every one of the 46,022 supported days was replayed in both directions against the reference
-library with **zero divergence**, and the fiscal-year arithmetic is exact and contiguous across
-125 Bikram Sambat years. That is a genuinely strong result and it should be said first.
-
-The risk is entirely in what surrounds the conversion: a verification script nobody runs, an
-unqualified `datetime` claim with no timezone anchoring, a raw exception at the top of the
-supported range, and Gregorian search buckets that split every BS month.
+> **This file was an audit assessment and is now the design document.** The conversion-correctness
+> evidence below is unchanged and still holds. Everything from "Root cause" onward replaces the
+> earlier text, which described a mechanism that has since been built and then corrected.
 
 ## Conversion correctness — proven, not asserted
 
-Three independent comparisons were executed against `nepali_datetime` 1.0.8.5:
+Every one of the **46,022 supported days** was replayed in both directions against
+`nepali_datetime` 1.0.8.5 with **zero divergence**, and the fiscal-year arithmetic is exact and
+contiguous across 125 BS years. The sweep is no longer a script nobody runs: it executes in the
+test suite (`tests/test_conversion_contract.py`) in 0.9s, and it parses the *generated*
+`bs_calendar_data.js` rather than the generator, so a stale checked-in table fails the build.
 
-| Check | Result |
+Supported range: **BS 1975-01-01 … 2100-12-30** (AD 1918-04-13 … 2044-04-12). Outside it the
+conversion raises rather than guessing — the month-length table *is* the algorithm, and there is no
+formula to extrapolate. Display falls back to Gregorian rather than showing nothing.
+
+## Root cause of the list-view defect
+
+Odoo 19 renders a user-facing date by **two** routes, and only one of them was covered.
+
+| Route | Used by | Registry |
+|---|---|---|
+| A real Owl component | Form views always; a list column **only** when the arch sets an explicit `widget=` | `fields` |
+| A plain formatted string, no component | **Readonly list cells**, kanban cards, column aggregates | `formatters` |
+
+`list_renderer.xml:299-300` is the branch:
+
+```xml
+<t t-if="canUseFormatter(column, record)" t-out="getFormattedValue(column, record)"/>
+<Field t-else="" name="column.name" .../>
+```
+
+`canUseFormatter` (`list_renderer.js:501-511`) returns `true` for any column without a `widget=` on a
+row that is not being edited, and `getFormattedValue` resolves through `views/utils.js:139-151` to
+`registry.category("formatters").get(field.type)`. Kanban does the same at
+`kanban_record.js:216-219`.
+
+The module overrode only the `fields` registry. So an invoice list — whose arch is plain
+`<field name="invoice_date"/>` — never instantiated the dispatcher and kept rendering Gregorian,
+while the same field in the form view rendered BS.
+
+> **The premise that caused it, recorded rather than quietly amended.** The module's own source
+> comment asserted that the `formatters` registry "is used for list *aggregates*" and that its call
+> site "passes no field metadata", concluding that overriding it "would buy nothing". Both halves
+> were wrong: it is the primary readonly-cell path, and `views/utils.js:146-147` passes `data` and
+> `field`. The comment was confident, specific, cited a line number — and wrong.
+
+**A second, independent gap**: the invoice/bill **Due Date** column is
+`<field name="invoice_date_due" widget="remaining_days"/>` (`account/views/account_move_views.xml:536`).
+An explicit `widget=` sends it down the component route, but the component it resolves is
+`remaining_days`, not one of the three date widgets — and that component imports `formatDate`
+**statically** (`remaining_days_field.js:9`, used at `:61`), so no registry entry reaches it either.
+It was invisible to both mechanisms.
+
+### Why the tests did not catch it
+
+The only list-view test asserted `expect(".o_data_row").toHaveCount(1)` and nothing about the
+rendered text. It stayed green while every list cell rendered Gregorian. Counting rows proves the
+view did not crash; it proves nothing about the feature.
+
+## Architecture
+
+```
+PostgreSQL (canonical Gregorian date / UTC timestamp)
+        │
+        ▼
+   Odoo ORM  ── domains, sorting, grouping, arithmetic: all untouched
+        │
+        ▼
+ effective calendar = user → company → 'ad'
+        │
+        ├── fields registry     → CalendarAwareDateField → BSDateField | native   (forms, widget= columns)
+        ├── formatters registry → BS string | native formatter                    (list cells, kanban, aggregates)
+        ├── parsers registry    → BS input accepted, AD and +1w still work        (typed input, search bar)
+        ├── remaining_days patch→ BS for the absolute date only                   (Due Date column)
+        └── ir.qweb.field.date/.datetime → company bs_report_output               (printed documents)
+```
+
+Nothing above the ORM line changes. There is exactly one conversion implementation, shared:
+`tools/bs.py` (Python) and `static/src/bs_convert.js` (JavaScript), both fed from `tools/names.py`
+via a generated table, with a test asserting the two agree.
+
+## Effective-calendar precedence
+
+**`res.users.calendar_system` → `res.company.calendar_system` → `'ad'`**, resolved once in
+`models/res_users.py:80-92` (`_resolve_calendar_system`). There is no second preference system.
+
+- The user field is empty by default, meaning "follow the company".
+- Company default is `'ad'`, so installing the module changes nothing until someone opts in.
+- The resolved value rides in `env.context` via `context_get()` for server-side consumers, and
+  reaches the browser as a top-level `session_info` key (`models/ir_http.py:18-22`).
+- `calendar_system` is in `_get_invalidation_fields()`, so a change takes effect on the next
+  request rather than the next server restart.
+
+Language and calendar are independent: **English + BS** and **Nepali + AD** are both valid.
+
+Printed documents deliberately follow the **company** `bs_report_output` (`ad` / `bs` / `both`), not
+the reader's own preference — an invoice must not change depending on who pressed Print.
+
+## Storage strategy
+
+**Bikram Sambat is presentation only.** `fields.Date` stays a Gregorian `date` column and
+`fields.Datetime` stays a naive-UTC `timestamp`. No BS string is ever written, and no BS value ever
+reaches a domain.
+
+This is asserted, not assumed. `tests/test_calendar_preference.py::TestStorageInvariance` writes the
+same date as a BS user and an AD user and compares the **raw SQL column**, because an ORM-level
+assertion would still pass if a converter were rewriting values symmetrically on read and write. It
+also asserts that a Gregorian domain still matches, that the BS equivalent does **not**, and that
+`export_data` returns the Gregorian value.
+
+Consequences that follow for free, and are therefore not at risk: sorting is `ORDER BY` on a real
+date column, grouping is `date_trunc`, filtering is a domain over ISO strings, and every accounting
+calculation — periods, lock dates, due dates, ageing, reconciliation — operates on the stored value.
+
+## Date versus Datetime
+
+Handled separately, deliberately.
+
+| | `date` | `datetime` |
+|---|---|---|
+| Stored | Gregorian calendar date | naive UTC timestamp |
+| Timezone | **none applied** — a date has no instant, so re-zoning it would invent one and shift the day west of UTC | UTC → `user.tz` → local Y/M/D → BS |
+| Time shown | n/a | preserved, from the same user-zoned value the date came from |
+
+**Never convert before normalising the timezone.** Core formats a datetime with
+`value.setZone(options.tz || "default")` (`core/l10n/dates.js:434`), and `"default"` is the
+**browser** zone, because Odoo never assigns `luxon.Settings.defaultZone` in production. Deriving a
+BS day from that is wrong for the 5h45m before midnight in Kathmandu.
+
+The discriminating case, asserted at every layer: **2026-09-08 18:30 UTC** is BS **2083-05-24** in
+`Asia/Kathmandu` and **2083-05-23** in UTC. Both are correct for their reader, and a test that gets
+the same answer for both is broken.
+
+## Numerals
+
+One company setting, `bs_digits`: `latin` (`2083-05-24`, the default) or `devanagari`
+(`२०८३-०५-२४`). Neither is hard-coded anywhere; the JavaScript reads `session.bs_digits` and the
+Python reads `company.bs_digits`. Devanagari is opt-in because it is the larger change to an
+existing ledger, and because Latin digits tie back to a bank statement more easily.
+
+Odoo cannot supply these: its `NUMBERING_SYSTEMS` table explicitly comments out `ne`
+(`localization_service.js:21-31`), so the digits come from `tools/names.py`.
+
+## Supported surfaces
+
+| Surface | Status |
 |---|---|
-| Generated JS table vs the library's `calendar_bs.csv` (126 years × 12 months) | **0 differences** |
-| JS table vs `_days_in_month(y, m)` for all 1,512 pairs | **0 differences** |
-| **AD→BS for every day**, 1918-04-13 … 2044-04-12 (46,022 days) | **0 mismatches** |
-| **BS→AD for every day** (46,022) | **0 mismatches** |
+| Form views, `date` and `datetime` | **BS** |
+| **List/tree cells** (invoice date, accounting date, bills, journal entries, payments, partners) | **BS** — the fix |
+| **Due Date** (`remaining_days`) | **BS** for the absolute date; relative labels unchanged, see below |
+| Kanban cards | **BS** |
+| Column and group aggregates | **BS** |
+| Typed input, including the search bar | BS accepted; AD and `+1w`/`today` still work |
+| Printed documents (QWeb/PDF) | **BS**, per company `bs_report_output` |
+| Standalone Nepali calendar browser | BS |
+| Exports (CSV/XLSX) | **Gregorian, deliberately** |
 
-Epoch is consistent (`BS_EPOCH_AD = [1918,4,13]`, `bs_calendar_data.js:15`). Supported range is
-BS 1975–2100. All four month lengths occur in the table (29 × 244, 30 × 559, 31 × 512, 32 × 197)
-and both implementations handle every one.
+## Intentional exceptions
 
-Boundary behaviour is **symmetric** between Python and JavaScript: below the range, above it,
-month 13, day 33 and BS 2100-12-31 all raise or return an error consistently on both sides.
+Stated so they are not mistaken for oversights.
 
-**The generation pipeline is sound in principle** — `gen_js_data.py` reads the library's own CSV,
-so there is one source of truth. The problem is that nothing enforces it.
+**Relative labels stay relative.** `remaining_days` shows "Today", "In 5 days", "Yesterday" for
+anything within 99 days (`remaining_days_field.js:42-57`) and only falls back to an absolute date
+beyond that. Those labels are calendar-neutral — "in 5 days" is the same statement in either
+calendar — and they carry the at-a-glance overdue signal an accountant actually reads. Only the
+absolute date underneath is converted.
 
-## BS-1 (P1) — the safety claim is enforced by a script nobody runs
+**Exclusions on the formatter route are by field name only.** `getFormattedValue` passes the field
+descriptor but not the record, so there is no model to match on. `create_date`, `write_date`,
+`nextcall`, `lastcall` and the other technical names stay Gregorian everywhere — that is the
+overwhelming majority, and they are the columns people actually see. The three model-scoped pairs
+(`mail.message/date`, `mail.tracking.value/create_date`, `mail.notification/read_date`) keep their
+exclusion on the component route only.
 
-`l10n_np_bs/tools/selftest.py` performs exactly the 46,022-day sweep above. It is:
+**Search filters and group-by still use Gregorian period boundaries.** A BS month is split across
+two Gregorian buckets. This is the largest remaining functional gap and is tracked as **BSF-1** /
+**BSF-3**; it needs either declarative BS-month filters or a stored `bs_year_month` column, because
+BS months are 29–32 days from a lookup table and are not expressible as the `relativedelta` the
+granularity registry requires.
 
-- not imported by `tests/__init__.py` (which imports only `test_calendar_ui`)
-- not called by any test
-- referenced nowhere in code — only in its own docstring, the manifest prose, and these documents
-- and `l10n_np_bs/__init__.py` is empty
+**The calendar view grid keeps Gregorian month boundaries.** Use the standalone Nepali Calendar
+action to browse a true BS month.
 
-The manifest states: *"generates the JavaScript copy from that same CSV, so the Python and JS
-sides can never drift apart."* That claim is true of the *generator* and false of the *repository*
-— bumping `nepali_datetime`, or hand-editing the file marked "DO NOT EDIT BY HAND", would not be
-caught by anything.
+**Pivot cells and the calendar popover** have their own private `getFormattedValue`
+(`pivot_renderer.js:90`, `calendar_common_popover.js:71`) and remain Gregorian. Pivot's real BS
+problem is bucket boundaries, which is BSF-3.
 
-**This is the cheapest high-value fix in the entire audit: wire `selftest.py` into the test
-suite.** The verification already exists and already works.
+**Exports stay Gregorian.** `Datetime.convert_to_export` calls `convert_to_display_name`
+(`fields_temporal.py:287-294`), so converting there would silently break every re-import.
 
-## BS-2 (P1) — `datetime` is declared supported with zero timezone handling
+## Testing coverage
 
-`bs_date_field.js:205` declares `supportedTypes: ["date", "datetime"]`.
+| Area | Where |
+|---|---|
+| 46,022-day sweep, both directions, month boundaries | `tests/test_conversion_contract.py` |
+| Python/JS contract: digits, separators, padding, weekday forms, error semantics | same, plus `static/tests/bs_convert.test.js` |
+| Preference precedence, cache invalidation, self-service rights | `tests/test_calendar_preference.py` |
+| **Storage invariance via raw SQL**, domain behaviour, export | same |
+| Timezone matrix, server side | `tests/test_timezone_and_reports.py` |
+| Report output modes, per-field override, reader-independence | same |
+| Dispatcher selection, component route | `static/tests/registry_overrides.test.js` |
+| **Readonly list cells** — BS rendering, no component mounted, timezone, exclusions, digits, AD no-regression, out-of-range fallback | same |
 
-The trace: `get value()` (`:44-46`) returns the record value raw; for a Datetime that value came
-from `deserializeDateTime`, which does `.setZone(options?.tz || "default")`
-(`web/static/src/core/l10n/dates.js:709-715`). Odoo **never assigns
-`luxon.Settings.defaultZone` in production** — the only writes are in test files — so "default"
-is the **browser OS zone**, not `res.users.tz`. Then `:55` calls
-`adToBs(v.year, v.month, v.day)` on those local components.
+Deliberately shared fixtures: the JavaScript and Python suites assert the **same dates**, so they
+cross-check one contract rather than testing two things that each happen to pass.
 
-There is **no `setZone`, `toUTC` or `toLocal` anywhere** in `bs_date_field.js`, `bs_convert.js`
-or `bs_calendar_action.js`.
+## Upgrade considerations
 
-**Concretely:** a datetime stored `2026-09-08 19:00:00` UTC renders as **BS 2083-05-24** on a
-browser set to Asia/Kathmandu (00:45 on the 9th) and **BS 2083-05-23** on a browser set to UTC.
-A day-boundary error exists for the 5h45m window each day.
+This is the first alternate-calendar layer in this codebase — Odoo 19 has no alternate-calendar
+support anywhere, Babel has no calendar parameter, and Intl's `ca-` extension has no Bikram Sambat
+value. Every seam is our maintenance burden.
 
-**Currently latent (BS-2 note).** Every field in `_BS_DATE_FIELDS` was verified at source to be a
-`fields.Date` — no Datetime reaches the widget today. For Date fields the path is safe, because
-`deserializeDate` parses at midnight in the default zone and `.year/.month/.day` are exactly the
-stored date. But `supportedTypes` explicitly invites a Datetime, and the day it arrives the error
-is silent.
+Per-major smoke test, in order of fragility:
 
-**Nuance worth stating:** this is *Odoo-consistent* — the stock `DateTimeField` shows the same
-day. The defect is that a module whose entire purpose is the Nepali calendar inherits Odoo's
-browser-timezone assumption instead of anchoring to Asia/Kathmandu, and then advertises datetime
-support as though it were solved.
+1. **`canUseFormatter` / the list branch** (`list_renderer.xml:299`). If Odoo changes when a cell
+   uses a component, list views silently revert to Gregorian. This is the seam that already failed
+   once.
+2. **The `remaining_days` patch.** A patched getter on a core component; if the getter is renamed or
+   the widget is replaced, the Due Date column reverts.
+3. **The `fields`/`formatters`/`parsers` registry keys.** A rename leaves Gregorian in place, which
+   is the correct failure mode: English dates are cosmetic, wrong dates are not.
+4. **`session_info`** and `_get_invalidation_fields`.
+5. **`ir.qweb.field.*` converters** — `.date` delegates to `tools.format_date` while `.datetime`
+   calls Babel directly, so both need overriding independently.
 
-Related: **BS-6** — "today" comes from the raw browser clock (`new Date()`, `:127-130`), not
-`res.users.tz`, so the widget's today-highlight can disagree with the server's `context_today`
-for part of each day. **BS-18** — grep for `Kathmandu`, `Asia/` or `05:45` across all three
-modules returns **zero hits**. Nothing is anchored anywhere; that is the root cause of both.
-
-## Storage vs display — this part is right
-
-**BS is genuinely presentation-only, and that is the correct design.**
-
-`bs_accounting_dates.py:55-82` only sets `widget` and `options` XML attributes; nothing converts
-stored values. The widget writes only a luxon DateTime or `false` (`bs_date_field.js:89,96,191`),
-and `onInputChange` parses to a triple and converts through `bsToAd` *before* any write — so **no
-BS string can reach the ORM** (BS: verified, clean). A test reads the raw column back via SQL to
-prove it.
-
-The arch cache key is correct and necessary. Core's key is
-`(view_id, view_type, mobile, lang, *_view_ref)` (`ir_ui_view.py:3082-3084`) — no uid, no
-company — and `_get_view` is called from inside an ormcached wrapper. Without the override, the
-first user to open a form would fix the rendering for everyone else. Both leak directions are
-tested. Cost is 4× arch-cache entries per view, which is acceptable.
-
-## BS-3 (P2) — the most consequential functional gap
-
-Search views are deliberately excluded from patching (`bs_accounting_dates.py:57-60`), and that
-exclusion is asserted by a test. The consequence is not a bug so much as an unfinished feature:
-
-`account.view_account_move_filter` declares `<filter name="date" date="date"/>`
-(`account_move_views.xml:365`), so Odoo generates **Gregorian** Month/Quarter/Year buckets. A BS
-user selecting "August 2026" gets 2026-08-01 … 08-31 — **BS Bhadra 16 to Ashoj 15, straddling two
-BS months**. The same applies to `group_by` on `date:month`, which is a PostgreSQL `date_trunc`
-on the Gregorian column.
-
-There is **no BS-aware period filter or group-by anywhere**, and no `_read_group` or `search`
-override in any of the three modules.
-
-**For a Nepali ledger this is the point where the localisation stops.** The dates display in BS
-right up until you try to report by period — which is most of what an accountant does.
-
-Related: **BS-8** — only `form` and `list` views are patched, so kanban, calendar, graph and **all
-PDF reports** stay Gregorian. A user with the setting on sees BS on the invoice form and AD on the
-printed invoice. **BS export/RPC** also emit Gregorian, consistent with the design but a
-user-visible surprise that the settings help text should state.
-
-## Fiscal year — arithmetic exact, error handling not
-
-**BS-19 (verified):** `SHRAWAN = 4`, `ASHAR = 3` are correct for the table's Baisakh=1 indexing.
-`_fiscal_year_range` was recomputed for **all 125 fiscal years BS 1975–2099**: zero gaps, zero
-overlaps, every year starting exactly the day after the previous ended, and no off-by-one at
-boundaries. Leap handling is right — 2086 correctly yields 366 days where 2082 and 2084 yield 365.
-
-**BS-4 (P2)** is the flaw. `month_length()` (`bs.py:121-124`) is the **one** Python entry point
-with no error wrapping — its siblings `ad_to_bs` and `bs_to_ad` both convert exceptions to
-`UserError`. Measured behaviour: `_days_in_month(2101, 1)` raises a raw `KeyError`;
-`_days_in_month(2083, 13)` raises a raw `AssertionError`.
-
-`_fiscal_year_range(2100)` calls `month_length(2101, 3)` and therefore raises `KeyError: 2101`.
-The wizard's `_onchange_preview` catches only `UserError`, so it escapes as a traceback rather
-than an in-form message. **Reachable today** by typing 2100, and reachable *by default* from BS
-2097 onward because `bs_year_to` defaults to `_default_bs_year() + 4`.
-
-**BS-14 (P3)** is a design contradiction worth noting: `generate_np_fiscal_year.py:108-113` writes
-`fiscalyear_last_day`/`fiscalyear_last_month` on the company from the **last generated year
-only** — while the module's own test `test_end_date_is_not_fixed` and its manifest exist precisely
-to assert that a fixed pair *cannot* express Nepal's variable 15/16/17-July year-end. Any code
-path falling back to that pair is silently wrong by up to two days.
-
-**BS-15 (P3):** the "Replace existing" option calls `overlapping.unlink()` filtered only on
-company and date overlap — no name filter, no confirmation. Hand-made fiscal years are destroyed.
-
-## Testing
-
-**BS-1** above is the headline. Beyond it:
-
-- **TST-4 / BS:** there are **no JavaScript tests at all**. `static/tests/` is declared in the
-  manifest and is an **empty, untracked directory** — so it does not even exist on a fresh clone.
-  Every finding in the boundary, timezone and search sections lives in untested JS.
-- **Python coverage is thin where the risk is.** The suite asserts 3 known dates, a 97-day-stride
-  round trip (≈301 of 46,022 days), Devanagari formatting, and one low-side range raise. Not
-  tested: the **upper** range end, `month_length()` at all (the exact function behind BS-4),
-  explicit 29/30/31/32-day boundaries, invalid `parse_bs` input, and **anything timezone-related**.
-- The browser test asserts only that a grid of >20 cells rendered. It never checks a date value.
-- **BS-16:** the generator's own guard probes 5 dates — enough to catch a wrong epoch, not enough
-  to catch a single wrong month length.
-
-## Recommended sequence
-
-1. **BS-1** — wire `selftest.py` into the suite. **S.** Highest value per unit effort in the audit.
-2. **BS-4** — wrap `month_length()`; bound-check the fiscal-year wizard. **XS.**
-3. **BS-2** — either drop `"datetime"` from `supportedTypes` or anchor to `res.users.tz`. **S.**
-4. **BS-6 / BS-18** — derive "today" from the user timezone; anchor Asia/Kathmandu once, centrally. **S.**
-5. **BS-5** — adopt `useInputField` so the DOM cannot diverge from the record. **S.**
-6. **BS-7** — check `_fields[name].type` before patching. **XS.**
-7. **BS-3** — a BS-aware period filter and group-by. **L**, and the one that decides whether this
-   is a Nepali accounting system or a Gregorian one with Nepali date labels.
+Two seams have failed during development, which is the best available evidence of how they fail:
+silently, with dates still rendering, just in the wrong calendar. Any smoke test must therefore
+assert the **rendered text**, never that a view merely mounted.
