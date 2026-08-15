@@ -1447,6 +1447,90 @@ function Doctor-Pass([string] $m) { $script:DoctorPass++; Write-Tagged 'PASS' $m
 function Doctor-Warn([string] $m) { $script:DoctorWarn++; Write-Tagged 'WARN' $m 'Yellow' }
 function Doctor-Fail([string] $m) { $script:DoctorFail++; Write-Tagged 'FAIL' $m 'Red' }
 
+# Odoo's floor: below this it logs "Upgrade Wkhtmltopdf" and sets state
+# 'upgrade' (ir_actions_report.py:110-113).
+$script:WkMinVersion = [version] '0.12.0'
+# What Odoo's own wiki recommends, and what deploy/README.md requires.
+$script:WkWantVersion = [version] '0.12.6'
+
+function Find-Wkhtmltopdf {
+    <#
+        Locate the binary the way Odoo does, not the way a shell does.
+
+        find_in_path() searches $PATH and then APPENDS config['bin_path']
+        (odoo/tools/misc.py:142-146), so a binary already on PATH wins and
+        bin_path is only a fallback. Checking PATH alone would report "not
+        found" on a working portable install; checking bin_path alone would
+        name the wrong binary on a system-wide one.
+
+        Returns a hashtable @{ Path; From } or $null.
+    #>
+    $onPath = Get-Command wkhtmltopdf -ErrorAction SilentlyContinue
+    if ($null -ne $onPath) {
+        return @{ Path = $onPath.Source; From = 'PATH' }
+    }
+    $binPath = Get-ConfValue 'bin_path'
+    if (-not [string]::IsNullOrWhiteSpace($binPath)) {
+        # Odoo treats 'None' as unset (misc.py:144).
+        $binPath = $binPath.Trim()
+        if ($binPath -ne 'None') {
+            $candidate = Join-Path $binPath 'wkhtmltopdf.exe'
+            if (Test-Path -LiteralPath $candidate) {
+                return @{ Path = $candidate; From = 'bin_path in odoo.conf' }
+            }
+        }
+    }
+    return $null
+}
+
+function Test-Wkhtmltopdf {
+    <#
+        Grade the PDF engine. Presence is not enough: an UNPATCHED Qt build
+        reports state 'ok' to Odoo (is_patched_qt is read at
+        ir_actions_report.py:106 but never changes the state) and then silently
+        drops --header-html and --footer-html. Nothing in Odoo warns about it,
+        so this is the only place it can be caught.
+    #>
+    $found = Find-Wkhtmltopdf
+    if ($null -eq $found) {
+        Doctor-Warn ("wkhtmltopdf not found on PATH or via bin_path: every PDF report degrades to " +
+                     "HTML with 'Unable to find Wkhtmltopdf on this system'. See deploy/README.md section 1.")
+        return
+    }
+    $where = "$($found.Path) (via $($found.From))"
+
+    $out = ''
+    try { $out = [string](& $found.Path --version 2>$null) } catch { $out = '' }
+    if ([string]::IsNullOrWhiteSpace($out)) {
+        Doctor-Fail "wkhtmltopdf at $where does not answer --version; Odoo reports state 'broken' and PDF rendering fails."
+        return
+    }
+    $out = $out.Trim()
+
+    # Odoo parses the first run of digits and dots (ir_actions_report.py:108),
+    # so match what it matches rather than inventing a stricter pattern.
+    $m = [regex]::Match($out, '[0-9]+(\.[0-9]+)+')
+    $ver = $null
+    if (-not ($m.Success -and [version]::TryParse($m.Value, [ref] $ver))) {
+        Doctor-Fail "wkhtmltopdf at $where reports no parseable version ('$out'); Odoo reports state 'broken'."
+        return
+    }
+
+    $patched = $out -match '(?i)\(with patched qt\)'
+    if ($ver -lt $script:WkMinVersion) {
+        Doctor-Fail ("wkhtmltopdf $ver at $where is below Odoo's minimum $($script:WkMinVersion); " +
+                     "Odoo reports state 'upgrade'. See deploy/README.md section 1.")
+    } elseif (-not $patched) {
+        Doctor-Fail ("wkhtmltopdf $ver at $where does not report '(with patched qt)'. Odoo will still " +
+                     "call it, but headers and footers are silently dropped. See deploy/README.md section 1.")
+    } elseif ($ver -lt $script:WkWantVersion) {
+        Doctor-Warn ("wkhtmltopdf $ver at $where is patched-Qt but below the recommended " +
+                     "$($script:WkWantVersion); Odoo accepts it. See deploy/README.md section 1.")
+    } else {
+        Doctor-Pass "wkhtmltopdf $ver (with patched qt) at $where"
+    }
+}
+
 function Test-LooksProductionLike {
     # No single setting proves it, so judge on several. Any one of these on a
     # developer machine would be unusual; together they mean "this is a server".
@@ -1687,14 +1771,7 @@ function Invoke-Doctor {
         if ($null -ne $found) { Doctor-Pass "$tool present: $($found.Source)" }
         else { Doctor-Warn "$tool not on PATH" }
     }
-    $wk = Get-Command wkhtmltopdf -ErrorAction SilentlyContinue
-    if ($null -ne $wk) {
-        # Presence is all this can prove: the requirement is the patched-Qt
-        # 0.12.6 build, and the binary does not reliably report that.
-        Doctor-Warn "wkhtmltopdf present at $($wk.Source) -- verify it is the patched-Qt 0.12.6 build (see deploy/README.md), which cannot be confirmed from the binary alone"
-    } else {
-        Doctor-Warn "wkhtmltopdf not found: PDF reports will fail. Report tests assert QWeb HTML instead."
-    }
+    Test-Wkhtmltopdf
     $chrome = @("$env:ProgramFiles\Google\Chrome\Application\chrome.exe",
                 "${env:ProgramFiles(x86)}\Google\Chrome\Application\chrome.exe") |
               Where-Object { Test-Path -LiteralPath $_ } | Select-Object -First 1

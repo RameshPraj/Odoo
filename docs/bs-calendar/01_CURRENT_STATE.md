@@ -130,7 +130,15 @@ Carried from the repository audit; each is confirmed.
 | **BS-5** | The input is uncontrolled (`t-att-value` → `setAttribute`), so the DOM diverges from the record after typing | Core's own fields use `useInputField` for exactly this |
 | **BS-6** | "Today" comes from `new Date()`, not `res.users.tz` | Widget and server disagree on today for part of each day |
 | **BS-7** | `arch.iter('field')` walks nested subviews of **other** models while the guard checks only the outer model's `_fields` | Becomes materially riskier once coverage is global |
-| **BS-8** | Only `form` and `list` are patched | 5 fields appear solely in kanban/pivot/graph/activity |
+| **BS-8** | Only `form` and `list` are patched | 5 fields appear solely in kanban/pivot/graph/activity — **but see the note below: BS-8 no longer means this** |
+
+> **ID drift warning, added 2026-08-15.** This document is a deliberately frozen "before" snapshot,
+> so the row above is left as written. The **ID** is not frozen, though: **BS-8 has since been
+> rescoped** in [`../project-review/BACKLOG.md`](../project-review/BACKLOG.md) and no longer describes
+> view coverage at all. Its original diagnosis was wrong — the mechanism it blamed was retired, and
+> `nepali_calendar_core` now overrides the `ir.qweb.field.date`/`datetime` converters globally, so
+> server-rendered reports do print BS. BS-8 today covers only the handful of QWeb templates that
+> bypass `t-field` and so miss the converter. Follow the ID to the backlog, not to this row.
 
 ## Two "shared" APIs that disagree
 

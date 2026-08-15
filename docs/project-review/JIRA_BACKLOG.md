@@ -333,7 +333,18 @@ match the fiscal calendar.
 ---
 
 ## EPIC-7 · Test integrity
-**Findings** TST-2, TST-4, TST-6, TST-7, COD-1, COD-2
+**Findings** TST-2, TST-4, TST-6, TST-7, TST-8, COD-1, COD-2
+
+### BUG-22 — `date_range` errors, so the suite can never be green
+**Bug · Critical · S · TST-8**
+15 of `date_range`'s 19 tests error with `null value in column "autopost_bills" of relation
+"res_partner" violates not-null constraint`. The module depends only on `web`, so it loads — and
+self-tests — before `account`; its `setUp` creates a `res.company`, which cascades into a
+`res_partner` INSERT that omits a column `account` made NOT NULL. Reproduced in isolation and in the
+full run, so it is structural, not ambient state. **This blocks EPIC-7 as a whole and the Phase-2
+exit criterion in [`ROADMAP.md`](ROADMAP.md)**: `test` exits non-zero regardless of the code under
+test, so no green baseline exists to regress from. **Acceptance** `run-odoo.* test` exits 0 on a
+configured database, or `date_range` is explicitly and visibly excluded from the gate.
 
 ### STORY-4 — Fixtures instead of live database state
 **Story · Critical · M · TST-2**
@@ -409,14 +420,19 @@ health check that fails below the expected file count. Declare `polib`.
 |---|---:|---:|---:|
 | 1 Tenant isolation | 6 | 3 | 2 |
 | 2 Statutory correctness | 7 | 3 | 4 |
-| 3 Data & secrets | 5 | 3 | 0 |
+| 3 Data & secrets | 6 | 4 | 0 |
 | 4 App security | 4 | 0 | 1 |
 | 5 Build & upgrade | 6 | 0 | 4 |
 | 6 Bikram Sambat | 4 | 0 | 2 |
-| 7 Test integrity | 5 | 1 | 2 |
+| 7 Test integrity | 6 | 1 | 2 |
 | 8 Licence & docs | 4 | 0 | 2 |
 | 9 Supply chain | 3 | 0 | 2 |
-| **Total** | **44** | **10** | **19** |
+| **Total** | **46** | **11** | **19** |
+
+> **Re-derived 2026-08-15** by counting the headings rather than carrying the figures forward. The
+> total read **44** and had already drifted before BUG-22 was added for TST-8: epic 3 holds 6 tickets
+> and 4 Blockers, not 5 and 3. Blockers now count **11**, of which **10 are open** — BUG-16 (OPS-1)
+> is struck through as done — so "the ten Blockers" below is still right.
 
 **The ten Blockers** — BUG-1 (cluster takeover), BUG-2 (`dbfilter`), BUG-3 (`X-Forwarded-Host`),
 BUG-6 (reports), BUG-7 (VAT nil), BUG-8 (the test hiding it), BUG-13 (filestore split), BUG-14

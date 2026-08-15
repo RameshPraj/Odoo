@@ -99,6 +99,23 @@ conf_int() {
     esac
 }
 
+# True when dotted version $1 >= dotted version $2. Missing components count as
+# zero, so 0.12.6 >= 0.12 and 0.12.6.1 > 0.12.6. `sort -V` is deliberately not
+# used: it is a GNU extension and this script also has to run on macOS.
+version_ge() {
+    awk -v a="$1" -v b="$2" 'BEGIN {
+        na = split(a, x, "."); nb = split(b, y, ".")
+        n = (na > nb ? na : nb)
+        for (i = 1; i <= n; i++) {
+            xi = (i <= na ? x[i] + 0 : 0)
+            yi = (i <= nb ? y[i] + 0 : 0)
+            if (xi > yi) exit 0
+            if (xi < yi) exit 1
+        }
+        exit 0
+    }'
+}
+
 conf_bool() {
     local raw
     raw="$(conf_value "$1" | tr 'A-Z' 'a-z')"
@@ -1157,6 +1174,76 @@ d_pass() { doctor_pass=$(( doctor_pass + 1 )); printf '%s[PASS]%s %s\n' "$c_gree
 d_warn() { doctor_warn=$(( doctor_warn + 1 )); printf '%s[WARN]%s %s\n' "$c_yellow" "$c_reset" "$*"; }
 d_fail() { doctor_fail=$(( doctor_fail + 1 )); printf '%s[FAIL]%s %s\n' "$c_red"    "$c_reset" "$*"; }
 
+# Odoo's floor: below this it logs "Upgrade Wkhtmltopdf" and sets state
+# 'upgrade' (ir_actions_report.py:110-113).
+wk_min_version='0.12.0'
+# What Odoo's own wiki recommends, and what deploy/README.md requires.
+wk_want_version='0.12.6'
+
+# Locate the binary the way Odoo does, not the way a shell does: find_in_path()
+# searches $PATH and then APPENDS config['bin_path'] (odoo/tools/misc.py:142-146),
+# so a binary on PATH wins and bin_path is only a fallback. Checking PATH alone
+# would report "not found" on a working portable install; checking bin_path
+# alone would name the wrong binary on a system-wide one.
+# Sets wk_bin and wk_from; returns 1 when nothing was found.
+find_wkhtmltopdf() {
+    local dir
+    wk_bin=''
+    wk_from=''
+    if command -v wkhtmltopdf >/dev/null 2>&1; then
+        wk_bin="$(command -v wkhtmltopdf)"
+        wk_from='PATH'
+        return 0
+    fi
+    dir="$(conf_value bin_path)"
+    # Odoo treats the literal string 'None' as unset (misc.py:144).
+    if [ -n "$dir" ] && [ "$dir" != 'None' ] && [ -x "$dir/wkhtmltopdf" ]; then
+        wk_bin="$dir/wkhtmltopdf"
+        wk_from='bin_path in odoo.conf'
+        return 0
+    fi
+    return 1
+}
+
+# Grade the PDF engine. Presence is not enough: an UNPATCHED Qt build reports
+# state 'ok' to Odoo (is_patched_qt is read at ir_actions_report.py:106 but
+# never changes the state) and then silently drops --header-html and
+# --footer-html. Nothing in Odoo warns about it, so this is the only place it
+# can be caught.
+check_wkhtmltopdf() {
+    local where out ver
+
+    if ! find_wkhtmltopdf; then
+        d_warn "wkhtmltopdf not found on PATH or via bin_path: every PDF report degrades to HTML with 'Unable to find Wkhtmltopdf on this system'. See deploy/README.md section 1."
+        return 0
+    fi
+    where="$wk_bin (via $wk_from)"
+
+    out="$("$wk_bin" --version 2>/dev/null)"
+    if [ -z "$out" ]; then
+        d_fail "wkhtmltopdf at $where does not answer --version; Odoo reports state 'broken' and PDF rendering fails."
+        return 0
+    fi
+
+    # Odoo parses the first run of digits and dots (ir_actions_report.py:108),
+    # so match what it matches rather than inventing a stricter pattern.
+    ver="$(printf '%s' "$out" | grep -oE '[0-9]+(\.[0-9]+)+' | head -1)"
+    if [ -z "$ver" ]; then
+        d_fail "wkhtmltopdf at $where reports no parseable version ('$out'); Odoo reports state 'broken'."
+        return 0
+    fi
+
+    if ! version_ge "$ver" "$wk_min_version"; then
+        d_fail "wkhtmltopdf $ver at $where is below Odoo's minimum $wk_min_version; Odoo reports state 'upgrade'. See deploy/README.md section 1."
+    elif ! printf '%s' "$out" | grep -qi '(with patched qt)'; then
+        d_fail "wkhtmltopdf $ver at $where does not report '(with patched qt)'. Odoo will still call it, but headers and footers are silently dropped. See deploy/README.md section 1."
+    elif ! version_ge "$ver" "$wk_want_version"; then
+        d_warn "wkhtmltopdf $ver at $where is patched-Qt but below the recommended $wk_want_version; Odoo accepts it. See deploy/README.md section 1."
+    else
+        d_pass "wkhtmltopdf $ver (with patched qt) at $where"
+    fi
+}
+
 production_signals() {
     # No single setting proves it, so judge on several.
     [ "$(conf_int workers 0)" -gt 0 ] && printf 'workers > 0\n'
@@ -1352,17 +1439,7 @@ cmd_doctor() {
         if command -v "$pkg" >/dev/null 2>&1; then d_pass "$pkg present: $(command -v "$pkg")"
         else d_warn "$pkg not on PATH"; fi
     done
-    if command -v wkhtmltopdf >/dev/null 2>&1; then
-        # Presence is all this can prove: the requirement is the patched-Qt
-        # 0.12.6 build, which the binary does not reliably report.
-        if wkhtmltopdf --version 2>/dev/null | grep -qi 'with patched qt'; then
-            d_pass "wkhtmltopdf present and reports the patched-Qt build"
-        else
-            d_warn "wkhtmltopdf present but does not report 'with patched qt' -- PDF output may be wrong (see deploy/README.md)"
-        fi
-    else
-        d_warn "wkhtmltopdf not found: PDF reports will fail."
-    fi
+    check_wkhtmltopdf
 
     echo ""
     echo "Runtime state"

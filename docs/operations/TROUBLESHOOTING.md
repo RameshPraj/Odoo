@@ -159,13 +159,46 @@ rotated generations.
 **Fix.** Install Chrome; `doctor` reports whether one was found. `websocket-client` must also be
 installed, and the asset bundles pre-built — a cold build can exceed the browser timeout.
 
-## PDF reports fail
+## "Unable to find Wkhtmltopdf on this system. The report will be shown in html."
 
-**Cause.** `wkhtmltopdf` is absent, or is not the patched-Qt 0.12.6 build that Odoo requires.
+**Cause.** `wkhtmltopdf` is absent. Odoo does not fail — it degrades: `install` state means the
+client refuses to download a PDF and renders the report as HTML instead
+(`reports/utils.js:73`). The same notification appears for a `broken` binary.
 
-**Fix.** See [`deploy/README.md`](../../deploy/README.md) §1. `doctor` can only report presence and
-whether the binary claims `with patched qt`; it cannot verify the build otherwise. Report tests in this
-project assert the QWeb **HTML**, not the final PDF, precisely because of this.
+**Fix.** Install it and set `bin_path` — see [`deploy/README.md`](../../deploy/README.md) §1, which
+now carries a Windows procedure. Run `doctor` afterwards; it grades the binary rather than merely
+finding it.
+
+**If installing it appears to change nothing**, you have hit one of two caches:
+
+| Cache | Where | Clear it by |
+|---|---|---|
+| `_wkhtml()` is `@functools.lru_cache(1)` | `ir_actions_report.py:88` | **restarting the server** |
+| `downloadReport.wkhtmltopdfStatusProm` | `web/.../reports/utils.js:70` | **reloading the browser tab** |
+
+Both. Restarting alone leaves an already-open tab showing the old message.
+
+## PDF renders, but headers and footers are missing
+
+**Cause.** The binary is an **unpatched-Qt** build. Odoo detects this (`is_patched_qt`,
+`ir_actions_report.py:106`) but does not act on it — the state is still `ok`, so nothing warns you.
+`--header-html` and `--footer-html` are simply ignored. It surfaces as an error only when merging
+multiple documents (`:624-628`).
+
+**Fix.** Replace it with a patched build. `wkhtmltopdf --version` must print `(with patched qt)`;
+`doctor` now **fails** on this rather than warning.
+
+## PDF renders, but dates are Gregorian where they should be Bikram Sambat
+
+**Cause.** BS in reports comes from a QWeb field-converter override
+(`nepali_calendar_core/models/ir_qweb_fields.py:34-76`), so it only reaches dates emitted through
+`t-field`, or `t-out` with `t-options={'widget': 'date'}`. A template that calls `.strftime()` or
+prints a raw value bypasses it entirely. Several `account_financial_report` templates do — see
+**BS-8** in [`BACKLOG.md`](../project-review/BACKLOG.md) for the specific list.
+
+Note also that printed output follows the **company** setting (`bs_report_output`, `bs_digits`), not
+the reader's personal preference, by design: a printed invoice must not change depending on who
+pressed Print.
 
 ## Everything looks fine but a change never took effect
 

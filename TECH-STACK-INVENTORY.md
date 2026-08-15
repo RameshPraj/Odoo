@@ -163,7 +163,7 @@ All frontend libraries are **vendored into the repository** — there is no npm,
 |---|---|---|---|---|---|---|---|
 | PDF | **reportlab** + **rl-renderPM** | `4.1.0` / `4.0.3` | 4 files, reports | PDF primitives | **HIGH** | import scan; `rl-renderPM` is win32-only pin | — |
 | PDF | **PyPDF2** | pinned & installed `2.12.1` | PDF merge/stamp | PDF manipulation | **HIGH** | `requirements.txt:67` | ⚠️ **PyPDF2 is deprecated upstream** (succeeded by `pypdf`); Odoo already uses `PyPDF>=5.4.0` on Python 3.13 |
-| PDF engine | **wkhtmltopdf** | **NOT INSTALLED** | Report rendering | HTML→PDF | **HIGH** | Verified absent on this host | ⚠️ **All PDF reports currently fail** — invoices, quotations, delivery slips |
+| PDF engine | **wkhtmltopdf** | **0.12.6 (with patched qt)** | Report rendering | HTML→PDF | **HIGH** | Installed 2026-08-15 into `.runtime/bin/wkhtmltopdf/` (gitignored), wired via `bin_path`; verified by rendering a real posted invoice to a 27 KB PDF | ⚠️ Dev host only — the server is still unprovisioned. Upstream archived 2023; last Windows build is 0.12.6-1 (2020) and ships no checksum. See **DEP-6** |
 | Excel | **openpyxl** / **XlsxWriter** | `3.1.2` / `3.1.9` | 4 / 6 files | xlsx read/write | MED | import scan | — |
 | Excel (legacy) | **xlrd** / **xlwt** | `2.0.1` / `1.3.0` | 3 / 3 files | Legacy .xls | LOW | import scan | ⚠️ Both effectively unmaintained; `xlwt` writes the obsolete BIFF format |
 | Images | **Pillow** | `10.2.0` | 24 files | Image processing | **HIGH** | import scan | Frequent CVE target — keep pinned deliberately |
@@ -298,7 +298,7 @@ All frontend libraries are **vendored into the repository** — there is no npm,
 ## Summary of the highest-consequence concerns
 
 1. **No CI/CD, no containers, no IaC** — nothing validates a change before it runs
-2. **wkhtmltopdf absent** — every PDF report fails today
+2. **wkhtmltopdf is unmaintained** (**DEP-6**) — installed and working on the dev host since 2026-08-15, but upstream was archived in 2023, the last Windows build dates from 2020, it ships no checksum, and Odoo 19 offers no alternative engine
 3. **Two undeclared runtime dependencies** — a clean rebuild will not reproduce this environment
 4. **No APM, metrics, health check or dependency scanning** — no operational or supply-chain visibility
 5. **Werkzeug dev server + `workers = 0`** — single-process, not a production posture

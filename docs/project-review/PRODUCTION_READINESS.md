@@ -55,7 +55,10 @@ before a second tenant exists. They are not go-live blockers for a single-tenant
 - [ ] **SUP-2** — remote created, history pushed
 - [ ] **DEP-1** — `nepali-datetime` declared and pinned so a rebuild is possible at all
 - [ ] Backup **and restore** rehearsed, per tenant
-- [ ] `wkhtmltopdf` installed — without the patched 0.12.6 build every PDF fails
+- [ ] `wkhtmltopdf` installed **on the server** — without a patched-Qt build every PDF degrades to
+      HTML, and an *unpatched* build passes silently while dropping headers and footers. Done on the
+      dev host 2026-08-15 (`.runtime/bin/wkhtmltopdf/`, wired via `bin_path`); `doctor` now grades it.
+      See `deploy/README.md` §1 and **DEP-6**
 - [ ] **OPS-4** — watchdog restored (already correct in the Linux template)
 - [ ] **OPS-3** — systemd hardening, once the writable-`/opt/odoo` question is settled
 

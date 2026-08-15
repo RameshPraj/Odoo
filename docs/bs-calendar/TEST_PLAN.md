@@ -1,7 +1,13 @@
 # Test plan
 
-Baseline: **121 tests** across the eight custom modules, all green. Any new failure is a regression,
-never a rebaseline.
+Baseline: **121 tests** across the eight custom modules covered by this plan. Any new failure is a
+regression, never a rebaseline.
+
+> **Updated 2026-08-15.** This line used to end "all green". Across all 16 custom modules the suite
+> is **304 tests, 0 failed, 15 errors** and is **not** green — every error is `date_range`
+> (**TST-8**), structural and pre-existing rather than a regression. The modules this plan covers are
+> still green; the wider suite is not, so "all green" cannot be used as the go/no-go signal until
+> TST-8 is fixed.
 
 Two things about the original suite shaped this plan:
 - **There were zero JavaScript tests.** `l10n_np_bs/static/tests/` was declared in the manifest and
@@ -173,7 +179,8 @@ Populating the empty declared bundle is a prerequisite for calling any JS behavi
 
 Each stage must be green before the next begins.
 
-1. Baseline: 121 tests green
+1. Baseline: the 121 tests in this plan's eight modules green (the wider 304-test suite is not — see
+   the note at the top)
 2. Selftest wired in (§1) — before any code moves
 3. Conversion contract tests (§1) after the Python/JS reconciliation
 4. **Timezone (§2) — before the registry override lands**
@@ -192,5 +199,8 @@ Named so they are not mistaken for covered:
   month", which fails today and will continue to
 - **Calendar month grid** — labels only; boundaries stay Gregorian
 - **POS UI** — a separate frontend bundle, untested and uncovered
-- **PDF rendering end to end** — `wkhtmltopdf` is not installed, so report tests assert the QWeb
-  **HTML**, not the final PDF
+- **PDF rendering end to end** — report tests assert the QWeb **HTML**, not the final PDF, and will
+  continue to: Odoo short-circuits `_render_qweb_pdf` to HTML under the test harness unless the
+  context carries `force_report_rendering` (`ir_actions_report.py:1025-1028`). `wkhtmltopdf` 0.12.6
+  patched-Qt is installed as of 2026-08-15 and a real invoice PDF was verified by hand, but that
+  check is manual, not automated

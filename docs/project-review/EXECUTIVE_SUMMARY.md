@@ -7,8 +7,10 @@ the live PostgreSQL cluster, and the Odoo substrate as it bears on multi-tenancy
 vendored upstream files were not reviewed as code, but *how they got here and how they get
 patched* is in scope and is among the worst findings.
 
-All findings and evidence in [`BACKLOG.md`](BACKLOG.md). **88 findings: 9 P0, 24 P1, 31 P2, 18 P3,
-6 P4.**
+All findings and evidence in [`BACKLOG.md`](BACKLOG.md). **121 findings: 10 P0, 29 P1, 46 P2, 28 P3,
+6 P4** (119 table entries; `DEP-3/4/5` is one row covering three). Four are RESOLVED — FIN-2, OPS-1,
+BS-20, DEP-1 — and CI-1 is partially resolved, so **116 remain open**. This line previously read "88
+findings" and had drifted by 30; it is now counted from `BACKLOG.md` rather than carried forward.
 
 > This audit supersedes the previous pass and **corrects two of its conclusions**, stated
 > explicitly rather than silently amended. See *Corrections* below.
@@ -222,8 +224,10 @@ are documented with the arithmetic rather than a target assumed.
 
 ## 10. Prioritised roadmap
 
-Five phases with exit criteria in [`ROADMAP.md`](ROADMAP.md); 44 tickets across 9 epics in
-[`JIRA_BACKLOG.md`](JIRA_BACKLOG.md), 10 of them Blockers.
+Five phases with exit criteria in [`ROADMAP.md`](ROADMAP.md); **46 tickets across 9 epics** in
+[`JIRA_BACKLOG.md`](JIRA_BACKLOG.md), **10 of them open Blockers** (11 marked Blocker, one done). The
+ticket count read 44 and had already drifted before BUG-22 was added for TST-8; it is now counted
+from the file.
 
 1. **P0/P1 Safety** — takeover, filestore split, remote, rotation, cloud sync, the four accounting fixes
 2. **Stabilization** — installability, one test command, fixtures, the BS cross-check

@@ -53,7 +53,7 @@ of the global mechanism — but it will need a row here and a test before being 
 | **`crm`** (13) | lead `date_deadline`, `date_closed`, `date_conversion`, `date_open`, activity report | **None** | Automatic. `crm.activity.report` is a **report model** → group-by, deferred | P2 | No |
 | **`hr`** (12) | employee `birthday`, `visa_expire`, work-permit expiry; `hr.version` contract start/end, trial end, passport expiry | **None** | Automatic | P2 | No |
 | **`account_asset_management`** (12) | asset dates, depreciation board | **None** | Automatic | P2 | No |
-| **`account_financial_report`** (12) | report wizard date ranges | **None** | Automatic for the wizard fields; report **output** needs the QWeb formatter | P2 | No |
+| **`account_financial_report`** (12) | report wizard date ranges | **None** | Automatic for the wizard fields. Report **output** is now mostly BS via the global QWeb converter; what remains is the templates that bypass `t-field` — see the rescoped **BS-8** | P2 | No |
 | **`hr_skills`** (9) | certification / skill validity | **None** | Automatic | P3 | No |
 | **`mrp`** (9, all `datetime`) | MO `date_start` / `date_finished` / `date_deadline`, work orders, workcentre productivity | **None** | Automatic — **all `datetime`, so timezone-dependent** | P2 | No |
 | **`purchase`** (8) | RFQ/order date, `date_approve`, `date_planned` (expected arrival), purchase report | **None** | Automatic; `purchase.report` → group-by, deferred | P1 | No |

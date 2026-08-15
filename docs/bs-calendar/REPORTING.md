@@ -11,7 +11,7 @@
 > modules each inject their own into their own values dict. So there is nothing to shadow; the
 > requirement is simply that we never claim the name, which is now tested.
 
-## State before this pass: no BS in any report, anywhere
+## State *before* this pass: no BS in any report, anywhere (historical — see the note at the end)
 
 Stated as a measured absence:
 
@@ -21,8 +21,21 @@ Stated as a measured absence:
 - **No** `ir.qweb` / `ir.qweb.field.date` extension.
 - `bs.format_bs()` exists and has **zero callers**.
 
-So every printed PDF, every xlsx export, and the TDS certificate and VAT return outputs render
-Gregorian. BS is screen-only. This is a green field.
+So every printed PDF, every xlsx export, and the TDS certificate and VAT return outputs rendered
+Gregorian. BS was screen-only. This was a green field.
+
+> **Past tense as of 2026-08-15 — do not quote the sentence above as current.** It describes the
+> state *before* this pass, and "BS is screen-only" is now the most quotable wrong statement in these
+> docs. What was built: `nepali_calendar_core/models/ir_qweb_fields.py:34-76` overrides the
+> `ir.qweb.field.date` and `.datetime` converters globally, so **every** `t-field` date in **every**
+> QWeb template renders BS with no template change. Verified end to end — a real invoice PDF prints
+> `Invoice Date  2083-04-29 BS (08/14/2026 AD)`.
+>
+> Two things genuinely remain Gregorian, and neither is "reports" as a class. Templates that bypass
+> `t-field` — calling `.strftime()` or printing a raw value — never reach the converter; that is the
+> rescoped **BS-8**. And xlsx exports go through a different path entirely. The TDS certificate and
+> VAT return still have no report template of any kind, so there is nothing there to render either
+> way.
 
 ## The seam: `ir.qweb.field.*`
 

@@ -60,10 +60,22 @@ Only `t-field` / `t-out` output goes through the converter we override. A core f
 date in Python and puts it in a plain string — a dashboard subtitle, an activity summary, a chatter
 message — will show AD.
 
-## 7. `wkhtmltopdf` is not installed
+## 7. PDF rendering is verified by hand, not by the suite
 
-Report tests assert the QWeb **HTML**. Final PDF rendering is unverified because the patched
-`wkhtmltopdf` 0.12.6 build is absent from this environment.
+`wkhtmltopdf` 0.12.6 (with patched qt) was installed on 2026-08-15, and a real posted invoice was
+rendered end to end: BS dates appear in the PDF exactly as on screen
+(`Invoice Date  2083-04-29 BS (08/14/2026 AD)`).
+
+The automated tests still assert the QWeb **HTML**, and that is not laziness — Odoo deliberately
+short-circuits `_render_qweb_pdf` to `_render_qweb_html` under the test harness unless the context
+carries `force_report_rendering` (`ir_actions_report.py:1025-1028`). So a green suite says nothing
+about the PDF path on a machine where the binary is missing or wrong. Treat "the PDF renders" as a
+manual check after any change to the binary, `bin_path`, or the report layouts.
+
+Note also what the PDF follows: printed output uses the **company** settings `bs_report_output` and
+`bs_digits`, never the reader's personal `calendar_system`. This is deliberate — a printed invoice
+must not change depending on who pressed Print — and is locked in by
+`test_output_does_not_depend_on_the_readers_preference`.
 
 ## 8. Modules that are not installed are not covered
 

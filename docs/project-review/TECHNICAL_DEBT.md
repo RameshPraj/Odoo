@@ -53,7 +53,9 @@ reconciled only by manually re-running `apply.py`, with nothing detecting diverg
 
 ## 3. No verification harness — CI-1, QA-1
 
-121 tests and nothing runs them; no linter configured despite `# noqa` annotations throughout —
+304 tests across 16 modules, run only by hand — `run-odoo.* test` exists, but no automation invokes
+it, and the suite currently exits non-zero on 15 pre-existing `date_range` errors (**TST-8**), so
+there is no green baseline to protect. No linter configured despite `# noqa` annotations throughout —
 including `S307` on a live `eval()`, which reads as a dismissed security warning with nothing
 re-checking it.
 

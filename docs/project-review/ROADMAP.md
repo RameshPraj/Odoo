@@ -69,7 +69,11 @@ disproportionately valuable: the verification already exists and works; it just 
 
 **Exit criteria**
 - A fresh venv from the requirements files installs all 15 modules
-- One command runs 121 tests, reports skips, exits non-zero on failure
+- One command runs the whole custom suite, reports skips, and exits non-zero on failure. The command
+  now exists (`run-odoo.ps1 test` / `run-odoo.sh test`) and runs **304 tests** across 16 modules, not
+  the 121 this criterion originally named. **It cannot be met as written today**: 15 `date_range`
+  tests error for a structural reason (**TST-8**), so a non-zero exit is guaranteed regardless of the
+  code under test. Fix TST-8 first, or this phase gate can never close.
 - Every suite passes on both an empty and a fully configured database
 - The 46,022-day BS cross-check runs in CI
 

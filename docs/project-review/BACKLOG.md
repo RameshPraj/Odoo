@@ -7,7 +7,23 @@ Every finding appears here exactly once. All other documents reference these IDs
 - **Confidence** `CONFIRMED` (read the source or ran it) · `LIKELY` · `POSSIBLE` · `NEEDS_VERIFICATION`
 - **Effort** XS <½d · S ½–1d · M 2–3d · L 1–2w · XL >2w
 
-**Totals: 9 × P0 · 24 × P1 · 31 × P2 · 18 × P3 · 6 × P4 = 88 findings**
+**Totals: 10 × P0 · 29 × P1 · 46 × P2 · 28 × P3 · 6 × P4 = 119 entries / 121 findings**
+
+> **Recounted 2026-08-15.** This line previously read `9 × P0 · 24 × P1 · 31 × P2 · 18 × P3 · 6 × P4
+> = 88 findings`, which was stale in every bucket but P4. Findings were appended by later passes
+> without re-totalling, and resolved ones were marked in place rather than removed, so the figure
+> drifted by 30. It is now counted from the document: `## <ID>` headings in P0/P1, table rows in
+> P2–P4. **119 entries, 121 findings** — the two differ only because `DEP-3/4/5` is a single row
+> covering three findings.
+>
+> The count includes entries already closed. **4 are RESOLVED** — FIN-2, OPS-1, BS-20, DEP-1 — and
+> CI-1 is PARTIALLY RESOLVED, so the open figure is 116.
+>
+> Three of the P2 entries are new from the wkhtmltopdf work: **DEP-6** (unmaintained PDF engine),
+> **TST-8** (`date_range` tests error, so no green suite run is currently possible) and **OPS-7**
+> (`run-odoo.ps1` documents a `--db` flag it never parses). **BS-8** was rescoped in place — its
+> original diagnosis was wrong, and the correction is stated in the row itself rather than silently
+> applied.
 
 > **This audit supersedes the first pass and corrects two of its conclusions.** Both corrections
 > are stated explicitly at **FIN-1** and **FIN-2** rather than silently amended.
@@ -482,7 +498,7 @@ translations survive, leaving a **half-Nepali UI** — harder to spot than a cle
 is manual and needs `polib`, which is undeclared. **Fix** Scripted upgrade runbook + a health
 check counting deployed files. **Effort M.**
 
-## CI-1 · No CI of any kind — 121 tests, nothing runs them
+## CI-1 · No CI of any kind — 304 tests, and only a manual runner
 **PARTIALLY RESOLVED 2026-08-15** · Build
 
 No `.github/`, `.gitlab-ci.yml`, `Jenkinsfile`, `tox.ini`, `pytest.ini`, pre-commit or Makefile.
@@ -505,7 +521,9 @@ un-odoo.ps1 test-module <module> -Db <database>
 `run-odoo.sh` takes the same verbs. It passes `-u <modules> --test-enable --test-tags /<mod>,...` —
 both halves are required, because `--test-enable` alone runs nothing for modules already up to date —
 and it **propagates Odoo's exit code unchanged**, so a failing suite cannot be mistaken for a pass. It
-demands an explicit `--db`, because `-u` modifies the named database.
+demands an explicit database, because `-u` modifies the named one. Spell it `-Db <name>` in
+PowerShell and `--db <name>` in the shell script: the POSIX form is **not** accepted by
+`run-odoo.ps1`, which is **OPS-7**.
 
 **Still open: nothing runs it automatically.** There is no CI, and this repository still has no remote
 to run one against (**SUP-2**). The command existing is a precondition for CI, not a substitute for it.
@@ -660,7 +678,7 @@ unenforceable folklore. **Effort S.**
 | **BS-5** | LIKELY | Bikram Sambat | `bs_date_field.xml:14-20` | Input is uncontrolled (`t-att-value` → `setAttribute`), so the DOM diverges from the record after typing | Rejected entries stay on screen; picker updates don't refresh the box | Use `useInputField` | S |
 | **BS-6** | CONFIRMED | Bikram Sambat | `bs_date_field.js:127-130` | "Today" from the raw browser clock, not `res.users.tz` | Widget and server disagree on today for part of each day | Derive from user tz | S |
 | **BS-7** | CONFIRMED | Bikram Sambat | `bs_accounting_dates.py:70-81` | Name-based patching walks nested subviews of **other** models | Latent today; a future non-date field named `date` in a subview gets `bs_date` | Check `_fields[name].type` | XS |
-| **BS-8** | CONFIRMED | Bikram Sambat | `bs_accounting_dates.py:57-60` | Only `form` and `list` patched | Kanban, calendar, graph and **all PDF reports** stay Gregorian — internally inconsistent | Document; extend if wanted | S |
+| **BS-8** | CONFIRMED (rescoped 2026-08-15) | Bikram Sambat | `account_financial_report/report/open_items.xml:222,283,332`; `vat_report.xml:156,159`; `general_ledger.xml:116,118`; `aged_partner_balance.xml:100`; `layouts.xml:26` | **Superseded finding.** The old text blamed `bs_accounting_dates.py:57-60` ("only `form` and `list` patched; **all** PDF reports stay Gregorian"). That mechanism was retired — server-side BS now comes from the `ir.qweb.field.date`/`datetime` converter override (`nepali_calendar_core/models/ir_qweb_fields.py:34-76`), which is global and reaches core invoices, sale orders, delivery slips, payment receipts and the financial statements. It only reaches values emitted via `t-field`, or `t-out` with `t-options={'widget':'date'}`; a template calling `.strftime()` or printing a raw value bypasses it | Open Items and VAT Report print **no** BS at all; General Ledger and Aged Partner Balance print Gregorian period headers above BS line dates; every report footer timestamp is Gregorian. Already visible in the HTML variants — installing wkhtmltopdf did not cause it, but makes it reachable in PDF too | Route those through `t-field`, or call the existing `format_date_bs` QWeb global (`ir_qweb_fields.py:79-100`). No new conversion code needed | S |
 | **ACC-4** | CONFIRMED | Accounting | `account.fiscal.position-np.csv:3` | Export FP `auto_apply=1` with no country | Also zero-rates foreign **vendors** — wrong under reverse charge | SME decision | S |
 | **ACC-5** | CONFIRMED | Accounting | `l10n_np/data/template/account.account-np.csv:24` | `Tax Receivable` typed `asset_current` but sits in the 2xxxxx liability block | Reads wrong on a code-ordered trial balance | Re-code or re-type | XS |
 | **ACC-6** | CONFIRMED | Accounting | `l10n_np_tds/data/ir_sequence_data.xml:6,9` | TDS sequence uses the **Gregorian** year and is **company-global** (`company_id=False`) | All tenants share one certificate series; the year rolls mid-Nepali-FY | Per-company sequence, BS year | S |
@@ -679,6 +697,9 @@ unenforceable folklore. **Effort S.**
 | **SEC-8** | CONFIRMED | Security | `report_xlsx/controllers/main.py:27,36-41,100-104` | Bare `@route()` inherits auth invisibly; client context merged into rendering; `_serialize_exception` returned | Auth tracks upstream silently; info disclosure (escaped, not XSS) | Restate `auth=`; allowlist context | S |
 | **CI-2** | CONFIRMED | Environments | repo root | No Docker/compose; dev (Windows, `workers=0`) and prod (Linux, systemd) share no artefact; `run-odoo.sh` has never run | Nothing validates the Linux path | Containerise | M |
 | **DEP-2** | CONFIRMED | Dependencies | `requirements.txt:66-67` | `PyPDF2==2.12.1` installed and active (retired upstream) | PDF parsing is an attack surface for uploaded invoices | Move to `pypdf` | S |
+| **DEP-6** | CONFIRMED (new 2026-08-15) | Dependencies | `.runtime/bin/wkhtmltopdf/`; `deploy/README.md` §1 | The PDF engine is unmaintained and unverifiable. The wkhtmltopdf packaging repo was **archived read-only 2023-08-28** — no releases, no security fixes. Its **last Windows build is 0.12.6-1 (2020-06-10)**, three years older than the 0.12.6.1-3 Odoo recommends and our docs used to mandate; 0.12.6.1-3 ships Linux packages only. Upstream publishes **no checksums or signatures** for it, by explicit statement in the release notes, so the binary cannot be verified against anything but TLS to github.com | A 2020 HTML/Qt renderer running server-side with no patch path. Bounded today — it renders only our own templates — but becomes a real exposure under database-per-tenant, where tenant-controlled content reaches it. Odoo 19 has **no** alternative engine: `_render_qweb_pdf` routes unconditionally to `_run_wkhtmltopdf` (`ir_actions_report.py:891`), and there is no weasyprint/chromium path in the tree | No clean fix. Either pin and vendor a known-good binary with a recorded hash (done: `.runtime/bin/wkhtmltopdf/PROVENANCE.txt`), or add a `_render_qweb_pdf` override via the `report_type` dispatch (`ir_actions_report.py:1148`) the way `report_xlsx` already does. Revisit before multi-tenancy | M |
+| **TST-8** | CONFIRMED (new 2026-08-15) | Testing | `custom_addons/date_range/__manifest__.py` (`"depends": ["web"]`); `tests/test_date_range.py:18` | **15 of `date_range`'s 19 tests error**, every one with `null value in column "autopost_bills" of relation "res_partner" violates not-null constraint`. `date_range` depends only on `web`, so it loads — and self-tests — before `account`. Its `setUp` creates a `res.company`, which cascades into a `res.partner` INSERT. The column exists NOT NULL in the database (put there by `account`), but `account` is not in the registry yet, so the ORM omits it. Reproduced identically with `test-module date_range` alone and in the full suite, and with and without the `bin_path` change, so it is structural and pre-existing | The suite reports `0 failed, 15 error(s) of 304 tests` and `test` exits 1, so **no green run is currently achievable** — which defeats the whole point of a gate and hides the next real regression. Note TST-3 already warns that a green run is indistinguishable from a run of nothing; this is the inverse | Give `date_range` its tests a dependency-complete registry (add `account` to the test-run module set, or tag these tests `post_install`), or exclude the vendored module from the local gate and say so | S |
+| **OPS-7** | CONFIRMED (new 2026-08-15) | Operations | `run-odoo.ps1:7,23-33` | **The script's own usage example cannot work.** Line 7 documents `.\run-odoo.ps1 upgrade l10n_np_accounting --db odoo19`, but `--db` is never parsed anywhere in the file — PowerShell binds it positionally, so `--db` lands in `$Db` and `odoo19` in `[int] $Lines`, failing with `Cannot convert value "odoo19" to type "System.Int32"`. `test --db odoo19` appears to work only by luck: with no target argument the tokens shift one place and `odoo19` happens to land in `$Db` | A user copying the documented POSIX form — or the `run-odoo.sh` syntax — gets a .NET cast error naming a parameter they never used. Not a safety hole: the destructive verbs refuse to run rather than targeting a wrong database. But the header advertises a form the script rejects | Either parse `--db`/`--database` explicitly, or correct the header and help to the PowerShell form `-Db`. Prefer the former, since both scripts are documented as one interface | XS |
 | **DOC-3** | CONFIRMED | Documentation | `custom_addons/VENDORED.md` | Omits `date_range`; "two of the three are AGPL-3" when it is **four of seven**; lists 2 of 8 local modules; misstates the §13 trigger as modification | Understates AGPL exposure by half; feeds LIC-1 | Rewrite against manifests | S |
 | **DOC-4** | CONFIRMED | Documentation | 5 root docs | All describe a repo with one local module; `RUNTIME-ARCHITECTURE.md` never mentions `custom_addons` | Stale by 8×; omits the `_get_view` patcher | Date-stamp as snapshots | S |
 | **OPS-3** | CONFIRMED | Operations | `deploy/odoo.service:18,51`; `README.md:45` | Service account owns `/opt/odoo` incl. its venv; `ProtectSystem=full` leaves `/opt` writable; missing `PrivateDevices`, `RestrictAddressFamilies`, `SystemCallFilter`, `MemoryMax`, `UMask`; `-s /bin/bash` | Code-execution bugs become persistent. Note the tension: `-u` and SUP-3 both want `/opt/odoo` writable | `ProtectSystem=strict` + `ReadWritePaths`; `nologin` | S |

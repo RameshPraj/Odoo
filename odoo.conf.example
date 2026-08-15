@@ -33,6 +33,23 @@ addons_path = C:\path\to\odoo-19.0\odoo\addons,C:\path\to\odoo-19.0\custom_addon
 ; Real attachments live here. Back this up together with the database dump.
 data_dir = C:\path\to\odoo-19.0\.odoo_data
 
+; --- External binaries (wkhtmltopdf) ---
+; Required for PDF reports. Without a wkhtmltopdf on $PATH, every PDF report
+; degrades to HTML with "Unable to find Wkhtmltopdf on this system".
+;
+; bin_path is a DIRECTORY, not a file, and it is appended to $PATH when Odoo
+; looks a binary up (find_in_path, odoo/tools/misc.py:142-146). It is the only
+; lever there is: no wkhtmltopdf-specific option exists, and there is no
+; --bin-path flag, because bin_path is a FileOnlyOption (config.py:208).
+;
+; Leave it commented out if wkhtmltopdf is installed system-wide and on $PATH.
+; Uncomment for a portable, non-elevated install -- see deploy/README.md section 1.
+;
+; Changing this looks like a no-op unless you clear two caches: restart the
+; server (_wkhtml is lru_cached, ir_actions_report.py:88) AND reload the browser
+; tab (reports/utils.js:70).
+; bin_path = C:\path\to\odoo-19.0\.runtime\bin\wkhtmltopdf\bin
+
 ; --- HTTP ---
 http_interface = 127.0.0.1
 http_port = 8069

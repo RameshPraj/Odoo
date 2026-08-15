@@ -43,13 +43,77 @@ sudo postgresql-setup --initdb        # RHEL does not initialise the cluster for
 sudo systemctl enable --now postgresql
 ```
 
+### wkhtmltopdf
+
 `wkhtmltopdf` is **not** in either distribution's repositories in the patched build Odoo
-needs. Without it every PDF report fails. Install the Odoo-recommended 0.12.6 build from
-<https://github.com/wkhtmltopdf/packaging/releases>, then verify:
+needs. Without it every PDF report degrades to HTML with the notification "Unable to find
+Wkhtmltopdf on this system".
+
+The requirement is not merely "a wkhtmltopdf". An **unpatched-Qt** build passes every check
+Odoo makes — `is_patched_qt` is read at `ir_actions_report.py:106` but never changes the
+reported state — and then silently drops `--header-html` and `--footer-html`, so reports
+render without their headers and footers and nothing says why.
+
+**Linux.** Install **0.12.6.1-3** from the
+[packaging releases](https://github.com/wkhtmltopdf/packaging/releases/tag/0.12.6.1-3).
+Check the asset list against your target before planning on it — that release is not
+comprehensive:
+
+| Target above | Asset in 0.12.6.1-3 |
+|---|---|
+| RHEL 9 / Rocky 9 / Alma 9 | `wkhtmltox-0.12.6.1-3.almalinux9.x86_64.rpm` |
+| Ubuntu 22.04 (jammy) | `wkhtmltox_0.12.6.1-3.jammy_amd64.deb` |
+| **Ubuntu 24.04 (noble)** | **none — no noble build exists in any release** |
+
+For 24.04 the jammy `.deb` is what people use in practice, but it is not an official
+noble build; confirm `--version` reports patched Qt on the actual host rather than
+assuming. Note also that the focal and bionic assets in this release are **ppc64el only** —
+there is no amd64 package for either.
+
+**Windows.** 0.12.6.1-3 is **not obtainable**: it publishes Linux packages only. The last
+release with any Windows asset is
+[**0.12.6-1**](https://github.com/wkhtmltopdf/packaging/releases/tag/0.12.6-1) (2020-06-10),
+which offers an MSVC installer and a portable `.7z`. Use the portable archive and point
+Odoo at it with `bin_path`, which needs no administrator rights:
+
+```powershell
+# Windows' bundled tar is bsdtar/libarchive, which reads 7-Zip -- no 7z install needed.
+# Verify with `tar --version` first; PowerShell has no native 7z support, and the `tar`
+# inside Git Bash is GNU tar, which cannot read this format.
+tar -xf wkhtmltox-0.12.6-1.mxe-cross-win64.7z -C <dest>
+```
+
+then in `odoo.conf` — a **directory**, not the executable:
+
+```ini
+bin_path = C:\path\to\odoo-19.0\.runtime\bin\wkhtmltopdf\bin
+```
+
+`bin_path` is appended to `$PATH` when Odoo resolves a binary (`find_in_path`,
+`odoo/tools/misc.py:142-146`), so anything already on `PATH` takes precedence. It can only
+be set in the config file: it is a `FileOnlyOption` (`config.py:208`), so there is no
+`--bin-path` flag.
+
+**Verify, on either platform:**
 
 ```bash
-wkhtmltopdf --version     # must mention "with patched qt"
+wkhtmltopdf --version     # must print >= 0.12.6 AND "(with patched qt)"
 ```
+
+`run-odoo.ps1 doctor` / `run-odoo.sh doctor` checks exactly that, looking in `PATH` and then
+`bin_path` the way Odoo does, and **fails** rather than warns on an unpatched build.
+
+Two caches make a correct install look like it did nothing. `_wkhtml()` is
+`@functools.lru_cache(1)` (`ir_actions_report.py:88`), so **restart the server**; and the web
+client memoises the answer on `downloadReport.wkhtmltopdfStatusProm`
+(`web/static/src/webclient/actions/reports/utils.js:70`), so **reload the browser tab**.
+
+> **Supply chain.** The wkhtmltopdf packaging repository was archived read-only on
+> 2023-08-28 and receives no further releases or security fixes. The 0.12.6-1 release notes
+> state explicitly that **no checksums or signatures are provided** for its assets, so the
+> Windows binary cannot be verified against anything but TLS to github.com and the signed
+> git tag. Odoo 19 has no alternative PDF engine. Tracked as **DEP-6** in
+> [`BACKLOG.md`](../docs/project-review/BACKLOG.md).
 
 ## 2. User, directories, code
 

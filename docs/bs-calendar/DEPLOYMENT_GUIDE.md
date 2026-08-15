@@ -152,6 +152,9 @@ revert to AD with no error.
 
 - **Search and group-by remain Gregorian.** Set expectations explicitly with BS users; this is where
   the localisation stops.
-- **`wkhtmltopdf` is not installed**, so PDF output is unverified end to end.
+- **`wkhtmltopdf` must be installed on the target host**, or every PDF report degrades to HTML. It is
+  installed on the dev host as of 2026-08-15 and BS dates were verified in a real invoice PDF; see
+  `deploy/README.md` §1 for the install and the `bin_path` wiring, and note that an *unpatched*-Qt
+  build passes silently while dropping headers and footers.
 - **The POS cashier UI** is not covered.
 - **Exports stay Gregorian**, deliberately.

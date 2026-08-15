@@ -104,7 +104,13 @@ default.** Nothing that can be discovered is hard-coded.
 
 Read from `odoo.conf` itself, last-occurrence-wins to match Odoo's own parsing: `addons_path`,
 `data_dir`, `http_port`, `http_interface`, `gevent_port`, `db_host`, `db_port`, `db_user`, `db_name`,
-`workers`, `limit_time_real`, `list_db`, `dbfilter`, `logfile`.
+`workers`, `limit_time_real`, `list_db`, `dbfilter`, `logfile`, `bin_path`.
+
+`bin_path` is a **directory** appended to `$PATH` when Odoo resolves an external binary
+(`find_in_path`, `odoo/tools/misc.py:142-146`) — in practice, `wkhtmltopdf`. `doctor` searches `PATH`
+first and `bin_path` second, the same order Odoo does, so it grades the binary Odoo will actually
+call. It can only be set in the config file, never on the command line (`FileOnlyOption`,
+`config.py:208`).
 
 **There is deliberately no default-database variable.** See below.
 
@@ -238,9 +244,19 @@ without bound; that is finding **OPS-6** in
 
 ## Testing
 
-`test --db <name>` is the single command that runs every custom module's suite — the gap recorded as
-finding **CI-1**, "neither launcher passes `--test-enable`; there is no single command that runs all
-eight suites."
+`test -Db <name>` on PowerShell, `test --db <name>` on the shell script, is the single command that
+runs every custom module's suite — the gap recorded as finding **CI-1**, "neither launcher passes
+`--test-enable`; there is no single command that runs all eight suites."
+
+Spell the flag per shell. `run-odoo.ps1` does **not** parse the POSIX `--db`; PowerShell binds the
+value positionally to `[int] $Lines` and fails with a cast error naming a parameter you did not use.
+That is finding **OPS-7**.
+
+It now runs **304 tests across 16 modules**, and **the suite does not currently pass**: `0 failed,
+15 error(s)`, all of them `date_range`, which depends only on `web` and so self-tests before
+`account` loads. That is **TST-8** — structural and pre-existing, so a red run here is not evidence
+that your change broke something. Check that the error count is still exactly 15 and still confined
+to `date_range` before concluding anything.
 
 Both `-u` and `--test-tags` are needed: `--test-enable` alone runs nothing for modules already up to
 date, so the modules are updated and the run is scoped to their tags. This modifies the named database,
@@ -292,8 +308,9 @@ These scripts deliberately stop short of being a service manager. What is still 
   `start`/`stop`/`health` are unexercised there. **CI-2** stays open.
 - Windows `stop` depends on the server having been started **by this script**. A server started another
   way may have no attachable console, in which case `stop` says so and falls back to a forced kill.
-- `doctor` cannot confirm that `wkhtmltopdf` is the patched-Qt 0.12.6 build unless the binary reports
-  it; presence alone is not enough.
+- `doctor` grades `wkhtmltopdf` on what the binary reports about **itself** — version and
+  `(with patched qt)` — searching `PATH` and then `bin_path`, the order Odoo uses. It cannot verify
+  provenance, and upstream publishes no checksum for the Windows build to compare against.
 - `status`, `doctor` and `info` write to the console rather than the pipeline, so they are for humans.
   The machine-readable contract is the **exit code**; `logs` and `db-list` do write to stdout.
 - Neither script rotates a *running* server's log on Windows, and neither prunes `.odoo_data`.
