@@ -39,6 +39,10 @@ SECTION_LABELS = {
 
 
 class ReportCashFlow(models.AbstractModel):
+    # Must match action_report_cash_flow's report_name: Odoo derives this model
+    # name as 'report.%s' % report_name (ir_actions_report.py:1121-1123), and
+    # the name is kept short because the derived table name has a 63-character
+    # limit. See the note in models/financial_statements.py.
     _name = 'report.account_financial_statements.cash_flow'
     _inherit = 'account.financial.statements.common'
     _description = 'Cash Flow Statement'
@@ -140,7 +144,7 @@ class ReportCashFlow(models.AbstractModel):
     @api.model
     def _get_report_values(self, docids, data=None):
         import datetime  # noqa: PLC0415
-        wizard = self.env['account.financial.statements.wizard'].browse(data['wizard_id'])
+        wizard = self._wizard_from(docids, data)
 
         opening = self._cash_balance_at(
             wizard, wizard.date_from - datetime.timedelta(days=1))

@@ -93,14 +93,41 @@ class TestFinancialStatements(TransactionCase):
         self.assertAlmostEqual(bs["assets"]["total"], bs["total_liab_equity"], places=2)
 
     def test_profit_and_loss_arithmetic(self):
+        """Assert the DELTA this test causes, not the company-wide total.
+
+        The P&L sums every posted line for the company in the period, so an
+        absolute assertion silently depends on the database being empty of other
+        income -- and it stopped being true the moment somebody used the app,
+        failing with 400150.0 != 400000.0 over 150.00 of unrelated invoicing.
+        That is audit finding TST-2. Measuring before and after keeps the real
+        subject of the test -- that net = income - expenses -- and makes it
+        independent of whatever else is in the books.
+        """
+        pl_model = self.env["report.account_financial_statements.profit_loss"]
+        wiz = self._wizard()
+        before = pl_model._get_report_values(None, {"wizard_id": wiz.id})
+
         self._post_invoice(400000.0)
         self._post_expense(120000.0)
-        wiz = self._wizard()
-        pl = self.env["report.account_financial_statements.profit_loss"]._get_report_values(
-            None, {"wizard_id": wiz.id})
-        self.assertAlmostEqual(pl["income"]["total"], 400000.0, places=2)
-        self.assertAlmostEqual(pl["expenses"]["total"], 120000.0, places=2)
-        self.assertAlmostEqual(pl["net"], 280000.0, places=2)
+        after = pl_model._get_report_values(None, {"wizard_id": wiz.id})
+
+        self.assertAlmostEqual(
+            after["income"]["total"] - before["income"]["total"], 400000.0, places=2)
+        self.assertAlmostEqual(
+            after["expenses"]["total"] - before["expenses"]["total"], 120000.0, places=2)
+        self.assertAlmostEqual(
+            after["net"] - before["net"], 280000.0, places=2)
+        # The identities themselves, on the absolute figures: these must hold
+        # whatever else the books contain. Note `cost_of_sales` is a section in
+        # its own right -- `expenses` covers only 'expense' and
+        # 'expense_depreciation' -- so net is income minus BOTH.
+        self.assertAlmostEqual(
+            after["gross"],
+            after["income"]["total"] - after["cost_of_sales"]["total"],
+            places=2, msg="gross profit must be income less cost of sales")
+        self.assertAlmostEqual(
+            after["net"], after["gross"] - after["expenses"]["total"],
+            places=2, msg="net must be gross profit less operating expenses")
 
     def test_income_is_presented_positive(self):
         """Income carries a credit (negative) balance internally; it must read positive."""
@@ -250,11 +277,16 @@ class TestStatementActions(TransactionCase):
         A single Print button serving three reports fails silently if the
         dispatch is wrong -- the wrong statement prints under the right title.
         """
-        prefix = "account_financial_statements.report_"
+        # These names are load-bearing, not cosmetic: Odoo derives the values
+        # model from report_name as 'report.%s' (ir_actions_report.py:1121-1123),
+        # so each must equal an existing AbstractModel's _name or the template
+        # renders without `wizard`. TestReportsActuallyRender asserts that link
+        # directly; this test only checks the dispatch reaches the right one.
+        prefix = "account_financial_statements."
         expected_report_name = {
-            "balance_sheet": prefix + "balance_sheet_document",
-            "profit_loss": prefix + "profit_loss_document",
-            "cash_flow": prefix + "cash_flow_document",
+            "balance_sheet": prefix + "balance_sheet",
+            "profit_loss": prefix + "profit_loss",
+            "cash_flow": prefix + "cash_flow",
         }
         for report_type, report_name in expected_report_name.items():
             wizard = self.env["account.financial.statements.wizard"].create(
@@ -277,3 +309,99 @@ class TestStatementActions(TransactionCase):
         self.assertIn(wizard.report_type, self.PRESETS.values())
         self.assertFalse(wizard.report_type_locked,
                          "the combined action must leave the selector visible")
+
+
+@tagged("-at_install", "post_install")
+class TestReportsActuallyRender(TransactionCase):
+    """Render each statement the way Odoo renders it, not the way we compute it.
+
+    Every other test in this file calls ``_get_report_values`` directly, by model
+    name. That proves the arithmetic and proves nothing about the report: Odoo
+    never looks the model up that way. It resolves it mechanically as
+    ``'report.%s' % report_name`` (``ir_actions_report.py:1121-1123``), and when
+    that lookup misses it silently falls back to a context containing only
+    ``docs``/``doc_ids``/``doc_model`` -- no ``wizard`` -- so the template dies
+    with ``KeyError: 'wizard'``.
+
+    That is exactly what happened: the models were named
+    ``report.account_financial_statements.profit_loss`` while the actions asked
+    for ``...report_profit_loss_document``. Every unit test passed and not one
+    statement could be printed.
+
+    These tests go through ``_render_qweb_html``, which is the only thing that
+    would have caught it.
+    """
+
+    REPORTS = [
+        ("account_financial_statements.action_report_balance_sheet", "Balance Sheet"),
+        ("account_financial_statements.action_report_profit_loss", "Profit"),
+        ("account_financial_statements.action_report_cash_flow", "Cash Flow"),
+    ]
+
+    def _wizard(self):
+        return self.env["account.financial.statements.wizard"].create({})
+
+    def test_the_values_model_name_matches_the_report_name(self):
+        """The mismatch itself, asserted directly.
+
+        Cheaper to read than a render failure, and it names the rule: the model
+        name is not free, it is derived from report_name.
+        """
+        for xmlid, _label in self.REPORTS:
+            with self.subTest(report=xmlid):
+                report = self.env.ref(xmlid)
+                expected = "report.%s" % report.report_name
+                self.assertIsNotNone(
+                    self.env.get(expected),
+                    f"{xmlid} names report_name={report.report_name!r}, so Odoo will "
+                    f"look for the model {expected!r}. That model does not exist, so "
+                    f"_get_report_values will never run and the template will render "
+                    f"without 'wizard'."
+                )
+
+    def test_each_report_renders_from_the_wizard(self):
+        """The route a user takes: the wizard button, with data={'wizard_id': id}."""
+        wizard = self._wizard()
+        for xmlid, marker in self.REPORTS:
+            with self.subTest(report=xmlid):
+                html, content_type = self.env["ir.actions.report"]._render_qweb_html(
+                    xmlid, wizard.ids, data={"wizard_id": wizard.id})
+                text = html.decode() if isinstance(html, bytes) else str(html)
+                self.assertEqual(content_type, "html")
+                self.assertIn(marker, text, f"{xmlid} did not render its own heading")
+                # The company name comes from `wizard.company_id`, the expression
+                # that raised KeyError. Its presence proves the wizard reached
+                # the template.
+                self.assertIn(self.env.company.name, text)
+
+    def test_each_report_renders_without_data(self):
+        """The route the error page's own retry link takes.
+
+        `/report/html/<report_name>/<id>` arrives with empty `data`, so anything
+        reading `data['wizard_id']` unconditionally raises KeyError there even
+        after the model name is fixed. The wizard is recovered from docids.
+        """
+        wizard = self._wizard()
+        for xmlid, marker in self.REPORTS:
+            with self.subTest(report=xmlid):
+                html, _ct = self.env["ir.actions.report"]._render_qweb_html(
+                    xmlid, wizard.ids)
+                text = html.decode() if isinstance(html, bytes) else str(html)
+                self.assertIn(marker, text)
+
+    def test_rendering_without_a_wizard_is_a_clear_error(self):
+        """A missing wizard must say so, not raise KeyError from inside QWeb."""
+        from odoo.exceptions import UserError  # noqa: PLC0415
+        with self.assertRaises(UserError):
+            self.env["ir.actions.report"]._render_qweb_html(
+                "account_financial_statements.action_report_profit_loss", [])
+
+    def test_the_wizard_buttons_return_a_usable_action(self):
+        """The buttons themselves, end to end, including the data payload."""
+        wizard = self._wizard()
+        for method in ("action_balance_sheet", "action_profit_loss", "action_cash_flow"):
+            with self.subTest(method=method):
+                action = getattr(wizard, method)()
+                self.assertEqual(action.get("type"), "ir.actions.report")
+                self.assertEqual(action.get("data", {}).get("wizard_id"), wizard.id,
+                                 "the wizard id must reach _get_report_values")

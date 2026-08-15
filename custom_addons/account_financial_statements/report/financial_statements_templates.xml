@@ -29,7 +29,7 @@
     </template>
 
     <!-- ============================ BALANCE SHEET ============================ -->
-    <template id="report_balance_sheet_document">
+    <template id="balance_sheet">
         <t t-call="web.html_container">
             <t t-call="web.internal_layout">
                 <div class="page">
@@ -121,7 +121,7 @@
     </template>
 
     <!-- ============================ PROFIT AND LOSS ============================ -->
-    <template id="report_profit_loss_document">
+    <template id="profit_loss">
         <t t-call="web.html_container">
             <t t-call="web.internal_layout">
                 <div class="page">
@@ -196,21 +196,21 @@
         <field name="name">Balance Sheet</field>
         <field name="model">account.financial.statements.wizard</field>
         <field name="report_type">qweb-html</field>
-        <field name="report_name">account_financial_statements.report_balance_sheet_document</field>
-        <field name="report_file">account_financial_statements.report_balance_sheet_document</field>
+        <field name="report_name">account_financial_statements.balance_sheet</field>
+        <field name="report_file">account_financial_statements.balance_sheet</field>
     </record>
 
     <record id="action_report_profit_loss" model="ir.actions.report">
         <field name="name">Profit and Loss</field>
         <field name="model">account.financial.statements.wizard</field>
         <field name="report_type">qweb-html</field>
-        <field name="report_name">account_financial_statements.report_profit_loss_document</field>
-        <field name="report_file">account_financial_statements.report_profit_loss_document</field>
+        <field name="report_name">account_financial_statements.profit_loss</field>
+        <field name="report_file">account_financial_statements.profit_loss</field>
     </record>
 
 
     <!-- ============================ CASH FLOW ============================ -->
-    <template id="report_cash_flow_document">
+    <template id="cash_flow">
         <t t-call="web.html_container">
             <t t-call="web.internal_layout">
                 <div class="page">
@@ -289,7 +289,7 @@
         <field name="name">Cash Flow Statement</field>
         <field name="model">account.financial.statements.wizard</field>
         <field name="report_type">qweb-html</field>
-        <field name="report_name">account_financial_statements.report_cash_flow_document</field>
-        <field name="report_file">account_financial_statements.report_cash_flow_document</field>
+        <field name="report_name">account_financial_statements.cash_flow</field>
+        <field name="report_file">account_financial_statements.cash_flow</field>
     </record>
 </odoo>

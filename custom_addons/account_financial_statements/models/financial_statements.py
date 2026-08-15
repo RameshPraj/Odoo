@@ -15,6 +15,7 @@ negative ones. Everything below is normalised so that each figure is presented
 the way an accountant expects to read it.
 """
 from odoo import _, api, models
+from odoo.exceptions import UserError
 from odoo.tools.translate import LazyTranslate
 
 # Module-level constants must use lazy translation: plain _() at import time has
@@ -57,6 +58,26 @@ TYPE_LABELS = {
 class FinancialStatementsCommon(models.AbstractModel):
     _name = 'account.financial.statements.common'
     _description = 'Financial statements computation'
+
+    @api.model
+    def _wizard_from(self, docids, data):
+        """The wizard this report is rendering, from either route.
+
+        The wizard's buttons pass ``data={'wizard_id': id}`` through
+        ``report_action``, but a report opened directly by URL --
+        ``/report/html/<report_name>/<id>`` -- arrives with empty ``data`` and the
+        ids in ``docids``. Reading ``data['wizard_id']`` unconditionally raises
+        KeyError on that second route, which is also the route the error page's
+        own retry link uses.
+        """
+        wizard_id = (data or {}).get('wizard_id') or docids
+        wizard = self.env['account.financial.statements.wizard'].browse(wizard_id)
+        if not wizard.exists():
+            raise UserError(_(
+                "This report must be opened from the Financial Statements wizard, "
+                "which supplies the reporting period and company."
+            ))
+        return wizard.ensure_one()
 
     # ------------------------------------------------------------------
     @api.model
@@ -128,13 +149,24 @@ class FinancialStatementsCommon(models.AbstractModel):
 
 
 class ReportBalanceSheet(models.AbstractModel):
+    # The name is NOT free: Odoo resolves the values model mechanically as
+    # 'report.%s' % report_name (ir_actions_report.py:1121-1123), so this must
+    # equal the report action's report_name -- and therefore the template's
+    # xml-id. When it did not, _get_report_values never ran and every statement
+    # died with KeyError: 'wizard'.
+    #
+    # The names are short on purpose. Odoo derives a table name from _name even
+    # for an AbstractModel and validates its length, and
+    # 'report_account_financial_statements_report_balance_sheet_document' is 65
+    # characters -- past PostgreSQL's 63-character identifier limit. So the
+    # template is named `balance_sheet`, not `report_balance_sheet_document`.
     _name = 'report.account_financial_statements.balance_sheet'
     _inherit = 'account.financial.statements.common'
     _description = 'Balance Sheet'
 
     @api.model
     def _get_report_values(self, docids, data=None):
-        wizard = self.env['account.financial.statements.wizard'].browse(data['wizard_id'])
+        wizard = self._wizard_from(docids, data)
 
         # A balance sheet is cumulative: no lower date bound.
         assets = self._section(wizard, ASSET_TYPES, +1)
@@ -168,13 +200,14 @@ class ReportBalanceSheet(models.AbstractModel):
 
 
 class ReportProfitLoss(models.AbstractModel):
+    # Must match action_report_profit_loss's report_name -- see the note above.
     _name = 'report.account_financial_statements.profit_loss'
     _inherit = 'account.financial.statements.common'
     _description = 'Profit and Loss'
 
     @api.model
     def _get_report_values(self, docids, data=None):
-        wizard = self.env['account.financial.statements.wizard'].browse(data['wizard_id'])
+        wizard = self._wizard_from(docids, data)
 
         income = self._section(wizard, INCOME_TYPES, -1, wizard.date_from)
         cost_of_sales = self._section(wizard, ('expense_direct_cost',), +1, wizard.date_from)

@@ -17,7 +17,7 @@ Every finding appears here exactly once. All other documents reference these IDs
 # P0 — Critical
 
 ## FIN-2 · Balance Sheet, P&L and Cash Flow cannot render
-**CONFIRMED (by execution)** · Accounting · `account_financial_statements/`
+**RESOLVED 2026-08-15** · Accounting · `account_financial_statements/`
 
 Odoo resolves a report's data model as `report.<report_name>`
 (`odoo/addons/base/models/ir_actions_report.py:1121-1123`). Declared vs actual:
@@ -42,8 +42,31 @@ model, bypassing the report engine. `test_action_print_dispatches_on_report_type
 > **Correction.** The previous audit rated these reports as working and cited them as evidence
 > the suite was well built. That was wrong.
 
-**Fix** Rename the three `_name`s to `report.<report_name>`; add a test asserting rendered HTML
-contains "TOTAL ASSETS". **Effort S.**
+**Fix** ~~Rename the three `_name`s to `report.<report_name>`~~ — that direction does not work,
+and the reason is worth recording. Odoo derives a table name from `_name` **even for an
+AbstractModel** and validates its length, and
+`report_account_financial_statements_report_balance_sheet_document` is **65 characters**, past
+PostgreSQL's 63-character identifier limit. `-u` fails outright with
+`ValidationError: Table name ... is too long`.
+
+The two names are locked together, so the fix went the other way: the **templates** were renamed
+`report_balance_sheet_document` → `balance_sheet` (and likewise for the other two), with
+`report_name` and `report_file` following. The models keep their short, already-correct names.
+
+Applied 2026-08-15, and the reports now render — verified through `_render_qweb_html`, which is the
+call the audit used to prove they did not.
+
+A second defect was found on the way: `_get_report_values` read `data['wizard_id']`
+unconditionally. The wizard's buttons supply it, but a report opened by URL
+(`/report/html/<report_name>/<id>`) arrives with empty `data` and would have raised `KeyError`
+there even after the name mismatch was fixed — and that is the route the error page's own retry
+link uses. The wizard is now recovered from `docids` when `data` is empty, and a genuinely missing
+wizard raises a `UserError` that says what to do instead of a `KeyError` from inside QWeb.
+
+**Tests** `TestReportsActuallyRender` renders all three by both routes and asserts the company name
+reaches the template — the expression that raised `KeyError: 'wizard'`. It also asserts the
+`report_name` → model-name link directly, which is cheaper to read than a render failure and names
+the rule. **Effort S.**
 
 ## SAAS-2 · Live one-request cluster takeover via the database manager
 **CONFIRMED (verified against the live config)** · SaaS · `odoo/addons/web/controllers/database.py:71-75`
@@ -545,6 +568,19 @@ once an accountant configures TDS rates or an IRD form.
 
 The correct pattern exists at `test_np_fiscal_year.py:20-26` (creates its own company, after this
 exact bug bit in `82f3ee43`) and was never propagated. **Effort M.**
+
+**A sixth instance surfaced on 2026-08-15, and it bit.**
+`account_financial_statements`'s `test_profit_and_loss_arithmetic` posted one 400,000 invoice and
+asserted `income.total == 400000.0` — but the P&L sums every posted line for the company in the
+period, so the assertion silently depended on the books being empty of other income. It began
+failing with `400150.0 != 400000.0` once real invoices existed, i.e. as soon as somebody used the
+application.
+
+Fixed by measuring the figures **before and after** and asserting the delta, plus the two identities
+(`gross = income - cost_of_sales`, `net = gross - expenses`) on the absolute values, which hold
+whatever else the books contain. That keeps the real subject of the test — the arithmetic — and
+makes it independent of the database. Worth preferring to a throwaway company here: it is shorter,
+and it also exercises the figures a user would actually see.
 
 ## TST-5 · The only path producing real TDS figures is untested and fails silently
 **CONFIRMED** · Testing · `l10n_np_tds/models/tds_certificate.py:58-96`
