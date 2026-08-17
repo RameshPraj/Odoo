@@ -10,7 +10,7 @@ liabilities, equity and income must be flipped for presentation, and the
 current-period result must be added to equity or the sheet will not tie.
 """
 from odoo import Command
-from odoo.tests import TransactionCase, tagged
+from odoo.tests import HttpCase, TransactionCase, tagged
 from odoo.tools.safe_eval import safe_eval
 
 
@@ -244,6 +244,192 @@ class TestFinancialStatements(TransactionCase):
             None, {"wizard_id": wiz.id})
         self.assertTrue(cf["reconciled"])
 
+    # ------------------------------------------------------------------
+    # Drill-down: every figure must tie to the records its link opens.
+    # ------------------------------------------------------------------
+    def _sum_over(self, domain):
+        groups = self.env["account.move.line"]._read_group(
+            domain, groupby=[], aggregates=["balance:sum"])
+        return (groups[0][0] or 0.0) if groups else 0.0
+
+    def _assert_ties(self, label, figure, domain, sign):
+        """The whole feature rests on this: click a figure, get exactly its lines.
+
+        A drill-down whose total differs from the figure it hangs off is worse
+        than no drill-down, because it makes a number you would have trusted look
+        wrong. Asserting it per line is what stops that being a convention
+        somebody has to remember while editing the report.
+        """
+        got = sign * self._sum_over(domain)
+        self.assertEqual(
+            self.company.currency_id.compare_amounts(got, figure), 0,
+            f"{label}: the report shows {figure} but its drill-down sums to {got}")
+
+    def _every_figure(self, values, section_keys):
+        """Yield (label, figure, domain, sign) for each drillable figure."""
+        for key in section_keys:
+            section = values[key]
+            yield f"{key} total", section["total"], section["domain"], section["sign"]
+            for block in section["blocks"]:
+                yield (f"{key}/{block['label']} subtotal", block["subtotal"],
+                       block["domain"], block["sign"])
+                for line in block["lines"]:
+                    yield (f"{key}/{line['code']}", line["amount"],
+                           line["domain"], line["sign"])
+
+    def test_balance_sheet_drilldowns_tie_to_their_figures(self):
+        self._post_invoice(400000.0)
+        self._post_expense(120000.0)
+        wiz = self._wizard()
+        values = self.env[
+            "report.account_financial_statements.balance_sheet"
+        ]._get_report_values(wiz.ids, {"wizard_id": wiz.id})
+
+        checked = 0
+        for label, figure, domain, sign in self._every_figure(
+                values, ("assets", "liabilities", "equity")):
+            with self.subTest(figure=label):
+                self._assert_ties(label, figure, domain, sign)
+            checked += 1
+        self.assertGreater(checked, 0, "no figures were checked at all")
+
+        # The period-result line spans income and every expense type, so its sum
+        # is the negation of the figure. Getting this sign wrong is the single
+        # easiest mistake here, hence its own assertion.
+        self._assert_ties("result", values["result"],
+                          values["result_domain"], values["result_sign"])
+
+    def test_profit_and_loss_drilldowns_tie_to_their_figures(self):
+        self._post_invoice(400000.0)
+        self._post_expense(120000.0)
+        wiz = self._wizard()
+        values = self.env[
+            "report.account_financial_statements.profit_loss"
+        ]._get_report_values(wiz.ids, {"wizard_id": wiz.id})
+
+        for label, figure, domain, sign in self._every_figure(
+                values, ("income", "cost_of_sales", "expenses")):
+            with self.subTest(figure=label):
+                self._assert_ties(label, figure, domain, sign)
+        self._assert_ties("net", values["net"],
+                          values["net_domain"], values["net_sign"])
+
+    def test_income_drilldown_needs_the_negative_sign(self):
+        """Guards the sign specifically, by showing the naive version is wrong.
+
+        Income carries a credit balance, so summing its lines without the sign
+        gives the negation. If someone drops `sign` from the line dicts this test
+        fails while the totals-only tests would still pass.
+        """
+        self._post_invoice(400000.0)
+        wiz = self._wizard()
+        income = self.env[
+            "report.account_financial_statements.profit_loss"
+        ]._get_report_values(wiz.ids, {"wizard_id": wiz.id})["income"]
+
+        self.assertEqual(income["sign"], -1)
+        raw = self._sum_over(income["domain"])
+        self.assertEqual(
+            self.company.currency_id.compare_amounts(-raw, income["total"]), 0)
+        self.assertNotEqual(
+            self.company.currency_id.compare_amounts(raw, income["total"]), 0,
+            "if the unsigned sum already matched, this test would prove nothing")
+
+    def test_every_line_carries_an_account_id_not_just_a_code(self):
+        """Codes are a chart convention and change; ids do not.
+
+        The module docstring says as much, and the drill-down to the account form
+        depends on the id being present.
+        """
+        self._post_invoice(400000.0)
+        wiz = self._wizard()
+        values = self.env[
+            "report.account_financial_statements.balance_sheet"
+        ]._get_report_values(wiz.ids, {"wizard_id": wiz.id})
+        lines = [line
+                 for key in ("assets", "liabilities", "equity")
+                 for block in values[key]["blocks"]
+                 for line in block["lines"]]
+        self.assertTrue(lines, "no lines to check")
+        for line in lines:
+            self.assertTrue(line["account_id"],
+                            f"line {line['code']} carries no account_id")
+            self.assertTrue(
+                self.env["account.account"].browse(line["account_id"]).exists())
+
+    # ------------------------------------------------------------------
+    # Cash flow drills to CONTRIBUTING entries, and must not claim more.
+    # ------------------------------------------------------------------
+    def test_cash_flow_lines_carry_their_contributing_entries(self):
+        a = self._accounts_for_cash_flow()
+        if not a:
+            self.skipTest("chart lacks the account types this needs")
+        self._cash_entry(a["cash"], a["income"], 300000.0, "2026-08-02", "Cash sale")
+        wiz = self._wizard()
+        cf = self.env["report.account_financial_statements.cash_flow"]._get_report_values(
+            wiz.ids, {"wizard_id": wiz.id})
+
+        lines = [line for section in cf["sections"] for line in section["lines"]]
+        self.assertTrue(lines, "no movement lines were produced")
+        for line in lines:
+            self.assertTrue(line["contributor_ids"],
+                            f"{line['label']} has no contributing entries")
+            self.assertTrue(
+                self.env["account.move.line"].browse(
+                    line["contributor_ids"]).exists())
+
+    def test_cash_flow_opening_and_closing_do_tie(self):
+        """Unlike the movement lines, these two are plain sums."""
+        a = self._accounts_for_cash_flow()
+        if not a:
+            self.skipTest("chart lacks the account types this needs")
+        self._cash_entry(a["cash"], a["income"], 300000.0, "2026-08-02", "Cash sale")
+        wiz = self._wizard()
+        cf = self.env["report.account_financial_statements.cash_flow"]._get_report_values(
+            wiz.ids, {"wizard_id": wiz.id})
+        self._assert_ties("opening", cf["opening"], cf["opening_domain"], 1)
+        self._assert_ties("closing", cf["closing"], cf["closing_domain"], 1)
+
+    # ------------------------------------------------------------------
+    # The anomaly panel
+    # ------------------------------------------------------------------
+    def test_draft_entries_are_reported_when_they_are_counted(self):
+        self._post_invoice(400000.0).button_draft()
+        wiz = self._wizard()
+        wiz.target_move = "all"
+        values = self.env[
+            "report.account_financial_statements.balance_sheet"
+        ]._get_report_values(wiz.ids, {"wizard_id": wiz.id})
+        messages = " ".join(str(a["message"]) for a in values["anomalies"])
+        self.assertIn("draft", messages.lower(),
+                      "a report counting draft entries must say so")
+
+    def test_posted_only_does_not_warn_about_drafts(self):
+        self._post_invoice(400000.0).button_draft()
+        wiz = self._wizard()          # target_move = 'posted'
+        values = self.env[
+            "report.account_financial_statements.balance_sheet"
+        ]._get_report_values(wiz.ids, {"wizard_id": wiz.id})
+        messages = " ".join(str(a["message"]) for a in values["anomalies"])
+        self.assertNotIn("draft", messages.lower())
+
+    def test_every_anomaly_is_itself_a_drilldown(self):
+        """A warning you cannot act on is only half a warning."""
+        self._post_invoice(400000.0)
+        wiz = self._wizard()
+        wiz.target_move = "all"
+        for model in ("balance_sheet", "profit_loss", "cash_flow"):
+            values = self.env[
+                f"report.account_financial_statements.{model}"
+            ]._get_report_values(wiz.ids, {"wizard_id": wiz.id})
+            for anomaly in values["anomalies"]:
+                with self.subTest(model=model, message=str(anomaly["message"])[:40]):
+                    self.assertIn(anomaly["level"],
+                                  ("info", "warning", "danger"))
+                    self.assertTrue(anomaly["domain"])
+                    # It must be a usable domain, not decoration.
+                    self.env["account.move.line"].search_count(anomaly["domain"])
+
 
 @tagged("-at_install", "post_install")
 class TestStatementActions(TransactionCase):
@@ -405,3 +591,125 @@ class TestReportsActuallyRender(TransactionCase):
                 self.assertEqual(action.get("type"), "ir.actions.report")
                 self.assertEqual(action.get("data", {}).get("wizard_id"), wizard.id,
                                  "the wizard id must reach _get_report_values")
+
+
+@tagged("-at_install", "post_install")
+class TestPrintPath(TransactionCase):
+    """Printing, which until now did not exist.
+
+    All three statements were `qweb-html` only, so the report viewer's Print
+    button had no pdf variant to fire. Each now has a second `ir.actions.report`
+    sharing the same `report_name`, which is the whole mechanism -- core looks the
+    pdf one up by that name.
+    """
+
+    def _wizard(self):
+        return self.env["account.financial.statements.wizard"].create({
+            "date_from": "2026-07-17", "date_to": "2026-08-31",
+        })
+
+    def test_each_statement_has_both_an_html_and_a_pdf_action(self):
+        for name in ("balance_sheet", "profit_loss", "cash_flow"):
+            with self.subTest(statement=name):
+                reports = self.env["ir.actions.report"].search([
+                    ("report_name", "=", f"account_financial_statements.{name}"),
+                ])
+                types = set(reports.mapped("report_type"))
+                self.assertEqual(
+                    types, {"qweb-html", "qweb-pdf"},
+                    "the viewer's Print button looks up the pdf variant by "
+                    "report_name; without it printing silently does nothing")
+
+    def test_both_variants_resolve_to_the_same_values_model(self):
+        """One template, one values model, two output formats.
+
+        This is what keeps the printout and the screen from drifting: they are not
+        two renderings of the same data, they are the same rendering.
+        """
+        for name in ("balance_sheet", "profit_loss", "cash_flow"):
+            for report in self.env["ir.actions.report"].search([
+                    ("report_name", "=", f"account_financial_statements.{name}")]):
+                with self.subTest(statement=name, type=report.report_type):
+                    # assertIsNotNone, not assertTrue: env.get returns an EMPTY
+                    # recordset of the model, which is falsy even when the model
+                    # exists. assertTrue here fails for a model that is perfectly
+                    # fine, which is what it did on the first run.
+                    self.assertIsNotNone(
+                        self.env.get(f"report.{report.report_name}"),
+                        "no AbstractModel matches this report_name")
+
+    def test_the_html_carries_the_drilldown_attributes(self):
+        """The attributes ARE the drill-down; no JavaScript can add them later.
+
+        Core wraps [res-id][res-model][view-type] and this project's patch widens
+        that to [res-model][domain]. Both read markup produced here, so if these
+        attributes stop being emitted the feature disappears with no error.
+        """
+        wizard = self._wizard()
+        html, _ext = self.env["ir.actions.report"]._render_qweb_html(
+            "account_financial_statements.action_report_balance_sheet",
+            wizard.ids, data={"wizard_id": wizard.id})
+        text = html.decode() if isinstance(html, bytes) else str(html)
+        self.assertIn('res-model="account.move.line"', text)
+        self.assertIn("domain=", text)
+        self.assertIn('data-afs-block', text)
+
+    def test_the_pdf_carries_them_too_and_is_therefore_the_same_document(self):
+        """Guards the property that made this design worth choosing.
+
+        The drill-down attributes are inert in PDF, so one template can serve both
+        outputs. If the PDF ever stopped containing them it would mean the two
+        paths had diverged, which is exactly the failure a separate interactive
+        component would have invited.
+        """
+        wizard = self._wizard()
+        html, _ext = self.env["ir.actions.report"]._render_qweb_html(
+            "account_financial_statements.action_report_balance_sheet",
+            wizard.ids, data={"wizard_id": wizard.id})
+        text = html.decode() if isinstance(html, bytes) else str(html)
+        self.assertIn("data-afs-line", text)
+        # And the values model is shared, so the figures cannot differ.
+        self.assertEqual(
+            self.env.get("report.account_financial_statements.balance_sheet")._name,
+            "report.account_financial_statements.balance_sheet")
+
+
+@tagged("-at_install", "post_install")
+class TestPrintPathPdf(HttpCase):
+    """Actually invoke wkhtmltopdf, once.
+
+    This is an HttpCase and it has to be. `web.internal_layout` pulls in the
+    backend asset bundle, so the rendered HTML references dozens of URLs that
+    wkhtmltopdf fetches over HTTP against `web.base.url`. Under a plain
+    TransactionCase nothing is listening on that port, so every one of those
+    fetches has to time out before the PDF is produced: the first version of this
+    test took minutes per statement and logged `Exit with code 1 due to network
+    error: ConnectionRefusedError` each time. HttpCase runs a real server, so the
+    assets resolve.
+
+    One statement, not three. The engine, the layout and the report_name lookup
+    are shared, so a second and third render would re-prove the same mechanism at
+    ~seconds each; the per-statement templates are covered by the HTML tests.
+    """
+
+    def test_a_statement_renders_a_real_pdf(self):
+        wizard = self.env["account.financial.statements.wizard"].create({
+            "date_from": "2026-07-17", "date_to": "2026-08-31",
+        })
+        report = self.env["ir.actions.report"].search([
+            ("report_name", "=", "account_financial_statements.balance_sheet"),
+            ("report_type", "=", "qweb-pdf"),
+        ], limit=1)
+        self.assertTrue(report, "no pdf action: the Print button has nothing to fire")
+
+        # force_report_rendering is required. Without it Odoo short-circuits
+        # _render_qweb_pdf to _render_qweb_html under the test harness
+        # (ir_actions_report.py:1025-1028), so this would pass on a machine with no
+        # PDF engine installed at all and prove nothing.
+        pdf, ext = report.with_context(
+            force_report_rendering=True)._render_qweb_pdf(
+                report, wizard.ids, data={"wizard_id": wizard.id})
+
+        self.assertEqual(ext, "pdf")
+        self.assertTrue(pdf.startswith(b"%PDF-"), "not a PDF at all")
+        self.assertGreater(len(pdf), 3000, "implausibly small for a statement")

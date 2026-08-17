@@ -14,7 +14,7 @@ The advantage is that the statement is self-proving: the sum of all classified
 movements must equal closing cash minus opening cash. A test asserts exactly
 that, so a classification bug cannot pass silently.
 """
-from odoo import api, models
+from odoo import _, api, models
 from odoo.tools.translate import LazyTranslate
 
 _lt = LazyTranslate(__name__)
@@ -48,27 +48,37 @@ class ReportCashFlow(models.AbstractModel):
     _description = 'Cash Flow Statement'
 
     # ------------------------------------------------------------------
+    # `_cash_accounts` used to live here: it searched account.account by
+    # CASH_TYPES and was never called from anywhere in the repository. Removed
+    # rather than left as a trap for whoever tries to use it -- it also filtered
+    # on `company_ids`, where every other query in this module uses
+    # account.move.line's `company_id`.
+
     @api.model
-    def _cash_accounts(self, wizard):
-        return self.env['account.account'].search([
-            ('account_type', 'in', list(CASH_TYPES)),
-            ('company_ids', 'in', wizard.company_id.id),
-        ])
+    def _cash_balance_domain(self, wizard, date_to):
+        """Lines making up the cash balance as at ``date_to``.
+
+        Separate from `_move_line_domain` because that one is pinned to
+        `wizard.date_to`, whereas the opening balance needs the day before
+        `date_from`. The posted/draft rule comes from `_state_domain` so this is no
+        longer a third private copy of it.
+
+        No `off_balance` exclusion is needed, unlike `_move_line_domain`:
+        `account_type` is a single Selection value, so `in CASH_TYPES` already
+        rules `off_balance` out.
+        """
+        return [
+            ('company_id', '=', wizard.company_id.id),
+            ('account_id.account_type', 'in', list(CASH_TYPES)),
+            ('date', '<=', date_to),
+        ] + self._state_domain(wizard)
 
     @api.model
     def _cash_balance_at(self, wizard, date_to):
         """Cumulative cash balance up to and including ``date_to``."""
-        domain = [
-            ('company_id', '=', wizard.company_id.id),
-            ('account_id.account_type', 'in', list(CASH_TYPES)),
-            ('date', '<=', date_to),
-        ]
-        if wizard.target_move == 'posted':
-            domain.append(('parent_state', '=', 'posted'))
-        else:
-            domain.append(('parent_state', 'in', ('posted', 'draft')))
         groups = self.env['account.move.line']._read_group(
-            domain, groupby=[], aggregates=['balance:sum'])
+            self._cash_balance_domain(wizard, date_to),
+            groupby=[], aggregates=['balance:sum'])
         return groups[0][0] or 0.0 if groups else 0.0
 
     @api.model
@@ -91,18 +101,20 @@ class ReportCashFlow(models.AbstractModel):
         nothing is double counted and the totals still tie.
         """
         AML = self.env['account.move.line']
-        state_domain = ([('parent_state', '=', 'posted')]
-                        if wizard.target_move == 'posted'
-                        else [('parent_state', 'in', ('posted', 'draft'))])
 
         cash_lines = AML.search([
             ('company_id', '=', wizard.company_id.id),
             ('account_id.account_type', 'in', list(CASH_TYPES)),
             ('date', '>=', wizard.date_from),
             ('date', '<=', wizard.date_to),
-        ] + state_domain)
+        ] + self._state_domain(wizard))
 
         sections = {k: {} for k in ('operating', 'investing', 'financing', 'unclassified')}
+        # Which move lines fed each bucket. Cash-flow figures are apportioned
+        # shares (see below), so unlike every other statement here they cannot be
+        # recovered from a domain -- the ids have to be collected while the
+        # apportioning happens or they are gone.
+        contributors = {k: {} for k in sections}
 
         for move in cash_lines.mapped('move_id'):
             move_cash = move.line_ids.filtered(
@@ -115,10 +127,12 @@ class ReportCashFlow(models.AbstractModel):
             weight_total = sum(abs(l.balance) for l in counterparts)
 
             if not counterparts or wizard.company_id.currency_id.is_zero(weight_total):
-                bucket = sections['unclassified'].setdefault(
-                    (0, str(SECTION_LABELS['unclassified'])), 0.0)
-                sections['unclassified'][(0, str(SECTION_LABELS['unclassified']))] = \
-                    bucket + cash_amount
+                key = (0, str(SECTION_LABELS['unclassified']))
+                sections['unclassified'][key] = \
+                    sections['unclassified'].get(key, 0.0) + cash_amount
+                # With no usable counterpart the cash lines themselves are the only
+                # thing to show.
+                contributors['unclassified'].setdefault(key, set()).update(move_cash.ids)
                 continue
 
             for line in counterparts:
@@ -126,13 +140,28 @@ class ReportCashFlow(models.AbstractModel):
                 section = self._classify(line.account_id.account_type)
                 key = (line.account_id.id, f"{line.account_id.code} {line.account_id.name}")
                 sections[section][key] = sections[section].get(key, 0.0) + share
+                contributors[section].setdefault(key, set()).add(line.id)
 
         out = {}
         for name, buckets in sections.items():
-            lines = [{'label': label, 'amount': amount}
-                     for (_aid, label), amount in sorted(buckets.items(), key=lambda kv: kv[0][1])
-                     if not (wizard.hide_zero
-                             and wizard.company_id.currency_id.is_zero(amount))]
+            lines = []
+            for key, amount in sorted(buckets.items(), key=lambda kv: kv[0][1]):
+                if wizard.hide_zero and wizard.company_id.currency_id.is_zero(amount):
+                    continue
+                ids = sorted(contributors[name].get(key, ()))
+                lines.append({
+                    'label': key[1],
+                    'amount': amount,
+                    'account_id': key[0] or False,
+                    # Deliberately NOT presented as "the lines behind this figure".
+                    # `amount` is a pro-rata share of a cash movement, not the sum
+                    # of any field on these records, so their balance total will
+                    # not equal it. Claiming otherwise would be the one thing this
+                    # feature must never do: show a drill-down that silently
+                    # contradicts the number above it.
+                    'contributor_ids': ids,
+                    'contributor_domain': [('id', 'in', ids)] if ids else False,
+                })
             out[name] = {
                 'label': str(SECTION_LABELS[name]),
                 'lines': lines,
@@ -155,6 +184,33 @@ class ReportCashFlow(models.AbstractModel):
         net_change = closing - opening
         difference = movement_total - net_change
 
+        anomalies = self._anomalies(wizard)
+        if not wizard.company_id.currency_id.is_zero(difference):
+            anomalies.insert(0, {
+                'level': 'danger',
+                'message': _(
+                    "Classified movements do not tie to the change in cash; the "
+                    "difference is %(difference)s. A movement has been classified "
+                    "into the wrong section, or missed.", difference=difference,
+                ),
+                'domain': self._cash_balance_domain(wizard, wizard.date_to)
+                + [('date', '>=', wizard.date_from)],
+            })
+        if sections['unclassified']['lines']:
+            anomalies.append({
+                'level': 'warning',
+                'message': _(
+                    "Some movements could not be classified as operating, investing "
+                    "or financing. They are still counted, so the statement ties, "
+                    "but they are not attributed to an activity."
+                ),
+                'domain': [('id', 'in', [
+                    lid
+                    for line in sections['unclassified']['lines']
+                    for lid in line['contributor_ids']
+                ])],
+            })
+
         return {
             'doc_model': 'account.financial.statements.wizard',
             'docs': wizard,
@@ -167,4 +223,10 @@ class ReportCashFlow(models.AbstractModel):
             'movement_total': movement_total,
             'difference': difference,
             'reconciled': wizard.company_id.currency_id.is_zero(difference),
+            # Opening and closing cash ARE plain sums, so unlike the movement
+            # lines these two drill down exactly.
+            'opening_domain': self._cash_balance_domain(
+                wizard, wizard.date_from - datetime.timedelta(days=1)),
+            'closing_domain': self._cash_balance_domain(wizard, wizard.date_to),
+            'anomalies': anomalies,
         }

@@ -81,6 +81,20 @@ class FinancialStatementsCommon(models.AbstractModel):
 
     # ------------------------------------------------------------------
     @api.model
+    def _state_domain(self, wizard):
+        """The posted/draft leaf, in exactly one place.
+
+        Three copies of this rule existed -- here, in ``_cash_balance_at`` and in
+        ``_movements`` -- and they had already drifted: the cash-flow ones also
+        omitted the ``off_balance`` exclusion. Since a drill-down now claims to
+        show "the lines behind this figure", any such divergence stops being a
+        cosmetic inconsistency and becomes a wrong answer.
+        """
+        if wizard.target_move == 'posted':
+            return [('parent_state', '=', 'posted')]
+        return [('parent_state', 'in', ('posted', 'draft'))]
+
+    @api.model
     def _move_line_domain(self, wizard, date_from=None):
         """Base domain. ``date_from=None`` means 'since inception' (balance sheet)."""
         domain = [
@@ -90,26 +104,38 @@ class FinancialStatementsCommon(models.AbstractModel):
         ]
         if date_from:
             domain.append(('date', '>=', date_from))
-        if wizard.target_move == 'posted':
-            domain.append(('parent_state', '=', 'posted'))
-        else:
-            domain.append(('parent_state', 'in', ('posted', 'draft')))
-        return domain
+        return domain + self._state_domain(wizard)
 
     @api.model
     def _balances_by_account(self, wizard, account_types, date_from=None):
-        """Return ``[{account, balance}, ...]`` summed per account, zero rows dropped."""
-        domain = self._move_line_domain(wizard, date_from) + [
-            ('account_id.account_type', 'in', list(account_types)),
-        ]
+        """Return ``[{account, balance, domain}, ...]`` summed per account.
+
+        ``domain`` is the exact expression whose ``balance`` sum produced that
+        row's figure, returned rather than reconstructed later. That is the whole
+        point: a drill-down that disagrees with the figure it came from is worse
+        than no drill-down, because it turns a number you would have trusted into
+        one you now cannot. Sharing one expression makes the two agree
+        structurally instead of by a convention someone has to remember -- and the
+        convention is easy to get wrong, since ``date_from`` is ``None`` for the
+        balance sheet, the fiscal-year start for the period result, and
+        ``wizard.date_from`` for the P&L.
+        """
+        base = self._move_line_domain(wizard, date_from)
         groups = self.env['account.move.line']._read_group(
-            domain, groupby=['account_id'], aggregates=['balance:sum'],
+            base + [('account_id.account_type', 'in', list(account_types))],
+            groupby=['account_id'], aggregates=['balance:sum'],
         )
         rows = []
         for account, balance in groups:
             if wizard.company_id.currency_id.is_zero(balance) and wizard.hide_zero:
                 continue
-            rows.append({'account': account, 'balance': balance})
+            rows.append({
+                'account': account,
+                'balance': balance,
+                # Pinning account_id makes the account_type leaf redundant, so it
+                # is left out: a narrower domain is easier to read in the UI.
+                'domain': base + [('account_id', '=', account.id)],
+            })
         return sorted(rows, key=lambda r: r['account'].code or '')
 
     @api.model
@@ -120,6 +146,7 @@ class FinancialStatementsCommon(models.AbstractModel):
                      -1 flips it so credit balances read positive
                      (liabilities, equity, income).
         """
+        base = self._move_line_domain(wizard, date_from)
         blocks = []
         total = 0.0
         for atype in account_types:
@@ -130,15 +157,31 @@ class FinancialStatementsCommon(models.AbstractModel):
                 'code': r['account'].code,
                 'name': r['account'].name,
                 'amount': sign * r['balance'],
+                'account_id': r['account'].id,
+                'domain': r['domain'],
+                # The sign has to travel with the figure. Without it a
+                # liabilities drill-down opens a list whose Total Balance is the
+                # negation of the number that was clicked, which reads as a bug
+                # in the report rather than as Odoo's debit-positive convention.
+                'sign': sign,
             } for r in rows]
             subtotal = sum(line['amount'] for line in lines)
             blocks.append({
                 'label': TYPE_LABELS.get(atype, atype),
                 'lines': lines,
                 'subtotal': subtotal,
+                'domain': base + [('account_id.account_type', '=', atype)],
+                'sign': sign,
             })
             total += subtotal
-        return {'blocks': blocks, 'total': total}
+        # Dropping zero rows and empty blocks above does not affect these sums, so
+        # the section domain still ties to `total`.
+        return {
+            'blocks': blocks,
+            'total': total,
+            'domain': base + [('account_id.account_type', 'in', list(account_types))],
+            'sign': sign,
+        }
 
     @api.model
     def _period_result(self, wizard, date_from):
@@ -146,6 +189,104 @@ class FinancialStatementsCommon(models.AbstractModel):
         income = self._section(wizard, INCOME_TYPES, -1, date_from)['total']
         expense = self._section(wizard, EXPENSE_TYPES, +1, date_from)['total']
         return income - expense
+
+    @api.model
+    def _period_result_domain(self, wizard, date_from):
+        """Lines behind the current-period result.
+
+        Sign is -1, and the arithmetic is worth spelling out because it is not
+        obvious: the figure is ``(-sum income) - (+sum expense)``, which
+        rearranges to ``-(sum income + sum expense)``. So the ``balance`` sum over
+        this one domain is the negation of the printed result, and presenting it
+        with any other sign would put a drill-down on screen that contradicts the
+        line it hangs off.
+        """
+        return self._move_line_domain(wizard, date_from) + [
+            ('account_id.account_type', 'in', list(INCOME_TYPES + EXPENSE_TYPES)),
+        ]
+
+    # ------------------------------------------------------------------
+    @api.model
+    def _anomalies(self, wizard):
+        """Reasons a figure on this statement might not be trustworthy.
+
+        Returned as data and rendered by QWeb rather than assembled in JavaScript,
+        so the warnings reach the PDF as well as the screen. A caveat that is
+        visible while you read but absent from the copy you file is worse than no
+        caveat, because the filed copy is the one someone relies on later.
+
+        Every entry carries a domain, so each warning is itself a drill-down: the
+        point is not to say "something is wrong" but to open the offending records.
+        """
+        AML = self.env['account.move.line']
+        currency = wizard.company_id.currency_id
+        found = []
+
+        # Draft entries are being counted, so every figure is provisional.
+        if wizard.target_move != 'posted':
+            draft = [
+                ('company_id', '=', wizard.company_id.id),
+                ('date', '<=', wizard.date_to),
+                ('parent_state', '=', 'draft'),
+                ('account_id.account_type', '!=', 'off_balance'),
+            ]
+            count = AML.search_count(draft)
+            if count:
+                found.append({
+                    'level': 'warning',
+                    'message': _(
+                        "%(count)s draft journal item(s) are included because "
+                        "Target Moves is set to All Entries. Every figure below is "
+                        "provisional.", count=count,
+                    ),
+                    'domain': draft,
+                })
+
+        # Off-balance amounts. _move_line_domain excludes account_type
+        # 'off_balance' by design, so these are invisible on the statement -- which
+        # means they can silently be the explanation for a figure that looks short.
+        off_balance = [
+            ('company_id', '=', wizard.company_id.id),
+            ('date', '<=', wizard.date_to),
+            ('account_id.account_type', '=', 'off_balance'),
+        ] + self._state_domain(wizard)
+        if AML.search_count(off_balance):
+            found.append({
+                'level': 'info',
+                'message': _(
+                    "There are amounts in off-balance-sheet accounts. They are "
+                    "deliberately excluded from this statement, so they will not "
+                    "appear in any figure above."
+                ),
+                'domain': off_balance,
+            })
+
+        # Journal entries whose own debits and credits do not agree. Computed
+        # WITHOUT the off_balance exclusion on purpose: a move with one
+        # off-balance line is balanced in reality, and filtering that line out
+        # first would report it as broken.
+        every_line = [
+            ('company_id', '=', wizard.company_id.id),
+            ('date', '<=', wizard.date_to),
+        ] + self._state_domain(wizard)
+        unbalanced = [
+            move.id
+            for move, balance in AML._read_group(
+                every_line, groupby=['move_id'], aggregates=['balance:sum'])
+            if move and not currency.is_zero(balance)
+        ]
+        if unbalanced:
+            found.append({
+                'level': 'danger',
+                'message': _(
+                    "%(count)s journal entr(y/ies) do not balance: their debits and "
+                    "credits differ. Until they are corrected the statement cannot "
+                    "be relied on.", count=len(unbalanced),
+                ),
+                'domain': [('move_id', 'in', unbalanced)],
+            })
+
+        return found
 
 
 class ReportBalanceSheet(models.AbstractModel):
@@ -181,6 +322,21 @@ class ReportBalanceSheet(models.AbstractModel):
         total_equity = equity['total'] + result
         difference = assets['total'] - (liabilities['total'] + total_equity)
 
+        anomalies = self._anomalies(wizard)
+        if not wizard.company_id.currency_id.is_zero(difference):
+            # The sheet not balancing is the most consequential thing this report
+            # can tell you, so it leads the list. The domain is every line the
+            # statement drew on, which is where the discrepancy has to be.
+            anomalies.insert(0, {
+                'level': 'danger',
+                'message': _(
+                    "Assets do not equal liabilities plus equity; the difference is "
+                    "%(difference)s. Something below is wrong, or an entry is "
+                    "missing.", difference=difference,
+                ),
+                'domain': self._move_line_domain(wizard),
+            })
+
         return {
             'doc_model': 'account.financial.statements.wizard',
             'docs': wizard,
@@ -189,6 +345,9 @@ class ReportBalanceSheet(models.AbstractModel):
             'liabilities': liabilities,
             'equity': equity,
             'result': result,
+            'result_domain': self._period_result_domain(wizard, fy['date_from']),
+            'result_sign': -1,
+            'anomalies': anomalies,
             'result_label': _("Current Period Result"),
             'total_equity': total_equity,
             'total_liab_equity': liabilities['total'] + total_equity,
@@ -225,4 +384,10 @@ class ReportProfitLoss(models.AbstractModel):
             'expenses': expenses,
             'gross': gross,
             'net': net,
+            # Net profit spans income and every expense type, so its drill-down is
+            # the union -- and like the balance sheet's result line, the balance
+            # sum over it is the negation of the figure.
+            'net_domain': self._period_result_domain(wizard, wizard.date_from),
+            'net_sign': -1,
+            'anomalies': self._anomalies(wizard),
         }

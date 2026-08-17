@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!--
+        Repairs to OCA account_financial_report's drill-down, applied from here
+        rather than by editing that module.
+
+        Two reasons, and the second is the binding one. custom_addons/VENDORED.md
+        says "Do not edit these modules in place. If behaviour needs changing,
+        write a separate module that inherits and overrides." And the module is
+        AGPL-3: modifying it while serving it over a network triggers the
+        publication clause, which matters for the planned multi-tenant
+        deployment. Overriding leaves their files byte-identical to upstream, so
+        the next sync is still a straight copy.
+    -->
+
+    <!--
+        Aged Partner Balance: eight amounts were written `domain="..."` instead of
+        `t-att-domain="..."`. Without the `t-att-` prefix QWeb does not evaluate
+        the expression; it copies the Python source text into the HTML attribute
+        verbatim. The JavaScript then hands that source text to doAction as a
+        domain, which cannot work. So this drill-down has never functioned, on any
+        version, while looking present in the source.
+
+        The expressions themselves are fine and are reused unchanged: `line_rec`
+        really is in the render values (aged_partner_balance.py:230), and once
+        evaluated the expression yields the line plus everything it is reconciled
+        against, which is the right answer for an aged bucket.
+
+        All eight live in one template and are identical, so the same xpath is
+        applied eight times. That is deliberate, not a copy-paste slip: each
+        application REMOVES the `domain` attribute it fixed, so the next
+        `(//span[@domain])[1]` selects the next unfixed one. A test asserts the
+        combined arch ends up with eight `t-att-domain` and zero bare `domain`, so
+        if Odoo ever stops applying specs sequentially this fails loudly instead of
+        silently fixing only the first.
+    -->
+    <template id="afr_aged_partner_balance_drilldown"
+              inherit_id="account_financial_report.report_aged_partner_balance_move_lines">
+        <xpath expr="(//span[@domain])[1]" position="attributes">
+            <attribute name="t-att-domain">[('id', 'in', (line['line_rec'] | line['line_rec'].matched_debit_ids.mapped('debit_move_id') | line['line_rec'].matched_credit_ids.mapped('credit_move_id')).ids)]</attribute>
+            <attribute name="domain"/>
+        </xpath>
+        <xpath expr="(//span[@domain])[1]" position="attributes">
+            <attribute name="t-att-domain">[('id', 'in', (line['line_rec'] | line['line_rec'].matched_debit_ids.mapped('debit_move_id') | line['line_rec'].matched_credit_ids.mapped('credit_move_id')).ids)]</attribute>
+            <attribute name="domain"/>
+        </xpath>
+        <xpath expr="(//span[@domain])[1]" position="attributes">
+            <attribute name="t-att-domain">[('id', 'in', (line['line_rec'] | line['line_rec'].matched_debit_ids.mapped('debit_move_id') | line['line_rec'].matched_credit_ids.mapped('credit_move_id')).ids)]</attribute>
+            <attribute name="domain"/>
+        </xpath>
+        <xpath expr="(//span[@domain])[1]" position="attributes">
+            <attribute name="t-att-domain">[('id', 'in', (line['line_rec'] | line['line_rec'].matched_debit_ids.mapped('debit_move_id') | line['line_rec'].matched_credit_ids.mapped('credit_move_id')).ids)]</attribute>
+            <attribute name="domain"/>
+        </xpath>
+        <xpath expr="(//span[@domain])[1]" position="attributes">
+            <attribute name="t-att-domain">[('id', 'in', (line['line_rec'] | line['line_rec'].matched_debit_ids.mapped('debit_move_id') | line['line_rec'].matched_credit_ids.mapped('credit_move_id')).ids)]</attribute>
+            <attribute name="domain"/>
+        </xpath>
+        <xpath expr="(//span[@domain])[1]" position="attributes">
+            <attribute name="t-att-domain">[('id', 'in', (line['line_rec'] | line['line_rec'].matched_debit_ids.mapped('debit_move_id') | line['line_rec'].matched_credit_ids.mapped('credit_move_id')).ids)]</attribute>
+            <attribute name="domain"/>
+        </xpath>
+        <xpath expr="(//span[@domain])[1]" position="attributes">
+            <attribute name="t-att-domain">[('id', 'in', (line['line_rec'] | line['line_rec'].matched_debit_ids.mapped('debit_move_id') | line['line_rec'].matched_credit_ids.mapped('credit_move_id')).ids)]</attribute>
+            <attribute name="domain"/>
+        </xpath>
+        <xpath expr="(//span[@domain])[1]" position="attributes">
+            <attribute name="t-att-domain">[('id', 'in', (line['line_rec'] | line['line_rec'].matched_debit_ids.mapped('debit_move_id') | line['line_rec'].matched_credit_ids.mapped('credit_move_id')).ids)]</attribute>
+            <attribute name="domain"/>
+        </xpath>
+    </template>
+
+</odoo>

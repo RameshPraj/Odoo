@@ -1,31 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <!-- Shared: one section with its account blocks -->
+    <!-- Shared: one section with its account blocks.
+
+         Drill-down here is attributes, not JavaScript. Odoo core wraps any element
+         carrying res-id + res-model + view-type in a link
+         (web/static/src/webclient/actions/reports/report_hook.js:47, applied at
+         report_action.js:37), and an element carrying res-model + domain opens a
+         filtered list. Both are inert when this same template renders to PDF,
+         which is the reason screen and paper cannot drift apart: there is one
+         template, not two.
+
+         The collapse markers are structural rather than numbered. An earlier
+         attempt used the QWeb foreach index, but this template is called once per
+         section, so those indices restart and collide across sections. The
+         toggling script instead walks forward from a header row over the rows
+         marked as its lines. -->
     <template id="section_block">
         <t t-foreach="section['blocks']" t-as="block">
-            <tr>
-                <td colspan="2" style="padding-left:12px;"><i t-esc="block['label']"/></td>
+            <tr class="afs-block" data-afs-block="1">
+                <td colspan="2" style="padding-left:12px;">
+                    <span class="afs-toggle d-print-none">&#9662;</span>
+                    <i t-esc="block['label']"/>
+                </td>
                 <td/>
             </tr>
-            <tr t-foreach="block['lines']" t-as="line">
-                <td style="padding-left:32px;" t-esc="line['code']"/>
+            <tr t-foreach="block['lines']" t-as="line" data-afs-line="1">
+                <td style="padding-left:32px;">
+                    <span t-att-res-id="line['account_id']" res-model="account.account"
+                          view-type="form" t-esc="line['code']"/>
+                </td>
                 <td t-esc="line['name']"/>
                 <td class="text-end">
-                    <span t-esc="line['amount']"
+                    <span t-att-domain="line['domain']" res-model="account.move.line"
+                          t-esc="line['amount']"
                           t-options="{'widget': 'monetary', 'display_currency': wizard.company_id.currency_id}"/>
                 </td>
             </tr>
-            <tr>
+            <tr data-afs-subtotal="1">
                 <td colspan="2" style="padding-left:12px;" class="text-muted">
                     <small>Subtotal <t t-esc="block['label']"/></small>
                 </td>
                 <td class="text-end text-muted" style="border-top:1px solid #ddd;">
-                    <small><span t-esc="block['subtotal']"
+                    <small><span t-att-domain="block['domain']" res-model="account.move.line"
+                          t-esc="block['subtotal']"
                           t-options="{'widget': 'monetary', 'display_currency': wizard.company_id.currency_id}"/></small>
                 </td>
             </tr>
         </t>
+    </template>
+
+    <!-- Shared: what looks wrong, and a way into it.
+
+         Rendered server-side on purpose so it prints. A caveat you can see while
+         reading on screen but which is missing from the copy that gets filed is
+         worse than no caveat at all, because the filed copy is the one someone
+         relies on months later. Each row is itself a drill-down. -->
+    <template id="anomaly_panel">
+        <div t-if="anomalies" class="mt-3">
+            <t t-foreach="anomalies" t-as="anomaly">
+                <div t-attf-class="alert alert-{{anomaly['level']}} py-2 mb-2" role="alert">
+                    <span t-esc="anomaly['message']"/>
+                    <span t-if="anomaly['domain']" class="ms-1">
+                        <span t-att-domain="anomaly['domain']" res-model="account.move.line">
+                            <small>Show the entries</small>
+                        </span>
+                    </span>
+                </div>
+            </t>
+        </div>
+    </template>
+
+    <!-- Shared: says once what would otherwise need saying on every credit line. -->
+    <template id="drilldown_legend">
+        <p class="text-muted mt-2"><small>
+            Account codes and amounts are links: a code opens the account, an amount
+            opens the journal items behind it. For liabilities, equity and income the
+            journal-item list totals the negation of the figure shown, because Odoo
+            stores credit balances as negative and this report presents them the way
+            an accountant reads them.
+        </small></p>
     </template>
 
     <!-- ============================ BALANCE SHEET ============================ -->
@@ -59,7 +113,8 @@
                             <tr style="border-top:2px solid #333;">
                                 <td colspan="2"><b>TOTAL ASSETS</b></td>
                                 <td class="text-end"><b>
-                                    <span t-esc="assets['total']"
+                                    <span t-att-domain="assets['domain']" res-model="account.move.line"
+                                          t-esc="assets['total']"
                                           t-options="{'widget': 'monetary', 'display_currency': wizard.company_id.currency_id}"/>
                                 </b></td>
                             </tr>
@@ -71,7 +126,8 @@
                             <tr>
                                 <td colspan="2"><b>Total Liabilities</b></td>
                                 <td class="text-end"><b>
-                                    <span t-esc="liabilities['total']"
+                                    <span t-att-domain="liabilities['domain']" res-model="account.move.line"
+                                          t-esc="liabilities['total']"
                                           t-options="{'widget': 'monetary', 'display_currency': wizard.company_id.currency_id}"/>
                                 </b></td>
                             </tr>
@@ -83,7 +139,8 @@
                             <tr>
                                 <td colspan="2" style="padding-left:12px;"><i t-esc="result_label"/></td>
                                 <td class="text-end">
-                                    <span t-esc="result"
+                                    <span t-att-domain="result_domain" res-model="account.move.line"
+                                          t-esc="result"
                                           t-options="{'widget': 'monetary', 'display_currency': wizard.company_id.currency_id}"/>
                                 </td>
                             </tr>
@@ -108,13 +165,13 @@
                     <div t-if="balanced" class="alert alert-success py-2">
                         Balanced: assets equal liabilities plus equity.
                     </div>
-                    <div t-else="" class="alert alert-danger py-2">
-                        <b>Out of balance by
-                        <span t-esc="difference"
-                              t-options="{'widget': 'monetary', 'display_currency': wizard.company_id.currency_id}"/>.</b>
-                        Check for entries posted to accounts with no type, or an
-                        incomplete opening balance.
-                    </div>
+                    <!-- The out-of-balance case is deliberately NOT repeated here.
+                         It is the first entry in the anomaly panel below, which says
+                         the same thing and adds a way into the entries. Saying it
+                         twice trains people to skip both. -->
+
+                    <t t-call="account_financial_statements.anomaly_panel"/>
+                    <t t-call="account_financial_statements.drilldown_legend"/>
                 </div>
             </t>
         </t>
@@ -148,7 +205,8 @@
                             <tr>
                                 <td colspan="2"><b>Total Income</b></td>
                                 <td class="text-end"><b>
-                                    <span t-esc="income['total']"
+                                    <span t-att-domain="income['domain']" res-model="account.move.line"
+                                          t-esc="income['total']"
                                           t-options="{'widget': 'monetary', 'display_currency': wizard.company_id.currency_id}"/>
                                 </b></td>
                             </tr>
@@ -172,7 +230,8 @@
                             <tr>
                                 <td colspan="2"><b>Total Expenses</b></td>
                                 <td class="text-end"><b>
-                                    <span t-esc="expenses['total']"
+                                    <span t-att-domain="expenses['domain']" res-model="account.move.line"
+                                          t-esc="expenses['total']"
                                           t-options="{'widget': 'monetary', 'display_currency': wizard.company_id.currency_id}"/>
                                 </b></td>
                             </tr>
@@ -180,18 +239,39 @@
                             <tr style="border-top:2px solid #333;">
                                 <td colspan="2"><b>NET PROFIT</b></td>
                                 <td class="text-end"><b>
-                                    <span t-esc="net"
+                                    <span t-att-domain="net_domain" res-model="account.move.line"
+                                          t-esc="net"
                                           t-options="{'widget': 'monetary', 'display_currency': wizard.company_id.currency_id}"/>
                                 </b></td>
                             </tr>
                         </tbody>
                     </table>
+
+                    <!-- GROSS PROFIT carries no link on purpose: it is income minus
+                         cost of sales, two sections with opposite signs, so no single
+                         domain sums to it. A link that opened "roughly these lines"
+                         would be worse than none. -->
+
+                    <t t-call="account_financial_statements.anomaly_panel"/>
+                    <t t-call="account_financial_statements.drilldown_legend"/>
                 </div>
             </t>
         </t>
     </template>
 
-    <!-- ============================ ACTIONS ============================ -->
+    <!-- ============================ ACTIONS ============================
+
+         Each statement has TWO action records sharing one report_name: the
+         qweb-html one the wizard opens, and a qweb-pdf twin. That pairing is what
+         makes the report viewer's own Print button work, because it fires the pdf
+         variant of the report_name it is displaying (report_action.js:45-54). So
+         printing needs no code of ours. It is also why the drill-down attributes
+         had to be inert in PDF: both variants render the SAME template, so the
+         paper copy and the screen copy cannot disagree.
+
+         The report_name must stay equal to the AbstractModel name without its
+         'report.' prefix; test_the_values_model_name_matches_the_report_name
+         fails loudly otherwise. -->
     <record id="action_report_balance_sheet" model="ir.actions.report">
         <field name="name">Balance Sheet</field>
         <field name="model">account.financial.statements.wizard</field>
@@ -200,10 +280,26 @@
         <field name="report_file">account_financial_statements.balance_sheet</field>
     </record>
 
+    <record id="action_report_balance_sheet_pdf" model="ir.actions.report">
+        <field name="name">Balance Sheet</field>
+        <field name="model">account.financial.statements.wizard</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">account_financial_statements.balance_sheet</field>
+        <field name="report_file">account_financial_statements.balance_sheet</field>
+    </record>
+
     <record id="action_report_profit_loss" model="ir.actions.report">
         <field name="name">Profit and Loss</field>
         <field name="model">account.financial.statements.wizard</field>
         <field name="report_type">qweb-html</field>
+        <field name="report_name">account_financial_statements.profit_loss</field>
+        <field name="report_file">account_financial_statements.profit_loss</field>
+    </record>
+
+    <record id="action_report_profit_loss_pdf" model="ir.actions.report">
+        <field name="name">Profit and Loss</field>
+        <field name="model">account.financial.statements.wizard</field>
+        <field name="report_type">qweb-pdf</field>
         <field name="report_name">account_financial_statements.profit_loss</field>
         <field name="report_file">account_financial_statements.profit_loss</field>
     </record>
@@ -229,18 +325,37 @@
                             <tr>
                                 <td><b>Cash at beginning of period</b></td>
                                 <td class="text-end"><b>
-                                    <span t-esc="opening"
+                                    <span t-att-domain="opening_domain" res-model="account.move.line"
+                                          t-esc="opening"
                                           t-options="{'widget': 'monetary', 'display_currency': wizard.company_id.currency_id}"/>
                                 </b></td>
                             </tr>
 
                             <t t-foreach="sections" t-as="section">
                                 <t t-if="section['lines']">
-                                    <tr><td colspan="2" style="padding-top:12px;"><b t-esc="section['label']"/></td></tr>
-                                    <tr t-foreach="section['lines']" t-as="line">
-                                        <td style="padding-left:28px;" t-esc="line['label']"/>
+                                    <tr class="afs-block" data-afs-block="1">
+                                        <td colspan="2" style="padding-top:12px;">
+                                            <span class="afs-toggle d-print-none">&#9662;</span>
+                                            <b t-esc="section['label']"/>
+                                        </td>
+                                    </tr>
+                                    <tr t-foreach="section['lines']" t-as="line" data-afs-line="1">
+                                        <td style="padding-left:28px;">
+                                            <span t-if="line['account_id']"
+                                                  t-att-res-id="line['account_id']"
+                                                  res-model="account.account" view-type="form"
+                                                  t-esc="line['label']"/>
+                                            <span t-else="" t-esc="line['label']"/>
+                                        </td>
                                         <td class="text-end">
-                                            <span t-esc="line['amount']"
+                                            <!-- Links to the CONTRIBUTING entries, which is a weaker
+                                                 claim than everywhere else in this module and is
+                                                 labelled as such in the note below the table. The
+                                                 amount is a pro-rata share of a cash movement, so it
+                                                 is not the sum of any field on these records. -->
+                                            <span t-att-domain="line['contributor_domain']"
+                                                  t-att-res-model="line['contributor_domain'] and 'account.move.line' or None"
+                                                  t-esc="line['amount']"
                                                   t-options="{'widget': 'monetary', 'display_currency': wizard.company_id.currency_id}"/>
                                         </td>
                                     </tr>
@@ -264,7 +379,8 @@
                             <tr>
                                 <td><b>Cash at end of period</b></td>
                                 <td class="text-end"><b>
-                                    <span t-esc="closing"
+                                    <span t-att-domain="closing_domain" res-model="account.move.line"
+                                          t-esc="closing"
                                           t-options="{'widget': 'monetary', 'display_currency': wizard.company_id.currency_id}"/>
                                 </b></td>
                             </tr>
@@ -274,12 +390,20 @@
                     <div t-if="reconciled" class="alert alert-success py-2">
                         Reconciled: classified movements equal the change in cash.
                     </div>
-                    <div t-else="" class="alert alert-danger py-2">
-                        <b>Unreconciled by
-                        <span t-esc="difference"
-                              t-options="{'widget': 'monetary', 'display_currency': wizard.company_id.currency_id}"/>.</b>
-                        Some cash movement could not be classified.
-                    </div>
+                    <!-- The unreconciled case is the anomaly panel's first entry, so
+                         it is not also stated here. -->
+
+                    <t t-call="account_financial_statements.anomaly_panel"/>
+
+                    <p class="text-muted mt-2"><small>
+                        Opening and closing cash are plain totals, so their links open
+                        exactly the entries behind them. The activity lines are
+                        different: each amount is a share of a cash movement
+                        apportioned across the counterpart accounts of its entry, so it
+                        is not the sum of any field on any record. Their links open the
+                        entries that <i>contributed</i> to the figure, and the total of
+                        that list will not equal the figure shown.
+                    </small></p>
                 </div>
             </t>
         </t>
@@ -289,6 +413,14 @@
         <field name="name">Cash Flow Statement</field>
         <field name="model">account.financial.statements.wizard</field>
         <field name="report_type">qweb-html</field>
+        <field name="report_name">account_financial_statements.cash_flow</field>
+        <field name="report_file">account_financial_statements.cash_flow</field>
+    </record>
+
+    <record id="action_report_cash_flow_pdf" model="ir.actions.report">
+        <field name="name">Cash Flow Statement</field>
+        <field name="model">account.financial.statements.wizard</field>
+        <field name="report_type">qweb-pdf</field>
         <field name="report_name">account_financial_statements.cash_flow</field>
         <field name="report_file">account_financial_statements.cash_flow</field>
     </record>

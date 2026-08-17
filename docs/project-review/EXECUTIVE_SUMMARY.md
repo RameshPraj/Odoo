@@ -7,8 +7,8 @@ the live PostgreSQL cluster, and the Odoo substrate as it bears on multi-tenancy
 vendored upstream files were not reviewed as code, but *how they got here and how they get
 patched* is in scope and is among the worst findings.
 
-All findings and evidence in [`BACKLOG.md`](BACKLOG.md). **121 findings: 10 P0, 29 P1, 46 P2, 28 P3,
-6 P4** (119 table entries; `DEP-3/4/5` is one row covering three). Four are RESOLVED — FIN-2, OPS-1,
+All findings and evidence in [`BACKLOG.md`](BACKLOG.md). **122 findings: 10 P0, 29 P1, 47 P2, 28 P3,
+6 P4** (120 table entries; `DEP-3/4/5` is one row covering three). Four are RESOLVED — FIN-2, OPS-1,
 BS-20, DEP-1 — and CI-1 is partially resolved, so **116 remain open**. This line previously read "88
 findings" and had drifted by 30; it is now counted from `BACKLOG.md` rather than carried forward.
 

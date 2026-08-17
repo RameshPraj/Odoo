@@ -58,6 +58,26 @@ Two of the three are AGPL-3, not LGPL-3. Practically:
 - Licence files and copyright headers must stay intact. They have not been
   altered.
 
+## What currently overrides them
+
+Kept here so an upgrade knows what to re-check. Nothing on this list edits a
+vendored file; each is inheritance from a local module.
+
+| Vendored target | Overridden by | What and why |
+|---|---|---|
+| `account_financial_report` — `report_aged_partner_balance_move_lines` | `account_reports_interactive/report/oca_drilldown_overlays.xml` | Eight report amounts were written `domain="…"` instead of `t-att-domain="…"`, so QWeb never evaluated the expression and emitted Python source text into the HTML attribute. The drill-down could not work. The overlay adds the `t-att-` form and removes the raw attribute; the expressions themselves are upstream's, unchanged. |
+
+`account_reports_interactive` also patches core's `ReportAction` component to widen
+report drill-down from single records to filtered lists. `account_financial_report`
+patches the same component for the same purpose, so both hooks run; ours skips
+elements already wrapped, and a test covers that. If upstream's hook is ever removed
+or renamed, ours keeps working on its own.
+
+**On upgrade**, re-check that the eight amounts are still eight and still in that
+template. `account_reports_interactive/tests/test_oca_overlays.py` asserts the count
+and asserts the vendored file still contains its original markup, so a version bump
+that changes either fails loudly instead of silently dropping the fix.
+
 ## Updating them
 
 There is no package manager for Odoo modules. To take a newer version:
