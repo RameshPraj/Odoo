@@ -4,16 +4,18 @@ Findings by ID in [`BACKLOG.md`](BACKLOG.md).
 
 ## Verdict: **No-go**, single-tenant or multi-tenant
 
-**Five** open blockers — one of the original six (OPS-1) was fixed on 2026-08-14. None requires a
-redesign; four are configuration.
+**Four** open blockers of the original six. OPS-1 was fixed 2026-08-14 and FIN-2 on 2026-08-15;
+both are struck through below rather than deleted, so the list still reads as a history. None of the
+four requires a redesign; three are configuration, and the fourth (SUP-2/DAT-1) is a decision about
+where the code lives rather than a code change.
 
 | # | Blocker | ID | Why |
 |---|---|---|---|
 | 1 | Live one-request cluster takeover | SAAS-2 | `verify_admin_password('admin')` is `True`; one unauthenticated POST claims the master password, which then authorises backup of every database |
-| 2 | Statutory reports cannot render | FIN-2 | Balance Sheet, P&L and Cash Flow all raise `QWebError` — verified |
+| ~~2~~ | ~~Statutory reports cannot render~~ **RESOLVED 2026-08-15** | FIN-2 | All three now render, print to PDF, and drill down to the entries behind each figure. `TestReportsActuallyRender` renders them through the report engine, which is the check that was missing |
 | 3 | VAT return computes nil | FIN-1 | Zero tag→repartition links in the live database |
 | ~~4~~ | ~~Attachment storage is splitting~~ **RESOLVED 2026-08-14** | OPS-1 | Paths corrected; reconciliation proved no data loss; launchers now fail fast |
-| 5 | No recoverable backup of code or data | SUP-2, DAT-1 | 28 commits on one disk; the sync substituting for a backup is also the corruption risk |
+| 5 | No recoverable backup of code or data | SUP-2, DAT-1 | **43 commits** on one disk (28 at audit time); the sync substituting for a backup is also the corruption risk. Now the largest open risk on this list, since the two above it are closed. Note SEC-1: credentials are in immutable history, so a **public** remote would leak them — the choice is a private remote, or rewriting history first |
 | 6 | Known credentials, database manager exposed | SEC-1, OPS-2 | Values in immutable git history |
 
 **Additionally, for multi-tenant only:** SAAS-1, SAAS-3, SAAS-4, SAAS-5 and SAAS-6 must close

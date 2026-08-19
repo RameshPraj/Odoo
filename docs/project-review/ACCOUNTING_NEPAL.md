@@ -8,12 +8,20 @@ Findings by ID in [`BACKLOG.md`](BACKLOG.md).
 
 The design is genuinely good: jurisdiction values are editable records rather than constants, the
 Odoo 19 idiom is used correctly throughout, and the module READMEs are honest about what has not
-been signed off. But three of the four things an accountant would actually *use* it for are
-broken right now — the financial statements cannot render, the VAT return computes nil, and a
-foreign-currency loan posts the wrong numbers.
+been signed off. But three of the four things an accountant would actually *use* it for were
+broken at audit time — the financial statements could not render, the VAT return computes nil, and
+a foreign-currency loan posts the wrong numbers.
 
 None of these is a design failure. All three are a testing failure: **every one is covered by a
 green test that exercises the wrong layer.**
+
+> **Updated 2026-08-19.** The statements now render, and are interactive and printable — **FIN-2 is
+> RESOLVED** (commit `153749a6`). The other two stand. Note the pattern this document identifies
+> has since recurred twice more, which is the more useful finding than any individual defect:
+> **FIN-3** (OCA's Aged Partner Balance could not render either, and its tests passed because they
+> converted the offending value themselves) and the report tests in this very module, which called
+> `_get_report_values` directly and so proved the arithmetic while the report had never once
+> rendered.
 
 ## Relationship to standard Odoo Accounting
 
@@ -28,7 +36,11 @@ Removing it removes the menu, never data. That is the right shape.
 The one place it crosses the line is **UPG-1**: `security/account_groups.xml` rewrites three
 `res.groups` records **owned by `account`**. See [`ODOO_REVIEW.md`](ODOO_REVIEW.md).
 
-## FIN-2 (P0) — the three financial statements cannot render
+## FIN-2 (P0) — the three financial statements cannot render · **RESOLVED 2026-08-15**
+
+> Kept as written because the diagnosis below is correct and worth reading; only the
+> tense is wrong. The fix went the *opposite* way to the one prescribed here — see the
+> end of this section.
 
 Odoo resolves a report's data model as `report.<report_name>`
 (`odoo/addons/base/models/ir_actions_report.py:1121-1123`):
@@ -44,12 +56,25 @@ Odoo resolves a report's data model as `report.<report_name>`
 `section` — variables the fallback context never sets.
 
 The module's stated purpose is to supply the Balance Sheet, P&L and Cash Flow that Community
-cannot render (it ships the `account.report` schema without a renderer). **None has ever
+cannot render (it ships the `account.report` schema without a renderer). **None had ever
 worked.**
 
-**Fix (S):** rename the three `_name`s to match `report.<report_name>`, then add
+**Fix as prescribed (S):** rename the three `_name`s to match `report.<report_name>`, then add
 `_render_qweb_html(...)` to the tests and assert the HTML contains "TOTAL ASSETS". One assertion
 would have caught this.
+
+**What was actually done, 2026-08-15 —** and the difference matters, because the prescription above
+does not work. Renaming the models produces
+`report_account_financial_statements_report_balance_sheet_document`, 65 characters, and Odoo derives
+a table name from `_name` even for an `AbstractModel` and validates its length against PostgreSQL's
+63-character identifier limit. `-u` fails outright. The two names are locked together, so the fix
+went the other way: the **templates** were renamed to `balance_sheet` / `profit_loss` / `cash_flow`,
+with `report_name` and `report_file` following, and the short model names kept.
+
+The test half of the prescription was right and was done: `TestReportsActuallyRender` renders all
+three through `_render_qweb_html` by both routes. A second defect surfaced on the way —
+`_get_report_values` read `data['wizard_id']` unconditionally, which raised `KeyError` for a report
+opened by URL, the very route the error page's own retry link uses.
 
 ## FIN-1 (P1) — VAT return computes every box as zero
 

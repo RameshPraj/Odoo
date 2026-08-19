@@ -101,7 +101,7 @@ report it. **Acceptance** A `res.device.log` row in A cannot delete a session be
 **Findings** FIN-1, FIN-2, TST-1, TST-5, ACC-1..3, SCH-2
 
 ### BUG-6 — Balance Sheet, P&L and Cash Flow cannot render
-**Bug · Blocker · S · FIN-2**
+**Bug · ~~Blocker~~ · S · FIN-2 · ✅ DONE 2026-08-15**
 
 **Problem** Odoo resolves a report's model as `report.<report_name>`
 (`ir_actions_report.py:1121-1123`). The three AbstractModels are named
@@ -109,12 +109,15 @@ report it. **Acceptance** A `res.device.log` row in A cannot delete a session be
 `…report_balance_sheet_document`. **Verified by execution:** the model resolves to `None` and
 rendering raises `QWebError` for all three.
 
-**Impact** The module's entire purpose has never worked. Any user selecting Balance Sheet gets a
+**Impact** The module's entire purpose had never worked. Any user selecting Balance Sheet got a
 traceback.
 
-**Solution** Rename the three `_name`s to match.
-**Acceptance** All three render HTTP 200 and the Balance Sheet HTML contains "TOTAL ASSETS".
-**Tests** `_render_qweb_html(...)` in the suite — **one assertion would have caught this**.
+**Solution** ~~Rename the three `_name`s to match.~~ **That does not work** — the renamed models
+derive a 65-character table name, past PostgreSQL's 63-character limit, and `-u` fails outright. The
+templates were renamed instead, with `report_name`/`report_file` following.
+**Acceptance** All three render HTTP 200 and the Balance Sheet HTML contains "TOTAL ASSETS". ✅
+**Tests** `_render_qweb_html(...)` in the suite — **one assertion would have caught this**. ✅
+`TestReportsActuallyRender` renders all three by both routes.
 
 ### BUG-7 — VAT return computes every box as zero
 **Bug · Blocker · M · FIN-1**
@@ -226,8 +229,10 @@ Two full `pg_dump` images, the 113 MB filestore, 75 live session files, `odoo.co
 
 ### TASK-3 — Create a remote and push
 **Task · Blocker · XS · SUP-2**
-28 commits on one disk, no remote, nothing ever reviewed. **Acceptance** History present on a
-private remote; `git fsck` clean.
+43 commits on one disk (28 at audit time), no remote, nothing ever reviewed. **Now the highest open
+risk in the project**, since the two blockers ranked above it are closed. **Acceptance** History
+present on a **private** remote; `git fsck` clean. Private specifically: SEC-1 means credentials sit
+in immutable history, so publishing it would leak them — the alternative is rewriting history first.
 
 ### TASK-4 — PostgreSQL revokes
 **Task · Major · S · PG-1, PG-2, PG-4**
@@ -431,9 +436,11 @@ health check that fails below the expected file count. Declare `polib`.
 
 > **Re-derived 2026-08-15** by counting the headings rather than carrying the figures forward. The
 > total read **44** and had already drifted before BUG-22 was added for TST-8: epic 3 holds 6 tickets
-> and 4 Blockers, not 5 and 3. Blockers now count **11**, of which **10 are open** — BUG-16 (OPS-1)
-> is struck through as done — so "the ten Blockers" below is still right.
+> and 4 Blockers, not 5 and 3. **11** tickets are marked Blocker, of which **9 are open** as of
+> 2026-08-19 — BUG-16 (OPS-1) and BUG-6 (FIN-2) are struck through as done.
 
-**The ten Blockers** — BUG-1 (cluster takeover), BUG-2 (`dbfilter`), BUG-3 (`X-Forwarded-Host`),
-BUG-6 (reports), BUG-7 (VAT nil), BUG-8 (the test hiding it), BUG-13 (filestore split), BUG-14
+**The nine open Blockers** — BUG-1 (cluster takeover), BUG-2 (`dbfilter`), BUG-3
+(`X-Forwarded-Host`), BUG-7 (VAT nil), BUG-8 (the test hiding it), BUG-13 (filestore split), BUG-14
 (cloud sync), TASK-2 (rotate), TASK-3 (remote), plus STORY-5 for multi-tenant.
+
+~~BUG-6 (reports)~~ — done 2026-08-15.

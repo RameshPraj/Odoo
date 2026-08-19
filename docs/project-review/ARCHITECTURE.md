@@ -96,8 +96,14 @@ re-reads, and raises.
 ### Financial statements
 
 Locally written QWeb reports keyed on `account_type` — Community ships the `account.report` schema
-without a renderer, which is why the module exists at all. **They cannot render** (FIN-2): the
-report model naming does not match `report.<report_name>`.
+without a renderer, which is why the module exists at all. They **could not render** until
+2026-08-15, because the report model naming did not match `report.<report_name>` (**FIN-2**, now
+resolved).
+
+They are now also **interactive and printable**: every figure carries the domain that produced it, so
+clicking it opens exactly those journal items, and each statement has a `qweb-pdf` action sharing its
+`report_name`. The drill-down is HTML attributes rather than a component, which is what lets one
+template serve both the screen and the PDF — see `account_reports_interactive/README.md`.
 
 ### Bikram Sambat — the most runtime-invasive local code
 

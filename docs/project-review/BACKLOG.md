@@ -179,7 +179,7 @@ at all. **Fix** Upstream issue; mitigate by per-tenant session directories or se
 Combines SAAS-1 and SAAS-2 into a single exposed surface. `deploy/odoo.conf.linux.example:70-71`
 gets both right — the dev configs are the documented starting point and do not. **Effort XS.**
 
-## SUP-2 · No git remote — 28 commits on one disk, never reviewed
+## SUP-2 · No git remote — 43 commits on one disk, never reviewed
 **CONFIRMED** · Repository
 
 `git remote -v` empty; single ref `refs/heads/main`; no tags, no merges, no PRs.

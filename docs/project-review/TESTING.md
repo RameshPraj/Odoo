@@ -17,7 +17,8 @@ as a baseline, which makes the placement problem the *only* remaining one, not a
 
 | Defect | The test that should have caught it | Why it did not |
 |---|---|---|
-| FIN-2 — reports cannot render | 13 statement tests | All call `_get_report_values()` directly, bypassing the report engine. The dispatch test asserts on the `report_name` **string** and never renders |
+| FIN-2 — reports cannot render *(fixed 2026-08-15)* | 13 statement tests | All call `_get_report_values()` directly, bypassing the report engine. The dispatch test asserts on the `report_name` **string** and never renders |
+| FIN-3 — OCA's Aged Partner Balance cannot render *(fixed 2026-08-19)* | 2 aged-balance tests | Worse than bypassing: they **compensate**. `test_aged_partner_balance.py:63,98` convert `date_at` to a string themselves, which is exactly the conversion the wizard fails to do — so the tests encode the workaround and can never see the defect |
 | FIN-1 — VAT boxes are nil | `test_box_from_tax_tags_ties_to_ledger` | **Skips when there are no tags** — i.e. under exactly the condition that indicates the bug |
 | ACC-1 — loans post wrong currency | `test_drawdown_entry_is_balanced…` | Asserts the entry **balances**. It does, in the wrong currency |
 | TST-5 — TDS reports zero withheld | 10 TDS tests | None calls `action_collect_lines`, the only method that touches the ledger |

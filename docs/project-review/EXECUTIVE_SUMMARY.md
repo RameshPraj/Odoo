@@ -56,9 +56,9 @@ The suite tests mechanism thoroughly and outcomes barely at all.
 |---|---|---|
 | 1 | **One unauthenticated POST claims the cluster master password**, which then authorises a full backup of every database. `verify_admin_password('admin')` is **True** today | SAAS-2 |
 | 2 | **A filed VAT return reports nil while sales exist** — zero tag→repartition links in the live database | FIN-1 |
-| 3 | **Balance Sheet, P&L and Cash Flow cannot render at all** — verified `QWebError` on all three | FIN-2 |
+| 3 | ~~**Balance Sheet, P&L and Cash Flow cannot render at all**~~ — **FIXED 2026-08-15.** All three render, print to PDF, and drill down to the entries behind each figure | FIN-2 |
 | 4 | ~~Attachments written to an orphaned filestore~~ — **FIXED 2026-08-14.** Reconciliation proved no data loss; the orphan held only regenerable asset bundles | OPS-1 |
-| 5 | **Total loss of the codebase** — 28 commits on one disk, and the sync substituting for a backup is also the corruption risk | SUP-2, DAT-1 |
+| 5 | **Total loss of the codebase** — **43** commits on one disk (28 at audit time), and the sync substituting for a backup is also the corruption risk. With risks 3 and 4 closed, this is now the most consequential item on this list | SUP-2, DAT-1 |
 | 6 | **Client accounting data in corporate cloud sync** — two full database dumps, 572 attachments, 75 live sessions, plaintext credentials | DAT-1 |
 | 7 | **Any client can select any tenant** once `dbfilter` is unset, and `X-Forwarded-Host` is unpinned | SAAS-1, SAAS-3 |
 | 8 | **Odoo security patches cannot be applied**, and the only upgrade path silently destroys 87 translation files | SUP-1, SUP-3 |
@@ -139,9 +139,11 @@ Write them before the pivot, not after.
 
 ## 6. Accounting Nepal readiness — **not ready; four correctness blockers**
 
-Well-engineered and currently unable to produce a correct statutory output.
+Well-engineered and, at audit time, unable to produce a correct statutory output. One of the three
+defects below is now fixed; the statements work, the VAT return still does not.
 
-- **FIN-2** — the three financial statements cannot render. Verified.
+- ~~**FIN-2** — the three financial statements cannot render.~~ **RESOLVED 2026-08-15**, and they are
+  now interactive and printable.
 - **FIN-1** — the VAT return computes every box as zero.
 - **ACC-3** — the Export fiscal position substitutes no tax, so exports are invoiced at 13%.
 - **ACC-2** — the Balance Sheet omits prior-year unallocated earnings, so it stops balancing after
@@ -225,7 +227,8 @@ are documented with the arithmetic rather than a target assumed.
 ## 10. Prioritised roadmap
 
 Five phases with exit criteria in [`ROADMAP.md`](ROADMAP.md); **46 tickets across 9 epics** in
-[`JIRA_BACKLOG.md`](JIRA_BACKLOG.md), **10 of them open Blockers** (11 marked Blocker, one done). The
+[`JIRA_BACKLOG.md`](JIRA_BACKLOG.md), **9 of them open Blockers** (11 marked Blocker; BUG-16 and
+BUG-6 are done). The
 ticket count read 44 and had already drifted before BUG-22 was added for TST-8; it is now counted
 from the file.
 
