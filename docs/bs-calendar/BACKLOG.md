@@ -13,14 +13,14 @@ Verified by `-u nepali_calendar_core --test-enable --test-tags /nepali_calendar_
 holds, including on a `TEMPLATE` copy of the live database with the legacy setting switched on and
 the migration applied.
 
-> **Corrected 2026-08-15.** This paragraph used to add that "the whole custom suite runs at
-> **138 / 0 / 0**". That was never the whole suite — it covered four modules. Run across all 16
-> custom modules the figure is **304 tests, 0 failed, 15 errors**, and the suite is **not green**:
-> all 15 errors are `date_range`, which depends only on `web` and so self-tests before `account`
-> loads, hitting a `res_partner` not-null constraint. That is **TST-8** in
-> [`../project-review/BACKLOG.md`](../project-review/BACKLOG.md) — pre-existing and structural, not a
-> regression. Quote the module-scoped number or the whole-suite number, but do not let one stand in
-> for the other.
+> **Corrected 2026-08-15, updated 2026-08-19.** This paragraph used to add that "the whole custom
+> suite runs at **138 / 0 / 0**". That was never the whole suite — it covered four modules. Across all
+> 17 custom modules the figure is **326 tests, 0 failed, 0 errors**. Quote the module-scoped number or
+> the whole-suite number, but do not let one stand in for the other.
+>
+> Between those two dates the whole-suite run was red, with 15 `date_range` errors — **TST-8**, now
+> fixed. Recorded here because a document that only ever shows green numbers teaches nobody what a red
+> run looks like or where to look.
 
 | ID | Item | Pri | Effort | State |
 |---|---|---|---|---|

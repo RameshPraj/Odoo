@@ -252,11 +252,15 @@ Spell the flag per shell. `run-odoo.ps1` does **not** parse the POSIX `--db`; Po
 value positionally to `[int] $Lines` and fails with a cast error naming a parameter you did not use.
 That is finding **OPS-7**.
 
-It now runs **304 tests across 16 modules**, and **the suite does not currently pass**: `0 failed,
-15 error(s)`, all of them `date_range`, which depends only on `web` and so self-tests before
-`account` loads. That is **TST-8** — structural and pre-existing, so a red run here is not evidence
-that your change broke something. Check that the error count is still exactly 15 and still confined
-to `date_range` before concluding anything.
+It runs **326 tests across 17 modules** and, as of 2026-08-19, **exits 0** — `0 failed, 0 errors`. So
+a red run now means something: treat any failure as yours until proved otherwise.
+
+That was not true before 2026-08-19. Until then 15 `date_range` tests errored for a structural reason
+(**TST-8**, now fixed): the module depends only on `web`, so its `at_install` tests ran before
+`account` was in the registry, and creating a company cascaded a `res.partner` INSERT that omitted
+account's NOT NULL `autopost_bills` column. If those errors ever return, the cause is that the
+`post_install` tags on `date_range/tests/` were lost — most likely by a vendored-module update. See
+`custom_addons/VENDORED.md`.
 
 Both `-u` and `--test-tags` are needed: `--test-enable` alone runs nothing for modules already up to
 date, so the modules are updated and the run is scoped to their tags. This modifies the named database,

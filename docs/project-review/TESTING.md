@@ -4,16 +4,16 @@ Findings by ID in [`BACKLOG.md`](BACKLOG.md).
 
 ## Summary
 
-**304 test methods across 16 modules. A runner now exists, and the suite does not pass.** The volume
-is respectable. The placement is not: **every one of the four correctness defects in this audit is
-covered by a green test that exercises the wrong layer.**
+**326 test methods across 17 modules, and they pass.** The volume is respectable. The placement is
+not: **every one of the four correctness defects in this audit is covered by a green test that
+exercises the wrong layer.** That remains the point of this document — a green suite is now available
+as a baseline, which makes the placement problem the *only* remaining one, not a second one.
 
-> **Updated 2026-08-15.** Both halves of the original sentence — "121 test methods across 8 modules,
-> and nothing runs them" — are now wrong. `run-odoo.ps1 test` / `run-odoo.sh test` runs them
-> (**CI-1** is partially resolved: a runner exists, automation still does not), and the count across
-> every custom module is 304. The current result is **0 failed, 15 error(s)**; all 15 are
-> `date_range` (**TST-8**). Note what that means for this document's thesis: the suite is now both
-> mis-placed *and* red, so a passing run is not currently available as a baseline.
+> **Updated 2026-08-19.** The original sentence — "121 test methods across 8 modules, and nothing runs
+> them" — was wrong in both halves. `run-odoo.ps1 test` / `run-odoo.sh test` runs them (**CI-1** is
+> partially resolved: a runner exists, automation still does not), the count is 326, and as of
+> 2026-08-19 the result is **0 failed, 0 errors**. The intermediate state recorded here on 2026-08-15
+> — 15 `date_range` errors — was **TST-8**, now fixed.
 
 | Defect | The test that should have caught it | Why it did not |
 |---|---|---|

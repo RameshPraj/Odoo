@@ -7,10 +7,14 @@ from psycopg2 import IntegrityError
 
 from odoo import fields
 from odoo.exceptions import UserError
+from odoo.tests import tagged
 from odoo.tests.common import TransactionCase
 from odoo.tools import mute_logger
 
 
+# post_install: see the note in test_date_range.py. Local deviation from vendored
+# upstream, recorded in custom_addons/VENDORED.md.
+@tagged("-at_install", "post_install")
 class DateRangeTypeTest(TransactionCase):
     def setUp(self):
         super().setUp()

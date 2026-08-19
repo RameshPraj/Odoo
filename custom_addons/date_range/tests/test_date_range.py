@@ -4,9 +4,19 @@
 import datetime
 
 from odoo.exceptions import UserError, ValidationError
+from odoo.tests import tagged
 from odoo.tests.common import TransactionCase
 
 
+# post_install, not the default at_install. This module depends only on `web`, so
+# it loads early; at_install means these tests run before `account` is in the
+# registry. `setUp` creates a res.company, which cascades a res.partner INSERT --
+# and in any database where `account` is also installed, res_partner already has
+# account's NOT NULL `autopost_bills` column (partner.py:608) that the partial
+# registry knows nothing about, so the INSERT omits it and the constraint fires.
+# Upstream CI never sees this because it installs only this module's dependencies.
+# Local deviation from vendored upstream; recorded in custom_addons/VENDORED.md.
+@tagged("-at_install", "post_install")
 class DateRangeTest(TransactionCase):
     def setUp(self):
         super().setUp()

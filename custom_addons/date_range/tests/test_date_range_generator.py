@@ -6,10 +6,13 @@ import datetime
 from dateutil.rrule import MONTHLY
 
 from odoo.exceptions import ValidationError
-from odoo.tests import Form
+from odoo.tests import Form, tagged
 from odoo.tests.common import TransactionCase
 
 
+# post_install: see the note in test_date_range.py. Local deviation from vendored
+# upstream, recorded in custom_addons/VENDORED.md.
+@tagged("-at_install", "post_install")
 class DateRangeGeneratorTest(TransactionCase):
     def setUp(self):
         super().setUp()

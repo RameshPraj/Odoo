@@ -67,6 +67,33 @@ vendored file; each is inheritance from a local module.
 |---|---|---|
 | `account_financial_report` — `report_aged_partner_balance_move_lines` | `account_reports_interactive/report/oca_drilldown_overlays.xml` | Eight report amounts were written `domain="…"` instead of `t-att-domain="…"`, so QWeb never evaluated the expression and emitted Python source text into the HTML attribute. The drill-down could not work. The overlay adds the `t-att-` form and removes the raw attribute; the expressions themselves are upstream's, unchanged. |
 
+### One deviation that is edited in place, because it cannot be overridden
+
+`date_range/tests/test_date_range.py`, `test_date_range_generator.py` and
+`test_date_range_type.py` each gained `@tagged("-at_install", "post_install")` on
+2026-08-19. Test tags are class decorators; there is no inheritance mechanism that
+reaches them from another module, so an overlay is not possible here.
+
+`date_range` is **LGPL-3**, not AGPL-3, so the network-copyleft reasoning above does
+not apply — the only cost is that an update overwrites it.
+
+**Why:** the module depends only on `web`, so it loads early, and `at_install` tests
+run before `account` is in the registry. Their `setUp` creates a `res.company`, which
+cascades a `res.partner` INSERT — and in any database that also has `account`,
+`res_partner` already carries account's NOT NULL `autopost_bills` column
+(`account/models/partner.py:608`) that the partial registry knows nothing about. 15 of
+19 tests errored. Upstream CI never sees it because it installs only this module's
+dependencies, so this is not an upstream bug and there is nothing to report.
+
+**On upgrade:** re-apply the three tags. Without them the full suite goes from
+`0 failed, 0 errors of 326` back to 15 errors, and
+`docs/operations/ODOO_SERVICE_MANAGEMENT.md` says so at the point where somebody
+running `test` would notice.
+
+Also note `date_range` is **absent from the table at the top of this file** — that is
+audit finding **DOC-3**, unrelated to this deviation but worth fixing in the same pass
+as the rest of DOC-3.
+
 `account_reports_interactive` also patches core's `ReportAction` component to widen
 report drill-down from single records to filtered lists. `account_financial_report`
 patches the same component for the same purpose, so both hooks run; ours skips

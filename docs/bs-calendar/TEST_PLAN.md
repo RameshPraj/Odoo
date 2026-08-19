@@ -3,11 +3,10 @@
 Baseline: **121 tests** across the eight custom modules covered by this plan. Any new failure is a
 regression, never a rebaseline.
 
-> **Updated 2026-08-15.** This line used to end "all green". Across all 16 custom modules the suite
-> is **304 tests, 0 failed, 15 errors** and is **not** green — every error is `date_range`
-> (**TST-8**), structural and pre-existing rather than a regression. The modules this plan covers are
-> still green; the wider suite is not, so "all green" cannot be used as the go/no-go signal until
-> TST-8 is fixed.
+> **Updated 2026-08-19.** This line used to end "all green", which was true of the eight modules this
+> plan covers but not of the whole tree. Across all 17 custom modules the suite is now **326 tests,
+> 0 failed, 0 errors**, so "all green" *is* a usable go/no-go signal again — it stopped being one
+> between 2026-08-15 and 2026-08-19, when 15 `date_range` errors (**TST-8**) made every run red.
 
 Two things about the original suite shaped this plan:
 - **There were zero JavaScript tests.** `l10n_np_bs/static/tests/` was declared in the manifest and
