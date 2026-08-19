@@ -75,12 +75,37 @@ AGPL-3, so modifying it while serving it over a network triggers the publication
 clause. Overriding leaves their files byte-identical to upstream, so the next sync
 stays a straight copy.
 
-**Aged Partner Balance** had eight amounts written `domain="…"` instead of
+**Aged Partner Balance could not render at all** (**FIN-3**). Its wizard passed
+`date_at` as a `date` while the report called `strptime` on it, so every Export raised
+`TypeError`. Fixed by a wizard override in `models/`, since a QWeb overlay cannot
+reach Python. Its own tests pass because they call `_get_report_values` with a
+hand-built string and never traverse the wizard — the same pattern as FIN-2 earlier in
+this project, and the reason nobody had noticed the next item either: you could not
+reach the page to click anything.
+
+**Aged Partner Balance drill-down** had eight amounts written `domain="…"` instead of
 `t-att-domain="…"`. Without the `t-att-` prefix QWeb never evaluates the expression;
 it copies the Python source text into the HTML attribute, and the JavaScript then
-hands that text to `doAction` as a domain. That drill-down has never worked, on any
-version, while looking entirely present in the source. The expressions were fine and
-are reused unchanged.
+hands that text to `doAction` as a domain. The expressions were fine and are reused
+unchanged. Note these live in the move-line detail template, which renders only when
+`show_move_line_details` is on — a test without that flag exercises none of it.
+
+**Open Items and Journal Ledger had no amount-level drill-down at all.** Added on the
+figures that are aggregates: Open Items' ending balances, and Journal Ledger's per-journal
+debit and credit totals.
+
+Both build their domains from **the ids the report already selected**, not from a
+reconstructed filter, and that is not a style preference. "Open items as at a date" is
+a function of reconciliation history, so a line's residual as at a past `date_at` is
+not its current `amount_residual` — a plausible-looking
+`[('amount_residual','!=',0)]` would quietly disagree with the printed figure whenever
+the date is in the past, which is most of the time this report is run. Journal totals
+depend on wizard filters that a hand-written domain would have to track forever. A test
+asserts the journal totals equal the summed debit/credit of the lines their links open.
+
+Per-line amounts are deliberately left alone: each is a single move line, and the row
+already links its entry to the `account.move` form. A domain there would open a
+one-row list, which is strictly worse.
 
 ## Tests
 

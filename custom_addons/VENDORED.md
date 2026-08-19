@@ -66,6 +66,9 @@ vendored file; each is inheritance from a local module.
 | Vendored target | Overridden by | What and why |
 |---|---|---|
 | `account_financial_report` — `report_aged_partner_balance_move_lines` | `account_reports_interactive/report/oca_drilldown_overlays.xml` | Eight report amounts were written `domain="…"` instead of `t-att-domain="…"`, so QWeb never evaluated the expression and emitted Python source text into the HTML attribute. The drill-down could not work. The overlay adds the `t-att-` form and removes the raw attribute; the expressions themselves are upstream's, unchanged. |
+| `account_financial_report` — `aged.partner.balance.report.wizard` | `account_reports_interactive/models/aged_partner_balance_wizard.py` | **The report could not render at all.** The wizard passed `date_at` as a `date` while the report called `strptime` on it, so every Export raised `TypeError`. The override stringifies it. Finding **FIN-3**. Worth reporting upstream; an upstream fix supersedes this harmlessly. |
+| `account_financial_report` — `report_open_items_ending_cumul` | `account_reports_interactive/report/oca_drilldown_overlays.xml` | Added amount-level drill-down, which the report had none of. Domains are built from the ids the report already selected (`Open_Items[...]`), because an open-items residual "as at" a past date is a function of reconciliation history and cannot be re-derived from `amount_residual`. |
+| `account_financial_report` — `report_journal_ledger_journal_first_line` | `account_reports_interactive/report/oca_drilldown_overlays.xml` | Added drill-down on the journal debit/credit totals, which had none. Domains come from `journal['report_moves']` flattened through `move['report_move_lines']`, so they tie exactly to the printed total; a test asserts that. |
 
 ### One deviation that is edited in place, because it cannot be overridden
 

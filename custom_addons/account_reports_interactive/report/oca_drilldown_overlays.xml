@@ -71,4 +71,67 @@
         </xpath>
     </template>
 
+    <!--
+        Open Items had no amount-level drill-down at all: only the per-row record
+        links. The figures worth reaching are the ending balances, which are
+        aggregates with nothing behind them.
+
+        The domains are built from the ids the report already selected, NOT from a
+        reconstructed filter. That is not stylistic. "Open items as at a date" is a
+        function of reconciliation history, so the residual of a line as at a past
+        `date_at` is not its current `amount_residual`; a domain like
+        `[('amount_residual','!=',0)]` would quietly disagree with the printed
+        figure whenever `date_at` is in the past, which is most of the time this
+        report is run. `Open_Items[account_id][partner_id]` is the exact list the
+        total was summed from, so aggregating its ids cannot drift.
+
+        Per-line amounts are deliberately left alone: each is one move line, and the
+        row already links its entry to the account.move form. A domain there would
+        open a one-row list, which is strictly worse.
+    -->
+    <template id="afr_open_items_drilldown"
+              inherit_id="account_financial_report.report_open_items_ending_cumul">
+        <!-- Account ending balance: every partner under this account. -->
+        <xpath expr="//span[@t-out=&quot;total_amount[account_id]['residual']&quot;]"
+               position="attributes">
+            <attribute name="res-model">account.move.line</attribute>
+            <attribute name="t-att-domain">[('id', 'in', [aml['id'] for rows in Open_Items[account_id].values() for aml in rows])]</attribute>
+        </xpath>
+        <!-- Partner ending balance within an account. -->
+        <xpath expr="//span[@t-out=&quot;total_amount[account_id][partner_id]['residual']&quot;]"
+               position="attributes">
+            <attribute name="res-model">account.move.line</attribute>
+            <attribute name="t-att-domain">[('id', 'in', [aml['id'] for aml in Open_Items[account_id][partner_id]])]</attribute>
+        </xpath>
+        <!-- Partner subtotal, when partner details are shown. -->
+        <xpath expr="//span[@t-out=&quot;partner_totals[account_id][partner_id_key]['residual']&quot;]"
+               position="attributes">
+            <attribute name="res-model">account.move.line</attribute>
+            <attribute name="t-att-domain">[('id', 'in', [aml['id'] for aml in Open_Items[account_id][partner_id_key]])]</attribute>
+        </xpath>
+    </template>
+
+    <!--
+        Journal Ledger likewise had none. The journal's debit and credit totals are
+        the aggregates; each is the sum over every move line the report listed for
+        that journal, so the id set is exactly `journal['report_moves']` flattened
+        through `move['report_move_lines']`.
+
+        Built from ids rather than from `[('journal_id','=',...), ('date','>=',...)]`
+        for the same reason as above: the wizard applies move-target and journal
+        filters whose reconstruction would have to be kept in step by hand, and a
+        near-miss shows a total that contradicts the line it came from.
+    -->
+    <template id="afr_journal_ledger_drilldown"
+              inherit_id="account_financial_report.report_journal_ledger_journal_first_line">
+        <xpath expr="//span[@t-out=&quot;journal['debit']&quot;]" position="attributes">
+            <attribute name="res-model">account.move.line</attribute>
+            <attribute name="t-att-domain">[('id', 'in', [aml['move_line_id'] for m in journal['report_moves'] for aml in m['report_move_lines']]), ('debit', '!=', 0)]</attribute>
+        </xpath>
+        <xpath expr="//span[@t-out=&quot;journal['credit']&quot;]" position="attributes">
+            <attribute name="res-model">account.move.line</attribute>
+            <attribute name="t-att-domain">[('id', 'in', [aml['move_line_id'] for m in journal['report_moves'] for aml in m['report_move_lines']]), ('credit', '!=', 0)]</attribute>
+        </xpath>
+    </template>
+
 </odoo>
