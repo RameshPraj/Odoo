@@ -4,7 +4,7 @@
 #   .\run-odoo.ps1 status             RUNNING / STOPPED / DEGRADED, with detail
 #   .\run-odoo.ps1 logs-follow        tail the log
 #   .\run-odoo.ps1 doctor             read-only diagnostic, PASS/WARN/FAIL
-#   .\run-odoo.ps1 upgrade l10n_np_accounting --db odoo19
+#   .\run-odoo.ps1 upgrade l10n_np_accounting -Db odoo19    (--db also accepted)
 #
 #   .\run-odoo.ps1 help               full command list, options and exit codes
 #
@@ -28,9 +28,13 @@ param(
     [Alias('Database')]
     [string] $Db,
 
-    # Line count for logs / errors.
+    # Line count for logs / errors. Declared [string], not [int], on purpose: see
+    # the POSIX-flag normalisation below. With [int] here, `upgrade mod --db name`
+    # fails during parameter binding with "Cannot convert value \"name\" to type
+    # System.Int32" -- naming a parameter the user never typed, before any code of
+    # ours can explain. Validated and converted a few lines down instead.
     [Alias('n')]
-    [int] $Lines = 40,
+    [string] $Lines = '40',
 
     # start/dev: run attached to this console instead of in the background.
     [switch] $Foreground,
@@ -55,6 +59,56 @@ param(
 
 $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version 2.0
+
+# ---------------------------------------------------------------------------
+# Accept the POSIX flag spellings this file's own header advertises (OPS-7).
+#
+# PowerShell does not treat `--db` as a parameter name; it is just a positional
+# string. So `upgrade l10n_np_accounting --db odoo19` -- the example at the top of
+# this script, and the spelling run-odoo.sh uses -- bound '--db' to $Db and pushed
+# 'odoo19' into $Lines, which failed to cast. The two scripts are documented as one
+# interface, so the flag is now translated rather than rejected.
+#
+# Two shapes, depending on whether the verb takes a target:
+#     upgrade <module> --db <name>   -> $Target=<module>  $Db='--db'  $Lines=<name>
+#     test              --db <name>  -> $Target='--db'    $Db=<name>
+# The second only ever appeared to work by luck: the tokens shift one place and the
+# value happens to land in $Db, leaving '--db' sitting in $Target.
+# ---------------------------------------------------------------------------
+$PosixDbFlags = @('--db', '--database')
+if ($Db -in $PosixDbFlags) {
+    $Db = $Lines
+    $Lines = '40'
+} elseif ($Target -in $PosixDbFlags) {
+    $Target = ''
+}
+
+# `--help` and `--version` are too commonly typed to answer with a lecture about
+# flag spellings, and both have a verb here. Translate them.
+if ($Command -in @('--help', '--version')) {
+    $Command = $Command.TrimStart('-')
+}
+
+# Anything else starting with `--` is silently ignored by positional binding, which
+# is worse than an error: `start --foreground` would land in $Target and simply not
+# start in the foreground. Fail with the PowerShell spelling instead.
+foreach ($token in @($Command, $Target, $Db, $Lines)) {
+    if ($token -is [string] -and $token -like '--*') {
+        Write-Host "Unknown option '$token'." -ForegroundColor Red
+        Write-Host "  This is the PowerShell script; use -Db, -Lines, -Foreground, -Timeout, -NoColor." -ForegroundColor Yellow
+        Write-Host "  The POSIX spellings belong to run-odoo.sh, except --db/--database which are accepted here." -ForegroundColor Yellow
+        exit 2
+    }
+}
+
+# A separate int rather than writing back into $Lines: that variable carries a
+# [string] type constraint from param(), so assigning 40 to it silently coerces back
+# to "40" and every later use would depend on implicit conversion.
+$LineCount = 0
+if (-not [int]::TryParse($Lines, [ref] $LineCount) -or $LineCount -lt 1) {
+    Write-Host "-Lines must be a positive whole number; got '$Lines'." -ForegroundColor Red
+    exit 2
+}
 
 # ---------------------------------------------------------------------------
 # Internal helper mode: deliver Ctrl-C to another process's console.
@@ -1383,7 +1437,7 @@ function Show-Logs {
         Write-Note "  because odoo.conf leaves 'logfile' unset."
         exit 1
     }
-    Get-Content -LiteralPath $LogFile -Tail $Lines
+    Get-Content -LiteralPath $LogFile -Tail $LineCount
     exit 0
 }
 
@@ -1393,7 +1447,7 @@ function Show-LogsFollow {
         exit 1
     }
     Write-Note "Following $LogFile (Ctrl-C to stop)"
-    Get-Content -LiteralPath $LogFile -Tail $Lines -Wait
+    Get-Content -LiteralPath $LogFile -Tail $LineCount -Wait
 }
 
 function Show-Errors {
@@ -1414,7 +1468,7 @@ function Show-Errors {
         exit 0
     }
     $show = $hits
-    if ($hits.Count -gt $Lines) { $show = $hits[($hits.Count - $Lines)..($hits.Count - 1)] }
+    if ($hits.Count -gt $LineCount) { $show = $hits[($hits.Count - $LineCount)..($hits.Count - 1)] }
     Write-Note "$($hits.Count) matching line(s); showing the last $($show.Count) with context"
     Write-Host ""
     $lastPrinted = -1
@@ -2123,7 +2177,7 @@ SERVICE
   health                Real probes. Exit 0 healthy, 1 unhealthy, 2 misconfigured
 
 LOGS
-  logs                  Last -n lines (default $Lines)
+  logs                  Last -n lines (default $LineCount)
   logs-follow           Stream the log until Ctrl-C
   errors                Recent WARNING/ERROR/CRITICAL/Traceback, with context
 
@@ -2148,7 +2202,7 @@ DATABASE (each requires -Db; there is no default)
 
 OPTIONS
   -Db <name>            Target database. Required by install/upgrade/test
-  -n, -Lines <count>    Lines for logs/errors (default $Lines)
+  -n, -Lines <count>    Lines for logs/errors (default $LineCount)
   -Foreground           start/dev: attach to this console instead of detaching
   -Timeout <seconds>    Override the start ($StartTimeout s) and stop ($StopTimeout s) waits
   -NoColor              Disable colour (also honours the NO_COLOR variable)

@@ -248,9 +248,14 @@ without bound; that is finding **OPS-6** in
 runs every custom module's suite — the gap recorded as finding **CI-1**, "neither launcher passes
 `--test-enable`; there is no single command that runs all eight suites."
 
-Spell the flag per shell. `run-odoo.ps1` does **not** parse the POSIX `--db`; PowerShell binds the
-value positionally to `[int] $Lines` and fails with a cast error naming a parameter you did not use.
-That is finding **OPS-7**.
+Either spelling works on either script as of 2026-08-19. `-Db` is the PowerShell form and the one the
+help text shows, but `--db` and `--database` are translated too, because both scripts are documented
+as one interface and muscle memory does not switch at the shell boundary.
+
+Until then `--db` failed on PowerShell with a cast error naming `$Lines`, a parameter you never typed
+— finding **OPS-7**, now resolved. Any *other* POSIX-style flag is still rejected, but now with a
+message telling you the PowerShell spelling instead of being silently ignored: `start --foreground`
+used to bind to the target argument and simply not start in the foreground.
 
 It runs **326 tests across 17 modules** and, as of 2026-08-19, **exits 0** — `0 failed, 0 errors`. So
 a red run now means something: treat any failure as yours until proved otherwise.

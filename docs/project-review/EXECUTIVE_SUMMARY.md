@@ -8,8 +8,8 @@ vendored upstream files were not reviewed as code, but *how they got here and ho
 patched* is in scope and is among the worst findings.
 
 All findings and evidence in [`BACKLOG.md`](BACKLOG.md). **123 findings: 10 P0, 29 P1, 48 P2, 28 P3,
-6 P4** (121 table entries; `DEP-3/4/5` is one row covering three). Six are RESOLVED — FIN-2, FIN-3,
-OPS-1, BS-20, DEP-1, TST-8 — and CI-1 is partially resolved, so **117 remain open**. This line previously read "88
+6 P4** (121 table entries; `DEP-3/4/5` is one row covering three). Seven are RESOLVED — FIN-2, FIN-3,
+OPS-1, OPS-7, BS-20, DEP-1, TST-8 — and CI-1 is partially resolved, so **116 remain open**. This line previously read "88
 findings" and had drifted by 30; it is now counted from `BACKLOG.md` rather than carried forward.
 
 > This audit supersedes the previous pass and **corrects two of its conclusions**, stated
