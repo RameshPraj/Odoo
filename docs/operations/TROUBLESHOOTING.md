@@ -20,27 +20,9 @@ So the question to ask is not "did it install" but "**which root menu does it li
 | the same six, again | **Accounting Nepal → Reporting →** *Ledgers* (General Ledger, Trial Balance), *Partner Reports* (Aged Receivable/Payable, Open Items, Partner Ledger), *Taxes and Fiscal* (VAT Report (OCA)) |
 | **eCommerce** (`website_sale`) | **Website → eCommerce** → Orders (Orders, Unpaid, Abandoned Carts, Customers) and Products. Settings live separately under **Website → Configuration → eCommerce** |
 
-Those paths were read out of `load_menus()` for the admin user rather than guessed, which
-is what the query below is for.
+Those paths were read out of `load_menus()` for the admin user rather than inferred from the XML.
 
-**For eCommerce specifically, a visible menu is not the same as a working shop.** Check
-that products are actually published, because nothing else explains an empty storefront
-more often:
-
-```python
-env['product.template'].search_count([('is_published', '=', True)])   # was 0 of 11 here
-env['website'].search([]).mapped('name')
-```
-
-A product must be published before it appears in `/shop`. Installing `website_sale`
-publishes nothing, so a fresh install has a complete, correctly-menued eCommerce app
-and an empty shop.
-
-Two things make the first one especially easy to miss. Community's accounting app is named
-**"Invoicing"**, not "Accounting", so people scan past it; and this project *also* ships an
-**Accounting Nepal** app, so the natural assumption is that anything accounting-related lives there.
-
-**Diagnose it in one query** rather than hunting through the UI — in `run-odoo.ps1 shell`:
+### Finding any module's menu, and why it might still be invisible
 
 ```python
 menu = env.ref('account_financial_report.menu_oca_reports')   # the module's own xmlid
@@ -52,23 +34,63 @@ while menu:
 That prints the full path *and* every group gating any level of it, which is the other half of the
 answer: a menu you have no group for is simply absent, with no error.
 
-**If the path exists but you still cannot see it**, check the groups it named:
+If the path exists but you still cannot see it, check those groups against the user:
 
 ```python
 user = env['res.users'].search([('login', '=', 'admin')])
 env['ir.ui.menu'].with_user(user)._visible_menu_ids()      # what the client will draw
 ```
 
-Use `_visible_menu_ids()`, not `search()`. `ir.ui.menu.search` does **not** filter by groups, so a
+Use `_visible_menu_ids()`, **not** `search()`. `ir.ui.menu.search` does not filter by groups, so a
 plain search reports every menu as present for every user and tells you nothing.
 
-**The trap worth knowing about, on stock Community:** `account.menu_finance` and its Reporting
-subtree are gated on `account.group_account_readonly` / `group_account_invoice`, and stock Community
-ships **no way to hold** the first — it has no `privilege_id`, so it never appears on a user form.
-The documented consequence is that nobody, administrator included, can see those menus.
+### Why the accounting one is especially easy to miss
+
+Community's accounting app is named **"Invoicing"**, not "Accounting", so people scan past it; and
+this project *also* ships an **Accounting Nepal** app, so the natural assumption is that anything
+accounting-related lives there.
+
+**And the trap on stock Community:** `account.menu_finance` and its Reporting subtree are gated on
+`account.group_account_readonly` / `group_account_invoice`, and stock Community ships **no way to
+hold** the first — it has no `privilege_id`, so it never appears on a user form. The documented
+consequence is that nobody, administrator included, can see those menus.
 `l10n_np_accounting/security/account_groups.xml` fixes it by giving the groups a privilege and making
-Administrator imply Accountant, which is why they are visible here. On a database without that module,
-this symptom is real and the fix is to grant the group.
+Administrator imply Accountant, which is why they are visible here. On a database without that
+module, this symptom is real and the fix is to grant the group.
+
+### eCommerce: there is no backend menu for the storefront at all
+
+This is the reason the customer-facing page seems not to exist. The public site is **not** an
+`ir.ui.menu` entry, so nothing in the app drawer points at it. It is a URL — `/` for the home page,
+`/shop` for the catalogue. From the backend the two ways across are the **Website** app, which opens
+the site in the editor, and the **Go to Website** button in the top bar.
+
+### eCommerce: a visible menu is not the same as a working shop
+
+`website_sale` publishes nothing on install, so a correct install renders a complete storefront with
+an empty catalogue and the words **"No product defined"** — which reads exactly like a broken install.
+
+```python
+env['product.template'].search_count([('is_published', '=', True)])
+```
+
+**Do not fix it with a bulk publish.** In this database only **4 of 11** products are sellable with a
+non-zero price, and two of those are artefacts (`Tips` from Point of Sale, `Expenses` from expense
+management). The other seven are `sale_ok = False` and have no business on a storefront: `Meals`,
+`Mileage`, `Travel & Accommodation`, `Gifts`, `Communication` (all `hr_expense`), `Down Payment (POS)`
+and `Standard delivery`. Publishing everything would put expense and POS plumbing on a public page.
+
+Two genuine catalogue items were published on 2026-08-21 as a smoke test — `Potato` and `Microware`,
+both stocked consumables — which was enough to prove the whole path works.
+
+Verify storefront changes **logged out**, not from an authenticated tab: an `is_published` mistake
+typically shows the catalogue to staff and an empty shop to the public.
+
+```bash
+curl -s http://127.0.0.1:8069/shop | grep -c 'No product defined'    # 0 once populated
+curl -s http://127.0.0.1:8069/shop | grep -oE 'href="/shop/[a-z0-9-]+-[0-9]+"' | sort -u
+curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:8069/shop/cart
+```
 
 ## The server starts but no custom module is there
 
