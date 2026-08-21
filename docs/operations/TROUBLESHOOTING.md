@@ -16,8 +16,25 @@ So the question to ask is not "did it install" but "**which root menu does it li
 
 | Installed | Where it actually is |
 |---|---|
-| **Account Financial Reports** (`account_financial_report`) | **Invoicing → Reporting → OCA accounting reports**, and also **Accounting Nepal → Reporting** (Ledgers, Trial Balance, Open Items, VAT) |
-| **eCommerce** (`website_sale`) | **Website → eCommerce** (`website_sale/views/website_sale_menus.xml:4`, parented on `website.menu_website_configuration`) |
+| **Account Financial Reports** (`account_financial_report`) | **Invoicing → Reporting → OCA accounting reports** — General Ledger, Journal Ledger, Trial Balance, Open Items, Aged Partner Balance, VAT Report |
+| the same six, again | **Accounting Nepal → Reporting →** *Ledgers* (General Ledger, Trial Balance), *Partner Reports* (Aged Receivable/Payable, Open Items, Partner Ledger), *Taxes and Fiscal* (VAT Report (OCA)) |
+| **eCommerce** (`website_sale`) | **Website → eCommerce** → Orders (Orders, Unpaid, Abandoned Carts, Customers) and Products. Settings live separately under **Website → Configuration → eCommerce** |
+
+Those paths were read out of `load_menus()` for the admin user rather than guessed, which
+is what the query below is for.
+
+**For eCommerce specifically, a visible menu is not the same as a working shop.** Check
+that products are actually published, because nothing else explains an empty storefront
+more often:
+
+```python
+env['product.template'].search_count([('is_published', '=', True)])   # was 0 of 11 here
+env['website'].search([]).mapped('name')
+```
+
+A product must be published before it appears in `/shop`. Installing `website_sale`
+publishes nothing, so a fresh install has a complete, correctly-menued eCommerce app
+and an empty shop.
 
 Two things make the first one especially easy to miss. Community's accounting app is named
 **"Invoicing"**, not "Accounting", so people scan past it; and this project *also* ships an
