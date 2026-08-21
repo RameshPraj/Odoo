@@ -19,17 +19,37 @@
         Use "=" for separators.
     -->
 
+    <!-- The groups mirror core's own accounting root, `account.menu_finance`
+         (account/views/account_menuitem.xml:5-8), deliberately and not by
+         coincidence: an accounting application must not present itself to staff
+         with no accounting rights.
+
+         This was missing (SEC-12). Without it a user holding none of the
+         accounting groups saw this tile and could reach Customers, Vendors,
+         Products and Employee Expenses through it. The leaf menus were not
+         individually exposed by choice; they were reachable because
+         `_visible_menu_ids` hides an action menu only when the user cannot read
+         the action's model, so anything pointing at res.partner,
+         product.template or hr.expense stayed visible while the account.move
+         ones happened not to. Relying on that means relying on another module's
+         ACLs to gate this app. -->
     <menuitem id="menu_np_accounting_root"
               name="Accounting Nepal"
               web_icon="l10n_np_accounting,static/description/icon.png"
+              groups="account.group_account_readonly,account.group_account_invoice"
               sequence="11"/>
 
     <!-- ================================================================
          DASHBOARD
          ================================================================ -->
+    <!-- group_account_basic, as core gates its own Dashboard entry
+         (account_menuitem.xml:9). The section menus below stay ungated, which is
+         also what core does: the root carries the gate and the tree is only
+         reachable through it. -->
     <menuitem id="menu_np_dashboard" name="Dashboard"
               parent="menu_np_accounting_root"
               action="account.open_account_journal_dashboard_kanban"
+              groups="account.group_account_basic"
               sequence="1"/>
 
     <!-- ================================================================
