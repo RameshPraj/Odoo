@@ -66,9 +66,24 @@ vendored file; each is inheritance from a local module.
 | Vendored target | Overridden by | What and why |
 |---|---|---|
 | `account_financial_report` — `report_aged_partner_balance_move_lines` | `account_reports_interactive/report/oca_drilldown_overlays.xml` | Eight report amounts were written `domain="…"` instead of `t-att-domain="…"`, so QWeb never evaluated the expression and emitted Python source text into the HTML attribute. The drill-down could not work. The overlay adds the `t-att-` form and removes the raw attribute; the expressions themselves are upstream's, unchanged. |
-| `account_financial_report` — `aged.partner.balance.report.wizard` | `account_reports_interactive/models/aged_partner_balance_wizard.py` | **The report could not render at all.** The wizard passed `date_at` as a `date` while the report called `strptime` on it, so every Export raised `TypeError`. The override stringifies it. Finding **FIN-3**. Worth reporting upstream; an upstream fix supersedes this harmlessly. |
+| `account_financial_report` — `aged.partner.balance.report.wizard` | `account_reports_interactive/models/aged_partner_balance_report.py` | **The report could not render at all.** The wizard passes `date_at` as a `date` while the report calls `strptime` on it, so every Export raised `TypeError`. The override normalises it **on the report**, not the wizard: coercing the wizard broke two of the vendored module's own tests, which convert the value themselves (`test_aged_partner_balance.py:63,98`) and are the reason the defect stayed invisible. Finding **FIN-3**. Worth reporting upstream; an upstream fix supersedes this harmlessly. |
 | `account_financial_report` — `report_open_items_ending_cumul` | `account_reports_interactive/report/oca_drilldown_overlays.xml` | Added amount-level drill-down, which the report had none of. Domains are built from the ids the report already selected (`Open_Items[...]`), because an open-items residual "as at" a past date is a function of reconciliation history and cannot be re-derived from `amount_residual`. |
 | `account_financial_report` — `report_journal_ledger_journal_first_line` | `account_reports_interactive/report/oca_drilldown_overlays.xml` | Added drill-down on the journal debit/credit totals, which had none. Domains come from `journal['report_moves']` flattened through `move['report_move_lines']`, so they tie exactly to the printed total; a test asserts that. |
+
+### Records of other modules that local modules overwrite
+
+Not vendored code, but the same hazard: the record belongs to another module, so the
+change **persists if ours is uninstalled**, and each needs a documented manual revert.
+
+| Record | Owned by | Changed by | Revert |
+|---|---|---|---|
+| `account.group_account_readonly`, `..._user`, `..._manager` | `account` | `l10n_np_accounting/security/account_groups.xml` | clear the two `privilege_id` fields and remove the implication (**UPG-1**) |
+| `mail.main_menu_discuss` | `mail` | `local_ui_tweaks/data/menu_tweaks.xml` | `env.ref('mail.main_menu_discuss').active = True` |
+
+Both survive an upgrade of the owning module, because Odoo writes only the fields a
+record actually lists and neither owner sets the field being changed. A tweak to a
+field its owner *does* set would be reverted by any `-u` of that module. Verified for
+the Discuss one by running `upgrade mail` and re-checking.
 
 ### One deviation that is edited in place, because it cannot be overridden
 
@@ -89,7 +104,7 @@ cascades a `res.partner` INSERT — and in any database that also has `account`,
 dependencies, so this is not an upstream bug and there is nothing to report.
 
 **On upgrade:** re-apply the three tags. Without them the full suite goes from
-`0 failed, 0 errors of 326` back to 15 errors, and
+`0 failed, 0 errors of 342` back to 15 errors, and
 `docs/operations/ODOO_SERVICE_MANAGEMENT.md` says so at the point where somebody
 running `test` would notice.
 
