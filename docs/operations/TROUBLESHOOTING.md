@@ -3,6 +3,56 @@
 Symptom first. Every entry has been seen on this project, and each names the evidence rather than
 guessing. Start with `doctor` — it is read-only and checks most of what follows in one pass.
 
+## I installed an app but there is no way into it — no tile, nothing in the menus
+
+**Cause, nine times out of ten: it has no app tile to find.** The app switcher lists **root menus**
+(menuitems with no `parent=`). A module whose menus all hang off another module's tree contributes no
+tile, however much it looks like an application. `application: True` in a manifest does **not** create
+one — it only affects how the module is grouped in the Apps list.
+
+So the question to ask is not "did it install" but "**which root menu does it live under**".
+
+**Two real cases from this project**, both reported as missing apps and neither a defect:
+
+| Installed | Where it actually is |
+|---|---|
+| **Account Financial Reports** (`account_financial_report`) | **Invoicing → Reporting → OCA accounting reports**, and also **Accounting Nepal → Reporting** (Ledgers, Trial Balance, Open Items, VAT) |
+| **eCommerce** (`website_sale`) | **Website → eCommerce** (`website_sale/views/website_sale_menus.xml:4`, parented on `website.menu_website_configuration`) |
+
+Two things make the first one especially easy to miss. Community's accounting app is named
+**"Invoicing"**, not "Accounting", so people scan past it; and this project *also* ships an
+**Accounting Nepal** app, so the natural assumption is that anything accounting-related lives there.
+
+**Diagnose it in one query** rather than hunting through the UI — in `run-odoo.ps1 shell`:
+
+```python
+menu = env.ref('account_financial_report.menu_oca_reports')   # the module's own xmlid
+while menu:
+    print(menu.complete_name, '| groups:', menu.group_ids.mapped('full_name'))
+    menu = menu.parent_id
+```
+
+That prints the full path *and* every group gating any level of it, which is the other half of the
+answer: a menu you have no group for is simply absent, with no error.
+
+**If the path exists but you still cannot see it**, check the groups it named:
+
+```python
+user = env['res.users'].search([('login', '=', 'admin')])
+env['ir.ui.menu'].with_user(user)._visible_menu_ids()      # what the client will draw
+```
+
+Use `_visible_menu_ids()`, not `search()`. `ir.ui.menu.search` does **not** filter by groups, so a
+plain search reports every menu as present for every user and tells you nothing.
+
+**The trap worth knowing about, on stock Community:** `account.menu_finance` and its Reporting
+subtree are gated on `account.group_account_readonly` / `group_account_invoice`, and stock Community
+ships **no way to hold** the first — it has no `privilege_id`, so it never appears on a user form.
+The documented consequence is that nobody, administrator included, can see those menus.
+`l10n_np_accounting/security/account_groups.xml` fixes it by giving the groups a privilege and making
+Administrator imply Accountant, which is why they are visible here. On a database without that module,
+this symptom is real and the fix is to grant the group.
+
 ## The server starts but no custom module is there
 
 **Symptom.** Odoo runs, the web client loads, and the Nepal menus are missing. Attachments raise
