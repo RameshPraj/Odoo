@@ -71,6 +71,10 @@ class VatReturnBox(models.Model):
 
     form_id = fields.Many2one(
         'l10n_np.vat.return.form', required=True, ondelete='cascade')
+    # Stored so the multi-company record rule can filter on it (SEC-2). A box has
+    # no company of its own -- it belongs to whichever company owns the form
+    # version. Mirrors l10n_np.loan.line and l10n_np.tds.certificate.line.
+    company_id = fields.Many2one(related='form_id.company_id', store=True)
     sequence = fields.Integer(default=10)
     code = fields.Char(required=True, help="IRD box number or code.")
     label_en = fields.Char(string='Label (English)', required=True)
@@ -220,6 +224,9 @@ class VatReturnLine(models.Model):
     _order = 'sequence, code'
 
     return_id = fields.Many2one('l10n_np.vat.return', required=True, ondelete='cascade')
+    # As on l10n_np.vat.return.box: stored purely so the record rule has a column
+    # to filter on (SEC-2). A line's company is the filed return's company.
+    company_id = fields.Many2one(related='return_id.company_id', store=True)
     box_id = fields.Many2one('l10n_np.vat.return.box', readonly=True)
     currency_id = fields.Many2one(related='return_id.currency_id')
     sequence = fields.Integer()

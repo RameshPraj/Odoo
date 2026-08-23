@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Multi-company record rules (SEC-2). See l10n_np_loan's equivalent file for why
+  these are global and not noupdate.
+
+  On l10n_np.tds.category, a note on the choice of operator. Core uses
+  'parent_of' for master data such as journals and accounts, so a subsidiary can
+  see a parent company's shared records. TDS categories are statutory rates, so
+  sharing them down a company hierarchy is arguably right, and this rule
+  deliberately does NOT do it: 'in' is strict isolation. Widening it is a business
+  decision about how a group is structured, and over-sharing is the failure mode
+  SEC-2 exists to close. It needs an SME, not a default chosen here.
+
+  company_id is required=True on all four models, so no rule needs a
+  ('company_id', '=', False) branch: an unowned row cannot exist.
+-->
+<odoo>
+    <record id="l10n_np_tds_category_company_rule" model="ir.rule">
+        <field name="name">TDS category multi-company</field>
+        <field name="model_id" ref="model_l10n_np_tds_category"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    </record>
+
+    <record id="l10n_np_tds_certificate_company_rule" model="ir.rule">
+        <field name="name">TDS certificate multi-company</field>
+        <field name="model_id" ref="model_l10n_np_tds_certificate"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    </record>
+
+    <record id="l10n_np_tds_certificate_line_company_rule" model="ir.rule">
+        <field name="name">TDS certificate line multi-company</field>
+        <field name="model_id" ref="model_l10n_np_tds_certificate_line"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    </record>
+
+    <record id="l10n_np_tds_return_company_rule" model="ir.rule">
+        <field name="name">TDS return multi-company</field>
+        <field name="model_id" ref="model_l10n_np_tds_return"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    </record>
+</odoo>

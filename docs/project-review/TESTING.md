@@ -34,9 +34,9 @@ thoroughly and outcomes barely at all.
 | `l10n_np` | 5 → **9** | chart, taxes, provinces; + 4 on export zero-rating (ACC-3, 2026-08-23) |
 | `l10n_np_bs` | 7 | + **669 lines of untested JS** (TST-4) |
 | `l10n_np_fiscal_year` | 7 | the only suite with proper fixtures |
-| `l10n_np_tds` | 10 | the figure-producing path untested (TST-5) |
-| `l10n_np_vat_return` | 10 | the ledger-tie test skips (TST-1) |
-| `l10n_np_loan` | 22 | best coverage; see ACC-1 for the gap it leaves |
+| `l10n_np_tds` | 10 → **14** | the figure-producing path untested (TST-5); + 4 on company isolation (SEC-2) |
+| `l10n_np_vat_return` | 10 → **17** | ledger-tie test fixed (TST-1); + 6 on company isolation (SEC-2) |
+| `l10n_np_loan` | 22 → **27** | best coverage; see ACC-1 for the gap it leaves; + 5 on company isolation (SEC-2) |
 | `account_financial_statements` | 13 | logic covered, **rendering never exercised** (FIN-2) |
 | `l10n_np_accounting` | 47 | menus, visibility, lock dates, reconcile, BS dates |
 | **Total** | **121** | plus 95 inherited with the vendored OCA modules |
@@ -109,6 +109,14 @@ be more visible.
   zero-rate loans do not divide by zero, and an unpayable rate is refused with a sentence
 - `l10n_np_accounting` asserts menu visibility through `load_menus` — the only path that applies
   group filtering — a deliberate choice recorded after a `search()`-based check gave a false result
+- The SEC-2 isolation tests (2026-08-23) go through `with_user` with a real non-superuser, for the
+  same reason and it is the same trap one layer down: **record rules never apply to the superuser,
+  and `TransactionCase.env` *is* the superuser**, so a two-company test run as `self.env.user`
+  passes identically whether or not a single rule exists. `with_company` is not a substitute
+  either — it changes which company is *active*, while the rule filters on `company_ids`, which
+  comes from which companies the user is *allowed*. Each of the three suites also asserts that the
+  user's **own** company stays readable and writable, which is what a rule of `[(0, '=', 1)]` would
+  fail
 - The RCE test on the VAT formula evaluator is real and passes
 - Test docstrings are unusually good, several citing the incident that motivated them
 

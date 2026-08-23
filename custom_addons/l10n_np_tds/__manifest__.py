@@ -1,7 +1,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 {
     'name': 'Nepal - TDS (Withholding Tax)',
-    'version': '19.0.1.0.0',
+    'version': '19.0.1.1.0',   # 1.1.0 = multi-company record rules (SEC-2)
     'countries': ['np'],
     'category': 'Accounting/Localizations',
     'summary': 'Configurable TDS rate schedule, certificates and return for Nepal',
@@ -38,6 +38,7 @@ adds the Nepal-specific layer around it:
     ],
     'data': [
         'security/ir.model.access.csv',
+        'security/l10n_np_tds_rules.xml',
         'data/ir_sequence_data.xml',
         'views/tds_category_views.xml',
         'views/tds_certificate_views.xml',

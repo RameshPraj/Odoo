@@ -585,7 +585,61 @@ flags them as critical while being the vehicle that publishes them. **Rotation i
 they are in immutable history. Compounds SAAS-2. **Effort S** (rotate) / **M** (history).
 
 ## SEC-2 · No record rules on any locally written model
-**CONFIRMED** · Security · 10 models across 6 modules
+**RESOLVED 2026-08-23.** Ten global `ir.rule` records now scope every locally written
+company-owned model: two in `l10n_np_loan`, four in `l10n_np_tds`, four in
+`l10n_np_vat_return`.
+
+**Proved by negative control, not by inspection.** With the ten rules disabled — which is
+the state this repo was in before today — a company A accounting *manager* could read
+company B's VAT return form, its boxes, the filed return, its individual figures and a TDS
+certificate. Every one came back readable. With the rules active, every one is refused. The
+leak was real and these rules are what closes it.
+
+**Two corrections to the finding, both of which changed the work:**
+
+- *"10 models across 6 modules"* is **3 modules**, not 6. The other three local modules
+  define no company-owned persistent model: `l10n_np` has only an `AbstractModel`,
+  `l10n_np_fiscal_year` and `l10n_np_accounting` only `TransientModel`s and extensions of
+  core models, which core's own rules already cover. Transient records need no rule.
+- *"every new model carries `company_id`"* was **not true** of two of them.
+  `l10n_np.vat.return.box` and `l10n_np.vat.return.line` had no such field, so there was
+  nothing for a rule to filter on and the prescribed fix could not have been applied as
+  written. Each now carries a stored `related` `company_id` — from the owning form version
+  and filed return respectively — mirroring `l10n_np.loan.line` and
+  `l10n_np.tds.certificate.line`, which already did this.
+
+**Deliberate deviation from the prescribed domain.** The finding suggests
+`['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]`. The `False` branch
+is omitted: `company_id` is `required=True` on all ten models, so an unowned row cannot be
+created through the ORM and the branch is dead code. It is also the wrong default to leave
+lying around — were the field ever made optional, that branch would silently expose an
+unowned filed return to every company. Strict beats defensive here.
+
+Core's `parent_of` operator was likewise **not** used, including on the arguably shareable
+master data (`l10n_np.tds.category`, `l10n_np.vat.return.form`), which are statutory rates
+and form layouts a company group might reasonably share. Whether they should be shared down
+a hierarchy is a business decision about group structure and needs an SME; over-sharing is
+the failure mode SEC-2 exists to close, so the strict rule is what shipped, and the two
+rule files say so.
+
+The rule files are deliberately **not `noupdate`**, unlike the OCA file they were modelled
+on. A rule frozen at install cannot be corrected by an upgrade, and stale security surviving
+a code change is precisely the hazard **UPG-1** and **UPG-2** already record here. All three
+module versions were bumped so `-u` actually applies them.
+
+Fifteen tests across the three modules, all using `with_user` with a real non-superuser —
+`TransactionCase.env` is the superuser, and record rules never apply to it, so a check run
+as `self.env.user` would have passed with no rules installed at all. `with_company` alone
+would not do either: it changes which company is *active*, while the rule filters on
+`company_ids`, which comes from which companies the user is *allowed*. Each module also
+asserts its own records stay fully readable and writable, which is what stops a rule of
+`[(0, '=', 1)]` from passing everything else.
+
+Still open and adjacent: **SEC-6** (the read-only role can rewrite a return line — an ACL,
+not a rule) and **SCH-1** (`company_id` is now the hot column on every one of these queries
+and is still unindexed).
+
+**CONFIRMED** · Security · 10 models across 3 modules
 
 Zero `ir.rule` records exist in any local module, while every new model carries `company_id`.
 Every *vendored OCA* module ships one (e.g.

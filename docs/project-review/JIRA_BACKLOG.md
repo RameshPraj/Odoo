@@ -248,12 +248,15 @@ unrelated 12 GB corporate database and enumerate 52 table names — it cannot re
 ## EPIC-4 · Multi-company and application security
 **Findings** SEC-2, SEC-3, SEC-6, SEC-4, SEC-5, SEC-7, SEC-8
 
-### BUG-15 — No record rules on any local model
+### BUG-15 — No record rules on any local model — **DONE 2026-08-23**
 **Bug · Critical · S · SEC-2**
 Zero `ir.rule` across eight modules while ten models carry `company_id`. Every vendored OCA module
 ships one. **Impact** Company A's accountant reads and edits company B's loans, TDS schedule and
-filed VAT returns. **Acceptance** One rule per model; a non-skipping test proves A cannot read B.
-**Dependencies** Must land before a second company or tenant exists.
+filed VAT returns. **Acceptance** One rule per model; a non-skipping test proves A cannot read B —
+**met**: ten global rules, and 15 tests using `with_user` (a superuser bypasses rules, so a test
+run as `self.env.user` would prove nothing). **Note** two of the ten models had no `company_id`, so
+the fix was not the one-per-model change described; each now carries a stored `related` one.
+**Dependencies** Landed while only one company exists, as required.
 
 ### BUG-16 — Read-only role can rewrite a filed VAT return
 **Bug · Major · XS · SEC-6** → `1,0,0,0` on `l10n_np.vat.return.line`.

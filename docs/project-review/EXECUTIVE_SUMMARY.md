@@ -65,7 +65,7 @@ The suite tests mechanism thoroughly and outcomes barely at all.
 | 6 | **Client accounting data in corporate cloud sync** — two full database dumps, 572 attachments, 75 live sessions, plaintext credentials | DAT-1 |
 | 7 | **Any client can select any tenant** once `dbfilter` is unset, and `X-Forwarded-Host` is unpinned | SAAS-1, SAAS-3 |
 | 8 | **Odoo security patches cannot be applied**, and the only upgrade path silently destroys 87 translation files | SUP-1, SUP-3 |
-| 9 | **Cross-company data exposure** — no record rules on any of ten company-scoped models | SEC-2 |
+| ~~9~~ | ~~**Cross-company data exposure** — no record rules on any of ten company-scoped models~~ **RESOLVED 2026-08-23** — ten global rules, proved by negative control | SEC-2 |
 | 10 | **Every correctness defect is hidden behind a green test** — including one that skips under exactly the condition indicating the bug | TST-1, FIN-2, ACC-1 |
 
 ---

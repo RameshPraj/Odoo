@@ -74,14 +74,17 @@ templates use placeholders. No API keys, tokens or private keys anywhere in scop
 
 ## Authorization
 
-**SEC-2 (P1) — no record rules on any local model.** Zero `ir.rule` records exist across the eight
-modules, while ten new models carry `company_id`. Odoo does not synthesise multi-company rules;
-every *vendored OCA* module ships one.
+**SEC-2 (P1) — no record rules on any local model. RESOLVED 2026-08-23.** Ten global `ir.rule`
+records now cover every locally written company-owned model, across the three modules that define
+one. Verified by negative control rather than inspection: with the rules disabled, a company A
+accounting manager could read company B's VAT return form, boxes, filed return, individual figures
+and TDS certificates; with them active, every read is refused.
 
-In a multi-company database, company A's accountant reads and edits company B's loans, TDS
-schedule, VAT return forms and filed returns. Business logic filters by company, so computed
-figures are right — the **records** are exposed. This is the finding that becomes acute the moment
-a second company or tenant exists.
+Two of the ten models — `l10n_np.vat.return.box` and `.line` — had no `company_id` at all, so the
+prescribed fix could not have been applied to them as written; each now carries a stored `related`
+one. The `('company_id', '=', False)` branch of the suggested domain was deliberately dropped,
+since the field is `required=True` everywhere and that branch would only serve to expose a
+hypothetical unowned filed return to every company. Full account in `BACKLOG.md`.
 
 **SEC-6 (P2) — the read-only accounting role can rewrite a filed VAT return.**
 `l10n_np_vat_return/security/ir.model.access.csv:8` grants `group_account_readonly`

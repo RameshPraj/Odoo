@@ -42,7 +42,7 @@ before a second tenant exists. They are not go-live blockers for a single-tenant
 - [ ] **SAAS-6** — `/web/database/*` blocked at the edge. Not applicable on this loopback-bound dev host; `deploy/README.md` now ships the nginx rule, so this is a server-side gate
 - [x] **SEC-1** — both credentials rotated and the document redacted (2026-08-22)
 - [ ] **DAT-1** — client data and credentials out of cloud sync; dumps relocated
-- [ ] **SEC-2** — record rules on all ten company-scoped models, **before** a second company
+- [x] **SEC-2** — ten global record rules across the three modules that own company-scoped models (2026-08-23). Negative control: with them disabled a company A manager reads company B's filed VAT return; with them active, refused
 - [ ] **SEC-6** — read-only role cannot rewrite a filed return
 - [ ] **SEC-3** — `**` banned in the formula whitelist
 - [ ] **PG-1 / PG-2 / PG-4** — revokes applied and baked into provisioning

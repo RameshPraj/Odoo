@@ -1,7 +1,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 {
     'name': 'Loans',
-    'version': '19.0.1.0.0',
+    'version': '19.0.1.1.0',   # 1.1.0 = multi-company record rules (SEC-2)
     'category': 'Accounting/Accounting',
     'summary': 'Loan register, amortisation schedule and instalment posting',
     'description': """
@@ -42,6 +42,7 @@ the loan and opening a new one.
     'depends': ['account', 'mail'],
     'data': [
         'security/ir.model.access.csv',
+        'security/l10n_np_loan_rules.xml',
         'views/loan_views.xml',
     ],
     'author': 'local',

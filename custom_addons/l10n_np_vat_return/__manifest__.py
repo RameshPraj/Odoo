@@ -1,7 +1,8 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 {
     'name': 'Nepal - VAT Return (IRD)',
-    'version': '19.0.1.0.0',
+    'version': '19.0.1.1.0',   # 1.1.0 = multi-company record rules (SEC-2),
+                              # plus company_id on the box and line models
     'countries': ['np'],
     'category': 'Accounting/Localizations',
     'summary': 'IRD VAT return driven by a versioned, configurable form definition',
@@ -33,6 +34,7 @@ the return traces back to the ledger and can be drilled into during an audit.
     'depends': ['l10n_np'],
     'data': [
         'security/ir.model.access.csv',
+        'security/l10n_np_vat_return_rules.xml',
         'views/vat_return_views.xml',
     ],
     'author': 'local',
