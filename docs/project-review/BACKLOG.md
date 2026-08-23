@@ -383,6 +383,46 @@ current-FY entries, so it passes.
 prior-FY entry. **Effort S.**
 
 ## ACC-3 · Export fiscal position performs no tax substitution
+**RESOLVED 2026-08-23.** `original_tax_ids` now links each zero-rated NP tax to the 13% tax
+it replaces, in the template (for fresh chart adoptions) and by a `post-migration` in
+`l10n_np/migrations/19.0.1.2.0/` (for databases already on the chart). Substitution links
+went **0 to 2**. Verified end to end on the live database: an export invoice comes out
+`VAT 0% / tax=0.00 / total=1000.00`, a domestic invoice still `VAT 13% / tax=130.00`.
+
+**The audit's fix was right, and my plan's elaboration of it was not.** The finding said
+"one cell each"; the plan claimed a second, independent cause — an unset
+`company.domestic_fiscal_position_id` leaving `is_domestic` False — and cited
+`account_tax.py:5160` as the gate. A negative control disproved it: with the link present
+but `domestic_fiscal_position_id` cleared and `is_domestic` False, an export invoice still
+came out at 0%; clearing the link instead put 13% straight back. `:5160` is in
+`_import_retrieve_tax_from_price_include_exclude`, a bill-import matching helper, and its
+`is_domestic` is the one on **`account.fiscal.position`** (`partner.py:58`) — a different
+model on a different code path. Every real use of `account.tax.is_domestic` is UI-side:
+the `original_tax_ids` domain (`:110`), the `name_search` "Domestic" filter (`:262`), and
+two list-view filters. Two line numbers that look alike are not the same gate.
+
+`domestic_fiscal_position_id` is still set by the migration, for a smaller and honest
+reason: without it the `Replaces` field's own domain `[('is_domestic','=',True)]` matches
+nothing, so an accountant opening VAT 0% gets an empty dropdown and cannot maintain — or
+even see — a link the migration wrote by ORM, where domains go unenforced.
+
+**`try_loading` cannot deliver this**, unlike FIN-1 next door, and the migration's own
+assertion is what caught the first attempt failing with the table still empty.
+`chart_template.py:412-421` re-applies `original_tax_ids` only `if force_create and
+original_tax_ids and (new_taxes := [xml_id for ... if xml_id not in xmlid2tax])` —
+comment: *"Only add tax mappings containing new taxes"*. `VAT_S_NP_13` already exists, so
+core deliberately declines to touch the mapping; it treats substitution links on existing
+taxes as user-managed. A reload re-applies repartition tags and fiscal-position links, and
+nothing else. So the migration writes the link directly, by xmlid.
+
+**Not retrospective.** Taxes resolve when an invoice line is created, so any export
+already billed at 13% stays wrong and needs a credit note. Same shape as FIN-1's post-time
+stamping. Moot here: no such invoice exists yet.
+
+Rehearsed on a `CREATE DATABASE ... TEMPLATE odoo19` copy before running anywhere real,
+then dropped. Accounts (47), taxes (6), fiscal positions (2), journal entries (10) and
+journal items (24) unchanged throughout.
+
 **CONFIRMED** · Accounting · `l10n_np/data/template/account.tax-np.csv:10,14`
 
 Odoo 19 expresses substitution through `account.tax.original_tax_ids`
@@ -790,6 +830,7 @@ unenforceable folklore. **Effort S.**
 | **DOC-4** | CONFIRMED | Documentation | 5 root docs | All describe a repo with one local module; `RUNTIME-ARCHITECTURE.md` never mentions `custom_addons` | Stale by 8×; omits the `_get_view` patcher | Date-stamp as snapshots | S |
 | **OPS-3** | CONFIRMED | Operations | `deploy/odoo.service:18,51`; `README.md:45` | Service account owns `/opt/odoo` incl. its venv; `ProtectSystem=full` leaves `/opt` writable; missing `PrivateDevices`, `RestrictAddressFamilies`, `SystemCallFilter`, `MemoryMax`, `UMask`; `-s /bin/bash` | Code-execution bugs become persistent. Note the tension: `-u` and SUP-3 both want `/opt/odoo` writable | `ProtectSystem=strict` + `ReadWritePaths`; `nologin` | S |
 | **OPS-4** | CONFIRMED | Operations | `odoo.conf:60`; `.example:68` | `limit_time_real = 0` disables the runaway-request watchdog | One tenant's infinite loop permanently consumes a thread — a cross-tenant availability path. The Windows rationale is sound for dev; it must not ship | Restore on Linux (already correct there) | XS |
+| **TST-9** | **RESOLVED 2026-08-23, same day it was introduced** | Testing | `custom_addons/l10n_np/tests/__init__.py` | Adding a test file for ACC-3, I overwrote this `__init__.py` with only the new import and unwired the five pre-existing `test_np_chart` tests. The suite still reported `0 failed, 0 error(s)`, exit 0, **zero skips** — only the total moved, 343 to 342 | An unimported test file is indistinguishable from one that never existed. TST-3 warns about tests that skip themselves, but a skip is at least *reported*; this is the silent version, and it survives a green gate | Compare `def test_` methods on disk against the count the runner reports — 347 vs 342 here, and the difference is exactly the unwired file. Cheap enough for CI (**CI-1**) | XS |
 | **TST-3** | CONFIRMED | Testing | `test_reconcile.py:48-50`; `test_bs_accounting_dates.py:42-46` | Whole suites gate on one skip; nothing reports skip counts | A green run is indistinguishable from a run of nothing | Fail CI on skips | S |
 | **TST-6** | CONFIRMED | Testing | `test_loan.py:243-259` | Hardcoded 2026 backdates mixed with `context_today` | Holds only while the clock is past Feb 2026 | `freezegun` | XS |
 | **TST-7** | NEEDS_VERIFICATION | Testing | `test_lock_dates.py:22,79`; `test_bs_accounting_dates.py:30` | ~7 throwaway `res.company` per run; `base.group_user.implied_ids` mutated globally | If `cr.precommit` writes survive rollback, runs accrete orphan companies, breaking TST-2's suites | Verify across two runs | S |

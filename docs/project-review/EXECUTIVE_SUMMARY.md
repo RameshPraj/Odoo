@@ -42,7 +42,7 @@ The suite tests mechanism thoroughly and outcomes barely at all.
 | Domain code quality | 8/10 | Idiomatic, well commented, no deprecated API |
 | Bikram Sambat mathematics | 10/10 | 46,022 days verified both directions, zero divergence |
 | Odoo upgrade safety | 7/10 | No core modification except UPG-1; two seams to watch |
-| Statutory correctness | **4/10** | FIN-2 and FIN-1's data defect closed. Remaining: ACC-1, ACC-2, ACC-3, and the SME-gated IRD box layout |
+| Statutory correctness | **5/10** | FIN-2, FIN-1's data defect and ACC-3 closed. Remaining: ACC-1, ACC-2, and the SME-gated IRD box layout |
 | Application security | 6/10 | No injection, ACLs complete; no record rules |
 | Perimeter security | **4/10** | SAAS-2 closed 2026-08-22. Still no edge, no TLS, no `dbfilter` |
 | Tenant isolation | **2/10** | Substrate primitives are good; nothing above them exists |
@@ -148,7 +148,8 @@ defects below is now fixed; the statements work, the VAT return still does not.
 - ~~**FIN-2** — the three financial statements cannot render.~~ **RESOLVED 2026-08-15**, and they are
   now interactive and printable.
 - **FIN-1** — the VAT return computes every box as zero.
-- **ACC-3** — the Export fiscal position substitutes no tax, so exports are invoiced at 13%.
+- ~~**ACC-3** — the Export fiscal position substitutes no tax, so exports are invoiced at 13%.~~
+  **RESOLVED 2026-08-23** — exports now carry VAT 0%; domestic sales still carry 13%.
 - **ACC-2** — the Balance Sheet omits prior-year unallocated earnings, so it stops balancing after
   year one.
 - **ACC-1** — a foreign-currency loan posts its amounts as company currency. It balances, which is

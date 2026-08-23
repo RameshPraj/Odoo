@@ -22,6 +22,7 @@ as a baseline, which makes the placement problem the *only* remaining one, not a
 | FIN-1 — VAT boxes are nil | `test_box_from_tax_tags_ties_to_ledger` | **Skips when there are no tags** — i.e. under exactly the condition that indicates the bug |
 | ACC-1 — loans post wrong currency | `test_drawdown_entry_is_balanced…` | Asserts the entry **balances**. It does, in the wrong currency |
 | TST-5 — TDS reports zero withheld | 10 TDS tests | None calls `action_collect_lines`, the only method that touches the ledger |
+| ACC-3 — exports taxed at 13% *(fixed 2026-08-23)* | none existed | `l10n_np`'s five tests assert the chart *loads* — accounts wired, VAT rate 13%, provinces present. Nothing created an invoice, so the position could be applied and substitute nothing with every test green. The new tests assert the invoice, in both directions |
 
 That is the single most important observation in this document. The suite tests mechanism
 thoroughly and outcomes barely at all.
@@ -30,7 +31,7 @@ thoroughly and outcomes barely at all.
 
 | Module | Tests | Notes |
 |---|---|---|
-| `l10n_np` | 5 | chart, taxes, provinces |
+| `l10n_np` | 5 → **9** | chart, taxes, provinces; + 4 on export zero-rating (ACC-3, 2026-08-23) |
 | `l10n_np_bs` | 7 | + **669 lines of untested JS** (TST-4) |
 | `l10n_np_fiscal_year` | 7 | the only suite with proper fixtures |
 | `l10n_np_tds` | 10 | the figure-producing path untested (TST-5) |
@@ -42,6 +43,12 @@ thoroughly and outcomes barely at all.
 
 Every module has tests and every `tests/__init__.py` wires them correctly — no silently unwired
 suites.
+
+> **This claim was briefly false, by my hand, on 2026-08-23**, and is worth leaving as a warning
+> rather than a clean assertion. Adding a test file to `l10n_np` I overwrote its `tests/__init__.py`
+> and unwired the five that were already there. Restored the same day; see **TST-9**. The lesson is
+> that "wired correctly" is a property nothing in this repo checks, so it holds only until the next
+> person adds a file — a green run says nothing about it.
 
 ## Structural defects
 
@@ -62,6 +69,26 @@ incidental, nothing reports it, and TST-1 proves the mechanism bites.
 **TST-4 — 669 lines of JavaScript with zero tests.** `static/tests/` is declared in the manifest,
 is empty, and is untracked — so it does not exist on a fresh clone. The only JS assertion checks
 that a grid of >20 cells rendered; it never validates a date.
+
+**TST-9 — a new test file can silently switch off the old ones, and the suite still reports
+green.** Recorded because it happened here, to me, on 2026-08-23. Adding
+`l10n_np/tests/test_fiscal_positions.py` for ACC-3, I overwrote `tests/__init__.py` with a single
+`from . import test_fiscal_positions` — dropping the existing `from . import test_np_chart` and
+disabling five pre-existing tests. The plan for that work asserted "the module has no `tests/`
+directory yet"; it did, containing a file committed on 2026-08-09. Nothing complained: the run was
+`0 failed, 0 error(s)`, exit 0, **zero skips**. Only the total moved, 343 to 342, and 342 is not a
+number that looks wrong.
+
+What caught it was refusing to round the total. What *confirmed* it was counting `def test_`
+methods on disk (347) against the count the runner reported (342) — the two reconcile exactly once
+the five unimported tests are accounted for, and 343 − 5 + 4 = 342 closes from the other side too.
+That disk-versus-runner count is a five-second check and the only one here that would have detected
+this class of loss.
+
+This is TST-3's warning arriving from an unexpected direction: TST-3 is about tests that skip
+themselves, where at least a skip is *reported*. An unimported test file reports nothing at all —
+it is indistinguishable from a test that never existed. A `-a` on the wrong redirect operator would
+be more visible.
 
 **BS-1 — the exhaustive cross-check is dead code.** `tools/selftest.py` already performs the
 46,022-day Python↔JS sweep and nothing invokes it.

@@ -160,11 +160,13 @@ test passes, and the ledger is silently wrong by the FX rate.
 module's stated scope. **Acceptance** A foreign-currency loan either posts correct
 `amount_currency` values or cannot be created. **Tests** A multi-currency posting test.
 
-### BUG-10 — Export fiscal position substitutes no tax
+### BUG-10 — Export fiscal position substitutes no tax — **DONE 2026-08-23**
 **Bug · Critical · XS + migration · ACC-3**
 `original_tax_ids` is empty on both zero-rated taxes, so applying the Export position leaves VAT
 13% on the line — exports invoiced at 13%. **Solution** Populate the column; same migration caveat
-as BUG-7. **Acceptance** An export customer's invoice line carries the 0% tax.
+as BUG-7. **Acceptance** An export customer's invoice line carries the 0% tax — **met**: the
+line carries `VAT 0%` with `tax=0.00`, and a domestic line still carries `VAT 13%` with
+`tax=130.00`. **Tests** `l10n_np/tests/test_fiscal_positions.py`, four tests, both directions.
 
 ### BUG-11 — Balance Sheet omits prior-year unallocated earnings
 **Bug · Critical · S · ACC-2**

@@ -139,7 +139,15 @@ balance and a "difference" line appears on a statutory statement. `test_balance_
 posts only current-FY entries, so it passes. Odoo's own reports solve this with a separate
 *Unallocated Earnings* line. **Fix (S)** plus a test that posts a prior-FY entry.
 
-## ACC-3 (P1) — the Export fiscal position substitutes nothing
+## ACC-3 (P1) — the Export fiscal position substitutes nothing — **RESOLVED 2026-08-23**
+
+Fixed by linking each zero-rated tax to the 13% tax it replaces, in the template and by a
+`19.0.1.2.0` migration for the existing chart. An export invoice now comes out `VAT 0% /
+tax=0.00`; a domestic one still `VAT 13% / tax=130.00`. `try_loading` could not do it —
+`chart_template.py:412-421` re-applies `original_tax_ids` only for taxes that do not yet exist
+("Only add tax mappings containing new taxes"), so the migration writes the link directly. Full
+account, including a claim of mine that a negative control disproved, in `BACKLOG.md`.
+
 
 Odoo 19 expresses substitution on the tax side: `account.tax.original_tax_ids` says *what a tax
 replaces* (`account_tax.py:102-114`). Both zero-rated NP taxes leave that column **empty**
@@ -148,7 +156,8 @@ replaces* (`account_tax.py:102-114`). Both zero-rated NP taxes leave that column
 Upstream contrast — every non-domestic `l10n_uk` tax names the domestic taxes it replaces.
 
 **Impact:** exports invoiced at 13%. Over-collection, and a wrong VAT return. **Fix:** one cell
-each (`VAT_S_NP_13`, `VAT_P_NP_13`), with the same migration caveat as FIN-1.
+each (`VAT_S_NP_13`, `VAT_P_NP_13`) — the finding was exactly right — plus a migration, since a
+chart template only applies at adoption. Already-billed exports are not corrected retrospectively.
 
 **ACC-4 (P2), for the SME:** the Export position has `auto_apply=1` with **no** country and no
 country group, so it auto-applies to every partner outside Nepal — including foreign **vendors**,
@@ -234,7 +243,7 @@ over mid-Nepali-fiscal-year. Editable as a record, but wrong out of the box.
 ## Readiness
 
 **Not ready for statutory use.** Four correctness items must close first — FIN-2, FIN-1 (+TST-1),
-ACC-3, ACC-2 — and ACC-1 must be closed or the field removed.
+ACC-2 — and ACC-1 must be closed or the field removed. (ACC-3 closed 2026-08-23.)
 
 Beyond code, the SME sign-off register the project already tracks remains open: chart of accounts
 per NFRS/NPSAS, TDS rates and thresholds, the IRD VAT form layout box by box, TDS certificate
