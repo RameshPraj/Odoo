@@ -77,10 +77,80 @@ class TestVatReturn(TransactionCase):
             ret.action_compute()
         self.assertIn("No VAT return form is configured", str(ctx.exception))
 
+    def _tagged_sale_tax(self):
+        """A 13% sale tax whose repartition lines carry tags, built here.
+
+        The chart's own tax is deliberately not used. Doing so was how this test
+        managed to skip: it read tags off whatever the chart happened to provide, and
+        when the chart provided none, the test excused itself under exactly the
+        condition it existed to detect (TST-1). A fixture cannot be absent.
+
+        Whether the *chart* is wired is a separate question, asserted by
+        test_chart_taxes_carry_repartition_tags below. That one is allowed to fail;
+        this one is not.
+        """
+        Tag = self.env["account.account.tag"]
+        base_tag, tax_tag = Tag.create([
+            {"name": "TST Base", "applicability": "taxes"},
+            {"name": "TST Tax", "applicability": "taxes"},
+        ])
+        tax = self.env["account.tax"].create({
+            "name": "TST VAT 13%",
+            "amount": 13.0,
+            "amount_type": "percent",
+            "type_tax_use": "sale",
+            "company_id": self.company.id,
+            "repartition_line_ids": [
+                Command.create({"document_type": "invoice", "repartition_type": "base",
+                                "factor_percent": 100, "tag_ids": [Command.set(base_tag.ids)]}),
+                Command.create({"document_type": "invoice", "repartition_type": "tax",
+                                "factor_percent": 100, "tag_ids": [Command.set(tax_tag.ids)]}),
+                Command.create({"document_type": "refund", "repartition_type": "base",
+                                "factor_percent": 100, "tag_ids": [Command.set(base_tag.ids)]}),
+                Command.create({"document_type": "refund", "repartition_type": "tax",
+                                "factor_percent": 100, "tag_ids": [Command.set(tax_tag.ids)]}),
+            ],
+        })
+        return tax, base_tag + tax_tag
+
+    def test_chart_taxes_carry_repartition_tags(self):
+        """The Nepali chart's own taxes must carry tax tags. Guards FIN-1.
+
+        Without these, `_tag_balance` matches no journal item and every box computes
+        zero, silently: `vat_return.py:143-144` returns 0.0 for an empty tag set with
+        no warning. A filed return would report nil while sales existed.
+
+        The template is correct (`l10n_np/data/template/account.tax-np.csv`); the
+        risk is the live database drifting from it, because Odoo instantiates chart
+        data when a company *adopts* the chart, not on `-u`.
+        """
+        if self.company.chart_template != "np":
+            self.skipTest("company is not on the Nepali chart")
+        taxes = self.env["account.tax"].search([
+            ("company_id", "=", self.company.id),
+            ("amount", "=", 13.0),
+            ("amount_type", "=", "percent"),
+        ])
+        self.assertTrue(taxes, "the np chart defines no 13% tax")
+        for tax in taxes:
+            with self.subTest(tax=tax.name, use=tax.type_tax_use):
+                untagged = tax.repartition_line_ids.filtered(lambda r: not r.tag_ids)
+                self.assertFalse(
+                    untagged,
+                    f"{tax.name} ({tax.type_tax_use}) has "
+                    f"{len(untagged)} of {len(tax.repartition_line_ids)} repartition "
+                    f"lines with no tax tag; the VAT return will compute this as nil "
+                    f"(FIN-1). Re-apply the chart's tax data.")
+
     def test_box_from_tax_tags_ties_to_ledger(self):
-        tags = self._tags_of_sale_tax()
-        if not tags:
-            self.skipTest("sale tax has no tax tags configured in this chart")
+        """A box must equal the ledger, to the rupee.
+
+        Was `assertGreater(amount, 0)`, which a wrong sign or a partial sum would
+        pass. 200,000 at 13% gives a 200,000 base and 26,000 of tax; summed with
+        sign -1 over both tags that is exactly 226,000.
+        """
+        tax, tags = self._tagged_sale_tax()
+        self.sale_tax = tax
         self._post_invoice(200000.0)
 
         form = self.Form.create({
@@ -102,7 +172,10 @@ class TestVatReturn(TransactionCase):
         self.assertEqual(ret.form_id, form, "the form version must be frozen on the return")
         line = ret.line_ids.filtered(lambda l: l.code == "11")
         self.assertTrue(line, "box 11 missing from the computed return")
-        self.assertGreater(line.amount, 0, "sign handling should present sales positive")
+        self.assertEqual(
+            line.amount, 226000.0,
+            "box 11 must equal base 200,000 plus tax 26,000 summed with sign -1; "
+            f"got {line.amount}")
 
     def test_form_versioning(self):
         """A return must resolve the form that applied to its own period."""

@@ -16,7 +16,7 @@ the code should live.
 |---|---|---|---|
 | ~~1~~ | ~~Live one-request cluster takeover~~ **RESOLVED 2026-08-22** | SAAS-2 | Master password rotated to a 32-character random value and stored hashed, so `verify_admin_password('admin')` is False and the takeover branch is unreachable |
 | ~~2~~ | ~~Statutory reports cannot render~~ **RESOLVED 2026-08-15** | FIN-2 | All three now render, print to PDF, and drill down to the entries behind each figure. `TestReportsActuallyRender` renders them through the report engine, which is the check that was missing |
-| 3 | VAT return computes nil | FIN-1 | Zero tag→repartition links in the live database |
+| ~~3~~ | ~~VAT return computes nil~~ **PARTIALLY RESOLVED 2026-08-23** | FIN-1 | Tags backfilled 0 to 16 by migration, so a tagged entry now reaches the return. Still **not a usable filing**: the IRD box layout is SME-gated and absent from this repo, and there are zero taxable journal items to report on |
 | ~~4~~ | ~~Attachment storage is splitting~~ **RESOLVED 2026-08-14** | OPS-1 | Paths corrected; reconciliation proved no data loss; launchers now fail fast |
 | 5 | No recoverable backup of code or data | SUP-2, DAT-1 | **43 commits** on one disk (28 at audit time); the sync substituting for a backup is also the corruption risk. Now the largest open risk on this list, since the two above it are closed. The SEC-1 objection is gone: those credentials were rotated 2026-08-22, so pushing publishes nothing usable. This is now purely a decision about where the code should live |
 | ~~6~~ | ~~Known credentials, database manager exposed~~ **RESOLVED 2026-08-22** | SEC-1, OPS-2 | Both credentials rotated, master password now stored hashed, `RECONNAISSANCE.md` redacted, `list_db = False`. History deliberately not rewritten: the leaked values were the defaults `admin` and `odoo`, worthless once rotated |
@@ -28,7 +28,7 @@ before a second tenant exists. They are not go-live blockers for a single-tenant
 
 ### Correctness
 - [ ] **FIN-2** — reports render; a test asserts the HTML contains "TOTAL ASSETS"
-- [ ] **FIN-1 + TST-1** — tags backfilled by migration; the guarding test cannot skip
+- [x] **FIN-1 + TST-1** — tags backfilled by migration (0 to 16 links); the guarding test cannot skip and was watched failing first (2026-08-23)
 - [ ] **ACC-3** — Export fiscal position actually substitutes tax
 - [ ] **ACC-2** — Balance Sheet balances after year one
 - [ ] **ACC-1** — loan currency closed, or the field removed
@@ -72,7 +72,7 @@ before a second tenant exists. They are not go-live blockers for a single-tenant
 - [ ] **CI-1** — one command runs all eight suites and reports skip counts
 - [ ] **QA-1** — ruff and `pylint-odoo` configured and running
 - [ ] **UPG-1** — group changes survive `-u account`, asserted by a test
-- [ ] **UPG-2** — module versions bump on change
+- [ ] **UPG-2** — module versions bump on change. `l10n_np` now does (19.0.1.1.0, so its FIN-1 migration fires); the other sixteen do not
 
 ### Legal
 - [ ] **LIC-1** — AGPL position decided; manifests and `VENDORED.md` aligned. **SaaS is exactly

@@ -1,7 +1,8 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 {
     'name': 'Nepal - Accounting',
-    'version': '19.0.1.0.0',
+    'version': '19.0.1.1.0',   # bumped so migrations/19.0.1.1.0 runs (FIN-1);
+                              # Odoo only runs a migration when the version rises
     'countries': ['np'],
     'category': 'Accounting/Localizations/Account Charts',
     'icon': '/account/static/description/l10n.png',

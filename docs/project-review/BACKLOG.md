@@ -16,9 +16,11 @@ Every finding appears here exactly once. All other documents reference these IDs
 > P2–P4. **119 entries, 121 findings** — the two differ only because `DEP-3/4/5` is a single row
 > covering three findings.
 >
-> The count includes entries already closed. **11 are RESOLVED** — FIN-2, FIN-3, OPS-1, OPS-2,
-> OPS-7, SEC-1, SEC-12, SAAS-2, BS-20, DEP-1, TST-8 — and CI-1 is PARTIALLY RESOLVED, so the open
-> figure is 113.
+> The count includes entries already closed. **13 are RESOLVED** — FIN-2, FIN-3, OPS-1, OPS-2,
+> OPS-7, SEC-1, SEC-12, SAAS-2, BS-20, DEP-1, TST-1, TST-8 and FIN-1 — and CI-1 is PARTIALLY
+> RESOLVED, so the open figure is 111. FIN-1 is marked resolved as a *defect*: the tags are
+> backfilled and a test guards them. The **go-live gate** it feeds remains open, because a usable
+> IRD filing needs the box layout, which is SME-gated and not in this repository.
 >
 > **COD-11** was added 2026-08-17 while making the reports drillable: OCA's reports discard the
 > drill-down domain they already compute and rebuild it in QWeb, which is the root cause behind the
@@ -283,6 +285,34 @@ tested at every failure position (first entry, last entry, `data_dir`, and both 
 # P1 — High
 
 ## FIN-1 · VAT return computes every box as zero — *diagnosis corrected*
+**RESOLVED 2026-08-23.** The chart's tax data was re-applied for companies on the `np`
+chart, via a `post-migration` in `l10n_np/migrations/19.0.1.1.0/` calling core's
+`try_loading`. Repartition tag links went **0 to 16**.
+
+16, not 24, is correct and worth recording: the two 13% taxes take a tag on all four
+repartition lines (Base and Tax, invoice and refund), while the 0% and Exempt taxes take
+one on their **base lines only** — a zero-rated supply has no tax amount to report. That
+mirrors `account.tax-np.csv`, which leaves those cells empty.
+
+Rehearsed on a `CREATE DATABASE ... TEMPLATE` copy before being run anywhere real, because
+a chart reload is not obviously safe on a database with posted entries. Accounts, taxes,
+fiscal positions, journal entries and journal items were all unchanged in number, and no
+tax was renamed `[old]` or duplicated. The migration was then tested through the real `-u`
+path on a second copy reset to the broken state, and `l10n_np` was bumped to 19.0.1.1.0 so
+it fires at all — which also makes this module the first to satisfy **UPG-2**.
+
+**What this does not do**, and the reason the go-live gate stays shut: it does not make the
+VAT return produce a figure. There are **zero taxable journal items** in the database — all
+eight posted documents have `amount_tax = 0.00` and no line carries a tax. So the return
+moves from *nil because untagged* to *nil because nothing taxable exists*, and the two are
+indistinguishable to a user. The remaining distance is the IRD form's boxes and their signs,
+which are **not in this repository** and are SME-gated, plus representative taxed
+transactions to check against (**SCH-2**).
+
+**One sequencing trap**: `tax_tag_ids` is stamped at post time, so this repairs the taxes,
+not history. Any entry posted while the tags were missing stays untagged and invisible to
+the return; re-tagging means resetting it to draft and reposting. Moot here, given no posted
+line carried a tax.
 **CONFIRMED** · Accounting · live database state
 
 The 8 Nepal tax tags exist with correct `name`, `applicability='taxes'`, `country_id=base.np`.
@@ -301,6 +331,18 @@ core's reload path preserves `tag_ids` deliberately (`chart_template.py:422-427`
 template edit. **Effort M.**
 
 ## TST-1 · The test that would catch FIN-1 disables itself under exactly that condition
+**RESOLVED 2026-08-23.** `test_box_from_tax_tags_ties_to_ledger` built its tax from whatever
+the chart happened to provide, so when the chart provided no tags it called `skipTest` — and
+excused itself under precisely the condition it existed to detect. It now builds its own tax,
+tags and invoice as fixtures, which cannot be absent, and asserts an exact figure (226,000 =
+base 200,000 plus tax 26,000, summed with sign -1) in place of `assertGreater(amount, 0)`,
+which a wrong sign or a partial sum would have passed.
+
+Whether the *chart* is wired is now a separate test, `test_chart_taxes_carry_repartition_tags`,
+which is the one that actually guards FIN-1. Confirmed by watching it fail before the fix —
+"VAT 13% (sale) has 4 of 4 repartition lines with no tax tag" — and pass after. The module's
+computation was correct all along; only the data was broken, and separating the two tests is
+what makes that visible.
 **CONFIRMED (skip fires today)** · Testing · `l10n_np_vat_return/tests/test_vat_return.py:81-83`
 
 `if not tags: self.skipTest("sale tax has no tax tags configured in this chart")`. "No tags" is

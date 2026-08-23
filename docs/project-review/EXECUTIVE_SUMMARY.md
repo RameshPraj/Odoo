@@ -8,9 +8,9 @@ vendored upstream files were not reviewed as code, but *how they got here and ho
 patched* is in scope and is among the worst findings.
 
 All findings and evidence in [`BACKLOG.md`](BACKLOG.md). **124 findings: 10 P0, 29 P1, 49 P2, 28 P3,
-6 P4** (122 table entries; `DEP-3/4/5` is one row covering three). **Eleven are RESOLVED** — FIN-2,
-FIN-3, OPS-1, OPS-2, OPS-7, SEC-1, SEC-12, SAAS-2, BS-20, DEP-1, TST-8 — and CI-1 is partially
-resolved, so **113 remain open**.
+6 P4** (122 table entries; `DEP-3/4/5` is one row covering three). **Thirteen are RESOLVED** —
+FIN-1, FIN-2, FIN-3, OPS-1, OPS-2, OPS-7, SEC-1, SEC-12, SAAS-2, BS-20, DEP-1, TST-1, TST-8 — and
+CI-1 is partially resolved, so **111 remain open**.
 
 (This count previously read "88 findings" and had drifted by 30; it is now derived from
 `BACKLOG.md` rather than carried forward.)
@@ -42,7 +42,7 @@ The suite tests mechanism thoroughly and outcomes barely at all.
 | Domain code quality | 8/10 | Idiomatic, well commented, no deprecated API |
 | Bikram Sambat mathematics | 10/10 | 46,022 days verified both directions, zero divergence |
 | Odoo upgrade safety | 7/10 | No core modification except UPG-1; two seams to watch |
-| Statutory correctness | **2/10** | FIN-2, FIN-1, ACC-1, ACC-2, ACC-3 |
+| Statutory correctness | **4/10** | FIN-2 and FIN-1's data defect closed. Remaining: ACC-1, ACC-2, ACC-3, and the SME-gated IRD box layout |
 | Application security | 6/10 | No injection, ACLs complete; no record rules |
 | Perimeter security | **4/10** | SAAS-2 closed 2026-08-22. Still no edge, no TLS, no `dbfilter` |
 | Tenant isolation | **2/10** | Substrate primitives are good; nothing above them exists |
@@ -58,7 +58,7 @@ The suite tests mechanism thoroughly and outcomes barely at all.
 | # | Risk | ID |
 |---|---|---|
 | ~~1~~ | ~~**One unauthenticated POST claims the cluster master password**~~ — **FIXED 2026-08-22.** Rotated to a 32-character random value, stored hashed; `verify_admin_password('admin')` is now False | SAAS-2 |
-| 2 | **A filed VAT return reports nil while sales exist** — zero tag→repartition links in the live database | FIN-1 |
+| ~~2~~ | ~~**A filed VAT return reports nil while sales exist**~~ — **tags backfilled 2026-08-23** (0 to 16 links), so a tagged entry now reaches the return. It still cannot produce a *filing*: the IRD box layout is SME-gated and absent here, and no journal item carries a tax | FIN-1 |
 | 3 | ~~**Balance Sheet, P&L and Cash Flow cannot render at all**~~ — **FIXED 2026-08-15.** All three render, print to PDF, and drill down to the entries behind each figure | FIN-2 |
 | 4 | ~~Attachments written to an orphaned filestore~~ — **FIXED 2026-08-14.** Reconciliation proved no data loss; the orphan held only regenerable asset bundles | OPS-1 |
 | 5 | **Total loss of the codebase** — **43** commits on one disk (28 at audit time), and the sync substituting for a backup is also the corruption risk. With risks 3 and 4 closed, this is now the most consequential item on this list | SUP-2, DAT-1 |
@@ -80,7 +80,7 @@ The suite tests mechanism thoroughly and outcomes barely at all.
 | ~~4~~ | ~~Rotate both credentials~~ — **DONE 2026-08-22.** `RECONNAISSANCE.md` redacted; history left, the old values being defaults made worthless by rotation | SEC-1 | done |
 | 5 | Move client data and credentials out of cloud sync | DAT-1 | S–M |
 | 6 | Rename the three report models so the statements render | FIN-2 | S |
-| 7 | Fix the skipping VAT test, **then** backfill the tax tags by migration | TST-1, FIN-1 | S+M |
+| ~~7~~ | ~~Fix the skipping VAT test, **then** backfill the tax tags by migration~~ — **DONE 2026-08-23**, in that order, with the guard watched failing first | TST-1, FIN-1 | done |
 | 8 | Declare and pin `nepali-datetime` so the suite installs at all | DEP-1 | XS |
 | 9 | One command that runs all eight suites and reports skips | CI-1 | M |
 | 10 | Wire `selftest.py` into the suite | BS-1 | S |
