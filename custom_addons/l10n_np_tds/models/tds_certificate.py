@@ -55,29 +55,55 @@ class TdsCertificate(models.Model):
         return super().create(vals_list)
 
     # ------------------------------------------------------------------
+    #: The persistent withholding line. `account.withholding.line` is an
+    #: AbstractModel (l10n_account_withholding_tax/models/account_withholding_line.py:10)
+    #: with no table, and this code used to query it. See action_collect_lines.
+    WITHHOLDING_LINE = 'account.payment.withholding.line'
+
     def action_collect_lines(self):
         """Populate from the withholding lines actually posted in the period.
 
         Reads the ledger rather than recomputing, so the certificate cannot
         disagree with the accounts.
+
+        This method previously could not work at all, and said so misleadingly
+        (TST-5). It searched `account.withholding.line`, which is an
+        **AbstractModel** and therefore has no table; the bare `except Exception`
+        around the search turned that failure into "Check that
+        'l10n_account_withholding_tax' is installed", pointing the user at a module
+        that is installed. Three further consequences of guessing at the schema:
+
+        * `partner_id` does not exist on a withholding line. The payee is
+          `payment_id.partner_id`, so the old `'partner_id' in l._fields` test was
+          always False, the filter degraded to `True`, and a certificate for one
+          payee would have carried **every** payee's withholding. That is a
+          disclosure, not merely a wrong total.
+        * `date` does not exist either, and `comodel_date` is computed and not
+          stored, so it cannot appear in a domain at all. Every line would have been
+          stamped with the period end date.
+        * `base_amount` and `amount` do exist, so those two `getattr(..., 0.0)`
+          defaults never fired. But a certificate reporting zero withheld because a
+          field was renamed is the exact failure this finding is named for, and a
+          default of 0.0 is how it happens silently. Both are read directly now.
+
+        Only payments that reached the ledger are counted. A draft or cancelled
+        payment has withheld nothing, and a statutory certificate must not claim
+        otherwise.
         """
-        WithholdingLine = self.env['account.withholding.line']
+        if self.WITHHOLDING_LINE not in self.env:
+            raise UserError(_(
+                "Withholding lines are provided by 'l10n_account_withholding_tax', "
+                "which is not installed."))
+        WithholdingLine = self.env[self.WITHHOLDING_LINE]
         for cert in self:
             cert.line_ids.unlink()
-            domain = [
+            lines = WithholdingLine.search([
                 ('company_id', '=', cert.company_id.id),
-                ('date', '>=', cert.date_from),
-                ('date', '<=', cert.date_to),
-            ]
-            try:
-                lines = WithholdingLine.search(domain)
-            except Exception as exc:      # field names differ across versions
-                raise UserError(_(
-                    "Could not read withholding lines: %s\n\n"
-                    "Check that 'l10n_account_withholding_tax' is installed.", exc)) from exc
-
-            lines = lines.filtered(
-                lambda l: l.partner_id == cert.partner_id if 'partner_id' in l._fields else True)
+                ('payment_id.partner_id', '=', cert.partner_id.id),
+                ('payment_id.date', '>=', cert.date_from),
+                ('payment_id.date', '<=', cert.date_to),
+                ('payment_id.state', 'in', ('in_process', 'paid')),
+            ])
             if not lines:
                 raise UserError(_(
                     "No withholding was recorded for %(partner)s between "
@@ -88,10 +114,16 @@ class TdsCertificate(models.Model):
             for line in lines:
                 cert.env['l10n_np.tds.certificate.line'].create({
                     'certificate_id': cert.id,
-                    'name': line.display_name,
-                    'date': line.date if 'date' in line._fields else cert.date_to,
-                    'amount_base': abs(getattr(line, 'base_amount', 0.0) or 0.0),
-                    'amount_tds': abs(getattr(line, 'amount', 0.0) or 0.0),
+                    # line.name is the withholding sequence number, which is what a
+                    # certificate should cite; fall back to the payment reference.
+                    'name': line.name or line.payment_id.display_name,
+                    'date': line.payment_id.date,
+                    # Upstream stores the withheld amount positive even though the
+                    # tax is a negative percentage. abs() normalises rather than
+                    # trusting that, since a signed figure on a certificate reads as
+                    # a refund.
+                    'amount_base': abs(line.base_amount),
+                    'amount_tds': abs(line.amount),
                 })
         return True
 

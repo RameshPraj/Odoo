@@ -776,6 +776,59 @@ makes it independent of the database. Worth preferring to a throwaway company he
 and it also exercises the figures a user would actually see.
 
 ## TST-5 · The only path producing real TDS figures is untested and fails silently
+**RESOLVED 2026-08-23**, and the finding understated it. `action_collect_lines` was not
+merely untested and liable to report zero: **it could not run at all**, and it blamed the
+wrong thing when it failed.
+
+It searched `account.withholding.line`, which is an **AbstractModel**
+(`l10n_account_withholding_tax/models/account_withholding_line.py:10`, `_auto = False`) with
+no table. Verified by execution: `search()` on it raises
+`UndefinedTable: relation "account_withholding_line" does not exist`. The bare
+`except Exception` around the search then reported that as *"Check that
+'l10n_account_withholding_tax' is installed"* — about a module that **is** installed. So
+the feature had never worked, and its error message sent the user to look in the wrong
+place. Being untested is why nobody knew.
+
+Three more consequences of duck-typing against a schema that was never checked:
+
+- **`partner_id` does not exist** on a withholding line; the payee is
+  `payment_id.partner_id`. So `'partner_id' in l._fields` was always False, the payee
+  filter degraded to `True`, and a certificate for one payee would have carried **every**
+  payee's withholding. That is a disclosure of a third party's tax affairs on a document
+  handed to someone else, not just a wrong total. It is the most serious thing in this
+  finding and the finding does not mention it.
+- **`date` does not exist either**, and `comodel_date` is computed and unstored, so it
+  cannot appear in a domain at all. Every line would have been stamped with the period end
+  rather than the payment date.
+- `base_amount` and `amount` *do* exist, so those two `getattr(..., 0.0)` defaults never
+  actually fired. The named failure mode was real but latent. Both are read directly now.
+
+Now queries `account.payment.withholding.line` — the persistent subclass — filtered by
+company, by `payment_id.partner_id`, by `payment_id.date`, and by
+`payment_id.state in ('in_process', 'paid')`. That last filter is new and statutory: a
+draft or cancelled payment has withheld nothing, and a certificate claiming otherwise
+overstates the credit the payee may claim from the IRD.
+
+**Eight tests**, every one through a real posted payment carrying a real withholding line
+(base 100,000 → 10,000 withheld), never a hand-made certificate line. A test that built
+the lines itself would only prove the certificate can add up, which was never in doubt, and
+would have stayed green through everything above — the same error as FIN-2's statement
+tests. They cover: the amount actually withheld; another payee's withholding **not**
+appearing; the payment date rather than the period end; the sequence number being cited; a
+draft payment excluded; a payment outside the period excluded; collecting twice not
+doubling; and issuing before collecting refused.
+
+The fixture builds its own company. Writes to `res.company` flush through `cr.precommit`,
+so configuring `withholding_tax_base_account_id` on the real company would outlive the
+suite. A chartless company supplies no tax group, no fiscal country, no outstanding
+account and no partner payable, so all of it is built by hand — which is the honest cost of
+not touching live configuration.
+
+**Still a placeholder layout.** This fixes the figures, not the form: the certificate
+layout remains unconfirmed by an accountant, and `category_id` on the collected line is
+still unset (the tax-to-category mapping exists on `l10n_np.tds.category.tax_id` and could
+drive it). Neither blocks the figures being right.
+
 **CONFIRMED** · Testing · `l10n_np_tds/models/tds_certificate.py:58-96`
 
 `action_collect_lines` duck-types with `getattr(line, 'base_amount', 0.0)`. No test calls it —
@@ -887,7 +940,7 @@ unenforceable folklore. **Effort S.**
 | **TST-9** | **RESOLVED 2026-08-23, same day it was introduced** | Testing | `custom_addons/l10n_np/tests/__init__.py` | Adding a test file for ACC-3, I overwrote this `__init__.py` with only the new import and unwired the five pre-existing `test_np_chart` tests. The suite still reported `0 failed, 0 error(s)`, exit 0, **zero skips** — only the total moved, 343 to 342 | An unimported test file is indistinguishable from one that never existed. TST-3 warns about tests that skip themselves, but a skip is at least *reported*; this is the silent version, and it survives a green gate | Compare `def test_` methods on disk against the count the runner reports — 347 vs 342 here, and the difference is exactly the unwired file. Cheap enough for CI (**CI-1**) | XS |
 | **TST-3** | CONFIRMED | Testing | `test_reconcile.py:48-50`; `test_bs_accounting_dates.py:42-46` | Whole suites gate on one skip; nothing reports skip counts | A green run is indistinguishable from a run of nothing | Fail CI on skips | S |
 | **TST-6** | CONFIRMED | Testing | `test_loan.py:243-259` | Hardcoded 2026 backdates mixed with `context_today` | Holds only while the clock is past Feb 2026 | `freezegun` | XS |
-| **TST-7** | NEEDS_VERIFICATION | Testing | `test_lock_dates.py:22,79`; `test_bs_accounting_dates.py:30` | ~7 throwaway `res.company` per run; `base.group_user.implied_ids` mutated globally | If `cr.precommit` writes survive rollback, runs accrete orphan companies, breaking TST-2's suites | Verify across two runs | S |
+| **TST-7** | **PARTLY RESOLVED 2026-08-23** — the company half is measured and is **not** a problem: `res_company` held 1 row before a test run that creates several throwaway companies, and 1 row after. Creating a company and writing to it roll back together; the `cr.precommit` hazard applies to writes against a company that **already existed** (which is what `test_lock_dates.py` warns about and why it, and the new TST-5 fixture, build their own). The `base.group_user.implied_ids` half is untested and still open | Testing | `test_lock_dates.py:22,79`; `test_bs_accounting_dates.py:30` | ~7 throwaway `res.company` per run; `base.group_user.implied_ids` mutated globally | Companies do not accrete. A global group mutation still would | Re-measure `implied_ids` the same way | XS |
 | **N-1** | CONFIRMED | Naming | repo root | `l10n_ne/` collides with upstream **Niger** (`ne` = Niger; Nepal is `np`); no manifest | Harmless until the repo root joins `addons_path` | Rename outside `l10n_*` | XS |
 
 ---

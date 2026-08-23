@@ -177,7 +177,7 @@ current fiscal year. After year one the sheet does not balance.
 prior-FY entry.
 
 ### BUG-12 — TDS certificate can silently report zero withheld
-**Bug · Critical · S · TST-5**
+**Bug · Critical · S · TST-5** — **DONE 2026-08-23**
 `action_collect_lines` is the only path putting real figures on a statutory certificate, is
 untested, and uses `getattr(line, 'base_amount', 0.0)` — a renamed field yields zero with no error.
 **Solution** Test it against a real withholding line; replace the defaults with explicit access.

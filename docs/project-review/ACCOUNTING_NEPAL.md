@@ -236,7 +236,7 @@ over mid-Nepali-fiscal-year. Editable as a record, but wrong out of the box.
 | Invoice → tax → VAT box | ⚠️ **Nominally covered, actually skipped** (TST-1) |
 | Balance Sheet / P&L / Cash Flow | ⚠️ Logic covered, **rendering never exercised** (FIN-2) |
 | Period close → lock date | ⚠️ The wizard is well tested; **no test posts an entry into a locked period** and asserts refusal. The enforcement is assumed |
-| Payment → TDS withholding → certificate | ❌ **Not covered** (TST-5). `action_collect_lines` — the only method that touches the ledger — is never executed, and its `getattr(..., 0.0)` defaults make a field rename produce zero-value certificates silently |
+| Payment → TDS withholding → certificate | ✅ **Covered 2026-08-23** (TST-5). Eight tests drive `action_collect_lines` through a real posted payment carrying a real withholding line. It turned out the method could not run at all — it queried an AbstractModel with no table — so the `getattr(..., 0.0)` defaults were latent rather than active. Figures now correct; **layout** still needs an SME |
 | Asset → depreciation → posting | ❌ **Not covered.** The integration that Nepali fiscal years drive depreciation boards — the stated rationale for `l10n_np_fiscal_year` — is asserted nowhere |
 | Multi-currency | ❌ **Not covered**, and ACC-1 is the live bug behind the gap |
 

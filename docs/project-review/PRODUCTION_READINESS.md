@@ -32,7 +32,7 @@ before a second tenant exists. They are not go-live blockers for a single-tenant
 - [x] **ACC-3** — Export fiscal position substitutes tax: export invoice `VAT 0% / tax=0.00`, domestic still `VAT 13% / tax=130.00`, both verified on the live database (2026-08-23)
 - [ ] **ACC-2** — Balance Sheet balances after year one
 - [ ] **ACC-1** — loan currency closed, or the field removed
-- [ ] **TST-5** — TDS certificate path tested; silent `getattr` defaults removed
+- [x] **TST-5** — TDS certificate path tested through a real posted withholding line, and the `getattr` defaults removed (2026-08-23). The path did not merely risk reporting zero: it queried an AbstractModel with no table and could never run. Certificate **layout** still needs an SME
 - [ ] **SCH-2** — a representative dataset loaded and statements verified against hand-computed figures
 - [ ] SME sign-off: chart per NFRS/NPSAS, TDS rates and thresholds, IRD form layout box by box, TDS certificate layout, depreciation classes
 

@@ -155,7 +155,7 @@ comparison **skips these modules entirely**, leaving the database on old schema,
 | Model | Data | Views |
 |---|---|---|
 | `l10n_np.loan` / `.line` | Survives — plain columns, core FKs only | Survive unless `account_type` selection values change (hard-coded in three domains) |
-| `l10n_np.tds.*` | Survives — but `getattr(line,'base_amount',0.0)` means a rename yields **silently zero** certificates (TST-5) | — |
+| `l10n_np.tds.*` | **Fixed 2026-08-23** — was querying `account.withholding.line`, an AbstractModel with no table, so the path could never run; now reads the persistent `account.payment.withholding.line` and the `getattr` defaults are gone (TST-5) | — |
 | `l10n_np.vat.return.*` | Survives; `_read_group` is the highest-probability API break | — |
 | Wizards | Transient — nothing to migrate. `account.lock.dates` at risk of name collision (UPG-4) | — |
 | `l10n_np` chart | Materialised per company at adoption; template changes do **not** retro-apply — this is precisely FIN-1 | — |

@@ -21,7 +21,7 @@ as a baseline, which makes the placement problem the *only* remaining one, not a
 | FIN-3 — OCA's Aged Partner Balance cannot render *(fixed 2026-08-19)* | 2 aged-balance tests | Worse than bypassing: they **compensate**. `test_aged_partner_balance.py:63,98` convert `date_at` to a string themselves, which is exactly the conversion the wizard fails to do — so the tests encode the workaround and can never see the defect |
 | FIN-1 — VAT boxes are nil | `test_box_from_tax_tags_ties_to_ledger` | **Skips when there are no tags** — i.e. under exactly the condition that indicates the bug |
 | ACC-1 — loans post wrong currency | `test_drawdown_entry_is_balanced…` | Asserts the entry **balances**. It does, in the wrong currency |
-| TST-5 — TDS reports zero withheld | 10 TDS tests | None calls `action_collect_lines`, the only method that touches the ledger |
+| TST-5 — TDS reports zero withheld *(fixed 2026-08-23)* | 10 TDS tests | None calls `action_collect_lines`, the only method that touches the ledger — so nobody noticed it queried an AbstractModel with no table and could not run at all. Untested was not the risk; it was the reason |
 | ACC-3 — exports taxed at 13% *(fixed 2026-08-23)* | none existed | `l10n_np`'s five tests assert the chart *loads* — accounts wired, VAT rate 13%, provinces present. Nothing created an invoice, so the position could be applied and substitute nothing with every test green. The new tests assert the invoice, in both directions |
 
 That is the single most important observation in this document. The suite tests mechanism
@@ -34,7 +34,7 @@ thoroughly and outcomes barely at all.
 | `l10n_np` | 5 → **9** | chart, taxes, provinces; + 4 on export zero-rating (ACC-3, 2026-08-23) |
 | `l10n_np_bs` | 7 | + **669 lines of untested JS** (TST-4) |
 | `l10n_np_fiscal_year` | 7 | the only suite with proper fixtures |
-| `l10n_np_tds` | 10 → **14** | the figure-producing path untested (TST-5); + 4 on company isolation (SEC-2) |
+| `l10n_np_tds` | 10 → **22** | + 4 on company isolation (SEC-2); + 8 on the figure-producing path through a real posted withholding line (TST-5) |
 | `l10n_np_vat_return` | 10 → **17** | ledger-tie test fixed (TST-1); + 6 on company isolation (SEC-2) |
 | `l10n_np_loan` | 22 → **27** | best coverage; see ACC-1 for the gap it leaves; + 5 on company isolation (SEC-2) |
 | `account_financial_statements` | 13 | logic covered, **rendering never exercised** (FIN-2) |

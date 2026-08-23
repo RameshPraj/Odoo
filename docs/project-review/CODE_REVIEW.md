@@ -53,7 +53,7 @@ the form and box.
 
 ### `l10n_np_tds`
 The rate schedule is properly versioned with date ranges and a clear error naming the menu to fix
-it. The weakness is `action_collect_lines` (TST-5, COD-5): it duck-types against
+it. The weakness **was** `action_collect_lines` (TST-5, COD-5, fixed 2026-08-23): it duck-typed against
 `account.withholding.line` with `getattr(line, 'base_amount', 0.0)` and `'partner_id' in
 l._fields`, justified by a comment about field names differing across versions. Against a pinned,
 vendored Odoo tree that justification does not hold, the branches are unreachable in one
