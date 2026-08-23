@@ -1,9 +1,10 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 {
     'name': 'Nepal - Accounting',
-    'version': '19.0.1.2.0',   # bumped per migration: 1.1.0 = FIN-1 tax tags,
+    'version': '19.0.1.2.1',   # bumped per migration: 1.1.0 = FIN-1 tax tags,
                               # 1.2.0 = ACC-3 export substitution. Odoo runs a
                               # migration only when the version rises.
+                              # 1.2.1 = lint fixes only, no new migration.
     'countries': ['np'],
     'category': 'Accounting/Localizations/Account Charts',
     'icon': '/account/static/description/l10n.png',

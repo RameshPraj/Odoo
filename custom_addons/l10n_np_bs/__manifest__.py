@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'Nepali Calendar (Bikram Sambat) - compatibility shim',
-    'version': '19.0.2.0.0',
+    'version': '19.0.2.0.1',   # 2.0.1 = README added (no data change)
     'summary': 'Backward-compatibility shim; the implementation now lives in nepali_calendar_core',
     'description': """
 Compatibility shim
