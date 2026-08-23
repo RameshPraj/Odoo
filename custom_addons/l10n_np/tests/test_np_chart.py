@@ -13,7 +13,6 @@ import glob
 import os
 
 from lxml import etree
-
 from odoo.tests import TransactionCase, tagged
 
 MODULE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))

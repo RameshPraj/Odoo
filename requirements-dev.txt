@@ -1,0 +1,24 @@
+# Development-only tooling. NOT needed to run Odoo, and deliberately kept out of
+# requirements.txt so a production install stays minimal (audit finding QA-1).
+#
+#   venv\Scripts\python.exe -m pip install -r requirements-dev.txt
+#   ./venv/bin/python3 -m pip install -r requirements-dev.txt
+#
+# Then:  .\run-odoo.ps1 lint     /     ./run-odoo.sh lint
+#
+# Pinned for the same reason as everything in requirements.txt: a lint that
+# changes its mind between machines is a lint nobody trusts. Bumping these is a
+# deliberate act -- expect new findings.
+
+# Fast linter, configured by ruff.toml. Covers the import, naming and dead-code
+# rules that matter here.
+ruff==0.16.4
+
+# Odoo-specific checks pylint cannot know about: manifest keys, missing
+# __init__ imports, SQL injection through cr.execute, translation-function
+# misuse. Configured by .pylintrc.
+pylint-odoo==10.0.11
+
+# Only so deploy/docker-compose.yml can be syntax-checked without Docker
+# installed. Odoo itself does not need it.
+pyyaml==6.0.3

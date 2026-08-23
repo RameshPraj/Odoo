@@ -118,13 +118,14 @@ class ReportCashFlow(models.AbstractModel):
 
         for move in cash_lines.mapped('move_id'):
             move_cash = move.line_ids.filtered(
-                lambda l: l.account_id.account_type in CASH_TYPES and l in cash_lines)
+                lambda aml: aml.account_id.account_type in CASH_TYPES
+                and aml in cash_lines)
             cash_amount = sum(move_cash.mapped('balance'))
             if wizard.company_id.currency_id.is_zero(cash_amount):
                 continue
 
             counterparts = move.line_ids - move_cash
-            weight_total = sum(abs(l.balance) for l in counterparts)
+            weight_total = sum(abs(aml.balance) for aml in counterparts)
 
             if not counterparts or wizard.company_id.currency_id.is_zero(weight_total):
                 key = (0, str(SECTION_LABELS['unclassified']))

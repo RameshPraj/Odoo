@@ -13,7 +13,6 @@ import glob
 import os
 
 from lxml import etree
-
 from odoo import Command
 from odoo.exceptions import UserError, ValidationError
 from odoo.tests import TransactionCase, tagged
@@ -170,7 +169,7 @@ class TestVatReturn(TransactionCase):
 
         self.assertEqual(ret.state, "computed")
         self.assertEqual(ret.form_id, form, "the form version must be frozen on the return")
-        line = ret.line_ids.filtered(lambda l: l.code == "11")
+        line = ret.line_ids.filtered(lambda rl: rl.code == "11")
         self.assertTrue(line, "box 11 missing from the computed return")
         self.assertEqual(
             line.amount, 226000.0,
@@ -208,7 +207,7 @@ class TestVatReturn(TransactionCase):
             "company_id": self.company.id,
         })
         ret.action_compute()
-        net = ret.line_ids.filtered(lambda l: l.code == "NET")
+        net = ret.line_ids.filtered(lambda rl: rl.code == "NET")
         self.assertAlmostEqual(net.amount, 5.0, places=2)
         self.assertTrue(form.id)
 

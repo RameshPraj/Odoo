@@ -36,6 +36,12 @@ param(
     [Alias('n')]
     [string] $Lines = '40',
 
+    # test: exit non-zero if any test skipped itself. Off by default because a
+    # legitimate skip exists (a suite needing a chart of accounts), but CI should
+    # set it: TST-1 was a test that excused itself under exactly the condition it
+    # existed to detect, and nothing reported that it had.
+    [switch] $FailOnSkip,
+
     # start/dev: run attached to this console instead of in the background.
     [switch] $Foreground,
 
@@ -614,6 +620,65 @@ function Get-BaseArgs {
     # Always -c: every value Odoo needs comes from odoo.conf, so there is one
     # source of truth and no drift between this script and the server.
     return @('-m', 'odoo', '-c', $Conf)
+}
+
+function Invoke-OdooTee([string[]] $odooArgs, [string] $label, [string] $transcript) {
+    # As Invoke-Odoo, but keeps a copy of the run on disk so it can be counted
+    # afterwards. Odoo logs a skipped test at INFO ("skipped <test> : <reason>",
+    # odoo/tests/result.py:157) and then leaves skips out of its own summary,
+    # which reports only "N failed, M error(s) of K tests" (result.py:198). So a
+    # run that skipped everything is indistinguishable from one that passed
+    # everything unless something counts the log. That is TST-3, and half of CI-1.
+    Push-Location -LiteralPath $Root
+    $previousPreference = $ErrorActionPreference
+    $ErrorActionPreference = 'Continue'
+    try {
+        Write-Note "> $(Split-Path -Leaf $Python) $($odooArgs -join ' ')"
+        # 2>&1 is safe only because of the line above: Odoo logs everything to
+        # stderr and PowerShell 5.1 would otherwise wrap each line in a
+        # NativeCommandError. $LASTEXITCODE remains the authority on success; a
+        # native command's exit status is unaffected by the redirection.
+        # Out-Host is load-bearing, not decoration. Tee-Object passes its input
+        # on down the pipeline, and anything left in a function's success stream
+        # becomes part of its return value -- so without this the caller's
+        # `$code = Invoke-OdooTee ...` captured the entire Odoo log *and* the exit
+        # code, and printed "Tests FAILED (exit <the whole log> 0)". Watched it
+        # happen. Out-Host writes to the console and emits nothing.
+        # ForEach-Object { "$_" } before Tee-Object: with 2>&1 the merged stderr
+        # arrives as ErrorRecord objects, which PowerShell renders to the host as
+        # a "NativeCommandError" block -- a healthy run then opens with what looks
+        # like a failure. Stringifying them first makes them ordinary lines.
+        & $Python @odooArgs 2>&1 |
+            ForEach-Object { "$_" } |
+            Tee-Object -FilePath $transcript |
+            Out-Host
+        $code = $LASTEXITCODE
+    } finally {
+        $ErrorActionPreference = $previousPreference
+        Pop-Location
+    }
+    Report-ExitCode $code $label
+    return $code
+}
+
+function Report-Skips([string] $transcript) {
+    # Counting the transcript is the only way: Odoo tracks result.skipped
+    # internally and never prints it.
+    if (-not (Test-Path -LiteralPath $transcript)) {
+        Write-Warn "No test transcript at $transcript; skip count unknown."
+        return -1
+    }
+    $skips = @(Select-String -LiteralPath $transcript -Pattern ': skipped ' -SimpleMatch)
+    if ($skips.Count -eq 0) {
+        Write-Ok "Skipped: 0"
+        return 0
+    }
+    Write-Warn "Skipped: $($skips.Count)"
+    foreach ($line in $skips) {
+        Write-Note "  $($line.Line -replace '^.*: skipped ', '')"
+    }
+    Write-Note "  A skipped test is not a passing test. See TST-1 and TST-3."
+    return $skips.Count
 }
 
 function Assert-ArgvContains([string[]] $argv, [string[]] $required) {
@@ -1613,7 +1678,8 @@ function Invoke-Doctor {
     Write-Host ""
 
     $prodSignals = @(Test-LooksProductionLike)
-    # Two signals, not one: a single circumstantial setting is not a server.
+    # Two signals, not one: a single circumstantial setting is not a server.
+
     $isProdLike  = ($prodSignals.Count -ge 2)
     if ($isProdLike) {
         Write-Warn "This host looks production-like: $($prodSignals -join ', ')"
@@ -2085,6 +2151,14 @@ function Invoke-Clean {
 # module operations and tests -- all require an explicit database
 # ---------------------------------------------------------------------------
 
+# Vendored OCA modules: carried verbatim apart from the deviations recorded in
+# custom_addons/VENDORED.md. Excluded from pylint because reformatting upstream
+# code makes the next sync unreadable, and its findings are not ours to fix.
+$Vendored = @(
+    'account_asset_management', 'account_budget_oca', 'account_financial_report',
+    'account_fiscal_year', 'date_range', 'report_xlsx', 'report_xlsx_helper'
+)
+
 function Get-CustomModules {
     # The project's own modules: everything in an addons_path entry that is not
     # the stock odoo\addons tree.
@@ -2156,8 +2230,10 @@ function Invoke-Test([string] $module, [string] $database) {
     Assert-ArgvContains $odooArgs @('-u', '--test-enable', '--test-tags', '-d', $database, '--stop-after-init')
     Write-Warn "Testing $($modules.Count) module(s) in database '$database'. -u modifies that database."
     Write-Note "  Modules: $($modules -join ', ')"
-    $code = Invoke-Odoo $odooArgs 'test run'
+    $transcript = Join-Path $RuntimeDir 'last-test-run.log'
+    $code = Invoke-OdooTee $odooArgs 'test run' $transcript
     Write-Host ""
+    $skipped = Report-Skips $transcript
     if ($code -eq 0) {
         Write-Ok "Tests passed"
     } else {
@@ -2165,7 +2241,87 @@ function Invoke-Test([string] $module, [string] $database) {
         Write-Fail "Tests FAILED (exit $code). Odoo's exit code is propagated unchanged."
         Write-Note "  Detail: .\run-odoo.ps1 errors"
     }
+    if ($code -eq 0 -and $FailOnSkip -and $skipped -gt 0) {
+        Write-Fail "Exiting non-zero: $skipped test(s) skipped and -FailOnSkip was given."
+        exit 1
+    }
     exit $code
+}
+
+function Invoke-Lint {
+    # Static analysis. Read-only: touches no database and starts no server, so it
+    # is safe to run at any time, including while the server is up (QA-1).
+    #
+    # Three tools, because each sees something the others cannot:
+    #   ruff          -- imports, dead code, obsolete syntax, the bandit subset
+    #   pylint-odoo   -- manifest keys, translation misuse, cr.execute injection
+    #   version check -- a module changed without its manifest version rising
+    $failed = @()
+
+    Write-Host ""
+    Write-Host "ruff"
+    if (Invoke-LintTool @('-m', 'ruff', 'check', '--config', 'ruff.toml')) {
+        Write-Ok 'ruff: clean'
+    } else { $failed += 'ruff' }
+
+    Write-Host ""
+    Write-Host "pylint-odoo"
+    $localModules = @(Get-CustomModules | Where-Object { $_ -notin $Vendored })
+    $targets = $localModules | ForEach-Object { "custom_addons/$_" }
+    if ($targets.Count -eq 0) {
+        Write-Warn 'No local modules found to lint.'
+    } elseif (Invoke-LintTool (@('-m', 'pylint', '--rcfile=.pylintrc') + $targets)) {
+        Write-Ok 'pylint-odoo: clean'
+    } else { $failed += 'pylint-odoo' }
+
+    Write-Host ""
+    Write-Host "manifest versions (UPG-2)"
+    if (Invoke-LintTool @('tools/check_module_versions.py', '--quiet')) {
+        Write-Ok 'every module version is newer than its last code change'
+    } else { $failed += 'manifest versions' }
+
+    Write-Host ""
+    if ($failed.Count -eq 0) {
+        Write-Ok 'Lint clean'
+        exit 0
+    }
+    Write-Fail "Lint findings from: $($failed -join ', ')"
+    Write-Note '  Install the tooling with:'
+    Write-Note '    venv\Scripts\python.exe -m pip install -r requirements-dev.txt'
+    exit 1
+}
+
+function Invoke-LintTool([string[]] $toolArgs) {
+    # Returns $true when the tool reported nothing. A missing tool is a warning,
+    # not a failure: lint is optional locally and mandatory in CI, and pretending
+    # a tool that is not installed passed would be worse than either.
+    Push-Location -LiteralPath $Root
+    $previousPreference = $ErrorActionPreference
+    $ErrorActionPreference = 'Continue'
+    try {
+        Write-Note "> $(Split-Path -Leaf $Python) $($toolArgs -join ' ')"
+        & $Python @toolArgs 2>&1 | ForEach-Object { "$_" } | Out-Host
+        $code = $LASTEXITCODE
+    } finally {
+        $ErrorActionPreference = $previousPreference
+        Pop-Location
+    }
+    if ($code -eq 0) { return $true }
+    # pip/python exits 1 for "no module named ruff" as well as for findings, so
+    # distinguish them by asking whether the tool imports at all.
+    if ($toolArgs[0] -eq '-m') {
+        # importlib.util must be imported explicitly -- `import importlib` alone
+        # does not bind the submodule, and the first version of this line raised
+        # an AttributeError traceback in the middle of a lint run.
+        $probe = "import importlib.util, sys; sys.exit(0 if importlib.util.find_spec('$($toolArgs[1])') else 1)"
+        & $Python @('-c', $probe) 2>&1 | Out-Null
+        if ($LASTEXITCODE -ne 0) {
+            Write-Warn "$($toolArgs[1]) is not installed; nothing was checked."
+            Write-Note '  venv\Scripts\python.exe -m pip install -r requirements-dev.txt'
+            return $true
+        }
+    }
+    return $false
 }
 
 # ---------------------------------------------------------------------------
@@ -2193,6 +2349,7 @@ LOGS
 
 DIAGNOSTICS
   doctor                Comprehensive read-only check. Changes nothing
+  lint                  Static analysis: ruff, pylint-odoo, manifest versions
   info                  Sanitized runtime summary for a bug report
   config-check          Validate odoo.conf, including Odoo's own parser
   addons-check          List and validate every addons_path entry
@@ -2331,6 +2488,7 @@ switch ($Command.ToLower()) {
     'errors'        { Show-Errors }
     'info'          { Show-Info }
     'doctor'        { Invoke-Doctor }
+    'lint'          { Invoke-Lint }
     'config-check'  { Invoke-ConfigCheck }
     'addons-check'  { Invoke-AddonsCheck }
     'db-list'       { Invoke-DbList }

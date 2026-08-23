@@ -74,7 +74,7 @@ SUBSTITUTIONS = (
 
 
 def migrate(cr, version):
-    from odoo import Command, SUPERUSER_ID, api
+    from odoo import SUPERUSER_ID, Command, api
 
     env = api.Environment(cr, SUPERUSER_ID, {})
     companies = env['res.company'].search([('chart_template', '=', 'np')])

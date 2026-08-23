@@ -48,13 +48,11 @@ for p in (ODOO_ROOT, HERE):
         sys.path.insert(0, p)
 
 import polib  # noqa: E402
-
-from translations import TRANSLATIONS  # noqa: E402
-
-from odoo import api, SUPERUSER_ID  # noqa: E402
+from odoo import SUPERUSER_ID, api  # noqa: E402
 from odoo.modules.registry import Registry  # noqa: E402
 from odoo.tools import config  # noqa: E402
 from odoo.tools.translate import TranslationImporter  # noqa: E402
+from translations import TRANSLATIONS  # noqa: E402
 
 LANG_CODE = "ne_NP"
 LANG_VALS = {

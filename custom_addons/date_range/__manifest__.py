@@ -3,7 +3,10 @@
 {
     "name": "Date Range",
     "summary": "Manage all kind of date range",
-    "version": "19.0.1.0.0",
+    # 19.0.1.1.0 is a LOCAL deviation from vendored upstream, recorded in
+    # VENDORED.md: the three test classes were tagged post_install (TST-8).
+    # Bumped so the change is visible to Odoo's version comparison, per UPG-2.
+    "version": "19.0.1.1.0",
     "category": "Uncategorized",
     "website": "https://github.com/OCA/server-ux",
     "author": "ACSONE SA/NV, Odoo Community Association (OCA)",

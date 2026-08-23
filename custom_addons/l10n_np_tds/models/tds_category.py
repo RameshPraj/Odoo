@@ -34,7 +34,8 @@ class TdsCategory(models.Model):
     )
     description = fields.Text()
     company_id = fields.Many2one(
-        'res.company', required=True, default=lambda self: self.env.company)
+        'res.company', required=True, default=lambda self: self.env.company,
+        index=True)  # SCH-1: the SEC-2 record rule filters on it
     active = fields.Boolean(default=True)
 
     # --- the values an accountant maintains -----------------------------

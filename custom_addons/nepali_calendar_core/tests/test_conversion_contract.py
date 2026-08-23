@@ -25,8 +25,7 @@ import re
 from odoo.exceptions import UserError
 from odoo.tests import TransactionCase, tagged
 
-from ..tools import bs, names
-from ..tools import selftest
+from ..tools import bs, names, selftest
 
 MODULE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 JS_DATA = os.path.join(MODULE_DIR, "static", "src", "bs_calendar_data.js")
@@ -278,9 +277,8 @@ class TestErrorContract(TransactionCase):
 
     def test_python_parse_failure_raises(self):
         for bad in ("not a date", "2083-13-01", "2083-05", ""):
-            with self.subTest(bad=bad):
-                with self.assertRaises(UserError):
-                    bs.parse_bs(bad)
+            with self.subTest(bad=bad), self.assertRaises(UserError):
+                bs.parse_bs(bad)
 
     def test_js_parse_failure_returns_null(self):
         """The widget must not break the form over a typo.

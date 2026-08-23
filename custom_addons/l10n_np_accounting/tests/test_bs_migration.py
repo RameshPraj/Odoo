@@ -27,6 +27,7 @@ import ast
 import os
 
 from odoo.tests import TransactionCase, tagged
+from odoo.tools import parse_version
 
 # `migrations/` is deliberately NOT a Python package -- Odoo loads migration
 # scripts by path, and `19.0.1.1.0` is not a valid identifier, so it could not be
@@ -57,20 +58,40 @@ class TestMigrationWiring(TransactionCase):
     def test_the_script_exists_where_odoo_looks_for_it(self):
         self.assertTrue(os.path.exists(MIGRATION), f"missing: {MIGRATION}")
 
-    def test_the_version_was_bumped(self):
+    def test_every_migration_on_disk_is_reachable(self):
         """A migration in an un-bumped module never runs.
 
         This is the silent-failure mode: every assertion below can pass while the
         script sits on disk untouched, and the first anyone knows is a customer
         whose calendar reverted on upgrade.
+
+        **Rewritten 2026-08-23.** This used to assert the manifest version was
+        *exactly* `19.0.1.1.0`, which made the module impossible to change ever
+        again: the first bump for any other reason failed this test, and it did --
+        the version moved to 19.0.1.2.0 for SEC-12 and UPG-1 and the suite went
+        red. Equality was also the wrong invariant. Odoo runs a migration when the
+        version rises *past* the directory's version, so a module ahead of its
+        migrations is correct and normal; a module *behind* one is the bug. That is
+        what is asserted now, and it composes with UPG-2's rule that the version
+        moves on every change.
         """
         manifest = os.path.join(MODULE_DIR, "__manifest__.py")
         with open(manifest, encoding="utf-8") as fh:
             version = ast.literal_eval(fh.read())["version"]
-        self.assertEqual(
-            version, "19.0.1.1.0",
-            "the manifest version no longer matches the migrations/ directory, so "
-            "the script will not run"
+
+        migrations_dir = os.path.join(MODULE_DIR, "migrations")
+        on_disk = sorted(
+            (name for name in os.listdir(migrations_dir)
+             if os.path.isdir(os.path.join(migrations_dir, name))),
+            key=parse_version)
+        self.assertTrue(on_disk, "fixture: no migrations/ directories found")
+
+        # parse_version, not string comparison: "19.0.1.10.0" sorts before
+        # "19.0.1.2.0" as text.
+        self.assertGreaterEqual(
+            parse_version(version), parse_version(on_disk[-1]),
+            f"the manifest is at {version} but migrations/{on_disk[-1]}/ exists, so "
+            f"that script can never run"
         )
 
     def test_it_exposes_a_migrate_entry_point(self):

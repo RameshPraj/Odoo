@@ -48,6 +48,10 @@ target=""
 database=""
 lines=40
 foreground=0
+# test: exit non-zero when a test skipped itself. Off by default, on in CI --
+# TST-1 was a test that excused itself under exactly the condition it existed to
+# detect, and nothing reported that it had.
+fail_on_skip=0
 force=0
 no_color=0
 legacy_warning=""
@@ -511,6 +515,42 @@ rotate_log_if_large() {
 # ---------------------------------------------------------------------------
 # Command construction
 # ---------------------------------------------------------------------------
+
+run_odoo_tee() {
+    # As run_odoo_foreground, but keeps a copy of the run so skips can be counted
+    # afterwards. Odoo logs a skipped test at INFO ("skipped <test> : <reason>",
+    # odoo/tests/result.py:157) and then omits skips from its own summary, which
+    # reports only "N failed, M error(s) of K tests" (result.py:198). A run that
+    # skipped everything therefore looks exactly like a run that passed
+    # everything. That is TST-3, and half of CI-1.
+    local label="$1" transcript="$2"; shift 2
+    say_note "> $(basename "$python") $*"
+    ( cd "$root" && "$python" "$@" 2>&1 ) | tee "$transcript"
+    # PIPESTATUS, not $?: $? here is tee's status, which is always 0.
+    local code=${PIPESTATUS[0]}
+    report_exit_code "$code" "$label"
+    return $code
+}
+
+report_skips() {
+    # Echoes the skip count. Counting the transcript is the only way: Odoo tracks
+    # result.skipped internally and never prints it.
+    local transcript="$1" count
+    if [ ! -f "$transcript" ]; then
+        say_warn "No test transcript at $transcript; skip count unknown."
+        printf '%s' -1
+        return
+    fi
+    count=$(grep -c ': skipped ' "$transcript" || true)
+    if [ "$count" -eq 0 ]; then
+        say_ok "Skipped: 0"
+    else
+        say_warn "Skipped: $count"
+        sed -n 's/^.*: skipped /  /p' "$transcript" >&2
+        say_note "  A skipped test is not a passing test. See TST-1 and TST-3."
+    fi
+    printf '%s' "$count"
+}
 
 run_odoo_foreground() {
     # Exit code propagated verbatim.
@@ -1667,6 +1707,88 @@ custom_modules() {
     done < <(addons_dirs) | sort -u
 }
 
+# Vendored OCA modules: carried verbatim apart from the deviations in
+# custom_addons/VENDORED.md. Excluded from pylint because reformatting upstream
+# code makes the next sync unreadable, and its findings are not ours to fix.
+vendored_modules="account_asset_management account_budget_oca account_financial_report account_fiscal_year date_range report_xlsx report_xlsx_helper"
+
+local_modules() {
+    local name
+    for name in $(custom_modules); do
+        case " $vendored_modules " in
+            *" $name "*) continue ;;
+        esac
+        printf '%s\n' "$name"
+    done
+}
+
+lint_tool() {
+    # Runs one tool. Returns 0 when it reported nothing, 1 on findings, and 0 with
+    # a warning when the tool is not installed -- lint is optional locally and
+    # mandatory in CI, and pretending an absent tool passed would be worse.
+    local label="$1"; shift
+    say_note "> $(basename "$python") $*"
+    ( cd "$root" && "$python" "$@" 2>&1 ) || {
+        local code=$?
+        if [ "$1" = "-m" ] && ! "$python" -c "import importlib.util, sys; sys.exit(0 if importlib.util.find_spec('$2') else 1)" 2>/dev/null; then
+            say_warn "$2 is not installed; nothing was checked."
+            say_note "  ./venv/bin/python3 -m pip install -r requirements-dev.txt"
+            return 0
+        fi
+        return "$code"
+    }
+    return 0
+}
+
+cmd_lint() {
+    # Static analysis. Read-only: touches no database and starts no server (QA-1).
+    #
+    # Three tools, because each sees what the others cannot:
+    #   ruff          -- imports, dead code, obsolete syntax, the bandit subset
+    #   pylint-odoo   -- manifest keys, translation misuse, cr.execute injection
+    #   version check -- a module changed without its manifest version rising
+    local failed=""
+
+    echo ""
+    echo "ruff"
+    if lint_tool 'ruff' -m ruff check --config ruff.toml; then
+        say_ok 'ruff: clean'
+    else
+        failed="$failed ruff"
+    fi
+
+    echo ""
+    echo "pylint-odoo"
+    local targets=()
+    local name
+    for name in $(local_modules); do targets+=("custom_addons/$name"); done
+    if [ ${#targets[@]} -eq 0 ]; then
+        say_warn 'No local modules found to lint.'
+    elif lint_tool 'pylint' -m pylint --rcfile=.pylintrc "${targets[@]}"; then
+        say_ok 'pylint-odoo: clean'
+    else
+        failed="$failed pylint-odoo"
+    fi
+
+    echo ""
+    echo "manifest versions (UPG-2)"
+    if lint_tool 'versions' tools/check_module_versions.py --quiet; then
+        say_ok 'every module version is newer than its last code change'
+    else
+        failed="$failed manifest-versions"
+    fi
+
+    echo ""
+    if [ -z "$failed" ]; then
+        say_ok 'Lint clean'
+        exit 0
+    fi
+    say_fail "Lint findings from:$failed"
+    say_note '  Install the tooling with:'
+    say_note '    ./venv/bin/python3 -m pip install -r requirements-dev.txt'
+    exit 1
+}
+
 cmd_module_operation() {
     local flag="$1" module="$2" verb="$3"
     check_prereqs || exit 2
@@ -1711,17 +1833,26 @@ cmd_test() {
 
     say_warn "Testing in database '$database'. -u modifies that database."
     say_note "  Modules: $modules"
-    run_odoo_foreground 'test run' \
+    local transcript="$runtime_dir/last-test-run.log"
+    mkdir -p "$runtime_dir"
+    run_odoo_tee 'test run' "$transcript" \
         -m odoo -c "$conf" -d "$database" -u "$modules" \
         --test-enable --test-tags "$tags" --stop-after-init
     code=$?
     echo ""
+    local skipped
+    skipped=$(report_skips "$transcript")
     if [ "$code" -eq 0 ]; then
         say_ok "Tests passed"
     else
         # Never soften this: a non-zero code here means failing tests.
         say_fail "Tests FAILED (exit $code). Odoo's exit code is propagated unchanged."
         say_note "  Detail: ./run-odoo.sh errors"
+    fi
+    say_note "  Transcript: $(relative_path "$transcript")"
+    if [ "$code" -eq 0 ] && [ "$fail_on_skip" -eq 1 ] && [ "$skipped" -gt 0 ]; then
+        say_fail "Exiting non-zero: $skipped test(s) skipped and --fail-on-skip was given."
+        exit 1
     fi
     exit $code
 }
@@ -1751,6 +1882,7 @@ LOGS
 
 DIAGNOSTICS
   doctor                Comprehensive read-only check. Changes nothing
+  lint                  Static analysis: ruff, pylint-odoo, manifest versions
   info                  Sanitized runtime summary for a bug report
   config-check          Validate odoo.conf, including Odoo's own parser
   addons-check          List and validate every addons_path entry
@@ -1772,6 +1904,7 @@ OPTIONS
   --db <name>           Target database. Required by install/upgrade/test
   -n, --lines <count>   Lines for logs/errors (default $lines)
   --foreground          start/dev: run attached instead of in the background
+  --fail-on-skip        test: exit non-zero if any test skipped itself (for CI)
   --timeout <seconds>   Override the start (${start_timeout}s) and stop (${stop_timeout}s) waits
   --force               Start even if a systemd unit is enabled (see below)
   --no-color            Disable colour (also honours the NO_COLOR variable)
@@ -1867,6 +2000,7 @@ while [ $# -gt 0 ]; do
         --unit)       systemd_unit="${2:?--unit needs a name}"; shift 2 ;;
         --unit=*)     systemd_unit="${1#*=}"; shift ;;
         --foreground) foreground=1; shift ;;
+        --fail-on-skip) fail_on_skip=1; shift ;;
         --force)      force=1; shift ;;
         --no-color)   no_color=1; shift ;;
         -h|--help)    init_colors; cmd_help; exit 0 ;;
@@ -1914,6 +2048,7 @@ case "$command_name" in
     errors)       cmd_errors ;;
     info)         cmd_info ;;
     doctor)       cmd_doctor ;;
+    lint)         cmd_lint ;;
     config-check) cmd_config_check ;;
     addons-check) cmd_addons_check ;;
     db-list)      cmd_db_list ;;

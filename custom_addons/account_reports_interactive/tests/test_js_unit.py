@@ -13,9 +13,8 @@ import glob
 import os
 import re
 
-from odoo.tests import HttpCase, tagged
-
 from odoo.addons.web.tests.test_js import unit_test_error_checker
+from odoo.tests import HttpCase, tagged
 
 MODULE = "account_reports_interactive"
 MODULE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))

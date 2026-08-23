@@ -32,7 +32,7 @@ class GenerateNPFiscalYear(models.TransientModel):
         help="Delete and recreate fiscal years that overlap the generated range. "
              "Leave unticked to skip years that already exist.",
     )
-    preview = fields.Text(string='Preview', readonly=True)
+    preview = fields.Text(readonly=True)
 
     @api.model
     def _default_bs_year(self):

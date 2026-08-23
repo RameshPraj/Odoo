@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from odoo import models
+
 from .res_users import CONTEXT_KEY
 
 

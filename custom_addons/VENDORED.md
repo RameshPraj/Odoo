@@ -95,6 +95,14 @@ reaches them from another module, so an overlay is not possible here.
 `date_range` is **LGPL-3**, not AGPL-3, so the network-copyleft reasoning above does
 not apply — the only cost is that an update overwrites it.
 
+**A second, smaller deviation, 2026-08-23:** the manifest version is now
+`19.0.1.1.0` rather than upstream's `19.0.1.0.0`, so that Odoo's version comparison
+can see the change above (**UPG-2**). Strictly this bump is not needed — the tag
+change is pure Python and takes effect on restart — but `tools/check_module_versions.py`
+flags any module whose files are newer than its version, and silently exempting one
+module would defeat the check. Expect a conflict on the next upstream sync: take
+upstream's version and re-bump.
+
 **Why:** the module depends only on `web`, so it loads early, and `at_install` tests
 run before `account` is in the registry. Their `setUp` creates a `res.company`, which
 cascades a `res.partner` INSERT — and in any database that also has `account`,

@@ -5,4 +5,6 @@ access_vat_box_user,vat.box.user,model_l10n_np_vat_return_box,account.group_acco
 access_vat_box_manager,vat.box.manager,model_l10n_np_vat_return_box,account.group_account_manager,1,1,1,1
 access_vat_return_user,vat.return.user,model_l10n_np_vat_return,account.group_account_invoice,1,1,1,0
 access_vat_return_manager,vat.return.manager,model_l10n_np_vat_return,account.group_account_manager,1,1,1,1
-access_vat_return_line,vat.return.line,model_l10n_np_vat_return_line,account.group_account_readonly,1,1,1,1
+access_vat_return_line_readonly,vat.return.line.readonly,model_l10n_np_vat_return_line,account.group_account_readonly,1,0,0,0
+access_vat_return_line_user,vat.return.line.user,model_l10n_np_vat_return_line,account.group_account_invoice,1,1,1,1
+access_vat_return_line_manager,vat.return.line.manager,model_l10n_np_vat_return_line,account.group_account_manager,1,1,1,1

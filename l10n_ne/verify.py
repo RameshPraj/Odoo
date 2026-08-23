@@ -14,7 +14,7 @@ CONF = os.path.join(ODOO_ROOT, "odoo.conf")
 if ODOO_ROOT not in sys.path:
     sys.path.insert(0, ODOO_ROOT)
 
-from odoo import api, SUPERUSER_ID  # noqa: E402
+from odoo import SUPERUSER_ID, api  # noqa: E402
 from odoo.modules.registry import Registry  # noqa: E402
 from odoo.tools import config  # noqa: E402
 from odoo.tools.translate import code_translations  # noqa: E402
@@ -73,7 +73,12 @@ with registry.cursor() as cr:
     ]
     for table, col, label in checks:
         try:
-            cr.execute(f"SELECT count(*) FROM {table} WHERE {col}->>%s IS NOT NULL", (LANG,))
+            # noqa justified: `table` and `col` come from the literal `checks`
+            # list a few lines above, never from input. The language code, the
+            # only external value, is passed as a bound parameter.
+            cr.execute(
+                f"SELECT count(*) FROM {table} WHERE {col}->>%s IS NOT NULL",  # noqa: S608
+                (LANG,))
             print(f"  {label:<16} {cr.fetchone()[0]:>6}")
         except Exception as exc:  # noqa: BLE001
             cr.rollback()

@@ -35,8 +35,8 @@ class AccountLockDates(models.TransientModel):
     # cannot see the values passed to `create()`: creating the wizard for one
     # company would otherwise load a *different* company's dates, and applying
     # it would clear the target company's locks.
-    _LOCK_DATE = dict(compute='_compute_lock_dates', store=True,
-                      readonly=False, precompute=True)
+    _LOCK_DATE = {'compute': '_compute_lock_dates', 'store': True,
+                  'readonly': False, 'precompute': True}
 
     fiscalyear_lock_date = fields.Date(
         string="Global Lock Date", **_LOCK_DATE,
@@ -52,11 +52,11 @@ class AccountLockDates(models.TransientModel):
         help="No customer entry may be posted on or before this date.",
     )
     purchase_lock_date = fields.Date(
-        string="Purchase Lock Date", **_LOCK_DATE,
+        **_LOCK_DATE,
         help="No vendor entry may be posted on or before this date.",
     )
     hard_lock_date = fields.Date(
-        string="Hard Lock Date", **_LOCK_DATE,
+        **_LOCK_DATE,
         help="Irreversible. Once set it can only be moved forward, never back, "
              "and no exception can be granted. Set it only after the accounts "
              "for the period have been finalised.",

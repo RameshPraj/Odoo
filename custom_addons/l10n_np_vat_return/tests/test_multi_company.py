@@ -85,9 +85,8 @@ class TestVatReturnCompanyIsolation(TransactionCase):
 
     def test_reading_another_company_s_vat_record_is_refused(self):
         for model, record in self.records_b.items():
-            with self.subTest(model=model):
-                with self.assertRaises(AccessError):
-                    record.with_user(self.user_a).read(["display_name"])
+            with self.subTest(model=model), self.assertRaises(AccessError):
+                record.with_user(self.user_a).read(["display_name"])
 
     def test_editing_another_company_s_filed_return_is_refused(self):
         """The most sensitive write in this repo: a filed statutory return."""

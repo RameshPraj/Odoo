@@ -11,7 +11,6 @@ inheritance to the vendored template.
 import ast
 
 from lxml import etree
-
 from odoo.tests import TransactionCase, tagged
 
 AGED_TEMPLATE = "account_financial_report.report_aged_partner_balance_move_lines"

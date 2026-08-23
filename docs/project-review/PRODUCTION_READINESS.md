@@ -43,8 +43,8 @@ before a second tenant exists. They are not go-live blockers for a single-tenant
 - [x] **SEC-1** — both credentials rotated and the document redacted (2026-08-22)
 - [ ] **DAT-1** — client data and credentials out of cloud sync; dumps relocated
 - [x] **SEC-2** — ten global record rules across the three modules that own company-scoped models (2026-08-23). Negative control: with them disabled a company A manager reads company B's filed VAT return; with them active, refused
-- [ ] **SEC-6** — read-only role cannot rewrite a filed return
-- [ ] **SEC-3** — `**` banned in the formula whitelist
+- [x] **SEC-6** — the read-only role is read-only on return lines (2026-08-23). Not the "one-character fix" the note claimed: that row was also what granted every higher group its access, so the billing role needed its own row or computing a return would have broken
+- [x] **SEC-3** — the formula evaluator parses and walks an AST instead of calling `eval`, so `ast.Pow` is absent by construction rather than blacklisted (2026-08-23). A character class cannot express "one star but not two", which is why the regex admitted `**`
 - [ ] **PG-1 / PG-2 / PG-4** — revokes applied and baked into provisioning
 
 ### Multi-tenant (additional)
@@ -59,7 +59,7 @@ before a second tenant exists. They are not go-live blockers for a single-tenant
 ### Operations
 - [x] **OPS-1** — config paths corrected, filestores reconciled, launcher guard added (2026-08-14)
 - [ ] **SUP-2** — remote created, history pushed
-- [ ] **DEP-1** — `nepali-datetime` declared and pinned so a rebuild is possible at all
+- [x] **DEP-1** — `nepali-datetime==1.0.8.5` pinned in `requirements.txt` and declared in `nepali_calendar_core`'s `external_dependencies`
 - [ ] Backup **and restore** rehearsed, per tenant
 - [ ] `wkhtmltopdf` installed **on the server** — without a patched-Qt build every PDF degrades to
       HTML, and an *unpatched* build passes silently while dropping headers and footers. Done on the
@@ -69,10 +69,10 @@ before a second tenant exists. They are not go-live blockers for a single-tenant
 - [ ] **OPS-3** — systemd hardening, once the writable-`/opt/odoo` question is settled
 
 ### Verification
-- [ ] **CI-1** — one command runs all eight suites and reports skip counts
-- [ ] **QA-1** — ruff and `pylint-odoo` configured and running
-- [ ] **UPG-1** — group changes survive `-u account`, asserted by a test
-- [ ] **UPG-2** — module versions bump on change. `l10n_np` now does (19.0.1.1.0, so its FIN-1 migration fires); the other sixteen do not
+- [x] **CI-1** — `run-odoo.ps1 test` / `run-odoo.sh test` run every suite and now report the skip count and each skipped test, with `-FailOnSkip` / `--fail-on-skip` for CI (2026-08-23). Verified against a deliberately skipped test: Odoo's own summary said "0 failed, 0 error(s) of 9 tests" while one test had skipped itself. **Automation itself still does not exist** — there is no runner invoking this on a push
+- [x] **QA-1** — both installed, configured and clean (2026-08-23). ruff went 204 findings → 0, pylint-odoo → 0. It earned its place immediately: it caught an `F821 Undefined name` I introduced while renaming a lambda variable, which `py_compile` had passed
+- [x] **UPG-1** — asserted by five tests, and **the premise was wrong** (2026-08-23). `-u` propagates to dependents, so `-u account` reloads `l10n_np_accounting` in the same transaction and it re-applies the wiring. Measured over three consecutive `-u account` runs: byte-identical. The prescribed `post_init_hook` would have been *worse* — it runs on install only
+- [x] **UPG-2** — `tools/check_module_versions.py` compares each module's last code change against the last commit that moved its version line, and fails on drift; wired into `lint` (2026-08-23). It found six stale modules on first run, all now bumped. The check is the fix — bumping once would have been undone by the next change
 
 ### Legal
 - [ ] **LIC-1** — AGPL position decided; manifests and `VENDORED.md` aligned. **SaaS is exactly

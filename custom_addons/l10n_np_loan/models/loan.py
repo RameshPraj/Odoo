@@ -10,7 +10,6 @@ loan record, never a constant in this file. Two loans from two banks on two rate
 are just two records.
 """
 from dateutil.relativedelta import relativedelta
-
 from odoo import Command, _, api, fields, models
 from odoo.exceptions import UserError
 
@@ -35,13 +34,15 @@ class Loan(models.Model):
     )
     company_id = fields.Many2one(
         'res.company', required=True, default=lambda self: self.env.company,
+        # Indexed because SEC-2's record rule filters every query on it (SCH-1).
+        index=True,
     )
     currency_id = fields.Many2one(
         'res.currency', required=True,
         default=lambda self: self.env.company.currency_id,
     )
     partner_id = fields.Many2one(
-        'res.partner', string="Lender", required=True, tracking=True,
+        'res.partner', string="Lender", required=True, tracking=True, index=True,
     )
     state = fields.Selection(
         [('draft', 'Draft'), ('open', 'Running'),
@@ -86,7 +87,9 @@ class Loan(models.Model):
 
     # -- accounts ------------------------------------------------------------
     journal_id = fields.Many2one(
-        'account.journal', string="Journal", required=True,
+        # No `string=`: Odoo derives "Journal" from the field name, and repeating
+        # it means a future rename silently keeps the old label.
+        'account.journal', required=True,
         domain="[('company_id', '=', company_id)]",
         check_company=True,
     )
@@ -334,7 +337,8 @@ class LoanLine(models.Model):
 
     loan_id = fields.Many2one(
         'l10n_np.loan', required=True, ondelete='cascade', index=True)
-    company_id = fields.Many2one(related='loan_id.company_id', store=True)
+    company_id = fields.Many2one(related='loan_id.company_id', store=True,
+                                 index=True)  # SCH-1
     currency_id = fields.Many2one(related='loan_id.currency_id')
     partner_id = fields.Many2one(related='loan_id.partner_id', store=True)
     sequence = fields.Integer(string="No.", required=True)

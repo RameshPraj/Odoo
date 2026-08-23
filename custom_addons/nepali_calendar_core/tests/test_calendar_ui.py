@@ -31,7 +31,6 @@ import shutil
 import subprocess
 
 from lxml import etree
-
 from odoo.tests import HttpCase, TransactionCase, tagged
 
 MODULE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))

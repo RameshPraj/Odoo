@@ -20,9 +20,11 @@ class TdsCertificate(models.Model):
 
     name = fields.Char(
         required=True, copy=False, readonly=True, default=lambda self: _('New'))
-    partner_id = fields.Many2one('res.partner', string='Payee', required=True)
+    partner_id = fields.Many2one(
+        'res.partner', string='Payee', required=True, index=True)  # SCH-1
     company_id = fields.Many2one(
-        'res.company', required=True, default=lambda self: self.env.company)
+        'res.company', required=True, default=lambda self: self.env.company,
+        index=True)  # SCH-1: the SEC-2 record rule filters on it
     currency_id = fields.Many2one(
         'res.currency', related='company_id.currency_id', readonly=True)
 
@@ -146,8 +148,10 @@ class TdsCertificateLine(models.Model):
     _order = 'date, id'
 
     certificate_id = fields.Many2one(
-        'l10n_np.tds.certificate', required=True, ondelete='cascade')
-    company_id = fields.Many2one(related='certificate_id.company_id', store=True)
+        'l10n_np.tds.certificate', required=True, ondelete='cascade',
+        index=True)  # SCH-1: traversed for every one2many read
+    company_id = fields.Many2one(related='certificate_id.company_id', store=True,
+                                 index=True)  # SCH-1
     currency_id = fields.Many2one(related='certificate_id.currency_id')
     name = fields.Char(required=True)
     date = fields.Date(required=True)
@@ -163,7 +167,8 @@ class TdsReturn(models.Model):
 
     name = fields.Char(required=True)
     company_id = fields.Many2one(
-        'res.company', required=True, default=lambda self: self.env.company)
+        'res.company', required=True, default=lambda self: self.env.company,
+        index=True)  # SCH-1: the SEC-2 record rule filters on it
     currency_id = fields.Many2one(
         'res.currency', related='company_id.currency_id', readonly=True)
     date_from = fields.Date(required=True)

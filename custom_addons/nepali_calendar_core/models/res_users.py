@@ -28,8 +28,8 @@ class ResUsers(models.Model):
     _inherit = 'res.users'
 
     calendar_system = fields.Selection(
+        # No `string=`: Odoo derives "Calendar System" from the field name.
         CALENDAR_SELECTION,
-        string="Calendar System",
         help="Calendar used to show and enter dates. Leave empty to follow the "
              "company default.\n\n"
              "Dates are always stored as Gregorian, so changing this affects only "

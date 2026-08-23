@@ -8,6 +8,7 @@ The assertion that matters most is that the schedule closes on exactly zero. A
 loan that ends a few paisa out looks right on screen and leaves a balance on the
 liability account that nobody can clear.
 """
+import psycopg2
 from odoo import fields
 from odoo.exceptions import UserError
 from odoo.tests import TransactionCase, tagged
@@ -110,7 +111,9 @@ class TestLoan(TransactionCase):
         loan.action_compute_schedule()
         rows = loan.line_ids
         self.assertEqual(rows[0].opening_balance, loan.principal)
-        for previous, current in zip(rows, rows[1:]):
+        # strict=False: rows[1:] is one shorter by construction, which is the
+        # point -- each row is compared with its successor.
+        for previous, current in zip(rows, rows[1:], strict=False):
             self.assertEqual(current.opening_balance, previous.closing_balance,
                              f"row {current.sequence} does not open where "
                              f"row {previous.sequence} closed")
@@ -151,7 +154,11 @@ class TestLoan(TransactionCase):
                            "a quarter accrues more interest than a month")
 
     def test_negative_principal_is_rejected(self):
-        with self.assertRaises(Exception):
+        # CheckViolation, not Exception: the guard is the SQL constraint
+        # CHECK(principal > 0), and `assertRaises(Exception)` would equally pass
+        # on a typo in this test body (audit finding COD-7). Verified by running
+        # it -- the ORM lets psycopg2's error through unwrapped here.
+        with self.assertRaises(psycopg2.errors.CheckViolation):
             self._loan(principal=-1.0).flush_recordset()
 
     # ---- posting ------------------------------------------------------------
@@ -165,7 +172,7 @@ class TestLoan(TransactionCase):
         self.assertEqual(sum(move.line_ids.mapped("debit")),
                          sum(move.line_ids.mapped("credit")))
         liability = move.line_ids.filtered(
-            lambda l: l.account_id == self.acc_loan)
+            lambda aml: aml.account_id == self.acc_loan)
         self.assertEqual(liability.credit, loan.principal,
                          "the drawdown must credit the loan account")
 
@@ -186,7 +193,7 @@ class TestLoan(TransactionCase):
         self.assertEqual(move.state, "posted")
         self.assertEqual(sum(move.line_ids.mapped("debit")),
                          sum(move.line_ids.mapped("credit")))
-        by_account = {l.account_id: l for l in move.line_ids}
+        by_account = {aml.account_id: aml for aml in move.line_ids}
         self.assertEqual(by_account[self.acc_loan].debit, line.principal)
         self.assertEqual(by_account[self.acc_interest].debit, line.interest)
         self.assertEqual(by_account[self.acc_bank].credit, line.payment)

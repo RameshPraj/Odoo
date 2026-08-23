@@ -1,7 +1,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 {
     'name': 'Nepal - Fiscal Year (Shrawan to Ashar)',
-    'version': '19.0.1.0.0',
+    'version': '19.0.1.1.0',   # 1.1.0 = fiscal-year generation fixes
     'countries': ['np'],
     'category': 'Accounting/Localizations',
     'summary': 'Generate Nepali fiscal years as exact Gregorian date ranges',

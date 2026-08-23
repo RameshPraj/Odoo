@@ -536,7 +536,7 @@ class TestReportsActuallyRender(TransactionCase):
         for xmlid, _label in self.REPORTS:
             with self.subTest(report=xmlid):
                 report = self.env.ref(xmlid)
-                expected = "report.%s" % report.report_name
+                expected = f"report.{report.report_name}"
                 self.assertIsNotNone(
                     self.env.get(expected),
                     f"{xmlid} names report_name={report.report_name!r}, so Odoo will "

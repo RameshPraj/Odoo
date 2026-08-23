@@ -13,8 +13,8 @@ import datetime
 import glob
 import os
 
+import psycopg2
 from lxml import etree
-
 from odoo.exceptions import UserError, ValidationError
 from odoo.tests import TransactionCase, tagged
 
@@ -92,7 +92,10 @@ class TestTdsFramework(TransactionCase):
             self._cat("BAD", 5.0, "2026-08-31", "2026-07-01")
 
     def test_negative_rate_rejected(self):
-        with self.assertRaises(Exception):
+        # CheckViolation, not Exception: see the same fix in l10n_np_loan's tests
+        # and audit finding COD-7. A bare `Exception` here would pass on a
+        # misspelled helper name just as happily as on the constraint firing.
+        with self.assertRaises(psycopg2.errors.CheckViolation):
             self._cat("NEG", -5.0, "2026-07-17")
 
     def test_certificate_requires_lines_before_issue(self):

@@ -277,7 +277,12 @@ TRANSLATIONS = {
     "Due Date": "भुक्तानी मिति",
     "Sales": "बिक्री",
     "Purchase": "खरिद",
-    "Order": "अर्डर",
+    # "Order" also appears further down mapped to "क्रम" (sequence/ordering).
+    # A flat source-string dict cannot express context, so Python kept the
+    # later entry and this one was dead: every "Order" in the interface
+    # already renders as "क्रम", including the sales document. Removed rather
+    # than left as a silent no-op. Which sense is correct where is an SME
+    # question -- disambiguating it needs per-model translation, not this dict.
     "Orders": "अर्डरहरू",
     "Quotation": "कोटेशन",
     "Inventory": "मौज्दात व्यवस्थापन",

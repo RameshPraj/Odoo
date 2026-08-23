@@ -12,7 +12,6 @@ Two failure modes justify these tests:
 import os
 
 from lxml import etree
-
 from odoo.tests import TransactionCase, tagged
 from odoo.tools.safe_eval import safe_eval
 

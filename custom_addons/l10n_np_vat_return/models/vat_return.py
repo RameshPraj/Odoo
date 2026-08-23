@@ -19,6 +19,9 @@ that was in force, which is a legal requirement for reprints.
 Box amounts are computed from tax tags on posted journal items, so every figure
 traces back to the ledger and can be drilled into during an audit.
 """
+import ast
+import re
+
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError, ValidationError
 
@@ -30,7 +33,8 @@ class VatReturnForm(models.Model):
 
     name = fields.Char(required=True, help="e.g. 'IRD VAT Return 2082 revision'.")
     company_id = fields.Many2one(
-        'res.company', required=True, default=lambda self: self.env.company)
+        'res.company', required=True, default=lambda self: self.env.company,
+        index=True)  # SCH-1: the SEC-2 record rule filters on it
     date_from = fields.Date(
         string='In force from', required=True,
         help="First date this version of the form applies to.")
@@ -70,11 +74,13 @@ class VatReturnBox(models.Model):
     _order = 'sequence, code'
 
     form_id = fields.Many2one(
-        'l10n_np.vat.return.form', required=True, ondelete='cascade')
+        'l10n_np.vat.return.form', required=True, ondelete='cascade',
+        index=True)  # SCH-1: traversed for every one2many read
     # Stored so the multi-company record rule can filter on it (SEC-2). A box has
     # no company of its own -- it belongs to whichever company owns the form
     # version. Mirrors l10n_np.loan.line and l10n_np.tds.certificate.line.
-    company_id = fields.Many2one(related='form_id.company_id', store=True)
+    company_id = fields.Many2one(related='form_id.company_id', store=True,
+                                 index=True)  # SCH-1
     sequence = fields.Integer(default=10)
     code = fields.Char(required=True, help="IRD box number or code.")
     label_en = fields.Char(string='Label (English)', required=True)
@@ -116,7 +122,8 @@ class VatReturn(models.Model):
 
     name = fields.Char(required=True, copy=False)
     company_id = fields.Many2one(
-        'res.company', required=True, default=lambda self: self.env.company)
+        'res.company', required=True, default=lambda self: self.env.company,
+        index=True)  # SCH-1: the SEC-2 record rule filters on it
     currency_id = fields.Many2one(
         'res.currency', related='company_id.currency_id', readonly=True)
     date_from = fields.Date(required=True)
@@ -160,6 +167,16 @@ class VatReturn(models.Model):
 
     def action_compute(self):
         for ret in self:
+            # A filed return is a submitted statutory document. Recomputing one in
+            # place would change a filed figure with no trace, and `action_compute`
+            # checked nothing -- so this was reachable by any user who could edit a
+            # return at all. Resetting to draft first is deliberate friction, and it
+            # is visible in the state field afterwards. Found while fixing SEC-6,
+            # which is about the same document being rewritten by the wrong hands.
+            if ret.state == 'filed':
+                raise UserError(_(
+                    "%s has been filed. Reset it to draft before recomputing, so "
+                    "that the change to a filed return is visible.", ret.name))
             form = self.env['l10n_np.vat.return.form']._form_for_date(
                 ret.date_to, ret.company_id)
             ret.line_ids.unlink()
@@ -186,28 +203,84 @@ class VatReturn(models.Model):
             ret.state = 'computed'
         return True
 
+    #: The only AST node types a box formula may contain. Exponentiation is absent
+    #: on purpose and cannot be re-admitted by a regex slip: see _eval_formula.
+    _FORMULA_BINOPS = (ast.Add, ast.Sub, ast.Mult, ast.Div)
+    _FORMULA_UNARYOPS = (ast.UAdd, ast.USub)
+
     def _eval_formula(self, box, values):
-        """Evaluate a box formula. Only box codes, numbers and + - * / ( ) allowed.
+        r"""Evaluate a box formula over other box codes. Never `eval`.
 
-        Deliberately not safe_eval over arbitrary Python: the grammar is tiny, so
-        substitute the known box codes and refuse anything unexpected.
+        The grammar is deliberately tiny: box codes, numbers, `+ - * / ( )`.
+
+        **SEC-3.** This used to substitute the codes, check the result against
+        `re.fullmatch(r"[0-9eE+\-*/(). ]*")` and hand it to `eval`. Because `*`
+        appears once in that character class, `**` matched it -- a character class
+        cannot express "one star but not two". `9**9**9` passed the check and then
+        occupied the worker computing a number with hundreds of millions of digits.
+        With `workers = 0` that is the entire server, and `limit_time_real = 0` on
+        this host means nothing reclaims it. RCE was already blocked and tested;
+        this was the denial of service beside it.
+
+        Now the substituted expression is parsed and walked, and evaluation is done
+        by this method rather than by Python. `ast.Pow` simply is not in
+        `_FORMULA_BINOPS`, so `**` is rejected structurally -- there is no pattern
+        to get wrong. Formulas come from an accountant configuring boxes, so this
+        is not a hostile input in normal use; it is one keystroke away from
+        wedging the server, which is enough.
         """
-        import re  # noqa: PLC0415
-        expr = box.formula or ''
-        for code in sorted(values, key=len, reverse=True):
-            expr = expr.replace(code, repr(float(values[code])))
-        if not re.fullmatch(r"[0-9eE+\-*/(). ]*", expr):
-            raise UserError(_(
-                "Box %(code)s has a formula that could not be resolved: %(f)s\n\n"
-                "Use only other box codes, numbers and + - * / ( ).",
-                code=box.code, f=box.formula))
-        try:
-            return float(eval(expr, {"__builtins__": {}}, {}))  # noqa: S307
-        except Exception as exc:
-            raise UserError(_(
-                "Box %(code)s formula failed: %(f)s (%(e)s)",
-                code=box.code, f=box.formula, e=exc)) from exc
+        expr = (box.formula or '').strip()
+        if not expr:
+            return 0.0
 
+        if values:
+            # Substituted in one pass, longest code first, and only where the code
+            # is not part of a longer number. The old sequential str.replace could
+            # match digits inside a float it had already substituted -- with a box
+            # coded '0', an earlier '200.0' became '2<subst>0.0'.
+            pattern = re.compile(
+                r'(?<![\d.])(?:{})(?![\d.])'.format('|'.join(
+                    re.escape(code) for code in sorted(values, key=len, reverse=True))))
+            expr = pattern.sub(lambda m: repr(float(values[m.group(0)])), expr)
+
+        def fail(detail):
+            return UserError(_(
+                "Box %(code)s has a formula that could not be resolved: %(f)s\n\n"
+                "Use only other box codes, numbers and + - * / ( ). %(detail)s",
+                code=box.code, f=box.formula, detail=detail))
+
+        try:
+            tree = ast.parse(expr, mode='eval')
+        except SyntaxError as exc:
+            raise fail(_("It is not a valid expression.")) from exc
+
+        def evaluate(node):
+            if isinstance(node, ast.Constant):
+                if isinstance(node.value, bool) or not isinstance(node.value, (int, float)):
+                    raise fail(_("Only numbers are allowed."))
+                return float(node.value)
+            if isinstance(node, ast.UnaryOp) and isinstance(node.op, self._FORMULA_UNARYOPS):
+                operand = evaluate(node.operand)
+                return operand if isinstance(node.op, ast.UAdd) else -operand
+            if isinstance(node, ast.BinOp) and isinstance(node.op, self._FORMULA_BINOPS):
+                left, right = evaluate(node.left), evaluate(node.right)
+                if isinstance(node.op, ast.Add):
+                    return left + right
+                if isinstance(node.op, ast.Sub):
+                    return left - right
+                if isinstance(node.op, ast.Mult):
+                    return left * right
+                if right == 0.0:
+                    raise fail(_("It divides by zero."))
+                return left / right
+            if isinstance(node, ast.BinOp) and isinstance(node.op, ast.Pow):
+                raise fail(_("Exponentiation is not allowed."))
+            if isinstance(node, ast.Name):
+                # An unresolved box code reaches here as a bare name.
+                raise fail(_("%s is not a known box code.", node.id))
+            raise fail(_("%s is not allowed.", type(node).__name__))
+
+        return evaluate(tree.body)
     def action_file(self):
         for ret in self:
             if ret.state != 'computed':
@@ -223,11 +296,15 @@ class VatReturnLine(models.Model):
     _description = 'Nepal VAT Return Line'
     _order = 'sequence, code'
 
-    return_id = fields.Many2one('l10n_np.vat.return', required=True, ondelete='cascade')
+    return_id = fields.Many2one(
+        'l10n_np.vat.return', required=True, ondelete='cascade',
+        index=True)  # SCH-1: traversed for every one2many read
     # As on l10n_np.vat.return.box: stored purely so the record rule has a column
     # to filter on (SEC-2). A line's company is the filed return's company.
-    company_id = fields.Many2one(related='return_id.company_id', store=True)
-    box_id = fields.Many2one('l10n_np.vat.return.box', readonly=True)
+    company_id = fields.Many2one(related='return_id.company_id', store=True,
+                                 index=True)  # SCH-1
+    box_id = fields.Many2one('l10n_np.vat.return.box', readonly=True,
+                             index=True)  # SCH-1
     currency_id = fields.Many2one(related='return_id.currency_id')
     sequence = fields.Integer()
     code = fields.Char()

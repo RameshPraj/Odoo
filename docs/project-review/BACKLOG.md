@@ -435,6 +435,31 @@ over-collection, wrong VAT return. **Fix** One cell each: `VAT_S_NP_13` / `VAT_P
 migration caveat as FIN-1. **Effort XS + migration.**
 
 ## UPG-1 · Local module overwrites core `account.*` group records
+**RESOLVED 2026-08-23 by measurement and a guard test, not by the prescribed refactor —
+because the stated impact does not happen.**
+
+`-u` propagates to every module that depends on the named one, and dependents always load
+*after* their dependencies. So `-u account` reloads `account` (64/153) **and**
+`l10n_np_accounting` (119/153) in the same transaction: upstream resets the records and this
+module immediately re-applies them. Three consecutive `-u account` runs on a probe left
+`name`, `privilege_id`, `sequence` and `implied_ids` byte-identical.
+
+Two details also narrow the claim. Upstream declares only `name` and `implied_ids` on these
+records, so `privilege_id`, `sequence` and `comment` were never at risk. And upstream's
+`implied_ids` uses `(4, ref(...))`, which **links** rather than replaces, so the
+manager-implies-accountant edge would have survived a reload on its own.
+
+**The prescribed fix would have been worse.** A `post_init_hook` runs on *install only*, so it
+would not re-run during `-u account` — it would introduce exactly the fragility the current
+arrangement avoids, by accident of dependency ordering. Five tests now assert the invariant
+instead (`test_account_group_wiring.py`), including reachability of the Accounting and
+Reporting menus through `_visible_menu_ids()`, so if a future Odoo changes how reloads or
+propagation work, the suite says so rather than a user finding the menu gone.
+
+What remains valid is the **design objection**, which no test fixes: these are records owned by
+another module, so uninstalling this one leaves them changed. `account_groups.xml` says so in
+its own header.
+
 **CONFIRMED** · Upgrade safety · `l10n_np_accounting/security/account_groups.xml:32,39,49`
 
 `<record id="account.group_account_readonly">` and two siblings rewrite records **owned by
@@ -682,7 +707,23 @@ Neither launcher passes `--test-enable`. There is no single command that runs al
 **Impact** Verification theatre. Four consecutive commits (`b2570489`, `d9b0bc4a`, `fcb814f3`,
 `cb96ff96`) are same-day fixes for defects a test run would have caught. **Effort M.**
 
-### The second half is fixed; the first is not
+### The reporting half is fixed too (2026-08-23); automation still is not
+
+`test` now reports the **skip count** and names every skipped test, with
+`-FailOnSkip` / `--fail-on-skip` to exit non-zero for CI. That closes the half of this
+finding that TST-3 depended on: Odoo tracks `result.skipped` internally and never prints
+it, so its summary line reports only `N failed, M error(s) of K tests`
+(`odoo/tests/result.py:198`) and a run that skipped everything is indistinguishable from
+one that passed everything. Verified against a deliberately skipped test: Odoo said
+"0 failed, 0 error(s) of 9 tests" while the launcher said "Skipped: 1" and named it.
+
+`lint` was added alongside, running ruff, pylint-odoo and the manifest-version check.
+
+**What is still missing is the automation itself.** There is no runner invoking any of this
+on a push, and with no git remote (SUP-2) there is nothing to push to. Both halves of that
+are one decision away.
+
+### The runner half was fixed earlier
 
 There is now a single command:
 
@@ -886,6 +927,33 @@ remain unfixed. **Effort S.**
 Ruff was run ad hoc and annotated; the config was never committed. The suppressions are
 unenforceable folklore. **Effort S.**
 
+**RESOLVED 2026-08-23.** `ruff.toml`, `.pylintrc` and `requirements-dev.txt` are committed,
+and `run-odoo.ps1 lint` / `run-odoo.sh lint` run them. Both are **clean**: ruff went from
+204 findings to 0, pylint-odoo to 0.
+
+The findings it produced were worth having, and three were real defects rather than style:
+
+* a **duplicate dictionary key** in `l10n_ne/translations.py` — `"Order"` mapped twice, so
+  Python silently kept the second and the first was dead. Removed without changing runtime
+  behaviour; which sense belongs where is an SME question a flat source-string dict cannot
+  express.
+* the two `assertRaises(Exception)` sites of **COD-7**, now asserting
+  `psycopg2.errors.CheckViolation` — the actual exception, determined by running it.
+* five modules with no README and several redundant `string=` field labels.
+
+It also earned its place immediately, on my own work: renaming a lambda variable in
+`account_move_line.py` I left one reference behind, and `py_compile` passed because a stale
+name is a runtime `NameError`, not a syntax error. Ruff reported it as **F821 Undefined
+name**. Confirmed deliberately afterwards by reintroducing the break and watching ruff catch
+it.
+
+One configuration lesson is recorded in `ruff.toml` itself: **isort must not touch an Odoo
+`__init__.py`**, because import order there is semantic. Sorting them alphabetically inverted
+`l10n_np_accounting/__init__.py`, whose own comment reads "`wizard` first: models/ extends
+account.lock.dates, which is defined in wizard/, and an extension cannot precede its model" —
+leaving the comment describing the opposite of the code. Caught by reading the diff. An
+autofix is not safe merely because it is mechanical.
+
 ---
 
 # P2 — Medium
@@ -901,8 +969,8 @@ unenforceable folklore. **Effort S.**
 | **PG-2** | CONFIRMED | PostgreSQL | `datacl = NULL` on all DBs | New databases default to `PUBLIC CONNECT` | Harmless with one role; wrong the moment a reporting/metrics role exists | Revoke in provisioning | XS |
 | **PG-3** | CONFIRMED | PostgreSQL | shared catalogs | From one tenant's connection, `pg_database`, `pg_roles`, `pg_stat_activity` enumerate all tenants | Tenant enumeration; other tenants' query strings visible in `pg_stat_activity` | `pg_stat_statements` restrictions; accept enumeration | S |
 | **PG-4** | CONFIRMED | PostgreSQL | `odoo/service/db.py:168-174` | `GRANT CREATE ON SCHEMA PUBLIC TO PUBLIC` on every new database, undoing PG15 hardening | Latent with one role; any additional login role gains CREATE in every tenant DB | `REVOKE` in provisioning | S |
-| **SEC-3** | CONFIRMED | Security | `vat_return.py:195,201` | Regex whitelist admits `**`; verified `9**9**9` passes `fullmatch` | Worker hang; with `workers=0` and `limit_time_real=0` the whole server. RCE **is** correctly blocked and tested | Ban `**`; add a test | XS |
-| **SEC-6** | CONFIRMED | Security | `l10n_np_vat_return/security/ir.model.access.csv:8` | `group_account_readonly` given write/create/unlink on VAT return lines | A read-only accountant can rewrite a filed return | `1,0,0,0` | XS |
+| **SEC-3** | **RESOLVED 2026-08-23** — not by banning `**` but by removing `eval`: the substituted expression is parsed with `ast` and walked, and `ast.Pow` is simply absent from the allowed node types, so there is no pattern to get wrong. The root cause is worth keeping: a **character class cannot express "one star but not two"**, so `[0-9eE+\-*/(). ]*` was always going to admit `**`. Ten tests, including that the allowed arithmetic still evaluates, and one that asserts the *refusal* of `9**9**9` rather than evaluating it — a test that hangs the runner to prove a hang was fixed is a test nobody runs. A second bug fell out: sequential `str.replace` of box codes could rewrite digits inside a float it had already substituted, so substitution is now one pass with boundaries | Security | `vat_return.py:195,201` | Regex whitelist admits `**`; verified `9**9**9` passes `fullmatch` | Worker hang; with `workers=0` and `limit_time_real=0` the whole server. RCE **is** correctly blocked and tested | Done | XS |
+| **SEC-6** | **RESOLVED 2026-08-23** — and it was **not** the one-character fix this row prescribed. That single row was also what granted every *higher* accounting group its access, because they all imply read-only; setting it to `1,0,0,0` alone would have stopped `action_compute` working, since computing a return unlinks and recreates every line. So the readonly row is now `1,0,0,0` and the billing and manager roles have rows of their own. Six tests, including that the read-only role can still *read* a line (which stops the fix becoming "delete the row") and that the billing role can still maintain them. A related hole surfaced while fixing it: `action_compute` checked no state, so a **filed** return could be recomputed in place and its filed figures would change with no trace — now refused until it is reset to draft | Security | `ir.model.access.csv:8` | `group_account_readonly` given write/create/unlink on VAT return lines | A read-only accountant can rewrite a filed return | Done | XS |
 | **BS-3** | CONFIRMED | Bikram Sambat | `bs_accounting_dates.py:57-60`; `account_move_views.xml:365` | Search and group-by buckets stay Gregorian | A BS user filtering "August 2026" gets Bhadra 16 – Ashoj 15, straddling two BS months. **The most consequential functional gap** — BS presentation stops where periodic reporting begins | BS-aware period filter and group-by | L |
 | **BS-4** | CONFIRMED | Bikram Sambat | `bs.py:121-124`; `generate_np_fiscal_year.py:53,69` | `month_length()` raises raw `KeyError` at BS 2101 — the one entry point with no error wrapping — escaping the wizard's `UserError`-only catch | Traceback instead of a message; reachable by default from BS 2097 | Wrap + bound-check | XS |
 | **BS-5** | LIKELY | Bikram Sambat | `bs_date_field.xml:14-20` | Input is uncontrolled (`t-att-value` → `setAttribute`), so the DOM diverges from the record after typing | Rejected entries stay on screen; picker updates don't refresh the box | Use `useInputField` | S |
@@ -912,11 +980,11 @@ unenforceable folklore. **Effort S.**
 | **ACC-4** | CONFIRMED | Accounting | `account.fiscal.position-np.csv:3` | Export FP `auto_apply=1` with no country | Also zero-rates foreign **vendors** — wrong under reverse charge | SME decision | S |
 | **ACC-5** | CONFIRMED | Accounting | `l10n_np/data/template/account.account-np.csv:24` | `Tax Receivable` typed `asset_current` but sits in the 2xxxxx liability block | Reads wrong on a code-ordered trial balance | Re-code or re-type | XS |
 | **ACC-6** | CONFIRMED | Accounting | `l10n_np_tds/data/ir_sequence_data.xml:6,9` | TDS sequence uses the **Gregorian** year and is **company-global** (`company_id=False`) | All tenants share one certificate series; the year rolls mid-Nepali-FY | Per-company sequence, BS year | S |
-| **UPG-2** | CONFIRMED | Upgrade | all 8 manifests | Zero migration scripts; every module frozen at `19.0.1.0.0` | Odoo never fires "outdated"; a deploy relying on version comparison skips them, leaving stale views and **ACLs** | Bump versions; add `migrations/` | S |
+| **UPG-2** | **RESOLVED 2026-08-23** — the fix is the *check*, not the bump: `tools/check_module_versions.py` compares each module's last code change against the last commit that moved its `version` line, and fails on drift. Wired into `lint`. Bumping once would have been undone by the next change. It found **six** stale modules on first run (`account_financial_statements`, `account_reports_interactive`, `date_range`, `l10n_np_accounting`, `l10n_np_fiscal_year`, `l10n_np_tds`), all now bumped. Deliberately conservative: it flags pure-Python changes that did not strictly need a bump, because deciding "no data changed here" from a diff is exactly the judgement that goes wrong quietly | Upgrade | all 8 manifests | Zero migration scripts; every module frozen at `19.0.1.0.0` | Odoo never fires "outdated"; a deploy relying on version comparison skips them, leaving stale views and **ACLs** | Done | S |
 | **UPG-3** | CONFIRMED | Upgrade | `res_config_settings_views.xml:10` | xpath `//block[@id='analytic']` `position="before"` — sibling-relative into the most-churned arch in Odoo | A rename → `ParseError` → **the module fails to install** | Target the ancestor with `position="inside"` | S |
 | **UPG-4** | POSSIBLE | Upgrade | `wizard/account_lock_dates.py:18` | New model named `account.lock.dates` — inside core's namespace | If Odoo 20 adds that name, this silently *extends* it and the fields collide | Rename `l10n_np.account.lock.dates` | XS |
 | **DAT-2** | CONFIRMED | Data | `…\Downloads\odoo-19.0\.odoo_data` | Orphaned filestore, 11 files, no repo/config/owner. Caused by OPS-1, which is now fixed so it receives no further writes | **Reconciled 2026-08-14: contains nothing of value** — 5 regenerable asset bundles + 6 blobs referenced by no database row. **Zero business attachments.** Originally rated as holding business documents; that was wrong | Safe to delete. The 5 dangling rows then return `b''` per `ir_attachment.py:151-155` | XS |
-| **SCH-1** | CONFIRMED | Schema | custom tables | Business FKs unindexed (`vat_return_line.return_id`, `.box_id`, `loan.partner_id`, `company_id`) | Low at present volume; `company_id` becomes hot once SEC-2 adds rules | `index=True` | XS |
+| **SCH-1** | **RESOLVED 2026-08-23** — `company_id` indexed on all ten company-scoped models, plus the one2many parents (`vat.return.box.form_id`, `vat.return.line.return_id`, `tds.certificate.line.certificate_id`), the named `vat.return.line.box_id`, and `partner_id` on the loan and the TDS certificate. Verified present in `pg_indexes`. Done immediately after SEC-2 for the reason this row predicted: those record rules put `company_id` in the WHERE clause of every query against these tables | Schema | custom tables | Business FKs unindexed | `company_id` became hot the moment SEC-2 added rules | Done | XS |
 | **SCH-2** | CONFIRMED | Schema | all custom tables | **0 rows**; 3 posted journal entries cluster-wide | Nothing exercised at volume; no performance claim is evidence-based | Load representative data | M |
 | **COD-1** | CONFIRMED | Tests | `test_loan.py` (10 sites) | Money compared with `assertEqual`; the `currency.round()` mitigation appears in exactly one test | Brittle across rate/term combinations | Round consistently | S |
 | **COD-2** | CONFIRMED | Tests | 5 modules | `test_xml_is_well_formed` copy-pasted 5×, **missing from 3 of 8**; four copies use `minidom`, which accepts `--` in comments where Odoo's `lxml` rejects it | Four copies cannot catch the defect they exist for | One shared `lxml` mixin | S |
@@ -925,7 +993,7 @@ unenforceable folklore. **Effort S.**
 | **SEC-5** | CONFIRMED | Security | OCA ACL CSVs | `base.group_user` CRUD on budget lines and the persistent age-report configuration | Non-accounting staff alter aged-balance bucketing | Tighten locally | S |
 | **SEC-7** | CONFIRMED | Security | `l10n_ne/apply.py:88,112,148,179-181` | `--modules` unvalidated into `os.path.join`; no containment check | Operator-run, so bounded — an unguarded footgun in a routine tool | `os.path.commonpath` | XS |
 | **SEC-8** | CONFIRMED | Security | `report_xlsx/controllers/main.py:27,36-41,100-104` | Bare `@route()` inherits auth invisibly; client context merged into rendering; `_serialize_exception` returned | Auth tracks upstream silently; info disclosure (escaped, not XSS) | Restate `auth=`; allowlist context | S |
-| **CI-2** | CONFIRMED | Environments | repo root | No Docker/compose; dev (Windows, `workers=0`) and prod (Linux, systemd) share no artefact; `run-odoo.sh` has never run | Nothing validates the Linux path | Containerise | M |
+| **CI-2** | **PARTIALLY ADDRESSED 2026-08-23, gate stays OPEN** — `deploy/Dockerfile` and `deploy/docker-compose.yml` now exist, pinning a patched-Qt wkhtmltopdf (the build fails if `--version` lacks "with patched qt", per DEP-6), asserting `nepali_datetime` imports, running as a non-root fixed uid, mounting the config rather than baking credentials, and using Odoo's own `/web/health`. **Neither has ever been built or run**: Docker is not installed on this machine. The compose file is YAML-parser-validated and that is all. Ticking this gate on an unbuilt Dockerfile would repeat FIN-2 and TST-5 exactly — code that "worked" until someone ran it | Environments | repo root | dev (Windows, `workers=0`) and prod (Linux, systemd) share no artefact; `run-odoo.sh` has never run | Nothing validates the Linux path | Build it once, then close | M |
 | **DEP-2** | CONFIRMED | Dependencies | `requirements.txt:66-67` | `PyPDF2==2.12.1` installed and active (retired upstream) | PDF parsing is an attack surface for uploaded invoices | Move to `pypdf` | S |
 | **DEP-6** | CONFIRMED (new 2026-08-15) | Dependencies | `.runtime/bin/wkhtmltopdf/`; `deploy/README.md` §1 | The PDF engine is unmaintained and unverifiable. The wkhtmltopdf packaging repo was **archived read-only 2023-08-28** — no releases, no security fixes. Its **last Windows build is 0.12.6-1 (2020-06-10)**, three years older than the 0.12.6.1-3 Odoo recommends and our docs used to mandate; 0.12.6.1-3 ships Linux packages only. Upstream publishes **no checksums or signatures** for it, by explicit statement in the release notes, so the binary cannot be verified against anything but TLS to github.com | A 2020 HTML/Qt renderer running server-side with no patch path. Bounded today — it renders only our own templates — but becomes a real exposure under database-per-tenant, where tenant-controlled content reaches it. Odoo 19 has **no** alternative engine: `_render_qweb_pdf` routes unconditionally to `_run_wkhtmltopdf` (`ir_actions_report.py:891`), and there is no weasyprint/chromium path in the tree | No clean fix. Either pin and vendor a known-good binary with a recorded hash (done: `.runtime/bin/wkhtmltopdf/PROVENANCE.txt`), or add a `_render_qweb_pdf` override via the `report_type` dispatch (`ir_actions_report.py:1148`) the way `report_xlsx` already does. Revisit before multi-tenancy | M |
 | **TST-8** | **RESOLVED 2026-08-19** — the three test classes are now `@tagged("-at_install", "post_install")`, so they run with the full registry and `res.partner` carries `autopost_bills`. Full suite is **0 failed, 0 errors of 326**, green for the first time. The tests were never wrong: upstream CI installs only `web`, where the column does not exist, so the failure is specific to running them in a database that also has `account`. A local deviation from vendored upstream, recorded in `VENDORED.md` so an upgrade re-applies it. | Testing | `custom_addons/date_range/__manifest__.py` (`"depends": ["web"]`); `tests/test_date_range.py:18` | **15 of `date_range`'s 19 tests error**, every one with `null value in column "autopost_bills" of relation "res_partner" violates not-null constraint`. `date_range` depends only on `web`, so it loads — and self-tests — before `account`. Its `setUp` creates a `res.company`, which cascades into a `res.partner` INSERT. The column exists NOT NULL in the database (put there by `account`), but `account` is not in the registry yet, so the ORM omits it. Reproduced identically with `test-module date_range` alone and in the full suite, and with and without the `bin_path` change, so it is structural and pre-existing | The suite reports `0 failed, 15 error(s) of 304 tests` and `test` exits 1, so **no green run is currently achievable** — which defeats the whole point of a gate and hides the next real regression. Note TST-3 already warns that a green run is indistinguishable from a run of nothing; this is the inverse | Give `date_range` its tests a dependency-complete registry (add `account` to the test-run module set, or tag these tests `post_install`), or exclude the vendored module from the local gate and say so | S |

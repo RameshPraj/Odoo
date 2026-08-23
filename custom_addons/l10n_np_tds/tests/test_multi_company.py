@@ -83,9 +83,8 @@ class TestTdsCompanyIsolation(TransactionCase):
 
     def test_reading_another_company_s_tds_record_is_refused(self):
         for model, record in self.records_b.items():
-            with self.subTest(model=model):
-                with self.assertRaises(AccessError):
-                    record.with_user(self.user_a).read(["display_name"])
+            with self.subTest(model=model), self.assertRaises(AccessError):
+                record.with_user(self.user_a).read(["display_name"])
 
     def test_editing_another_company_s_certificate_is_refused(self):
         """A filed certificate rewritten by another company's staff is the

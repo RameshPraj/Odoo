@@ -1,7 +1,9 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 {
     'name': 'Loans',
-    'version': '19.0.1.1.0',   # 1.1.0 = multi-company record rules (SEC-2)
+    'version': '19.0.1.2.0',   # 1.1.0 = multi-company record rules (SEC-2);
+                              # 1.2.0 = indexes on the columns those rules
+                              # filter on (SCH-1)
     'category': 'Accounting/Accounting',
     'summary': 'Loan register, amortisation schedule and instalment posting',
     'description': """

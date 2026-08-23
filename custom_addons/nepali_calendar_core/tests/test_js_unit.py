@@ -24,9 +24,8 @@ import glob
 import os
 import re
 
-from odoo.tests import HttpCase, tagged
-
 from odoo.addons.web.tests.test_js import unit_test_error_checker
+from odoo.tests import HttpCase, tagged
 
 MODULE = "nepali_calendar_core"
 MODULE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))

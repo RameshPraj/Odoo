@@ -1,7 +1,8 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 {
     'name': 'Financial Statements (Balance Sheet & P&L)',
-    'version': '19.0.1.0.0',
+    'version': '19.0.1.1.0',   # 1.1.0 = interactive drill-down and anomaly
+                              # panel on the three statements (FIN-2)
     'category': 'Accounting/Reporting',
     'summary': 'Balance Sheet and Profit & Loss for Odoo Community',
     'description': """

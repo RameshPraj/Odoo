@@ -32,22 +32,23 @@ class AccountMoveLine(models.Model):
                 "Select at least two journal items to reconcile against each other."
             ))
 
-        not_posted = lines.filtered(lambda l: l.parent_state != 'posted')
+        not_posted = lines.filtered(lambda aml: aml.parent_state != 'posted')
         if not_posted:
             raise UserError(_(
                 "Only posted entries can be reconciled. These are not posted yet:\n%s",
-                "\n".join(f"- {l.move_id.name or _('draft entry')}" for l in not_posted[:10]),
+                "\n".join(f"- {aml.move_id.name or _('draft entry')}"
+                          for aml in not_posted[:10]),
             ))
 
-        not_reconcilable = lines.filtered(lambda l: not l.account_id.reconcile)
+        not_reconcilable = lines.filtered(lambda aml: not aml.account_id.reconcile)
         if not_reconcilable:
             raise UserError(_(
                 "Reconciliation is only allowed on accounts flagged 'Allow "
                 "Reconciliation'. These accounts are not:\n%s\n\n"
                 "Set the flag on the account, or exclude those lines.",
                 "\n".join(sorted({
-                    f"- {l.account_id.code} {l.account_id.display_name}"
-                    for l in not_reconcilable
+                    f"- {aml.account_id.code} {aml.account_id.display_name}"
+                    for aml in not_reconcilable
                 })),
             ))
 
@@ -59,7 +60,7 @@ class AccountMoveLine(models.Model):
                 accounts="\n".join(f"- {a.code} {a.display_name}" for a in accounts),
             ))
 
-        already_done = lines.filtered(lambda l: l.reconciled)
+        already_done = lines.filtered(lambda aml: aml.reconciled)
         if already_done:
             raise UserError(_(
                 "%s of the selected items are already fully reconciled. "
@@ -69,7 +70,7 @@ class AccountMoveLine(models.Model):
 
         lines.reconcile()
 
-        matched = len(lines.filtered(lambda l: l.reconciled))
+        matched = len(lines.filtered(lambda aml: aml.reconciled))
         return {
             'type': 'ir.actions.client',
             'tag': 'display_notification',

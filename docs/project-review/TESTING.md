@@ -90,6 +90,21 @@ themselves, where at least a skip is *reported*. An unimported test file reports
 it is indistinguishable from a test that never existed. A `-a` on the wrong redirect operator would
 be more visible.
 
+**TST-10 — a test that pins a manifest version blocks every future change to its module.**
+`test_bs_migration.py` asserted `version == "19.0.1.1.0"` exactly, to guarantee the migration in
+`migrations/19.0.1.1.0/` would run. The first bump for an unrelated reason turned the suite red
+(2026-08-23, on the SEC-12 / UPG-1 bump), and it would have done so for **any** later change —
+which puts it in direct conflict with **UPG-2**, whose whole point is that the version moves
+every time the module does.
+
+Equality was also the wrong invariant. Odoo runs a migration when the version rises *past* the
+directory's version, so a module ahead of its migrations is normal; a module *behind* one is the
+bug, because that script can never run. The test now asserts
+`parse_version(manifest) >= parse_version(highest migrations/ dir)`, using `parse_version` rather
+than string comparison — `"19.0.1.10.0"` sorts before `"19.0.1.2.0"` as text.
+
+Worth stating as a rule: **a test may assert a version relationship, never a version literal.**
+
 **BS-1 — the exhaustive cross-check is dead code.** `tools/selftest.py` already performs the
 46,022-day Python↔JS sweep and nothing invokes it.
 

@@ -29,7 +29,6 @@ import os
 import re
 
 import nepali_datetime
-
 from odoo.tests import TransactionCase, tagged
 
 #: Repo root. tests/ -> nepali_calendar_core/ -> custom_addons/ -> root
