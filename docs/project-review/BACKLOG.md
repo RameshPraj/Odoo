@@ -16,8 +16,9 @@ Every finding appears here exactly once. All other documents reference these IDs
 > P2–P4. **119 entries, 121 findings** — the two differ only because `DEP-3/4/5` is a single row
 > covering three findings.
 >
-> The count includes entries already closed. **8 are RESOLVED** — FIN-2, FIN-3, OPS-1, OPS-7, SEC-12,
-> BS-20, DEP-1, TST-8 — and CI-1 is PARTIALLY RESOLVED, so the open figure is 116.
+> The count includes entries already closed. **11 are RESOLVED** — FIN-2, FIN-3, OPS-1, OPS-2,
+> OPS-7, SEC-1, SEC-12, SAAS-2, BS-20, DEP-1, TST-8 — and CI-1 is PARTIALLY RESOLVED, so the open
+> figure is 113.
 >
 > **COD-11** was added 2026-08-17 while making the reports drillable: OCA's reports discard the
 > drill-down domain they already compute and rebuild it in QWeb, which is the root cause behind the
@@ -90,6 +91,20 @@ reaches the template — the expression that raised `KeyError: 'wizard'`. It als
 the rule. **Effort S.**
 
 ## SAAS-2 · Live one-request cluster takeover via the database manager
+**RESOLVED 2026-08-22.** The exploit was wholly conditional on
+`verify_admin_password('admin')` returning True: while it did, any POST to a manager route
+ran `change_admin_password("admin", master_pwd)` and adopted the attacker's value before
+proceeding (`web/controllers/database.py:73-75`, and the same three lines in `duplicate`,
+`drop`, `backup`, `restore`). The master password is now a 32-character random value
+**stored hashed**, so that branch is unreachable. Verified: the literal `'admin'` no longer
+verifies.
+
+Note what did **not** fix it: `list_db = False`. That gates only the database *list*
+(`odoo/service/db.py:49,435,484`). `/web/database/manager` is `auth="none"` with no
+`list_db` guard at all (`web/controllers/database.py:65-69`) and still serves
+create/drop/backup/restore forms, confirmed by fetching it. Password strength is the only
+in-Odoo control; blocking the routes at the proxy is the deployment control, and
+`deploy/README.md` now carries an nginx rule for it.
 **CONFIRMED (verified against the live config)** · SaaS · `odoo/addons/web/controllers/database.py:71-75`
 
 ```python
@@ -188,7 +203,12 @@ gets both right — the dev configs are the documented starting point and do not
 **Impact** Total loss of all work if the disk or `.git` is damaged — and per DAT-1 the sync
 product standing in for a backup is itself the leading corruption risk, so it would replicate
 damage rather than protect against it. Combined with CI-1, **no change has ever been reviewed or
-verified.** **Fix** Create a private remote and push. **Effort XS.**
+verified.** **Fix** Create a remote and push. **Effort XS.**
+
+**Unblocked 2026-08-22.** This was held up by SEC-1: pushing would have published live
+credentials. They are rotated, so it publishes nothing usable and the decision is now purely
+about where the code should live. Private remains the sensible default for client work, but
+it is no longer a security requirement.
 
 ## DAT-1 · Database dumps, filestore, live sessions and credentials in corporate cloud sync
 **CONFIRMED** · Data protection
@@ -462,6 +482,20 @@ three configs today — keep it that way.** **Fix** Provision a per-tenant `ir.m
 per-tenant bounce/catchall at database creation. **Effort M.**
 
 ## SEC-1 · Live master and database passwords committed to a tracked document
+**RESOLVED 2026-08-22.** Both rotated; `RECONNAISSANCE.md` redacted at the four sites that
+carried values, with a note at the top saying why. The master password is now stored hashed
+in `odoo.conf`, so it is in plaintext nowhere.
+
+**History deliberately not rewritten.** The leaked values were `admin` and `odoo` —
+well-known defaults rather than secrets — and after rotation they open nothing. Rewriting 41
+commits to purge strings that are already worthless was judged not worth changing every SHA
+for. Anyone reading old commits will still see credentials and may reasonably raise it
+again; this paragraph is the answer.
+
+A redaction trap worth recording: the database password was the literal string `odoo`, which
+occurs **109 times** in that document as the product name, the package directory and
+`odoo.conf`. A global find-and-replace would have destroyed the file. The four real leak
+sites were edited individually.
 **CONFIRMED** · Security · `RECONNAISSANCE.md:232,236,480`, commit `e4ff7dab`
 
 The document reproduces the effective config verbatim, including the **current** values — and
@@ -633,6 +667,8 @@ what SaaS is. **Fix** Business decision first, then align manifests and `VENDORE
 **Effort S** once decided.
 
 ## OPS-2 · Database manager exposed with a default master password
+**RESOLVED 2026-08-22.** `admin_passwd` rotated and hashed, `list_db = False`. `doctor` now
+reports `admin_passwd is not one of the known default values` where it used to warn.
 **CONFIRMED** · Operations · `odoo.conf:8,67`
 
 See SAAS-2 for the exploit path. **Effort XS.**

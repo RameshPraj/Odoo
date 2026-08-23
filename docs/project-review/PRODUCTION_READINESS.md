@@ -4,19 +4,22 @@ Findings by ID in [`BACKLOG.md`](BACKLOG.md).
 
 ## Verdict: **No-go**, single-tenant or multi-tenant
 
-**Four** open blockers of the original six. OPS-1 was fixed 2026-08-14 and FIN-2 on 2026-08-15;
-both are struck through below rather than deleted, so the list still reads as a history. None of the
-four requires a redesign; three are configuration, and the fourth (SUP-2/DAT-1) is a decision about
-where the code lives rather than a code change.
+**Two** open blockers of the original six. Resolved: OPS-1 (2026-08-14), FIN-2 (2026-08-15), and
+SAAS-2 with SEC-1/OPS-2 (2026-08-22). All are struck through below rather than deleted, so the list
+still reads as a history.
+
+What remains is **FIN-1** (the VAT return computes nil) and **SUP-2/DAT-1** (no recoverable backup).
+Neither needs a redesign: FIN-1 is a data migration, and SUP-2 is now purely a decision about where
+the code should live.
 
 | # | Blocker | ID | Why |
 |---|---|---|---|
-| 1 | Live one-request cluster takeover | SAAS-2 | `verify_admin_password('admin')` is `True`; one unauthenticated POST claims the master password, which then authorises backup of every database |
+| ~~1~~ | ~~Live one-request cluster takeover~~ **RESOLVED 2026-08-22** | SAAS-2 | Master password rotated to a 32-character random value and stored hashed, so `verify_admin_password('admin')` is False and the takeover branch is unreachable |
 | ~~2~~ | ~~Statutory reports cannot render~~ **RESOLVED 2026-08-15** | FIN-2 | All three now render, print to PDF, and drill down to the entries behind each figure. `TestReportsActuallyRender` renders them through the report engine, which is the check that was missing |
 | 3 | VAT return computes nil | FIN-1 | Zero tag→repartition links in the live database |
 | ~~4~~ | ~~Attachment storage is splitting~~ **RESOLVED 2026-08-14** | OPS-1 | Paths corrected; reconciliation proved no data loss; launchers now fail fast |
-| 5 | No recoverable backup of code or data | SUP-2, DAT-1 | **43 commits** on one disk (28 at audit time); the sync substituting for a backup is also the corruption risk. Now the largest open risk on this list, since the two above it are closed. Note SEC-1: credentials are in immutable history, so a **public** remote would leak them — the choice is a private remote, or rewriting history first |
-| 6 | Known credentials, database manager exposed | SEC-1, OPS-2 | Values in immutable git history |
+| 5 | No recoverable backup of code or data | SUP-2, DAT-1 | **43 commits** on one disk (28 at audit time); the sync substituting for a backup is also the corruption risk. Now the largest open risk on this list, since the two above it are closed. The SEC-1 objection is gone: those credentials were rotated 2026-08-22, so pushing publishes nothing usable. This is now purely a decision about where the code should live |
+| ~~6~~ | ~~Known credentials, database manager exposed~~ **RESOLVED 2026-08-22** | SEC-1, OPS-2 | Both credentials rotated, master password now stored hashed, `RECONNAISSANCE.md` redacted, `list_db = False`. History deliberately not rewritten: the leaked values were the defaults `admin` and `odoo`, worthless once rotated |
 
 **Additionally, for multi-tenant only:** SAAS-1, SAAS-3, SAAS-4, SAAS-5 and SAAS-6 must close
 before a second tenant exists. They are not go-live blockers for a single-tenant install.
@@ -34,9 +37,10 @@ before a second tenant exists. They are not go-live blockers for a single-tenant
 - [ ] SME sign-off: chart per NFRS/NPSAS, TDS rates and thresholds, IRD form layout box by box, TDS certificate layout, depreciation classes
 
 ### Security
-- [ ] **SAAS-2** — strong master password; `verify_admin_password('admin')` is False
-- [ ] **OPS-2 / SAAS-6** — `list_db = False`; `/web/database/*` blocked at the edge
-- [ ] **SEC-1** — both credentials rotated
+- [x] **SAAS-2** — strong master password, stored hashed; `verify_admin_password('admin')` is False (2026-08-22)
+- [x] **OPS-2** — `list_db = False` (2026-08-22)
+- [ ] **SAAS-6** — `/web/database/*` blocked at the edge. Not applicable on this loopback-bound dev host; `deploy/README.md` now ships the nginx rule, so this is a server-side gate
+- [x] **SEC-1** — both credentials rotated and the document redacted (2026-08-22)
 - [ ] **DAT-1** — client data and credentials out of cloud sync; dumps relocated
 - [ ] **SEC-2** — record rules on all ten company-scoped models, **before** a second company
 - [ ] **SEC-6** — read-only role cannot rewrite a filed return

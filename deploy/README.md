@@ -170,7 +170,8 @@ Differences from the Windows development config that matter:
 |---|---|---|---|
 | `workers` | `0` | `(cores * 2) + 1` | gevent is unavailable on Windows, so multiprocessing is not |
 | `limit_time_real` | `0` | `120` | On Windows the watchdog's `reload()` is a hard self-kill; on Linux SIGHUP is real and reloads gracefully |
-| `list_db` | `True` | `False` | `/web/database/manager` can drop databases |
+| `list_db` | `True` | `False` | Stops unauthenticated clients enumerating every database on the cluster. It does **not** close the manager: `/web/database/manager` is `auth="none"` with no `list_db` guard (`web/controllers/database.py:65-69`) and still serves create/drop/backup forms. Block it at the proxy, below |
+| `admin_passwd` | default, plaintext | strong, **hashed** | This is the only thing actually guarding the manager. While it verifies as `admin`, any POST to a manager route silently reassigns it to the attacker's value and proceeds (`database.py:73-75`) — finding SAAS-2 |
 | `proxy_mode` | unset | `True` | TLS is terminated by nginx in front |
 | `data_dir` | `.odoo_data` | `/var/lib/odoo` | Must be writable and in the unit's `ReadWritePaths` |
 
@@ -236,6 +237,14 @@ server {
         proxy_set_header Connection "upgrade";
         proxy_read_timeout 720s;
     }
+    # The database manager is auth="none" and cannot be switched off in odoo.conf:
+    # list_db only hides the database list. A strong hashed admin_passwd is the real
+    # guard, but there is no reason to expose create/drop/backup/restore to the
+    # internet at all. Deny it here, and reach it over an SSH tunnel if ever needed.
+    location ~ ^/web/database/(create|drop|backup|restore|duplicate|change_password) {
+        return 404;
+    }
+
     location / {
         proxy_pass http://127.0.0.1:8069;
         proxy_read_timeout 720s;

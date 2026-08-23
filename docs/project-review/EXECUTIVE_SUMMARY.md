@@ -8,9 +8,12 @@ vendored upstream files were not reviewed as code, but *how they got here and ho
 patched* is in scope and is among the worst findings.
 
 All findings and evidence in [`BACKLOG.md`](BACKLOG.md). **124 findings: 10 P0, 29 P1, 49 P2, 28 P3,
-6 P4** (122 table entries; `DEP-3/4/5` is one row covering three). Eight are RESOLVED — FIN-2, FIN-3,
-OPS-1, OPS-7, SEC-12, BS-20, DEP-1, TST-8 — and CI-1 is partially resolved, so **116 remain open**. This line previously read "88
-findings" and had drifted by 30; it is now counted from `BACKLOG.md` rather than carried forward.
+6 P4** (122 table entries; `DEP-3/4/5` is one row covering three). **Eleven are RESOLVED** — FIN-2,
+FIN-3, OPS-1, OPS-2, OPS-7, SEC-1, SEC-12, SAAS-2, BS-20, DEP-1, TST-8 — and CI-1 is partially
+resolved, so **113 remain open**.
+
+(This count previously read "88 findings" and had drifted by 30; it is now derived from
+`BACKLOG.md` rather than carried forward.)
 
 > This audit supersedes the previous pass and **corrects two of its conclusions**, stated
 > explicitly rather than silently amended. See *Corrections* below.
@@ -41,7 +44,7 @@ The suite tests mechanism thoroughly and outcomes barely at all.
 | Odoo upgrade safety | 7/10 | No core modification except UPG-1; two seams to watch |
 | Statutory correctness | **2/10** | FIN-2, FIN-1, ACC-1, ACC-2, ACC-3 |
 | Application security | 6/10 | No injection, ACLs complete; no record rules |
-| Perimeter security | **1/10** | SAAS-2 is live and exploitable in one request |
+| Perimeter security | **4/10** | SAAS-2 closed 2026-08-22. Still no edge, no TLS, no `dbfilter` |
 | Tenant isolation | **2/10** | Substrate primitives are good; nothing above them exists |
 | Data integrity | **5/10** | OPS-1 **fixed 2026-08-14** — no data was lost; reconciliation confirmed 0 business attachments missing. Remaining: no rehearsed backup (SUP-2, DAT-1) |
 | Testing | 4/10 | Good volume, wrong layer |
@@ -54,7 +57,7 @@ The suite tests mechanism thoroughly and outcomes barely at all.
 
 | # | Risk | ID |
 |---|---|---|
-| 1 | **One unauthenticated POST claims the cluster master password**, which then authorises a full backup of every database. `verify_admin_password('admin')` is **True** today | SAAS-2 |
+| ~~1~~ | ~~**One unauthenticated POST claims the cluster master password**~~ — **FIXED 2026-08-22.** Rotated to a 32-character random value, stored hashed; `verify_admin_password('admin')` is now False | SAAS-2 |
 | 2 | **A filed VAT return reports nil while sales exist** — zero tag→repartition links in the live database | FIN-1 |
 | 3 | ~~**Balance Sheet, P&L and Cash Flow cannot render at all**~~ — **FIXED 2026-08-15.** All three render, print to PDF, and drill down to the entries behind each figure | FIN-2 |
 | 4 | ~~Attachments written to an orphaned filestore~~ — **FIXED 2026-08-14.** Reconciliation proved no data loss; the orphan held only regenerable asset bundles | OPS-1 |
@@ -71,10 +74,10 @@ The suite tests mechanism thoroughly and outcomes barely at all.
 
 | # | Action | Addresses | Effort |
 |---|---|---|---|
-| 1 | Set a strong `admin_passwd`, `list_db = False`, block `/web/database/*` | SAAS-2, OPS-2 | XS |
+| ~~1~~ | ~~Set a strong `admin_passwd`, `list_db = False`~~ — **DONE 2026-08-22**, and stored hashed. Blocking `/web/database/*` at the edge is a server-side step; `deploy/README.md` now carries the rule | SAAS-2, OPS-2 | done |
 | 2 | ~~Correct `addons_path`/`data_dir`~~ — **DONE 2026-08-14**, with a fail-fast guard added to both launchers | OPS-1 | done |
 | 3 | Create a remote and push | SUP-2 | XS |
-| 4 | Rotate both credentials | SEC-1 | S |
+| ~~4~~ | ~~Rotate both credentials~~ — **DONE 2026-08-22.** `RECONNAISSANCE.md` redacted; history left, the old values being defaults made worthless by rotation | SEC-1 | done |
 | 5 | Move client data and credentials out of cloud sync | DAT-1 | S–M |
 | 6 | Rename the three report models so the statements render | FIN-2 | S |
 | 7 | Fix the skipping VAT test, **then** backfill the tax tags by migration | TST-1, FIN-1 | S+M |

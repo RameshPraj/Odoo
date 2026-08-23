@@ -1586,15 +1586,24 @@ function Test-Wkhtmltopdf {
 }
 
 function Test-LooksProductionLike {
-    # No single setting proves it, so judge on several. Any one of these on a
-    # developer machine would be unusual; together they mean "this is a server".
+    # A bound, non-loopback interface is decisive on its own: the server is
+    # reachable, so dev-only settings are real exposure. Everything else is
+    # circumstantial and needs corroboration, which is why the caller requires two.
+    #
+    # `list_db = False` used to be a signal here and is deliberately no longer one.
+    # It is now recommended on every host including this one, because the database
+    # manager is auth="none" and cannot be switched off (web/controllers/database.py
+    # :65-69). Treating a hardening step as evidence of production meant tightening
+    # a dev box turned its own diagnostics into two false FAILs.
     $signals = @()
-    if ((Get-ConfInt 'workers' 0) -gt 0)      { $signals += 'workers > 0' }
-    if (Get-ConfBool 'proxy_mode')            { $signals += 'proxy_mode = True' }
+    if ((Get-ConfInt 'workers' 0) -gt 0) { $signals += 'workers > 0' }
+    if (Get-ConfBool 'proxy_mode')       { $signals += 'proxy_mode = True' }
     $iface = Get-ConfValue 'http_interface'
-    if ($iface -and $iface.Trim() -ne '127.0.0.1' -and $iface.Trim() -ne 'localhost') { $signals += "http_interface = $iface" }
-    $listDb = Get-ConfValue 'list_db'
-    if ($listDb -and -not (Get-ConfBool 'list_db')) { $signals += 'list_db = False' }
+    if ($iface -and $iface.Trim() -ne '127.0.0.1' -and $iface.Trim() -ne 'localhost') {
+        # Decisive. Reported twice so one signal alone reaches the caller's threshold.
+        $signals += "http_interface = $iface"
+        $signals += 'reachable from off-host'
+    }
     return $signals
 }
 
@@ -1604,7 +1613,8 @@ function Invoke-Doctor {
     Write-Host ""
 
     $prodSignals = @(Test-LooksProductionLike)
-    $isProdLike  = ($prodSignals.Count -gt 0)
+    # Two signals, not one: a single circumstantial setting is not a server.
+    $isProdLike  = ($prodSignals.Count -ge 2)
     if ($isProdLike) {
         Write-Warn "This host looks production-like: $($prodSignals -join ', ')"
         Write-Note "  Dev-only settings are graded FAIL rather than WARN below."

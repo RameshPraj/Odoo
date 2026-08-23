@@ -231,8 +231,8 @@ Two full `pg_dump` images, the 113 MB filestore, 75 live session files, `odoo.co
 **Task · Blocker · XS · SUP-2**
 43 commits on one disk (28 at audit time), no remote, nothing ever reviewed. **Now the highest open
 risk in the project**, since the two blockers ranked above it are closed. **Acceptance** History
-present on a **private** remote; `git fsck` clean. Private specifically: SEC-1 means credentials sit
-in immutable history, so publishing it would leak them — the alternative is rewriting history first.
+present on a **private** remote; `git fsck` clean. SEC-1 no longer forces this: those credentials were rotated 2026-08-22 and publish nothing
+usable. Private is still sensible for client work, but it is a preference now, not a blocker.
 
 ### TASK-4 — PostgreSQL revokes
 **Task · Major · S · PG-1, PG-2, PG-4**

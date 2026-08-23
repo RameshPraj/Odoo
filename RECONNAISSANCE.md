@@ -1,5 +1,12 @@
 # Odoo 19.0 — Repository Reconnaissance Dossier
 
+> **Config values in this document are redacted.** It previously reproduced the live
+> master and database passwords verbatim, which is audit finding **SEC-1** — this file
+> was both the report and the leak. Both were rotated on 2026-08-22 and the master
+> password is now stored hashed. The old values remain in git history and are
+> deliberately not purged: they are worthless after rotation, and both were
+> well-known defaults rather than secrets. The analysis below is unchanged.
+
 **Subject:** `odoo-19.0` source distribution + local additions
 **Version:** `19.0-20260807` · **License:** LGPL-3
 **Method:** static file inspection + live database introspection
@@ -229,11 +236,11 @@ Environment variables are supported, but only for options that declare an `env_n
 ### Current effective configuration
 
 ```ini
-admin_passwd = admin          ; ⚠ default master password
+admin_passwd = <redacted>     ; ⚠ was the default; rotated 2026-08-22, now stored hashed
 db_host = localhost
 db_port = 5433
 db_user = odoo
-db_password = odoo            ; ⚠ plaintext secret
+db_password = <redacted>      ; ⚠ was a 4-char value; rotated 2026-08-22
 db_name = odoo19
 db_maxconn = 64
 addons_path = …\odoo\addons,…\custom_addons
@@ -252,7 +259,7 @@ list_db = True                ; ⚠ database manager exposed
 
 - **Secrets in plaintext** — `db_password` and `admin_passwd` live in `odoo.conf`.
 - **Database manager exposed** — `list_db = True` allows create/drop/backup, gated only by
-  `admin_passwd`, which is `admin`.
+  `admin_passwd`, which was left at its default. Rotated 2026-08-22; see SEC-1.
 - **No environment separation** — one config file, one database, no dev/stage/prod split,
   no secret store.
 - **Windows forces single-process** — `requirements.txt` excludes gevent/greenlet on
@@ -477,7 +484,7 @@ Ordered by consequence. **This section should drive the first sprint.**
 | # | Finding | Evidence | Severity |
 |---|---|---|---|
 | 1 | **Vendor tree modified in 87 places.** Nepali translations injected into upstream module directories. Any re-extract or upstream upgrade silently destroys them. | 88 `i18n_extra/` dirs under `odoo/addons` (1 pre-existing upstream in `account_edi_proxy_client`, 87 local) | **Critical** |
-| 2 | **Secrets in plaintext config**, DB manager exposed, default master password. | `odoo.conf` → `admin_passwd=admin`, `db_password=odoo`, `list_db=True` | **Critical** |
+| 2 | **Secrets in plaintext config**, DB manager exposed, default master password. | `odoo.conf` → `admin_passwd=<redacted>`, `db_password=<redacted>`, `list_db=True` | **Critical** |
 | 3 | **No CI, no container, no IaC.** Nothing verifies a change before it reaches a running system. | §14, §15, §16 | **Critical** |
 | 4 | **`setup/package.py` is dead code** — every build target it references is missing. | `setup/package.py:198-201, 317, 352` vs absent files | Obsolete |
 | 5 | **62 empty translation stubs.** Vendor `i18n/ne.po` files contain 0 translated strings and carry Odoo 11 (2017) headers — they look like Nepali support but provide none. | 62 files matching `*/i18n/ne.po`; `account/i18n/ne.po` = 2,413 msgid / **0** msgstr | Misleading |

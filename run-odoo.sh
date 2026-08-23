@@ -1245,14 +1245,26 @@ check_wkhtmltopdf() {
 }
 
 production_signals() {
-    # No single setting proves it, so judge on several.
-    [ "$(conf_int workers 0)" -gt 0 ] && printf 'workers > 0\n'
-    conf_bool proxy_mode && printf 'proxy_mode = True\n'
-    local iface list_db
+    # A bound, non-loopback interface is decisive on its own; everything else is
+    # circumstantial and needs corroboration, so the caller requires two lines.
+    #
+    # `list_db = False` was a signal here and deliberately is not any more: it is
+    # now recommended everywhere, because the database manager is auth="none" and
+    # cannot be switched off (web/controllers/database.py:65-69). Treating a
+    # hardening step as evidence of production made a tightened dev box report two
+    # false FAILs.
+    local iface
+    [ "$(conf_int workers 0)" -gt 0 ] && printf 'workers > 0
+'
+    conf_bool proxy_mode && printf 'proxy_mode = True
+'
     iface="$(conf_value http_interface)"
-    case "$iface" in ''|127.0.0.1|localhost) : ;; *) printf 'http_interface = %s\n' "$iface" ;; esac
-    list_db="$(conf_value list_db)"
-    if [ -n "$list_db" ] && ! conf_bool list_db; then printf 'list_db = False\n'; fi
+    case "$iface" in
+        ''|127.0.0.1|localhost) : ;;
+        *) printf 'http_interface = %s
+reachable from off-host
+' "$iface" ;;
+    esac
     return 0
 }
 
@@ -1262,7 +1274,8 @@ cmd_doctor() {
     echo "======================================"
     echo ""
     prod_signals="$(production_signals | paste -sd',' - 2>/dev/null || production_signals | tr '\n' ',')"
-    if [ -n "$prod_signals" ] && [ "$prod_signals" != "," ]; then
+    # Two signals, not one: a single circumstantial setting is not a server.
+    if [ "$(production_signals | grep -c .)" -ge 2 ]; then
         is_prod=1
         say_warn "This host looks production-like: ${prod_signals%,}"
         say_note "  Dev-only settings are graded FAIL rather than WARN below."
