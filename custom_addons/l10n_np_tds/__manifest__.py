@@ -1,8 +1,9 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 {
     'name': 'Nepal - TDS (Withholding Tax)',
-    'version': '19.0.1.2.0',   # 1.1.0 = multi-company record rules (SEC-2);
+    'version': '19.0.1.2.1',   # 1.1.0 = multi-company record rules (SEC-2);
                               # 1.2.0 = certificate collection fixed (TST-5)
+                              # 1.2.1 = empty-database test assertions (TST-2)
                               # and indexes added (SCH-1)
     'countries': ['np'],
     'category': 'Accounting/Localizations',

@@ -63,11 +63,21 @@ about the Nepali chart and cannot mean anything on a company that has not adopte
 the two before reading a `skipTest` as a TST-1 recurrence — one is the defect, the other is
 correct.
 
-**TST-2 — five suites assert on live database state.** Three assert the database is *empty*
-(`test_ships_with_no_form`, `test_ships_with_no_rates`, `test_is_configured_flag`) and will fail
-permanently the day an accountant configures TDS rates or an IRD form — the day the modules do
-their job. The correct pattern already exists at `test_np_fiscal_year.py:20-26`, added after this
-exact bug bit, and was never propagated to the other seven.
+**TST-2 — five suites assert on live database state. The three that asserted *emptiness* are
+RESOLVED 2026-08-23.** They would have failed permanently the day an accountant configured TDS
+rates or an IRD form — the day the modules do their job.
+
+The two "ships with no X" tests now count `ir.model.data` rows **owned by the module** rather
+than rows in the database, which is the question they always meant to ask; an accountant's
+records have no xmlid. `test_is_configured_flag` uses a company of its own, where the assertion
+holds by construction, and additionally checks that configuring one company does not mark another
+configured — something the old form could not see.
+
+Verified against a configured database: with one real rate and one real form present, the old
+assertions evaluate FAIL and the new ones PASS.
+
+The remaining two assert on live state without asserting emptiness, so they degrade rather than
+break; the fixture pattern to copy is still `test_np_fiscal_year.py:20-26`.
 
 **TST-3 — whole suites gate on a single skip, unreported.** Six of seven reconcile tests, and all
 14 BS-date tests (the skip sits in `setUp`). Evaluated live, neither currently fires — but that is
@@ -78,7 +88,16 @@ is empty, and is untracked — so it does not exist on a fresh clone. The only J
 that a grid of >20 cells rendered; it never validates a date.
 
 **TST-9 — a new test file can silently switch off the old ones, and the suite still reports
-green.** Recorded because it happened here, to me, on 2026-08-23. Adding
+green. RESOLVED 2026-08-23** — `tools/check_test_wiring.py` now runs in `lint`, parsing each
+`tests/__init__.py` with `ast` and failing on a test file nothing imports (or an import naming a
+file that is gone). It needs no database and no suite run, so it costs seconds. Proved against
+both failure modes by reproducing the original mistake.
+
+The disk-versus-runner count is still worth doing after a full run — it catches things the static
+check cannot, such as a test method deleted from a wired file — but it needs the suite, and this
+does not.
+
+*The original incident, which is the reason the check exists:* Recorded because it happened here, to me, on 2026-08-23. Adding
 `l10n_np/tests/test_fiscal_positions.py` for ACC-3, I overwrote `tests/__init__.py` with a single
 `from . import test_fiscal_positions` — dropping the existing `from . import test_np_chart` and
 disabling five pre-existing tests. The plan for that work asserted "the module has no `tests/`

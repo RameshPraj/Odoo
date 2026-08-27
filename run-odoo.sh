@@ -1779,6 +1779,14 @@ cmd_lint() {
     fi
 
     echo ""
+    echo "test wiring (TST-9)"
+    if lint_tool 'wiring' tools/check_test_wiring.py --quiet; then
+        say_ok 'every tests/ directory imports every test file it contains'
+    else
+        failed="$failed test-wiring"
+    fi
+
+    echo ""
     if [ -z "$failed" ]; then
         say_ok 'Lint clean'
         exit 0

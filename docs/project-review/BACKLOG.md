@@ -869,7 +869,36 @@ cannot rename an open file and gets no `WatchedFileHandler`, so the script rotat
 
 ---
 
-## TST-2 · Five suites assert on live database state; three break when the modules are used
+## TST-2 · Five suites assert on live database state
+**RESOLVED 2026-08-23** for the three that mattered — the ones asserting the database is
+**empty**, which would have failed permanently the day an accountant did their job.
+
+`test_ships_with_no_rates` and `test_ships_with_no_form` asked
+`search_count([]) == 0`, i.e. "does the database contain any TDS rate / IRD form?". The
+question they meant to ask is "does **this module ship** one?", and the two diverge the
+moment the module is used for its purpose. They now count `ir.model.data` rows owned by the
+module, which an accountant's records — having no xmlid — cannot affect.
+
+`test_is_configured_flag` called `_is_configured()` with no argument, which answers for
+`env.company`, and asserted False. It now creates its own company, where the assertion is
+true by construction rather than by accident, and additionally asserts that configuring one
+company does **not** mark another as configured — a property the old test could not see.
+
+Demonstrated rather than argued. With one real TDS rate and one real IRD form in the
+database, the old assertions evaluate to FAIL and the new ones to PASS; `_is_configured`
+returns True for the live company and False for a fresh one. Rolled back afterwards.
+
+**Why this was worth doing before the SME work, not after:** the IRD form layout is the
+single most important thing anyone will ever enter here, and it is what unblocks the FIN-1
+go-live gate. The old test would have turned that success into a red suite. A test that
+fails when the system starts working gets deleted, and the assertion it was making goes with
+it.
+
+The remaining two suites in this finding assert on live state without asserting emptiness,
+so they degrade rather than break. Left as-is; the fixture pattern to copy is
+`l10n_np_fiscal_year/tests/test_np_fiscal_year.py:20-26`.
+
+*Original finding, for context:*; three break when the modules are used
 **CONFIRMED** · Testing
 
 `test_ships_with_no_form`, `test_ships_with_no_rates` and `test_is_configured_flag` assert
@@ -1081,7 +1110,7 @@ autofix is not safe merely because it is mechanical.
 | **DOC-4** | CONFIRMED | Documentation | 5 root docs | All describe a repo with one local module; `RUNTIME-ARCHITECTURE.md` never mentions `custom_addons` | Stale by 8×; omits the `_get_view` patcher | Date-stamp as snapshots | S |
 | **OPS-3** | CONFIRMED | Operations | `deploy/odoo.service:18,51`; `README.md:45` | Service account owns `/opt/odoo` incl. its venv; `ProtectSystem=full` leaves `/opt` writable; missing `PrivateDevices`, `RestrictAddressFamilies`, `SystemCallFilter`, `MemoryMax`, `UMask`; `-s /bin/bash` | Code-execution bugs become persistent. Note the tension: `-u` and SUP-3 both want `/opt/odoo` writable | `ProtectSystem=strict` + `ReadWritePaths`; `nologin` | S |
 | **OPS-4** | CONFIRMED | Operations | `odoo.conf:60`; `.example:68` | `limit_time_real = 0` disables the runaway-request watchdog | One tenant's infinite loop permanently consumes a thread — a cross-tenant availability path. The Windows rationale is sound for dev; it must not ship | Restore on Linux (already correct there) | XS |
-| **TST-9** | **RESOLVED 2026-08-23, same day it was introduced** | Testing | `custom_addons/l10n_np/tests/__init__.py` | Adding a test file for ACC-3, I overwrote this `__init__.py` with only the new import and unwired the five pre-existing `test_np_chart` tests. The suite still reported `0 failed, 0 error(s)`, exit 0, **zero skips** — only the total moved, 343 to 342 | An unimported test file is indistinguishable from one that never existed. TST-3 warns about tests that skip themselves, but a skip is at least *reported*; this is the silent version, and it survives a green gate | Compare `def test_` methods on disk against the count the runner reports — 347 vs 342 here, and the difference is exactly the unwired file. Cheap enough for CI (**CI-1**) | XS |
+| **TST-9** | **RESOLVED 2026-08-23** — `tools/check_test_wiring.py` parses every `tests/__init__.py` with `ast` and fails when a `test_*.py` file is not imported, or when an import names a file that no longer exists. Wired into `lint`, so it runs in seconds without a database or a suite run. Proved against both failure modes by reproducing the original ACC-3 mistake exactly. It also found a UTF-8 BOM (**QA-2**) on its first run, which is why it reads with `utf-8-sig` | **RESOLVED 2026-08-23, same day it was introduced** | Testing | `custom_addons/l10n_np/tests/__init__.py` | Adding a test file for ACC-3, I overwrote this `__init__.py` with only the new import and unwired the five pre-existing `test_np_chart` tests. The suite still reported `0 failed, 0 error(s)`, exit 0, **zero skips** — only the total moved, 343 to 342 | An unimported test file is indistinguishable from one that never existed. TST-3 warns about tests that skip themselves, but a skip is at least *reported*; this is the silent version, and it survives a green gate | Compare `def test_` methods on disk against the count the runner reports — 347 vs 342 here, and the difference is exactly the unwired file. Cheap enough for CI (**CI-1**) | XS |
 | **TST-3** | CONFIRMED | Testing | `test_reconcile.py:48-50`; `test_bs_accounting_dates.py:42-46` | Whole suites gate on one skip; nothing reports skip counts | A green run is indistinguishable from a run of nothing | Fail CI on skips | S |
 | **TST-6** | CONFIRMED | Testing | `test_loan.py:243-259` | Hardcoded 2026 backdates mixed with `context_today` | Holds only while the clock is past Feb 2026 | `freezegun` | XS |
 | **TST-7** | **PARTLY RESOLVED 2026-08-23** — the company half is measured and is **not** a problem: `res_company` held 1 row before a test run that creates several throwaway companies, and 1 row after. Creating a company and writing to it roll back together; the `cr.precommit` hazard applies to writes against a company that **already existed** (which is what `test_lock_dates.py` warns about and why it, and the new TST-5 fixture, build their own). The `base.group_user.implied_ids` half is untested and still open | Testing | `test_lock_dates.py:22,79`; `test_bs_accounting_dates.py:30` | ~7 throwaway `res.company` per run; `base.group_user.implied_ids` mutated globally | Companies do not accrete. A global group mutation still would | Re-measure `implied_ids` the same way | XS |

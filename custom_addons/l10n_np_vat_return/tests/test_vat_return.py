@@ -61,9 +61,26 @@ class TestVatReturn(TransactionCase):
                     self.fail(f"{os.path.basename(path)}: {exc}")
 
     def test_ships_with_no_form(self):
-        """The IRD defines the layout; shipping a guess would be worse than nothing."""
-        self.assertFalse(
-            self.Form.search_count([]),
+        """The IRD defines the layout; shipping a guess would be worse than nothing.
+
+        Asserted against **what this module owns**, not against the database being
+        empty (**TST-2**). The previous version was
+        `assertFalse(self.Form.search_count([]))`, which would begin failing
+        permanently the day an accountant entered the real IRD layout — the single
+        most important thing anyone will ever do with this module, and the event
+        that unblocks the FIN-1 go-live gate. A test that fails on success gets
+        deleted, taking its assertion with it.
+
+        `ir.model.data` answers the question actually being asked: did this
+        module's data files create a form? A form an accountant enters has no
+        xmlid and is invisible here.
+        """
+        shipped = self.env["ir.model.data"].search_count([
+            ("model", "=", "l10n_np.vat.return.form"),
+            ("module", "=", "l10n_np_vat_return"),
+        ])
+        self.assertEqual(
+            shipped, 0,
             "No VAT return form may ship with this module.",
         )
 

@@ -54,9 +54,26 @@ class TestTdsFramework(TransactionCase):
 
     def test_ships_with_no_rates(self):
         """Deliberate: rates are law, not code. Shipping a guess would be worse
-        than shipping nothing."""
-        self.assertFalse(
-            self.Category.search_count([]),
+        than shipping nothing.
+
+        Asserted against **what this module owns**, not against the database being
+        empty (**TST-2**). The previous version was
+        `assertFalse(self.Category.search_count([]))`, which would begin failing
+        permanently the day an accountant entered the first real rate — that is,
+        the day the module started doing its job. A test that breaks on correct
+        use is worse than no test: it gets deleted, and the assertion it was
+        making goes with it.
+
+        `ir.model.data` is the right question because it answers the one actually
+        being asked: did *this module's data files* create any rates? An
+        accountant's records have no xmlid and are invisible here.
+        """
+        shipped = self.env["ir.model.data"].search_count([
+            ("model", "=", "l10n_np.tds.category"),
+            ("module", "=", "l10n_np_tds"),
+        ])
+        self.assertEqual(
+            shipped, 0,
             "This module must not ship TDS rates. Rates are set by the Income Tax "
             "Act and entered by an accountant.",
         )
@@ -111,6 +128,30 @@ class TestTdsFramework(TransactionCase):
             cert.action_issue()
 
     def test_is_configured_flag(self):
-        self.assertFalse(self.Category._is_configured())
-        self._cat("ANY", 1.5, "2026-07-17")
-        self.assertTrue(self.Category._is_configured())
+        """`_is_configured` is company-scoped, so test it on a company of our own.
+
+        The previous version called `_is_configured()` with no argument, which
+        answers for `env.company` — and asserted False, so it depended on the
+        live company having no TDS categories. It would fail the moment one was
+        configured (**TST-2**). A fresh company has none by construction, which
+        makes the assertion true for the right reason instead of by accident.
+        """
+        company = self.env["res.company"].create({"name": "TDS Config Test Co"})
+        self.assertFalse(
+            self.Category._is_configured(company),
+            "a company with no categories must read as unconfigured")
+
+        self.Category.create({
+            "code": "ANY", "name": "ANY category", "rate": 1.5,
+            "date_from": "2026-07-17", "account_id": self.account.id,
+            "company_id": company.id,
+        })
+        self.assertTrue(
+            self.Category._is_configured(company),
+            "one category is enough to count as configured")
+
+        # And it must stay per-company: configuring one must not configure another.
+        other = self.env["res.company"].create({"name": "TDS Unconfigured Co"})
+        self.assertFalse(
+            self.Category._is_configured(other),
+            "configuring one company must not mark another as configured")

@@ -2281,6 +2281,12 @@ function Invoke-Lint {
     } else { $failed += 'manifest versions' }
 
     Write-Host ""
+    Write-Host "test wiring (TST-9)"
+    if (Invoke-LintTool @('tools/check_test_wiring.py', '--quiet')) {
+        Write-Ok 'every tests/ directory imports every test file it contains'
+    } else { $failed += 'test wiring' }
+
+    Write-Host ""
     if ($failed.Count -eq 0) {
         Write-Ok 'Lint clean'
         exit 0
