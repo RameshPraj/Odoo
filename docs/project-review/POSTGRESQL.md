@@ -25,6 +25,29 @@ the project respects that — a dedicated role was created rather than working a
 
 ## PG-1 (P2) — the Odoo account can reach an unrelated corporate database
 
+> **Scoped 2026-08-23: this is not this project's change to make.** The fix below
+> alters `ist_datahub`, a third-party corporate database that merely shares the
+> cluster. Revoking `PUBLIC CONNECT` there could break any other application
+> connecting on the `PUBLIC` grant — a system outside this repository, with its own
+> owner and its own users.
+>
+> Verified untouched: `pg_database.datacl` for `ist_datahub` is `NULL`, PostgreSQL's
+> default. Nothing in this project has modified it.
+>
+> There is also no way to close this purely from our side. `CONNECT` comes from the
+> `PUBLIC` grant on **their** database, so any revoke — whether `FROM PUBLIC` or
+> `FROM odoo` — is a change to their ACL.
+>
+> Three real options, all of them decisions rather than commits: raise it with the
+> owner of `ist_datahub`; accept it as a known property of a shared cluster (the
+> exposure is metadata, not data — 0 tables selectable); or move Odoo to its own
+> cluster, which is the "separately worth deciding" question already raised at the
+> end of this document.
+>
+> **PG-2 and PG-4 are unaffected** — those are about databases *Odoo itself creates*,
+> and belong in our provisioning.
+
+
 `ist_datahub` is a 12 GB third-party database on the same cluster, and the `odoo` service account
 **can connect to it**. I probed precisely what that permits — privilege checks only, no data read:
 
@@ -177,7 +200,7 @@ control for routine operations.
 
 ## Recommended sequence
 
-1. **PG-1** — revoke PUBLIC CONNECT on `ist_datahub`. **XS**
+1. ~~**PG-1** — revoke PUBLIC CONNECT on `ist_datahub`.~~ **Not ours** — see the note at PG-1. Raise with that database's owner, accept, or separate the clusters.
 2. **PG-2 / PG-4** — bake both REVOKEs into provisioning before any second role exists. **S**
 3. **SCH-1** — index the business FKs, alongside SEC-2's record rules. **XS**
 4. Backup/restore **rehearsal**, per tenant. **M**

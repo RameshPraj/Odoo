@@ -45,7 +45,7 @@ before a second tenant exists. They are not go-live blockers for a single-tenant
 - [x] **SEC-2** — ten global record rules across the three modules that own company-scoped models (2026-08-23). Negative control: with them disabled a company A manager reads company B's filed VAT return; with them active, refused
 - [x] **SEC-6** — the read-only role is read-only on return lines (2026-08-23). Not the "one-character fix" the note claimed: that row was also what granted every higher group its access, so the billing role needed its own row or computing a return would have broken
 - [x] **SEC-3** — the formula evaluator parses and walks an AST instead of calling `eval`, so `ast.Pow` is absent by construction rather than blacklisted (2026-08-23). A character class cannot express "one star but not two", which is why the regex admitted `**`
-- [ ] **PG-1 / PG-2 / PG-4** — revokes applied and baked into provisioning
+- [ ] **PG-2 / PG-4** — revokes baked into provisioning, before any second database role exists. **PG-1 is excluded**: its revoke alters `ist_datahub`, a third-party corporate database, so it is the owner's action or an accepted risk — not a change this project makes
 
 ### Multi-tenant (additional)
 - [ ] **SAAS-1 / SAAS-11** — anchored `dbfilter`; `X-Odoo-Database` cannot select a tenant
