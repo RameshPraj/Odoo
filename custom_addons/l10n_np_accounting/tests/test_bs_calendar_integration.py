@@ -188,10 +188,17 @@ class TestStorageUnchanged(TransactionCase):
         original = company.calendar_system
         self.addCleanup(company.write, {"calendar_system": original})
 
+        # Created when absent rather than skipped (TST-3): a company without a
+        # general journal is exactly the fresh-install case this test should still
+        # cover, and skipping there means it covers nothing on the database where
+        # a regression is most likely.
         journal = self.env["account.journal"].search(
             [("type", "=", "general"), ("company_id", "=", company.id)], limit=1)
         if not journal:
-            self.skipTest("no general journal in this company")
+            journal = self.env["account.journal"].create({
+                "name": "TST-3 General", "code": "T3BS", "type": "general",
+                "company_id": company.id,
+            })
 
         accounting_date = datetime.date(2026, 9, 9)
         company.calendar_system = "ad"

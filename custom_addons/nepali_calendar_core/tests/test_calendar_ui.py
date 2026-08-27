@@ -77,6 +77,11 @@ class TestBSAssets(TransactionCase):
         """
         node = shutil.which("node")
         if not node:
+            # DELIBERATE SKIP: an environment capability, not a fixture. Without
+            # node there is no way to parse-check JavaScript, and failing would
+            # make the suite unrunnable on a machine that simply lacks a tool.
+            # `doctor` reports node's presence, the skip counter reports this, and
+            # CI should run with `--fail-on-skip` so it cannot pass unnoticed there.
             self.skipTest("node is not on PATH; cannot parse-check JavaScript")
 
         files = glob.glob(os.path.join(MODULE_DIR, "**", "*.js"), recursive=True)

@@ -25,6 +25,16 @@ class TestExportZeroRating(TransactionCase):
         if cls.company.chart_template != "np":
             # SkipTest directly: skipTest() is an instance method and raises rather
             # than returns, so `raise cls.skipTest(...)` is wrong in setUpClass.
+            # DELIBERATE SKIP, kept after the TST-3 sweep. Every other
+            # conditional skip in this suite was replaced with a fixture that
+            # cannot be absent; this one stays because the assertion it guards is
+            # *meaningless* off the Nepali chart rather than merely inconvenient.
+            # There is no NP fiscal position to substitute anything, so a created
+            # fixture would test a fabrication. Adopting the chart inside the test
+            # is the alternative and it is slow enough to matter.
+            #
+            # It is now visible either way: `run-odoo test` reports the skip count
+            # and names every skipped test, and `--fail-on-skip` makes CI refuse it.
             raise unittest.SkipTest("company is not on the Nepali chart")
         cls.vat13 = cls.env["account.tax"].search([
             ("company_id", "=", cls.company.id),

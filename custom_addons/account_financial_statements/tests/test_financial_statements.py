@@ -284,19 +284,39 @@ class TestFinancialStatements(TransactionCase):
         return move
 
     def _accounts_for_cash_flow(self):
+        """The four account types the cash-flow statement classifies against.
+
+        Searched first, **created if the chart has none** (TST-3). These used to be
+        `search(...)` alone, and all four cash-flow tests began
+        `if not all(a.values()): self.skipTest(...)`. Two of those types --
+        `asset_fixed` and `liability_non_current` -- are exactly the ones
+        `ACCOUNTING_NEPAL.md` records as *missing from this 43-account chart*, so
+        the skip was not hypothetical: on this very database the cash-flow suite
+        was one chart revision away from silently asserting nothing, and nothing
+        printed a skip count to say so.
+
+        Creating them keeps the tests representative where a chart exists and
+        honest where it does not.
+        """
         A = self.env["account.account"]
-        return {
-            "cash": A.search([("account_type", "=", "asset_cash")], limit=1),
-            "income": A.search([("account_type", "=", "income")], limit=1),
-            "fixed": A.search([("account_type", "=", "asset_fixed")], limit=1),
-            "loan": A.search([("account_type", "=", "liability_non_current")], limit=1),
-        }
+        wanted = (
+            ("cash", "asset_cash", "TST3CASH", "Test cash"),
+            ("income", "income", "TST3INC", "Test income"),
+            ("fixed", "asset_fixed", "TST3FIX", "Test fixed asset"),
+            ("loan", "liability_non_current", "TST3LOAN", "Test long-term loan"),
+        )
+        accounts = {}
+        for key, account_type, code, name in wanted:
+            found = A.search([("account_type", "=", account_type)], limit=1)
+            accounts[key] = found or A.create({
+                "code": code, "name": name, "account_type": account_type,
+                "company_ids": [Command.set([self.env.company.id])],
+            })
+        return accounts
 
     def test_cash_flow_reconciles(self):
         """The core guarantee: classified movements must equal the change in cash."""
         a = self._accounts_for_cash_flow()
-        if not all(a.values()):
-            self.skipTest("chart lacks one of cash/income/fixed/non-current-liability")
         self._cash_entry(a["cash"], a["income"], 300000.0, "2026-08-02", "Cash sale")
         self._cash_entry(a["cash"], a["fixed"], -500000.0, "2026-08-06", "Equipment")
         self._cash_entry(a["cash"], a["loan"], 800000.0, "2026-08-10", "Loan")
@@ -315,8 +335,6 @@ class TestFinancialStatements(TransactionCase):
     def test_cash_flow_classification(self):
         """Each counterpart type must land in the right section."""
         a = self._accounts_for_cash_flow()
-        if not all(a.values()):
-            self.skipTest("chart lacks required account types")
         self._cash_entry(a["cash"], a["income"], 300000.0, "2026-08-02", "Cash sale")
         self._cash_entry(a["cash"], a["fixed"], -500000.0, "2026-08-06", "Equipment")
         self._cash_entry(a["cash"], a["loan"], 800000.0, "2026-08-10", "Loan")
@@ -454,8 +472,6 @@ class TestFinancialStatements(TransactionCase):
     # ------------------------------------------------------------------
     def test_cash_flow_lines_carry_their_contributing_entries(self):
         a = self._accounts_for_cash_flow()
-        if not a:
-            self.skipTest("chart lacks the account types this needs")
         self._cash_entry(a["cash"], a["income"], 300000.0, "2026-08-02", "Cash sale")
         wiz = self._wizard()
         cf = self.env["report.account_financial_statements.cash_flow"]._get_report_values(
@@ -473,8 +489,6 @@ class TestFinancialStatements(TransactionCase):
     def test_cash_flow_opening_and_closing_do_tie(self):
         """Unlike the movement lines, these two are plain sums."""
         a = self._accounts_for_cash_flow()
-        if not a:
-            self.skipTest("chart lacks the account types this needs")
         self._cash_entry(a["cash"], a["income"], 300000.0, "2026-08-02", "Cash sale")
         wiz = self._wizard()
         cf = self.env["report.account_financial_statements.cash_flow"]._get_report_values(

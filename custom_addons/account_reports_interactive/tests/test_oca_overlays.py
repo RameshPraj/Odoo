@@ -11,6 +11,7 @@ inheritance to the vendored template.
 import ast
 
 from lxml import etree
+from odoo import Command
 from odoo.tests import TransactionCase, tagged
 
 AGED_TEMPLATE = "account_financial_report.report_aged_partner_balance_move_lines"
@@ -203,16 +204,64 @@ class TestDrilldownAddedWhereThereWasNone(TransactionCase):
     filters that would have to be kept in step by hand.
     """
 
-    def _skip_without_books(self, count):
-        if not count:
-            self.skipTest("no unreconciled receivable/payable lines to report on")
+    @classmethod
+    def setUpClass(cls):
+        """Seed one posted, unreconciled receivable entry (TST-3).
+
+        Both tests in this class used to begin with a skip when the database
+        happened to hold no open items and no journal activity in the period. On
+        an empty database — a fresh install, or CI — they asserted nothing and the
+        suite still reported success. Nothing printed a skip count to say so.
+
+        Seeding is unconditional rather than conditional: a fixture that exists
+        only sometimes gives you a test that runs only sometimes, which is the
+        defect rather than a fix for it. Where the database already has books,
+        this entry is simply one more line among them and changes nothing the
+        assertions depend on — they compare a report total against its own
+        drill-down, whatever the total happens to be.
+        """
+        super().setUpClass()
+        receivable = _recpay_accounts(cls).filtered(
+            lambda a: a.account_type == "asset_receivable")[:1]
+        if not receivable:
+            receivable = cls.env["account.account"].create({
+                "code": "TST3AR", "name": "Test receivable",
+                "account_type": "asset_receivable", "reconcile": True,
+                "company_ids": [Command.set([cls.env.company.id])],
+            })
+        income = cls.env["account.account"].search(
+            [("account_type", "=", "income")], limit=1) or cls.env["account.account"].create({
+                "code": "TST3IN", "name": "Test income", "account_type": "income",
+                "company_ids": [Command.set([cls.env.company.id])],
+            })
+        journal = cls.env["account.journal"].search(
+            [("type", "=", "general"), ("company_id", "=", cls.env.company.id)],
+            limit=1) or cls.env["account.journal"].create({
+                "name": "TST-3 General", "code": "T3OVL", "type": "general",
+                "company_id": cls.env.company.id,
+            })
+        partner = cls.env["res.partner"].create({"name": "TST-3 Overlay Partner"})
+        cls.seeded = cls.env["account.move"].create({
+            "move_type": "entry", "date": "2026-08-10", "journal_id": journal.id,
+            "line_ids": [
+                Command.create({"account_id": receivable.id, "name": "open item",
+                                "debit": 1000.0, "credit": 0.0,
+                                "partner_id": partner.id}),
+                Command.create({"account_id": income.id, "name": "open item",
+                                "debit": 0.0, "credit": 1000.0,
+                                "partner_id": partner.id}),
+            ],
+        })
+        cls.seeded.action_post()
 
     def test_open_items_totals_are_drillable(self):
         accounts = _recpay_accounts(self)
-        self._skip_without_books(self.env["account.move.line"].search_count([
-            ("account_id", "in", accounts.ids), ("parent_state", "=", "posted"),
-            ("amount_residual", "!=", 0),
-        ]))
+        self.assertTrue(
+            self.env["account.move.line"].search_count([
+                ("account_id", "in", accounts.ids), ("parent_state", "=", "posted"),
+                ("amount_residual", "!=", 0),
+            ]),
+            "fixture: setUpClass must leave at least one open item to report on")
         wizard = self.env["open.items.report.wizard"].create({
             "company_id": self.env.company.id,
             "date_at": "2026-08-31",
@@ -277,5 +326,7 @@ class TestDrilldownAddedWhereThereWasNone(TransactionCase):
                     f"journal {journal['name']} shows {field} {journal[field]} "
                     f"but its drill-down sums to {total}")
                 checked += 1
-        if not checked:
-            self.skipTest("no journal activity in the period")
+        self.assertTrue(
+            checked,
+            "fixture: setUpClass posts an entry dated 2026-08-10, so the journal "
+            "ledger must show activity in the period")

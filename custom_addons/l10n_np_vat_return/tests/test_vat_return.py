@@ -141,6 +141,10 @@ class TestVatReturn(TransactionCase):
         data when a company *adopts* the chart, not on `-u`.
         """
         if self.company.chart_template != "np":
+            # DELIBERATE SKIP — see the equivalent note in
+            # l10n_np/tests/test_fiscal_positions.py. This asserts a property of
+            # the shipped NP chart's taxes; off that chart there is nothing to
+            # assert about. Reported by the skip counter rather than silent.
             self.skipTest("company is not on the Nepali chart")
         taxes = self.env["account.tax"].search([
             ("company_id", "=", self.company.id),

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'Interactive Financial Reports',
-    'version': '19.0.1.1.0',   # 1.1.0 = OCA drill-down overlays and the
+    'version': '19.0.1.1.1',   # 1.1.0 = OCA drill-down overlays and the
                               # aged-balance date fix (FIN-3)
     'category': 'Accounting/Reporting',
     'summary': 'Click a figure in a financial report to reach the entries behind it',

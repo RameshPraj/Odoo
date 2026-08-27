@@ -79,9 +79,28 @@ assertions evaluate FAIL and the new ones PASS.
 The remaining two assert on live state without asserting emptiness, so they degrade rather than
 break; the fixture pattern to copy is still `test_np_fiscal_year.py:20-26`.
 
-**TST-3 — whole suites gate on a single skip, unreported.** Six of seven reconcile tests, and all
-14 BS-date tests (the skip sits in `setUp`). Evaluated live, neither currently fires — but that is
-incidental, nothing reports it, and TST-1 proves the mechanism bites.
+**TST-3 — whole suites gate on a single skip, unreported. RESOLVED 2026-08-23**, in two halves.
+
+*Reporting*, with CI-1: `test` prints the skip count and names every skipped test;
+`--fail-on-skip` exits non-zero. Odoo tracks `result.skipped` internally and never prints it, so
+before this a run that skipped everything was indistinguishable from one that passed everything.
+
+*Skipping*: **11 conditional skips became 3.** Every skip that fired because a fixture was merely
+**absent** now builds that fixture — searched first, so an existing chart is still used and the
+tests stay representative, but they can no longer be silenced by its absence. That covered six of
+seven reconcile tests, all four cash-flow tests, both OCA overlay tests and one BS-date test.
+
+Worth noting how close this was to biting: two of the account types the cash-flow tests need,
+`asset_fixed` and `liability_non_current`, are ones `ACCOUNTING_NEPAL.md` records as **missing
+from this 43-account chart**. That suite was one chart revision away from silently asserting
+nothing.
+
+The 3 remaining skips are deliberate, and each carries a comment saying so. Two guard assertions
+that are *meaningless* off the Nepali chart rather than merely inconvenient — there is no NP
+fiscal position to substitute anything, so a created fixture would test a fabrication. One needs
+`node` on PATH, an environment capability rather than a fixture. **The rule that came out of
+this:** skip when the assertion would be meaningless; build a fixture when it would merely be
+inconvenient.
 
 **TST-4 — 669 lines of JavaScript with zero tests.** `static/tests/` is declared in the manifest,
 is empty, and is untracked — so it does not exist on a fresh clone. The only JS assertion checks

@@ -18,16 +18,53 @@ class TestReconcileButton(TransactionCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        cls.journal = cls.env["account.journal"].search(
-            [("type", "=", "general"), ("company_id", "=", cls.env.company.id)], limit=1)
-        cls.receivable = cls.env["account.account"].search(
-            [("account_type", "=", "asset_receivable"),
-             ("reconcile", "=", True),
-             ("company_ids", "in", cls.env.company.id)], limit=1)
-        cls.income = cls.env["account.account"].search(
-            [("account_type", "=", "income"),
-             ("company_ids", "in", cls.env.company.id)], limit=1)
+        cls.journal = cls._journal()
+        cls.receivable = cls._account(
+            "asset_receivable", "TST3RECV", "Test receivable", reconcile=True)
+        cls.income = cls._account("income", "TST3INC", "Test income")
+        cls.payable = cls._account(
+            "liability_payable", "TST3PAY", "Test payable", reconcile=True)
         cls.partner = cls.env["res.partner"].create({"name": "Reconcile Test Partner"})
+
+    # ---- fixtures that cannot be absent (TST-3) --------------------------
+    #
+    # These were `search(...)` against the live company, and every test that
+    # needed one called `_skip_unless_chart()` when it came back empty. On a
+    # database whose chart differs -- a fresh install, a company created for
+    # another test, a future chart revision -- six of the seven tests here
+    # skipped, and the suite reported success for a class that had asserted
+    # almost nothing. Nothing printed the skip count either, so a run of nothing
+    # was indistinguishable from a run that passed.
+    #
+    # Searched first, created if missing: an existing chart is still used where
+    # it exists, so the tests stay representative, but they can no longer be
+    # silenced by its absence.
+
+    @classmethod
+    def _account(cls, account_type, code, name, reconcile=False):
+        domain = [("account_type", "=", account_type),
+                  ("company_ids", "in", cls.env.company.id)]
+        if reconcile:
+            domain.append(("reconcile", "=", True))
+        existing = cls.env["account.account"].search(domain, limit=1)
+        if existing:
+            return existing
+        return cls.env["account.account"].create({
+            "code": code, "name": name, "account_type": account_type,
+            "reconcile": reconcile,
+            "company_ids": [Command.set([cls.env.company.id])],
+        })
+
+    @classmethod
+    def _journal(cls):
+        existing = cls.env["account.journal"].search(
+            [("type", "=", "general"), ("company_id", "=", cls.env.company.id)], limit=1)
+        if existing:
+            return existing
+        return cls.env["account.journal"].create({
+            "name": "TST-3 General", "code": "TST3G", "type": "general",
+            "company_id": cls.env.company.id,
+        })
 
     def _entry(self, debit_account, credit_account, amount, date="2026-08-10"):
         move = self.env["account.move"].create({
@@ -45,10 +82,6 @@ class TestReconcileButton(TransactionCase):
         })
         return move
 
-    def _skip_unless_chart(self):
-        if not (self.journal and self.receivable and self.income):
-            self.skipTest("company has no chart of accounts loaded")
-
     def test_refuses_fewer_than_two_lines(self):
         model = self.env["account.move.line"]
         with self.assertRaises(UserError) as caught:
@@ -56,7 +89,6 @@ class TestReconcileButton(TransactionCase):
         self.assertIn("at least two", str(caught.exception))
 
     def test_refuses_draft_entries(self):
-        self._skip_unless_chart()
         move = self._entry(self.receivable, self.income, 1000.0)
         lines = move.line_ids
         with self.assertRaises(UserError) as caught:
@@ -64,7 +96,6 @@ class TestReconcileButton(TransactionCase):
         self.assertIn("posted", str(caught.exception))
 
     def test_refuses_non_reconcilable_account(self):
-        self._skip_unless_chart()
         move = self._entry(self.receivable, self.income, 1000.0)
         move.action_post()
         with self.assertRaises(UserError) as caught:
@@ -74,12 +105,7 @@ class TestReconcileButton(TransactionCase):
         self.assertIn("Allow", str(caught.exception))
 
     def test_refuses_two_different_accounts(self):
-        self._skip_unless_chart()
-        other = self.env["account.account"].search(
-            [("account_type", "=", "liability_payable"), ("reconcile", "=", True),
-             ("company_ids", "in", self.env.company.id)], limit=1)
-        if not other:
-            self.skipTest("no second reconcilable account")
+        other = self.payable
         first = self._entry(self.receivable, self.income, 1000.0)
         second = self._entry(self.income, other, 1000.0)
         (first + second).action_post()
@@ -90,7 +116,6 @@ class TestReconcileButton(TransactionCase):
         self.assertIn("one account", str(caught.exception))
 
     def test_reconciles_an_offsetting_pair(self):
-        self._skip_unless_chart()
         debit_side = self._entry(self.receivable, self.income, 1000.0)
         credit_side = self._entry(self.income, self.receivable, 1000.0)
         (debit_side + credit_side).action_post()
@@ -105,7 +130,6 @@ class TestReconcileButton(TransactionCase):
         self.assertEqual(result["params"]["type"], "success")
 
     def test_refuses_already_reconciled_lines(self):
-        self._skip_unless_chart()
         debit_side = self._entry(self.receivable, self.income, 1000.0)
         credit_side = self._entry(self.income, self.receivable, 1000.0)
         (debit_side + credit_side).action_post()
@@ -118,7 +142,6 @@ class TestReconcileButton(TransactionCase):
 
     def test_action_domain_shows_only_open_reconcilable_items(self):
         """The Reconcile screen must not list closed or unreconcilable items."""
-        self._skip_unless_chart()
         action = self.env.ref("l10n_np_accounting.action_account_reconcile")
         listed = self.env["account.move.line"].search(safe_eval(action.domain))
         self.assertFalse(listed.filtered(lambda line: not line.account_id.reconcile))
