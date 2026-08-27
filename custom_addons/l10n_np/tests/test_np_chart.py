@@ -9,10 +9,8 @@ comment once: a double hyphen inside <!-- --> is illegal XML, and because Odoo
 merges module XML it can break far more than the offending module.
 """
 import csv
-import glob
 import os
 
-from lxml import etree
 from odoo.tests import TransactionCase, tagged
 
 MODULE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -22,16 +20,15 @@ TEMPLATE_DIR = os.path.join(MODULE_DIR, "data", "template")
 @tagged("-at_install", "post_install")
 class TestNPScaffold(TransactionCase):
 
-    def test_xml_is_well_formed(self):
-        """Every XML file must parse. A stray '--' in a comment breaks the bundle."""
-        files = glob.glob(os.path.join(MODULE_DIR, "**", "*.xml"), recursive=True)
-        self.assertTrue(files, "no XML files found")
-        for path in files:
-            with self.subTest(file=os.path.basename(path)):
-                try:
-                    etree.parse(path)
-                except etree.XMLSyntaxError as exc:
-                    self.fail(f"{os.path.basename(path)} is not well-formed: {exc}")
+    # `test_xml_is_well_formed` lived here, in four near-identical copies across
+    # four modules, while twelve modules shipping XML had no such test at all
+    # (**COD-2**). It moved to `tools/check_xml_wellformed.py`, which `lint` runs.
+    #
+    # The check needs no ORM, no database and no registry -- it is a filesystem
+    # walk and an `lxml` parse -- so paying for a database and a module install to
+    # run it was the wrong trade, and a test could only ever cover modules that
+    # already had a `tests/` directory. The tool covers all 79 XML files across 16
+    # modules, including those with no tests, in about a second.
 
     def test_template_registered(self):
         """The 'np' chart template must be discoverable."""

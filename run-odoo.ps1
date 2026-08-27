@@ -2287,6 +2287,12 @@ function Invoke-Lint {
     } else { $failed += 'test wiring' }
 
     Write-Host ""
+    Write-Host "XML well-formedness (COD-2)"
+    if (Invoke-LintTool @('tools/check_xml_wellformed.py', '--quiet')) {
+        Write-Ok 'every XML file parses with lxml, the parser Odoo uses'
+    } else { $failed += 'XML well-formedness' }
+
+    Write-Host ""
     if ($failed.Count -eq 0) {
         Write-Ok 'Lint clean'
         exit 0

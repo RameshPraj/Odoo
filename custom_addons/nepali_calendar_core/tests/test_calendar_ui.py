@@ -30,7 +30,6 @@ import os
 import shutil
 import subprocess
 
-from lxml import etree
 from odoo.tests import HttpCase, TransactionCase, tagged
 
 MODULE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -39,20 +38,15 @@ MODULE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 @tagged("-at_install", "post_install")
 class TestBSAssets(TransactionCase):
 
-    def test_all_xml_is_well_formed(self):
-        """Every XML file must parse.
-
-        A stray '--' inside a comment is illegal XML and invalidates the whole
-        merged asset bundle, taking down web.WebClient itself.
-        """
-        files = glob.glob(os.path.join(MODULE_DIR, "**", "*.xml"), recursive=True)
-        self.assertTrue(files, "no XML files found -- is MODULE_DIR wrong?")
-        for path in files:
-            with self.subTest(file=os.path.relpath(path, MODULE_DIR)):
-                try:
-                    etree.parse(path)
-                except etree.XMLSyntaxError as exc:
-                    self.fail(f"{os.path.relpath(path, MODULE_DIR)} is not well-formed: {exc}")
+    # `test_xml_is_well_formed` lived here, in four near-identical copies across
+    # four modules, while twelve modules shipping XML had no such test at all
+    # (**COD-2**). It moved to `tools/check_xml_wellformed.py`, which `lint` runs.
+    #
+    # The check needs no ORM, no database and no registry -- it is a filesystem
+    # walk and an `lxml` parse -- so paying for a database and a module install to
+    # run it was the wrong trade, and a test could only ever cover modules that
+    # already had a `tests/` directory. The tool covers all 79 XML files across 16
+    # modules, including those with no tests, in about a second.
 
     def test_all_js_parses_as_a_module(self):
         """Every .js file must parse as an ES module.

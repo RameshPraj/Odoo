@@ -1787,6 +1787,14 @@ cmd_lint() {
     fi
 
     echo ""
+    echo "XML well-formedness (COD-2)"
+    if lint_tool 'xml' tools/check_xml_wellformed.py --quiet; then
+        say_ok 'every XML file parses with lxml, the parser Odoo uses'
+    else
+        failed="$failed xml-wellformed"
+    fi
+
+    echo ""
     if [ -z "$failed" ]; then
         say_ok 'Lint clean'
         exit 0
