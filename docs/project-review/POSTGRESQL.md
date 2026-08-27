@@ -47,6 +47,22 @@ the project respects that — a dedicated role was created rather than working a
 > **PG-2 and PG-4 are unaffected** — those are about databases *Odoo itself creates*,
 > and belong in our provisioning.
 
+> **The application never goes near it, and the config is what guarantees that.**
+> `odoo.conf` sets `db_name = odoo19` and `list_db = False`, so Odoo is pinned to one
+> database and cannot enumerate or select another through any route — that is the
+> guardrail, and it is already in place.
+>
+> This finding is therefore about what the **PostgreSQL role** is permitted to do,
+> not about what Odoo does. The evidence came from a direct `psycopg2` connection
+> using the `odoo` credentials, which bypasses `odoo.conf` entirely — `db_name`
+> constrains the application, not the account.
+>
+> That narrows the residual to one scenario worth stating plainly: if the Odoo
+> **process** were compromised, the attacker holds `db_password` and can connect
+> directly, at which point `ist_datahub`'s table names are reachable. That is the
+> blast-radius argument, and it is the only one. In normal operation nothing in this
+> project touches that database.
+
 
 `ist_datahub` is a 12 GB third-party database on the same cluster, and the `odoo` service account
 **can connect to it**. I probed precisely what that permits — privilege checks only, no data read:
