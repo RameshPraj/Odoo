@@ -92,6 +92,98 @@ class TestFinancialStatements(TransactionCase):
         )
         self.assertAlmostEqual(bs["assets"]["total"], bs["total_liab_equity"], places=2)
 
+    # ---- ACC-2: prior years' profit --------------------------------------
+    def _balance_sheet(self, **wizard_kwargs):
+        wiz = self._wizard(**wizard_kwargs)
+        return self.env["report.account_financial_statements.balance_sheet"]._get_report_values(
+            None, {"wizard_id": wiz.id})
+
+    def test_balance_sheet_balances_with_a_prior_year_entry(self):
+        """ACC-2. This is the test the old one should have been.
+
+        `test_balance_sheet_balances` posts only current-fiscal-year entries, so it
+        passed throughout the defect. Assets, liabilities and equity are cumulative
+        since inception, but the result added back covered only the current year --
+        and Odoo Community posts no year-end closing entry, so prior years' income
+        and expense are zeroed nowhere. The sheet came out short by exactly the sum
+        of every previous year's profit, and printed a "difference" line on a
+        statutory statement.
+
+        The company's fiscal year runs 17 July to 16 July, so 2026-06-01 is the
+        previous year for a sheet dated 2026-08-31.
+        """
+        self._post_expense(50000.0, date="2026-06-01")
+
+        bs = self._balance_sheet()
+        self.assertTrue(
+            bs["balanced"],
+            f"Balance sheet out by {bs['difference']} after a prior-year entry: "
+            f"assets={bs['assets']['total']} liab={bs['liabilities']['total']} "
+            f"equity={bs['total_equity']} unallocated={bs['unallocated']} "
+            f"result={bs['result']}",
+        )
+        self.assertAlmostEqual(bs["assets"]["total"], bs["total_liab_equity"], places=2)
+
+    def test_the_prior_year_entry_lands_in_unallocated_not_in_the_result(self):
+        """Where the figure goes matters as much as that it balances.
+
+        A fix that swept prior years into the Current Period Result would also
+        balance, and would misstate this year's profit on the face of the
+        statement. Deltas rather than absolutes, because the database holds other
+        entries -- the lesson recorded in `test_profit_and_loss_arithmetic` and
+        audit finding TST-2.
+        """
+        before = self._balance_sheet()
+        self._post_expense(50000.0, date="2026-06-01")
+        after = self._balance_sheet()
+
+        self.assertAlmostEqual(
+            after["unallocated"] - before["unallocated"], -50000.0, places=2,
+            msg="a prior-year expense must reduce unallocated earnings by its amount")
+        self.assertAlmostEqual(
+            after["result"] - before["result"], 0.0, places=2,
+            msg="a prior-year expense must not move the current period result")
+
+    def test_an_entry_on_the_first_day_of_the_year_is_current_not_prior(self):
+        """The `<` versus `<=` boundary in `_unallocated_earnings_domain`.
+
+        `fy['date_from']` is the first day of the current fiscal year, so an entry
+        posted on that exact date belongs to this year's result. Off by one and a
+        whole day's trading silently becomes history -- invisible to any test whose
+        fixtures avoid the boundary, which is why this one sits on it.
+        """
+        before = self._balance_sheet()
+        self._post_expense(7000.0, date="2026-07-17")
+        after = self._balance_sheet()
+
+        self.assertAlmostEqual(
+            after["result"] - before["result"], -7000.0, places=2,
+            msg="an entry on the first day of the fiscal year belongs to this year")
+        self.assertAlmostEqual(
+            after["unallocated"] - before["unallocated"], 0.0, places=2,
+            msg="an entry on the first day of the fiscal year is not a prior year")
+        self.assertTrue(after["balanced"])
+
+    def test_the_unallocated_drill_down_ties_to_its_figure(self):
+        """A drill-down that disagrees with the figure it hangs off is worse than
+        none, because it turns a number you would have trusted into one you cannot.
+
+        The balance sum over the domain is the *negation* of the printed figure,
+        exactly as for the Current Period Result -- see `_period_result_domain`.
+        """
+        self._post_expense(50000.0, date="2026-06-01")
+        bs = self._balance_sheet()
+
+        # The domain is already a list of tuples, so it goes straight to search().
+        # A `safe_eval(str(...))` round-trip was the first attempt and raises
+        # NameError: the domain holds real `datetime.date` objects, which str()
+        # renders as `datetime.date(2026, 8, 31)` and safe_eval cannot resolve.
+        total = sum(self.env["account.move.line"]
+                    .search(bs["unallocated_domain"]).mapped("balance"))
+        self.assertAlmostEqual(
+            total, -bs["unallocated"], places=2,
+            msg="the unallocated-earnings drill-down does not sum to its own figure")
+
     def test_profit_and_loss_arithmetic(self):
         """Assert the DELTA this test causes, not the company-wide total.
 

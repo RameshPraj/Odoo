@@ -136,6 +136,21 @@
                             <t t-call="account_financial_statements.section_block">
                                 <t t-set="section" t-value="equity"/>
                             </t>
+                            <!--
+                                Prior years' profit, which Community never closes
+                                into equity. Rendered only when non-zero: on a
+                                first-year sheet the line would always read zero,
+                                and a permanent zero row trains the reader to stop
+                                looking at it. See ACC-2.
+                            -->
+                            <tr t-if="not wizard.company_id.currency_id.is_zero(unallocated)">
+                                <td colspan="2" style="padding-left:12px;"><i t-esc="unallocated_label"/></td>
+                                <td class="text-end">
+                                    <span t-att-domain="unallocated_domain" res-model="account.move.line"
+                                          t-esc="unallocated"
+                                          t-options="{'widget': 'monetary', 'display_currency': wizard.company_id.currency_id}"/>
+                                </td>
+                            </tr>
                             <tr>
                                 <td colspan="2" style="padding-left:12px;"><i t-esc="result_label"/></td>
                                 <td class="text-end">

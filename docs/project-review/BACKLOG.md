@@ -22,10 +22,10 @@ Every finding appears here exactly once. All other documents reference these IDs
 > it is that a total maintained by hand will drift. **Count it from the document; do not carry it
 > forward.**
 >
-> The count includes entries already closed. **23 are RESOLVED** — ACC-3, BS-20, DEP-1, FIN-1,
-> FIN-2, FIN-3, OPS-1, OPS-2, OPS-7, QA-1, SCH-1, SEC-1, SEC-2, SEC-3, SEC-6, SEC-12, SAAS-2,
-> TST-1, TST-5, TST-8, TST-9, UPG-1 and UPG-2 — and four are PARTIAL (CI-1, CI-2, OPS-6, TST-7),
-> so the open figure is **100 entries / 102 findings**.
+> The count includes entries already closed. **27 are RESOLVED** — ACC-2, ACC-3, BS-1, BS-2, BS-4,
+> BS-20, DEP-1, DOC-3, FIN-1, FIN-2, FIN-3, OPS-1, OPS-2, OPS-7, QA-1, SCH-1, SEC-1, SEC-2, SEC-3,
+> SEC-6, SEC-12, SAAS-2, TST-1, TST-5, TST-8, TST-9, UPG-1 and UPG-2 — and four are PARTIAL (CI-1,
+> CI-2, OPS-6, TST-7), so the open figure is **96 entries / 98 findings**.
 >
 > Three of those "resolved" entries carry a residual a reader should not mistake for closed:
 > **FIN-1** is resolved as a *defect* (tags backfilled, test guards them) but its **go-live gate
@@ -380,7 +380,38 @@ module's stated scope — make `currency_id` `related='company_id.currency_id', 
 remove it from the form. **Effort S** (close the hole) / **M** (real multi-currency).
 
 ## ACC-2 · Balance Sheet omits prior-year unallocated earnings
-**LIKELY** · Accounting · `account_financial_statements/models/financial_statements.py:146-149`
+**RESOLVED 2026-08-23.** The balance sheet now carries an **Unallocated Earnings (prior
+years)** line in the equity section, computed as P&L *since inception* minus the current
+fiscal year, and added to Total Equity alongside the current result.
+
+Confirmed as **LIKELY → CONFIRMED** before fixing, by watching the new test fail against the
+old arithmetic: a single 50,000 expense dated in the previous fiscal year produced
+`Balance sheet out by -50000.0`. Verified again on the live database afterwards — the same
+entry leaves `difference = 0.0`, puts 50,000 into unallocated, and leaves the current
+result untouched at 170.0.
+
+Computed as *since inception minus current year* rather than by summing a date-bounded
+section, so it cannot disagree with the Current Period Result printed beside it: both come
+from `_period_result`, and together they are the full history by construction.
+
+The two figures are kept as **separate lines** deliberately. Combining them would also
+balance, and would misstate this year's profit on the face of a statutory statement — an
+accountant reads "this year" and "everything before it" as different things. One of the four
+tests asserts exactly that: a prior-year entry must move `unallocated` and must **not** move
+`result`.
+
+Three details worth keeping:
+
+- The line renders **only when non-zero**. On a first-year sheet it would always read zero,
+  and a permanent zero row teaches the reader to stop looking at it.
+- `_unallocated_earnings_domain` uses `date < fy_date_from`, not `<=`. An entry posted on the
+  first day of the fiscal year belongs to this year's result; off by one and a full day's
+  trading silently becomes history. A test sits on that boundary, because no fixture that
+  avoids it would ever catch this.
+- The drill-down's `balance` sum is the **negation** of the printed figure, as for the
+  current result, and a test ties the two together.
+
+*Original finding, for context:* · `financial_statements.py:146-149`
 
 Assets and liabilities are cumulative since inception (`:139`, no lower bound), but the result
 added back covers only the **current** fiscal year. Community posts no automatic year-end close,

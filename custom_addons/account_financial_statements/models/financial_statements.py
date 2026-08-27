@@ -205,6 +205,43 @@ class FinancialStatementsCommon(models.AbstractModel):
             ('account_id.account_type', 'in', list(INCOME_TYPES + EXPENSE_TYPES)),
         ]
 
+    @api.model
+    def _unallocated_earnings(self, wizard, fy_date_from):
+        """Profit and loss accumulated in fiscal years *before* the current one.
+
+        Odoo Community posts no automatic year-end closing entry, so income and
+        expense accounts are never zeroed and never roll into retained earnings.
+        They simply accumulate. A balance sheet that adds back only the **current**
+        year's result therefore leaves every prior year's profit sitting in no
+        section at all, and the sheet stops balancing by exactly that amount the
+        day it is run in year two (**ACC-2**).
+
+        Computed as *since inception* minus *current year* rather than by summing
+        a date-bounded section directly, so it cannot disagree with the
+        Current Period Result line printed beside it: both derive from
+        ``_period_result``, and the two together are the full history by
+        construction.
+        """
+        since_inception = self._period_result(wizard, None)
+        return since_inception - self._period_result(wizard, fy_date_from)
+
+    @api.model
+    def _unallocated_earnings_domain(self, wizard, fy_date_from):
+        """Lines behind the unallocated-earnings figure: P&L strictly before this FY.
+
+        ``<`` and not ``<=``: ``fy_date_from`` is the first day of the current
+        fiscal year, so an entry posted on that date belongs to the current
+        result, not to history. Getting this wrong would double-count one day and
+        would be invisible in any test whose fixtures avoid the boundary.
+
+        Sign follows ``_period_result_domain``: the ``balance`` sum over this
+        domain is the negation of the printed figure.
+        """
+        return self._move_line_domain(wizard) + [
+            ('account_id.account_type', 'in', list(INCOME_TYPES + EXPENSE_TYPES)),
+            ('date', '<', fy_date_from),
+        ]
+
     # ------------------------------------------------------------------
     @api.model
     def _anomalies(self, wizard):
@@ -314,12 +351,16 @@ class ReportBalanceSheet(models.AbstractModel):
         liabilities = self._section(wizard, LIABILITY_TYPES, -1)
         equity = self._section(wizard, EQUITY_TYPES, -1)
 
-        # Current-period result is not posted to equity; without it the sheet
-        # will not balance.
+        # Neither the current result nor prior years' results are posted to equity
+        # by Community, so both have to be added back or the sheet will not
+        # balance. Splitting them is presentational, not arithmetic: an accountant
+        # reads "this year" and "everything before it" as different things, and a
+        # single combined line would hide which one a discrepancy came from.
         fy = wizard.company_id.compute_fiscalyear_dates(wizard.date_to)
         result = self._period_result(wizard, fy['date_from'])
+        unallocated = self._unallocated_earnings(wizard, fy['date_from'])
 
-        total_equity = equity['total'] + result
+        total_equity = equity['total'] + unallocated + result
         difference = assets['total'] - (liabilities['total'] + total_equity)
 
         anomalies = self._anomalies(wizard)
@@ -347,6 +388,10 @@ class ReportBalanceSheet(models.AbstractModel):
             'result': result,
             'result_domain': self._period_result_domain(wizard, fy['date_from']),
             'result_sign': -1,
+            'unallocated': unallocated,
+            'unallocated_domain': self._unallocated_earnings_domain(wizard, fy['date_from']),
+            'unallocated_sign': -1,
+            'unallocated_label': _("Unallocated Earnings (prior years)"),
             'anomalies': anomalies,
             'result_label': _("Current Period Result"),
             'total_equity': total_equity,

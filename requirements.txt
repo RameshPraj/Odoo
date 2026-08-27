@@ -137,3 +137,14 @@ zeep==4.3.1 ; python_version >= '3.13'
 #
 # pip name uses a hyphen; the import name uses an underscore.
 nepali-datetime==1.0.8.5
+
+# Required by the JavaScript test suites: `HttpCase.browser_js` opens a websocket
+# to drive Chrome, and three test modules import it --
+# `nepali_calendar_core/tests/test_calendar_ui.py`, that module's `test_js_unit.py`,
+# and `account_reports_interactive/tests/test_js_unit.py`.
+#
+# It is present in most environments already, because Odoo's own stack pulls it in
+# transitively -- which is exactly why it went undeclared: the tests pass on every
+# machine that already has it and fail on the clean build DEP-1 exists to protect.
+# Found 2026-08-23 while reconciling the audit documents, not by anything failing.
+websocket-client==1.9.0

@@ -10,10 +10,13 @@ patched* is in scope and is among the worst findings.
 All findings and evidence in [`BACKLOG.md`](BACKLOG.md). **125 findings: 10 P0, 29 P1, 50 P2,
 28 P3, 6 P4** (123 table entries; `DEP-3/4/5` is one row covering three).
 
-**Twenty-three are RESOLVED** as of 2026-08-23 — ACC-3, BS-20, DEP-1, FIN-1, FIN-2, FIN-3, OPS-1,
-OPS-2, OPS-7, QA-1, SCH-1, SEC-1, SEC-2, SEC-3, SEC-6, SEC-12, SAAS-2, TST-1, TST-5, TST-8, TST-9,
-UPG-1, UPG-2 — leaving **100 entries (102 findings) open**, four of them partial (CI-1, CI-2,
-OPS-6, TST-7).
+**Twenty-seven are RESOLVED** as of 2026-08-23 — ACC-2, ACC-3, BS-1, BS-2, BS-4, BS-20, DEP-1,
+DOC-3, FIN-1, FIN-2, FIN-3, OPS-1, OPS-2, OPS-7, QA-1, SCH-1, SEC-1, SEC-2, SEC-3, SEC-6, SEC-12,
+SAAS-2, TST-1, TST-5, TST-8, TST-9, UPG-1, UPG-2 — leaving **96 entries (98 findings) open**, four
+of them partial (CI-1, CI-2, OPS-6, TST-7).
+
+BS-1, BS-2 and BS-4 were **already fixed** and only appeared open because the findings cite paths
+that commit `c7a73ae8` moved; see the note under BS-1 in `BACKLOG.md`.
 
 (This count previously read "88 findings", then "124 / 111 open". Both had drifted. P2 gained a
 fiftieth row when `TST-9` was appended on 2026-08-23 without re-totalling — the same failure this
@@ -46,7 +49,7 @@ The suite tests mechanism thoroughly and outcomes barely at all.
 | Domain code quality | 8/10 | Idiomatic, well commented, no deprecated API |
 | Bikram Sambat mathematics | 10/10 | 46,022 days verified both directions, zero divergence |
 | Odoo upgrade safety | 7/10 | No core modification except UPG-1; two seams to watch |
-| Statutory correctness | **5/10** | FIN-2, FIN-1's data defect and ACC-3 closed. Remaining: ACC-1, ACC-2, and the SME-gated IRD box layout |
+| Statutory correctness | **6/10** | FIN-2, FIN-1's data defect, ACC-2 and ACC-3 closed. Remaining: ACC-1, and the SME-gated IRD box layout |
 | Application security | 6/10 | No injection, ACLs complete; no record rules |
 | Perimeter security | **4/10** | SAAS-2 closed 2026-08-22. Still no edge, no TLS, no `dbfilter` |
 | Tenant isolation | **2/10** | Substrate primitives are good; nothing above them exists |
@@ -154,8 +157,8 @@ defects below is now fixed; the statements work, the VAT return still does not.
 - **FIN-1** — the VAT return computes every box as zero.
 - ~~**ACC-3** — the Export fiscal position substitutes no tax, so exports are invoiced at 13%.~~
   **RESOLVED 2026-08-23** — exports now carry VAT 0%; domestic sales still carry 13%.
-- **ACC-2** — the Balance Sheet omits prior-year unallocated earnings, so it stops balancing after
-  year one.
+- ~~**ACC-2** — the Balance Sheet omits prior-year unallocated earnings, so it stops balancing after
+  year one.~~ **RESOLVED 2026-08-23** — an *Unallocated Earnings (prior years)* line carries them.
 - **ACC-1** — a foreign-currency loan posts its amounts as company currency. It balances, which is
   why the test passes.
 

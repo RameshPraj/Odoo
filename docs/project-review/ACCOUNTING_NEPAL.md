@@ -126,7 +126,12 @@ given the module's own "what this does not do" section — make `currency_id`
 `related='company_id.currency_id', readonly=True` and drop it from the form, closing the hole
 until real multi-currency support is written (**S**).
 
-## ACC-2 (P1) — Balance Sheet omits prior-year unallocated earnings
+## ACC-2 (P1) — Balance Sheet omits prior-year unallocated earnings — **RESOLVED 2026-08-23**
+
+An *Unallocated Earnings (prior years)* line now sits in the equity section, computed as P&L
+since inception minus the current fiscal year. Kept **separate** from the Current Period Result
+on purpose: combining them would balance the sheet while misstating this year's profit, and an
+accountant reads the two as different things. Full account in `BACKLOG.md`.
 
 `financial_statements.py:146-149` adds back the **current** fiscal year's result, while assets and
 liabilities are cumulative since inception. Community posts no automatic year-end closing entry,
@@ -243,7 +248,7 @@ over mid-Nepali-fiscal-year. Editable as a record, but wrong out of the box.
 ## Readiness
 
 **Not ready for statutory use.** Four correctness items must close first — FIN-2, FIN-1 (+TST-1),
-ACC-2 — and ACC-1 must be closed or the field removed. (ACC-3 closed 2026-08-23.)
+ACC-1 must be closed or the field removed. (ACC-2 and ACC-3 closed 2026-08-23.)
 
 Beyond code, the SME sign-off register the project already tracks remains open: chart of accounts
 per NFRS/NPSAS, TDS rates and thresholds, the IRD VAT form layout box by box, TDS certificate
