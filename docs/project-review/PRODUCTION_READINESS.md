@@ -27,7 +27,7 @@ before a second tenant exists. They are not go-live blockers for a single-tenant
 ## Go-live gates
 
 ### Correctness
-- [ ] **FIN-2** — reports render; a test asserts the HTML contains "TOTAL ASSETS"
+- [x] **FIN-2** — reports render; `TestReportsActuallyRender` drives them through the report engine (2026-08-15). This checkbox stayed unticked for eight days while the blocker table in this same file recorded it resolved — corrected 2026-08-23
 - [x] **FIN-1 + TST-1** — tags backfilled by migration (0 to 16 links); the guarding test cannot skip and was watched failing first (2026-08-23)
 - [x] **ACC-3** — Export fiscal position substitutes tax: export invoice `VAT 0% / tax=0.00`, domestic still `VAT 13% / tax=130.00`, both verified on the live database (2026-08-23)
 - [ ] **ACC-2** — Balance Sheet balances after year one

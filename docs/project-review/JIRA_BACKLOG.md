@@ -441,11 +441,35 @@ health check that fails below the expected file count. Declare `polib`.
 
 > **Re-derived 2026-08-15** by counting the headings rather than carrying the figures forward. The
 > total read **44** and had already drifted before BUG-22 was added for TST-8: epic 3 holds 6 tickets
-> and 4 Blockers, not 5 and 3. **11** tickets are marked Blocker, of which **9 are open** as of
-> 2026-08-19 — BUG-16 (OPS-1) and BUG-6 (FIN-2) are struck through as done.
+> and 4 Blockers, not 5 and 3. **11** tickets are marked Blocker.
 
-**The nine open Blockers** — BUG-1 (cluster takeover), BUG-2 (`dbfilter`), BUG-3
-(`X-Forwarded-Host`), BUG-7 (VAT nil), BUG-8 (the test hiding it), BUG-13 (filestore split), BUG-14
-(cloud sync), TASK-2 (rotate), TASK-3 (remote), plus STORY-5 for multi-tenant.
+> **Corrected 2026-08-23.** The paragraph that followed listed "the nine open Blockers" and was
+> wrong twice over. It named **BUG-13**, which its own ticket body marks ✅ DONE 2026-08-14, and it
+> attributed **BUG-16 to OPS-1** — BUG-16 is SEC-6; OPS-1 is BUG-13. Two of nine entries wrong in a
+> paragraph whose only purpose is to be a worklist. It has been rewritten from the ticket bodies
+> rather than edited in place, and the same rule applies here as to the totals above: **derive it,
+> do not carry it forward.**
 
-~~BUG-6 (reports)~~ — done 2026-08-15.
+**Open Blockers — four, plus one multi-tenant:**
+
+| Ticket | Finding | Note |
+|---|---|---|
+| **BUG-2** | SAAS-1, SAAS-4, SAAS-11 | Anchored `dbfilter`. **Multi-tenant only**, and must land in the same change as any `db_name` removal (BUG-4) |
+| **BUG-3** | SAAS-3 | nginx must pin `X-Forwarded-Host`. Multi-tenant only |
+| **BUG-14** | DAT-1 | Client data and credentials in corporate cloud sync. Needs a hosting decision |
+| **TASK-3** | SUP-2 | Create a remote and push. **The highest open risk in the project**, and now purely a preference about where |
+| **STORY-5** | all SAAS | The nine cross-tenant isolation tests. Before the pivot, not after |
+
+**Blockers now closed:** ~~BUG-1~~ (SAAS-2, cluster takeover — 2026-08-22), ~~BUG-6~~ (FIN-2,
+reports — 2026-08-15), ~~BUG-7~~ (FIN-1, VAT nil — 2026-08-23, as a defect; the *filing* still
+needs the SME-gated IRD layout), ~~BUG-8~~ (TST-1, the test hiding it — 2026-08-23, landed before
+BUG-7 exactly as this document instructed), ~~BUG-13~~ (OPS-1, filestore split — 2026-08-14),
+~~TASK-2~~ (SEC-1, credentials rotated — 2026-08-22; **whether to rewrite history remains open**
+and is cheapest before TASK-3).
+
+**Also closed since this file was last touched:** ~~BUG-10~~ (ACC-3), ~~BUG-12~~ (TST-5),
+~~BUG-15~~ (SEC-2), ~~BUG-16~~ (SEC-6), ~~BUG-17~~ (SEC-3), ~~BUG-19~~ (UPG-1 — closed by
+measurement and a guard test, **not** the `post_init_hook` this file prescribes, which would have
+been worse), ~~TASK-6~~ (UPG-2 — closed by a drift *check*, not a one-off bump), ~~BUG-22~~
+(TST-8), ~~TASK-8~~ (BS-1 — **was already done**; never needed doing), ~~BUG-20~~ (BS-2),
+~~BUG-21~~ (BS-4).

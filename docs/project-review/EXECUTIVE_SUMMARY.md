@@ -7,13 +7,17 @@ the live PostgreSQL cluster, and the Odoo substrate as it bears on multi-tenancy
 vendored upstream files were not reviewed as code, but *how they got here and how they get
 patched* is in scope and is among the worst findings.
 
-All findings and evidence in [`BACKLOG.md`](BACKLOG.md). **124 findings: 10 P0, 29 P1, 49 P2, 28 P3,
-6 P4** (122 table entries; `DEP-3/4/5` is one row covering three). **Thirteen are RESOLVED** —
-FIN-1, FIN-2, FIN-3, OPS-1, OPS-2, OPS-7, SEC-1, SEC-12, SAAS-2, BS-20, DEP-1, TST-1, TST-8 — and
-CI-1 is partially resolved, so **111 remain open**.
+All findings and evidence in [`BACKLOG.md`](BACKLOG.md). **125 findings: 10 P0, 29 P1, 50 P2,
+28 P3, 6 P4** (123 table entries; `DEP-3/4/5` is one row covering three).
 
-(This count previously read "88 findings" and had drifted by 30; it is now derived from
-`BACKLOG.md` rather than carried forward.)
+**Twenty-three are RESOLVED** as of 2026-08-23 — ACC-3, BS-20, DEP-1, FIN-1, FIN-2, FIN-3, OPS-1,
+OPS-2, OPS-7, QA-1, SCH-1, SEC-1, SEC-2, SEC-3, SEC-6, SEC-12, SAAS-2, TST-1, TST-5, TST-8, TST-9,
+UPG-1, UPG-2 — leaving **100 entries (102 findings) open**, four of them partial (CI-1, CI-2,
+OPS-6, TST-7).
+
+(This count previously read "88 findings", then "124 / 111 open". Both had drifted. P2 gained a
+fiftieth row when `TST-9` was appended on 2026-08-23 without re-totalling — the same failure this
+note was written to complain about, repeated. **Derive it, do not carry it forward.**)
 
 > This audit supersedes the previous pass and **corrects two of its conclusions**, stated
 > explicitly rather than silently amended. See *Corrections* below.
@@ -59,8 +63,8 @@ The suite tests mechanism thoroughly and outcomes barely at all.
 |---|---|---|
 | ~~1~~ | ~~**One unauthenticated POST claims the cluster master password**~~ — **FIXED 2026-08-22.** Rotated to a 32-character random value, stored hashed; `verify_admin_password('admin')` is now False | SAAS-2 |
 | ~~2~~ | ~~**A filed VAT return reports nil while sales exist**~~ — **tags backfilled 2026-08-23** (0 to 16 links), so a tagged entry now reaches the return. It still cannot produce a *filing*: the IRD box layout is SME-gated and absent here, and no journal item carries a tax | FIN-1 |
-| 3 | ~~**Balance Sheet, P&L and Cash Flow cannot render at all**~~ — **FIXED 2026-08-15.** All three render, print to PDF, and drill down to the entries behind each figure | FIN-2 |
-| 4 | ~~Attachments written to an orphaned filestore~~ — **FIXED 2026-08-14.** Reconciliation proved no data loss; the orphan held only regenerable asset bundles | OPS-1 |
+| ~~3~~ | ~~**Balance Sheet, P&L and Cash Flow cannot render at all**~~ — **FIXED 2026-08-15.** All three render, print to PDF, and drill down to the entries behind each figure | FIN-2 |
+| ~~4~~ | ~~Attachments written to an orphaned filestore~~ — **FIXED 2026-08-14.** Reconciliation proved no data loss; the orphan held only regenerable asset bundles | OPS-1 |
 | 5 | **Total loss of the codebase** — **43** commits on one disk (28 at audit time), and the sync substituting for a backup is also the corruption risk. With risks 3 and 4 closed, this is now the most consequential item on this list | SUP-2, DAT-1 |
 | 6 | **Client accounting data in corporate cloud sync** — two full database dumps, 572 attachments, 75 live sessions, plaintext credentials | DAT-1 |
 | 7 | **Any client can select any tenant** once `dbfilter` is unset, and `X-Forwarded-Host` is unpinned | SAAS-1, SAAS-3 |

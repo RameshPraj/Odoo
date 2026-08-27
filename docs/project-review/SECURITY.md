@@ -6,18 +6,41 @@ referenced by location only.
 Calibrated for **production with real client data**, **multi-company**, **multi-tenant SaaS
 planned**. Cross-tenant exposure is treated as P0 throughout.
 
+> ## Status, 2026-08-23 — read this before anything below
+>
+> **Six findings in this document are now RESOLVED**, and until today this file still described
+> all of them as live. That was the most misleading kind of staleness: a reader would have
+> concluded the cluster master password was still `admin` and that one unauthenticated POST could
+> take the cluster, a state that ended on 2026-08-22.
+>
+> | ID | Status | Closed by |
+> |---|---|---|
+> | **SAAS-2** | RESOLVED 2026-08-22 | Master password rotated to a 32-character random value, stored hashed. `verify_admin_password('admin')` is now **False**, so the takeover branch is unreachable |
+> | **SEC-1** | RESOLVED 2026-08-22 | Both published credentials rotated; `RECONNAISSANCE.md` redacted. History deliberately not rewritten — the leaked values were the defaults `admin` and `odoo`, worthless once rotated |
+> | **OPS-2** | RESOLVED 2026-08-22 | `list_db = False` |
+> | **SEC-2** | RESOLVED 2026-08-23 | Ten global `ir.rule` records; proved by negative control |
+> | **SEC-6** | RESOLVED 2026-08-23 | Read-only role is now read-only on return lines; billing and manager have their own rows |
+> | **SEC-3** | RESOLVED 2026-08-23 | The formula evaluator parses and walks an AST instead of calling `eval` |
+>
+> Each section below now carries its own resolution note. **The remediation order at the end has
+> been renumbered** so closed items are struck rather than presented as next actions.
+>
+> The sections themselves are kept rather than deleted: the analysis of *why* each was exploitable
+> is the part worth re-reading before a SaaS pivot re-opens the same surface.
+
 ## Posture
 
-**The application layer is sound. The perimeter is not.**
+**The application layer is sound. The perimeter was not, and the worst of it is now closed.**
 
 No SQL injection anywhere, no dangerous execution primitives, every model covered by an ACL, and
 a formula evaluator that genuinely blocks arbitrary code execution with a test proving it. Those
 are real strengths and they were verified individually rather than sampled.
 
-The exposure is concentrated in configuration and in the request-routing layer — and one of those
-findings is a **live one-request cluster takeover**.
+The exposure is concentrated in configuration and in the request-routing layer. Until 2026-08-22
+one of those findings was a **live one-request cluster takeover**; it is now closed, and what
+remains in that layer is the multi-tenant set, which becomes live the moment a second tenant does.
 
-## The one to fix today — SAAS-2
+## ~~The one to fix today~~ — SAAS-2, **RESOLVED 2026-08-22**
 
 `/web/database/create` is `auth="none"`, `csrf=False`, and begins:
 
@@ -29,15 +52,26 @@ if insecure and master_pwd:
 
 The same block appears on `duplicate`, `drop`, `backup` and `restore`.
 
-**I verified `verify_admin_password('admin')` returns `True` on this instance.** The branch is
-armed. One unauthenticated POST sets the **cluster** master password to an attacker's value, and
-that password then authorises backup — a full `pg_dump` plus filestore zip — of every database.
+**At audit time `verify_admin_password('admin')` returned `True` on this instance** — verified by
+execution, not inferred. The branch was armed: one unauthenticated POST would set the **cluster**
+master password to an attacker's value, and that password then authorises backup — a full
+`pg_dump` plus filestore zip — of every database. No rate limit, no lockout, no CSRF, no audit
+trail beyond a log line. `crypt_context` registers a `plaintext` scheme, so the shipped value
+verified as-is.
 
-No rate limit, no lockout, no CSRF, no audit trail beyond a log line. `crypt_context` registers a
-`plaintext` scheme, so the shipped value verifies as-is.
+Only `http_interface = 127.0.0.1` prevented it, and **SaaS is precisely what removes that**.
 
-**Only `http_interface = 127.0.0.1` prevents this today. SaaS is precisely what removes that.**
-Effort to fix: XS. Do it before anything else in this document.
+> **RESOLVED 2026-08-22.** The master password was rotated to a 32-character random value and is
+> now stored as a `pbkdf2_sha512` hash, so `verify_admin_password('admin')` returns **False** and
+> the branch above is unreachable. `list_db = False` was set in the same change (**OPS-2**).
+>
+> Two things this did **not** do, and both still matter:
+>
+> * The branch still exists in core and re-arms instantly if anyone ever sets the master password
+>   back to `admin`. It is a configuration guarantee, not a code fix.
+> * `/web/database/manager` still renders publicly even with `list_db = False` (**SAAS-10**,
+>   still open). Blocking `/web/database/` at the reverse proxy remains the durable control, and
+>   the nginx rule now ships in `deploy/README.md` — but nothing enforces that it is deployed.
 
 ## Tenant isolation
 
@@ -61,13 +95,15 @@ serious, but they are not direct data reads. That distinction is worth keeping p
 
 | ID | Issue |
 |---|---|
-| **SEC-1** | The live master and database passwords are committed to a tracked document (`RECONNAISSANCE.md:232,236,480`, commit `e4ff7dab`) — the actual values, not placeholders. The document flags them as critical while being the vehicle that publishes them |
-| **SAAS-2 / OPS-2** | One master password for the whole cluster, currently the product default, with `list_db = True` |
+| ~~**SEC-1**~~ **RESOLVED 2026-08-22** | The live master and database passwords were committed to a tracked document (`RECONNAISSANCE.md:232,236,480`, commit `e4ff7dab`) — the actual values, not placeholders. The document flagged them as critical while being the vehicle that published them. **Both rotated; the document redacted.** History was deliberately **not** rewritten: the leaked values were the product defaults `admin` and `odoo`, worthless once rotated. That decision is cheap to revisit only until the first push to a remote (**SUP-2**), after which it becomes expensive |
+| ~~**SAAS-2 / OPS-2**~~ **RESOLVED 2026-08-22** | One master password for the whole cluster, the product default, with `list_db = True`. Now a 32-character random value stored hashed, and `list_db = False` |
 | **DAT-1** | `odoo.conf`, two full database dumps, the filestore and 75 live session files sit in corporate OneDrive sync |
 
-**Rotation is unavoidable** — the values are in immutable history, so deleting the file does not
-undo it. Rotate first; that is what reduces risk. History rewriting is a separate, later decision,
-and is cheapest **before** the first push (SUP-2).
+**Rotation was unavoidable** — the values are in immutable history, so deleting the file did not
+undo it. Rotation is what reduced the risk, and it was done on 2026-08-22. **History rewriting
+remains an open decision** (see §1 of the remaining-work inventory): it is cheapest **before** the
+first push (**SUP-2**) and awkward afterwards, so it is one of the few items with a closing
+window.
 
 **Working correctly:** `odoo.conf` was never committed (`.gitignore:38` verified effective). Both
 templates use placeholders. No API keys, tokens or private keys anywhere in scope.
@@ -86,7 +122,19 @@ one. The `('company_id', '=', False)` branch of the suggested domain was deliber
 since the field is `required=True` everywhere and that branch would only serve to expose a
 hypothetical unowned filed return to every company. Full account in `BACKLOG.md`.
 
-**SEC-6 (P2) — the read-only accounting role can rewrite a filed VAT return.**
+**SEC-6 (P2) — the read-only accounting role can rewrite a filed VAT return. RESOLVED
+2026-08-23**, and it was *not* the "one-character fix" described below. That single row was also
+what granted every **higher** accounting group its access, because they all imply read-only — so
+setting it to `1,0,0,0` alone would have stopped `action_compute` working, since computing a
+return unlinks and recreates its lines. The readonly row is now `1,0,0,0` and the billing and
+manager roles have rows of their own. Six tests, including one asserting the read-only role can
+still *read* a line, which is what stops the fix becoming "delete the row".
+
+A related hole surfaced while fixing it: `action_compute` checked no state, so a **filed** return
+could be recomputed in place and its filed figures would change with no trace. Now refused until
+the return is reset to draft.
+
+The original finding, for context:
 `l10n_np_vat_return/security/ir.model.access.csv:8` grants `group_account_readonly`
 write/create/unlink on return lines, inconsistent with the same file's own read-only rows for the
 form and box. One-character fix.
@@ -132,7 +180,20 @@ code execution is genuinely blocked — and a test proves it against an `__impor
 *What it misses, verified:* `*` is whitelisted, so `**` is too. I confirmed `9**9**9` passes
 `fullmatch`. It evaluates to a ~370-million-digit integer, hanging the worker before `except` can
 run. On the Windows config (`workers = 0`, `limit_time_real = 0`) that takes the whole server
-down. Privileged-user DoS, not anonymous. One-character fix plus a test.
+down. Privileged-user DoS, not anonymous.
+
+> **RESOLVED 2026-08-23**, and *not* by the "one-character fix" this section proposed. Banning
+> `**` textually would have left the same class of hole one regex slip away — **a character class
+> cannot express "one star but not two"**, which is exactly why `[0-9eE+\-*/(). ]*` admitted it.
+> The evaluator no longer calls `eval` at all: the substituted expression is parsed with `ast` and
+> walked, and `ast.Pow` is simply absent from the permitted node types, so exponentiation is
+> rejected structurally. Thirteen tests, including one that asserts the *refusal* of `9**9**9`
+> rather than evaluating it — a test that hangs the runner to prove a hang was fixed is a test
+> nobody can run.
+>
+> A second defect fell out of the rewrite: sequential `str.replace` of box codes could rewrite
+> digits inside a float it had already substituted. Substitution is now a single pass with
+> boundaries.
 
 **SEC-9 (P3)** — `report_xlsx_helper` uses `eval()` with **full builtins**. Safe today: every call
 site was traced and column specs come only from Python report classes. The invariant is a code
@@ -172,7 +233,7 @@ shadow it. Requires repo write access — which, per DAT-1, is a cloud-synced di
 
 | ID | Issue |
 |---|---|
-| SAAS-2 / OPS-2 | Default master password + `list_db = True` |
+| ~~SAAS-2 / OPS-2~~ **RESOLVED 2026-08-22** | Default master password + `list_db = True`. Now hashed random, and `list_db = False` |
 | SAAS-1 / SAAS-6 | `dbfilter` unset |
 | SAAS-3 | `proxy_mode` with unpinned `X-Forwarded-Host` |
 | OPS-4 | `limit_time_real = 0` removes the runaway-request watchdog — a cross-tenant availability path once shared |
@@ -188,14 +249,26 @@ scoped `ReadWritePaths`).
 
 ## Remediation order
 
-1. **SAAS-2 + OPS-2** — strong master password, `list_db = False`, block `/web/database/*`. Hours.
-2. **SEC-1** — rotate both credentials.
-3. **SAAS-1 + SAAS-4 + SAAS-11** — anchored `dbfilter`.
-4. **SAAS-3** — pin `X-Forwarded-Host` in nginx.
-5. **DAT-1** — client data and credentials out of cloud sync.
-6. **SEC-2** — record rules, **before** a second company or tenant exists.
-7. **SEC-6**, **SEC-3**, **SEC-7** — small, contained fixes.
-8. **PG-1, PG-2, PG-4** — revokes, and bake them into provisioning.
-9. **OPS-3, OPS-4** — systemd hardening and the watchdog, once the writable-`/opt` question is decided.
-10. **SEC-4, SEC-5, SEC-8, SEC-9** — vendored OCA; override locally or report upstream. **Do not
-    edit in place** — that destroys the zero-drift property protecting LIC-1.
+Renumbered 2026-08-23. Struck items are done; the numbering below is what is actually left.
+
+- ~~**SAAS-2 + OPS-2** — strong master password, `list_db = False`.~~ **Done 2026-08-22.** The
+  third part of that line, *block `/web/database/*` at the edge*, is **still open** as **SAAS-10**
+  and is now the only durable control on that surface.
+- ~~**SEC-1** — rotate both credentials.~~ **Done 2026-08-22.**
+- ~~**SEC-2** — record rules, before a second company or tenant exists.~~ **Done 2026-08-23**,
+  and it did land before a second company — which is why it was cheap.
+- ~~**SEC-6**, **SEC-3**~~ **Done 2026-08-23.** **SEC-7** remains.
+
+1. **DAT-1** — client data and credentials out of cloud sync. Needs a hosting decision.
+2. **PG-1, PG-2, PG-4** — the revokes, baked into provisioning **before a second database role
+   exists**. All XS/S, and PG-1 is a one-line `REVOKE`.
+3. **SEC-7** — `os.path.commonpath` containment check on `--modules`. Two lines.
+4. **SAAS-10** — block `/web/database/` at the reverse proxy. The nginx rule ships in
+   `deploy/README.md`; nothing verifies it is deployed.
+5. **SAAS-1 + SAAS-4 + SAAS-11** — anchored `dbfilter`. **Multi-tenant only**, and **SAAS-1 must
+   land in the same change as any `db_name` removal**.
+6. **SAAS-3** — pin `X-Forwarded-Host` in nginx. Multi-tenant only.
+7. **OPS-3, OPS-4** — systemd hardening and the watchdog, once the writable-`/opt` question is
+   decided.
+8. **SEC-4, SEC-5, SEC-8, SEC-9** — vendored OCA; override locally or report upstream. **Do not
+   edit in place** — that destroys the zero-drift property protecting LIC-1.

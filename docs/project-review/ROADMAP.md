@@ -149,7 +149,7 @@ which means knowing what they are first.
 | 2 | **TASK-16** | Vendored OCA provenance as SHAs | S |
 | 3 | **SAAS-8** | PgBouncer (session mode) — **before ~50 tenants** | L |
 | 4 | **SAAS-7** | Cron sharding or an external scheduler — before ~200 tenants | L |
-| 5 | **SCH-1**, **SCH-2** | Index business FKs; load representative data and re-measure | XS + M |
+| 5 | ~~**SCH-1**~~, **SCH-2** | ~~Index business FKs~~ **done 2026-08-23**, immediately after SEC-2 put `company_id` in the WHERE clause of every query on those tables. **SCH-2** — load representative data and re-measure — remains | M |
 | 6 | **STORY-3** | BS-aware period filters and group-by | L |
 | 7 | **CI-2** | Containerise so dev and prod share an artefact | M |
 | 8 | **SPIKE-1** → implementation | How Odoo core is obtained | M → XL |

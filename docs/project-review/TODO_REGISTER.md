@@ -57,15 +57,28 @@ URL rather than a SHA (**DEP-5**), there is no way to tell whether the fix has s
 
 ---
 
-## Lint suppressions without a linter — QA-1
+## ~~Lint suppressions without a linter~~ — QA-1, **RESOLVED 2026-08-23**
 
-Not TODOs, but deferred decisions in the same spirit: `# noqa` annotations throughout local code
-with **no linter configured to read them**.
+There is now a linter, and it reads them: `ruff.toml` and `.pylintrc` are committed and run by
+`run-odoo.ps1 lint` / `run-odoo.sh lint`. Both are clean. 33 `# noqa` annotations remain across
+local code, and they are now *enforced* annotations rather than folklore — ruff errors on an
+unused one.
+
+**The most consequential entry in the table below no longer exists.**
+`vat_return.py:201`'s `# noqa: S307` suppressed "eval is dangerous" on a live `eval()`. **SEC-3**
+was closed on 2026-08-23 by removing the `eval` entirely in favour of an AST walk, so the
+suppression went with it — verified: neither `eval(` nor `noqa: S307` appears in that file.
+
+That is the useful shape of this register: a suppression is a deferred decision, and closing the
+finding underneath it should delete the suppression rather than leave it pointing at nothing.
+
+*The original table, for context — note that the first two rows cite files that have since moved
+or changed:*
 
 | File:line | Suppression | Note |
 |---|---|---|
-| `l10n_np_vat_return/models/vat_return.py:201` | `# noqa: S307` | Suppresses "eval is dangerous" **on a live `eval()`** — and the whitelist does admit a DoS (**SEC-3**). The most consequential suppression in the repo |
-| `l10n_np_bs/tools/bs.py:124` | `# noqa: SLF001` | Acknowledges a private third-party symbol (**COD-10**) |
+| ~~`l10n_np_vat_return/models/vat_return.py:201`~~ **gone** | `# noqa: S307` | Suppressed "eval is dangerous" **on a live `eval()`**. Removed with the `eval` itself (**SEC-3**) |
+| `l10n_np_bs/tools/bs.py:124` → now `nepali_calendar_core/tools/bs.py` | `# noqa: SLF001` | Acknowledges a private third-party symbol (**COD-10**, still open) |
 | `test_menu_integrity.py:74,91` | `# noqa: BLE001` | Broad exception catch |
 | 6 further sites | `# noqa: PLC0415` | Import inside function |
 
@@ -82,4 +95,4 @@ turns these from folklore back into enforced decisions.
 | Markers in local code | **0** | None needed |
 | Markers in vendored OCA | 14 | Leave in place; track upstream |
 | Unmarked deferred work (prose) | 8 clusters | 2 block statutory use (SME register, `wkhtmltopdf`); the SaaS layer is the largest |
-| Lint suppressions without a linter | 10 | Fold into QA-1 |
+| ~~Lint suppressions without a linter~~ | 33 | **QA-1 closed 2026-08-23** — ruff and pylint-odoo are configured, run by `lint`, and both clean. The suppressions are now enforced rather than decorative: ruff errors on an unused one |

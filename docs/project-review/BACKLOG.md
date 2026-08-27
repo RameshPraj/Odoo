@@ -7,7 +7,7 @@ Every finding appears here exactly once. All other documents reference these IDs
 - **Confidence** `CONFIRMED` (read the source or ran it) · `LIKELY` · `POSSIBLE` · `NEEDS_VERIFICATION`
 - **Effort** XS <½d · S ½–1d · M 2–3d · L 1–2w · XL >2w
 
-**Totals: 10 × P0 · 29 × P1 · 49 × P2 · 28 × P3 · 6 × P4 = 122 entries / 124 findings**
+**Totals: 10 × P0 · 29 × P1 · 50 × P2 · 28 × P3 · 6 × P4 = 123 entries / 125 findings**
 
 > **Recounted 2026-08-15.** This line previously read `9 × P0 · 24 × P1 · 31 × P2 · 18 × P3 · 6 × P4
 > = 88 findings`, which was stale in every bucket but P4. Findings were appended by later passes
@@ -16,11 +16,22 @@ Every finding appears here exactly once. All other documents reference these IDs
 > P2–P4. **119 entries, 121 findings** — the two differ only because `DEP-3/4/5` is a single row
 > covering three findings.
 >
-> The count includes entries already closed. **13 are RESOLVED** — FIN-2, FIN-3, OPS-1, OPS-2,
-> OPS-7, SEC-1, SEC-12, SAAS-2, BS-20, DEP-1, TST-1, TST-8 and FIN-1 — and CI-1 is PARTIALLY
-> RESOLVED, so the open figure is 111. FIN-1 is marked resolved as a *defect*: the tags are
-> backfilled and a test guards them. The **go-live gate** it feeds remains open, because a usable
-> IRD filing needs the box layout, which is SME-gated and not in this repository.
+> **Re-recounted 2026-08-23**, and the drift repeated: the line above read `49 × P2 … = 122
+> entries / 124 findings` because **TST-9** was appended to P2 on 2026-08-23 without re-totalling.
+> That is the identical failure this note was written to record. The lesson is not "be careful" —
+> it is that a total maintained by hand will drift. **Count it from the document; do not carry it
+> forward.**
+>
+> The count includes entries already closed. **23 are RESOLVED** — ACC-3, BS-20, DEP-1, FIN-1,
+> FIN-2, FIN-3, OPS-1, OPS-2, OPS-7, QA-1, SCH-1, SEC-1, SEC-2, SEC-3, SEC-6, SEC-12, SAAS-2,
+> TST-1, TST-5, TST-8, TST-9, UPG-1 and UPG-2 — and four are PARTIAL (CI-1, CI-2, OPS-6, TST-7),
+> so the open figure is **100 entries / 102 findings**.
+>
+> Three of those "resolved" entries carry a residual a reader should not mistake for closed:
+> **FIN-1** is resolved as a *defect* (tags backfilled, test guards them) but its **go-live gate
+> stays shut**, because a usable IRD filing needs the box layout, which is SME-gated and not in
+> this repository. **UPG-1**'s design objection survives its fix. **TST-5**'s certificate layout
+> is still an unconfirmed placeholder.
 >
 > **COD-11** was added 2026-08-17 while making the reports drillable: OCA's reports discard the
 > drill-down domain they already compute and rebuild it in QWeb, which is the root cause behind the
@@ -522,7 +533,23 @@ user just clicked on.
 otherwise. **Effort XS. P4.**
 
 ## BS-1 · The exhaustive Python↔JS cross-check is dead code
-**CONFIRMED** · Bikram Sambat · `l10n_np_bs/tools/selftest.py`
+**RESOLVED — and it was already resolved when this entry was written up as open.** Settled
+2026-08-23 by execution: `nepali_calendar_core/tests/test_conversion_contract.py:50,78` calls
+`selftest.check()`, once in full and once sampled. It is wired, it runs in the suite, and
+`docs/bs-calendar/BACKLOG.md` (BSC-10, "Done") was the correct record all along.
+
+> **Root cause of this and every other stale BS entry.** Commit `c7a73ae8` moved the Bikram
+> Sambat implementation out of `l10n_np_bs` into `nepali_calendar_core`. Every BS finding below
+> still cites the **old** paths — `l10n_np_bs/tools/selftest.py`, `l10n_np_bs/static/src/…` —
+> which no longer exist. `l10n_np_bs` now holds a manifest, a README and a documented
+> compatibility shim. The findings read as open because nobody re-pointed them at the new module,
+> not because the defects survived. `docs/bs-calendar/BACKLOG.md` was maintained alongside the
+> move and is the more reliable record for anything BS.
+>
+> This is worth more than the individual corrections: **a finding that names a path is only as
+> current as that path.** Four separate entries were wrong for one reason.
+
+*Original finding, for context:* · `l10n_np_bs/tools/selftest.py`
 
 `selftest.py` performs exactly the 46,022-day sweep that proves the generated JS table matches
 Python. It is not imported by `tests/__init__.py`, not called anywhere, and referenced only in
@@ -534,7 +561,17 @@ apart"* — is enforced by a script nobody runs. Bumping `nepali_datetime` or ha
 value per unit effort in the whole backlog. **Effort S.**
 
 ## BS-2 · `datetime` declared supported with zero timezone normalisation
-**CONFIRMED** · Bikram Sambat · `l10n_np_bs/static/src/bs_date_field.js:44-55, 205`
+**RESOLVED.** Settled 2026-08-23 by reading the current source:
+`nepali_calendar_core/static/src/bs_date_field.js:64-77` re-zones to `user.tz` for datetime
+fields, with a comment recording exactly why — `.setZone("default")` resolves to the *browser*
+zone because Odoo never assigns `luxon.Settings.defaultZone` in production. Lines 129 and 185 use
+`user.tz` for "today" as well.
+
+It is also **tested**, which the finding asked for: `tests/test_timezone_and_reports.py` pins the
+UTC+05:45 boundary — 18:30 UTC is 00:15 the next day in Kathmandu, so the BS date must not shift
+into the reader's zone. See the module-move note under **BS-1**.
+
+*Original finding, for context:* · `l10n_np_bs/static/src/bs_date_field.js:44-55, 205`
 
 `supportedTypes: ["date", "datetime"]`, but `get value()` returns the record value raw and
 `adToBs(v.year, v.month, v.day)` reads **browser-local** components. There is no `setZone`,
@@ -757,7 +794,15 @@ present in the venv only because it was installed by hand; unpinned.
 
 **Fixed.** `nepali-datetime==1.0.8.5` pinned in a marked project-additions block at the end of
 `requirements.txt` — appended rather than merged alphabetically, so the stock-Odoo section stays
-byte-identical and refreshing it from a newer Odoo release remains a readable diff.
+byte-identical and refreshing it from a newer Odoo release remains a readable diff. `polib==1.1.1`
+is pinned in the same block.
+
+> **One residual, found 2026-08-23 while reconciling these documents: `websocket-client` is still
+> undeclared**, and three test files import it — `nepali_calendar_core/tests/test_calendar_ui.py`,
+> `tests/test_js_unit.py` and `account_reports_interactive/tests/test_js_unit.py`. It is present in
+> this venv by accident of Odoo's own requirements, so the tests pass here and would fail on a
+> clean build of the kind this finding exists to protect. **Effort XS**, and it belongs in the same
+> project-additions block.
 `nepali_calendar_core/tests/test_requirements.py` fails if the pin is dropped by such a refresh,
 drifts from the installed version, or is loosened to `>=`; the guard was verified by removing the line
 and confirming the suite goes red. `deploy/README.md` no longer carries a separate unpinned
@@ -972,7 +1017,7 @@ autofix is not safe merely because it is mechanical.
 | **SEC-3** | **RESOLVED 2026-08-23** — not by banning `**` but by removing `eval`: the substituted expression is parsed with `ast` and walked, and `ast.Pow` is simply absent from the allowed node types, so there is no pattern to get wrong. The root cause is worth keeping: a **character class cannot express "one star but not two"**, so `[0-9eE+\-*/(). ]*` was always going to admit `**`. Ten tests, including that the allowed arithmetic still evaluates, and one that asserts the *refusal* of `9**9**9` rather than evaluating it — a test that hangs the runner to prove a hang was fixed is a test nobody runs. A second bug fell out: sequential `str.replace` of box codes could rewrite digits inside a float it had already substituted, so substitution is now one pass with boundaries | Security | `vat_return.py:195,201` | Regex whitelist admits `**`; verified `9**9**9` passes `fullmatch` | Worker hang; with `workers=0` and `limit_time_real=0` the whole server. RCE **is** correctly blocked and tested | Done | XS |
 | **SEC-6** | **RESOLVED 2026-08-23** — and it was **not** the one-character fix this row prescribed. That single row was also what granted every *higher* accounting group its access, because they all imply read-only; setting it to `1,0,0,0` alone would have stopped `action_compute` working, since computing a return unlinks and recreates every line. So the readonly row is now `1,0,0,0` and the billing and manager roles have rows of their own. Six tests, including that the read-only role can still *read* a line (which stops the fix becoming "delete the row") and that the billing role can still maintain them. A related hole surfaced while fixing it: `action_compute` checked no state, so a **filed** return could be recomputed in place and its filed figures would change with no trace — now refused until it is reset to draft | Security | `ir.model.access.csv:8` | `group_account_readonly` given write/create/unlink on VAT return lines | A read-only accountant can rewrite a filed return | Done | XS |
 | **BS-3** | CONFIRMED | Bikram Sambat | `bs_accounting_dates.py:57-60`; `account_move_views.xml:365` | Search and group-by buckets stay Gregorian | A BS user filtering "August 2026" gets Bhadra 16 – Ashoj 15, straddling two BS months. **The most consequential functional gap** — BS presentation stops where periodic reporting begins | BS-aware period filter and group-by | L |
-| **BS-4** | CONFIRMED | Bikram Sambat | `bs.py:121-124`; `generate_np_fiscal_year.py:53,69` | `month_length()` raises raw `KeyError` at BS 2101 — the one entry point with no error wrapping — escaping the wizard's `UserError`-only catch | Traceback instead of a message; reachable by default from BS 2097 | Wrap + bound-check | XS |
+| **BS-4** | **RESOLVED** — settled 2026-08-23 by reading `nepali_calendar_core/tools/bs.py:160-172`: `month_length()` now bounds-checks the year and raises `UserError`, and its docstring records that it "previously did not, so an out-of-range year surfaced as a raw `KeyError`… reachable by default from BS 2097". Matches `docs/bs-calendar` BSC-4 "Done"; the BSD-7 "Not started" row in that same file is itself stale. See the module-move note under **BS-1** | Bikram Sambat | `bs.py:121-124`; `generate_np_fiscal_year.py:53,69` | `month_length()` raises raw `KeyError` at BS 2101 — the one entry point with no error wrapping — escaping the wizard's `UserError`-only catch | Traceback instead of a message; reachable by default from BS 2097 | Wrap + bound-check | XS |
 | **BS-5** | LIKELY | Bikram Sambat | `bs_date_field.xml:14-20` | Input is uncontrolled (`t-att-value` → `setAttribute`), so the DOM diverges from the record after typing | Rejected entries stay on screen; picker updates don't refresh the box | Use `useInputField` | S |
 | **BS-6** | CONFIRMED | Bikram Sambat | `bs_date_field.js:127-130` | "Today" from the raw browser clock, not `res.users.tz` | Widget and server disagree on today for part of each day | Derive from user tz | S |
 | **BS-7** | CONFIRMED | Bikram Sambat | `bs_accounting_dates.py:70-81` | Name-based patching walks nested subviews of **other** models | Latent today; a future non-date field named `date` in a subview gets `bs_date` | Check `_fields[name].type` | XS |
@@ -1001,7 +1046,7 @@ autofix is not safe merely because it is mechanical.
 | **SEC-12** | **RESOLVED 2026-08-21** (commit `614a368a`) — root gated on `account.group_account_readonly,account.group_account_invoice`, mirroring core; Dashboard on `group_account_basic` as core gates its own. Verified with `load_menus()`: a user with no accounting group went from a visible tile with 8 reachable entries to no tile and 0. `test_menu_visibility.py` gained the case it never had, and its `ALWAYS_VISIBLE` constant — which had encoded this defect as intended behaviour — is now `UNGATED_SECTIONS`. | Security | `l10n_np_accounting/views/np_accounting_menus.xml:22-25`; compare `odoo/addons/account/views/account_menuitem.xml:5-8` | **The "Accounting Nepal" root menu has no `groups=` at all.** Core's equivalent `account.menu_finance` gates on `account.group_account_readonly,account.group_account_invoice`. Verified with `_visible_menu_ids()` — the API the web client uses, not `search()`, which ignores groups: a user holding **none** of the accounting groups (`salesexecutive@example.com`) sees the tile and **8 reachable entries** — Customers, Vendors, Products (×2) and **Employee Expenses** (`hr.expense`) | Not merely a stray tile. An accounting application presents itself to every internal user, and the reachable actions target `res.partner`, `product.template` and `hr.expense`. Model-level ACLs still apply, so this is exposure of *navigation*, not a direct read of accounting data — but a sales user reaching Employee Expenses under an accounting banner is wrong on its face, and the same omission on any future child menu would expose that child too. Found while tracing a report of "installed app has no entry point" | Gate the root on `account.group_account_readonly,account.group_account_invoice` to match core, and audit the intermediate menus (`Customers`, `Vendors`) which are ungated for the same reason. Test with `_visible_menu_ids()` for a user holding no accounting group | S |
 | **FIN-3** | **RESOLVED 2026-08-19** (found and fixed same day) | Accounting | `account_financial_report/wizard/aged_partner_balance_wizard.py:137`; `report/aged_partner_balance.py:419` | **Aged Partner Balance could not render at all.** The wizard passed `date_at` as a `datetime.date` while the report immediately called `strptime(date_at, "%Y-%m-%d")`, so pressing Export HTML, PDF or XLSX raised `TypeError: strptime() argument 1 must be str, not datetime.date`. Verified by calling `button_export_html()` and rendering the returned action, which is what the web client does. The sibling report gets it right (`open_items_wizard.py:172` uses `fields.Date.to_string`) and `general_ledger.py:793` guards with `isinstance(..., str)`, so the convention exists in the same module and this one call site missed it | One of the six OCA reports was completely unusable, and had been for as long as it has been vendored. **Its own tests pass** — they call `_get_report_values` directly with a hand-built string and so never cross the boundary where the types disagree. That is the third instance in this project of the FIN-2 pattern: green tests over a report that has never rendered. It also explains why the eight broken drill-down attributes went unnoticed for so long — nobody could reach the page to click them | Fixed by model override in `account_reports_interactive/models/aged_partner_balance_wizard.py`, not in place (AGPL-3, `VENDORED.md`). An upstream fix supersedes it harmlessly, since converting an already-correct string is a no-op. Worth reporting upstream | XS |
 | **COD-11** | CONFIRMED (new 2026-08-17) | Code quality | `account_financial_report/report/trial_balance.py:242,542`; `general_ledger.py:948-972`; `report/templates/general_ledger.xml:224-251`, `trial_balance.xml:325-367` | OCA's reports **discard the drill-down domain they already computed** and rebuild it by hand in QWeb. `trial_balance.py` uses `_read_group`'s `__domain` internally and never exports it; `general_ledger`'s report values contain no `domain` key at all. So every clickable figure's domain is reassembled from ids in the template, in 14 places in general_ledger and 28 in trial_balance | One root cause behind three separate symptoms: the aged-balance drill-down was written with 8 broken `domain=` attributes and never worked at all (repaired 2026-08-17 by overlay in `account_reports_interactive`); `open_items` and `journal_ledger` have no amount drill-down; and nothing structurally guarantees a rebuilt domain still matches the figure above it. Our own statements avoid this by returning the domain from the same call that computed the number, which is what makes their invariant testable | Persist the domain onto each line dict, as `account_financial_statements` now does. **Python change to AGPL-3 vendored code**, so it needs an overlay module or an upstream PR rather than an in-place edit | M |
-| **DOC-3** | CONFIRMED | Documentation | `custom_addons/VENDORED.md` | Omits `date_range`; "two of the three are AGPL-3" when it is **four of seven**; lists 2 of 8 local modules; misstates the §13 trigger as modification | Understates AGPL exposure by half; feeds LIC-1 | Rewrite against manifests | S |
+| **DOC-3** | **RESOLVED 2026-08-23** — `date_range` added to the table; "two of the three are AGPL-3" corrected to **five of seven**, derived from the seven `license` keys. Note the finding itself said "four of seven" and was also wrong — **LIC-1 rests on this count**, so it is now derived rather than quoted | Documentation | `custom_addons/VENDORED.md` | Omits `date_range`; "two of the three are AGPL-3" when it is **four of seven**; lists 2 of 8 local modules; misstates the §13 trigger as modification | Understates AGPL exposure by half; feeds LIC-1 | Rewrite against manifests | S |
 | **DOC-4** | CONFIRMED | Documentation | 5 root docs | All describe a repo with one local module; `RUNTIME-ARCHITECTURE.md` never mentions `custom_addons` | Stale by 8×; omits the `_get_view` patcher | Date-stamp as snapshots | S |
 | **OPS-3** | CONFIRMED | Operations | `deploy/odoo.service:18,51`; `README.md:45` | Service account owns `/opt/odoo` incl. its venv; `ProtectSystem=full` leaves `/opt` writable; missing `PrivateDevices`, `RestrictAddressFamilies`, `SystemCallFilter`, `MemoryMax`, `UMask`; `-s /bin/bash` | Code-execution bugs become persistent. Note the tension: `-u` and SUP-3 both want `/opt/odoo` writable | `ProtectSystem=strict` + `ReadWritePaths`; `nologin` | S |
 | **OPS-4** | CONFIRMED | Operations | `odoo.conf:60`; `.example:68` | `limit_time_real = 0` disables the runaway-request watchdog | One tenant's infinite loop permanently consumes a thread — a cross-tenant availability path. The Windows rationale is sound for dev; it must not ship | Restore on Linux (already correct there) | XS |

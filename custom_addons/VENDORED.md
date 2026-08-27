@@ -12,6 +12,7 @@ code that was tested.
 | `account_asset_management` | 19.0.1.0.2 | **AGPL-3** | [OCA/account-financial-tools @19.0](https://github.com/OCA/account-financial-tools/tree/19.0/account_asset_management) | 2026-08-09 |
 | `account_fiscal_year` | 19.0.1.0.0 | **AGPL-3** | [OCA/account-financial-tools @19.0](https://github.com/OCA/account-financial-tools/tree/19.0/account_fiscal_year) | 2026-08-09 |
 | `account_budget_oca` | 19.0.1.1.0 | LGPL-3 | [OCA/account-budgeting @19.0](https://github.com/OCA/account-budgeting/tree/19.0/account_budget_oca) | 2026-08-09 |
+| `date_range` | 19.0.1.1.0 | LGPL-3 | [OCA/server-ux @19.0](https://github.com/OCA/server-ux/tree/19.0/date_range) | 2026-08-09 |
 
 Also enabled: **`l10n_account_withholding_tax`** (LGPL-3) — not vendored, it was
 already present in the Odoo tree and simply uninstalled. Provides the TDS
@@ -46,7 +47,22 @@ reports over `account.move.line`.
 
 ## AGPL-3 — what it means here
 
-Two of the three are AGPL-3, not LGPL-3. Practically:
+**Five of the seven are AGPL-3** — `account_financial_report`, `report_xlsx`,
+`report_xlsx_helper`, `account_asset_management` and `account_fiscal_year`. The
+other two, `account_budget_oca` and `date_range`, are LGPL-3.
+
+> **Corrected 2026-08-23 (DOC-3).** This line read *"Two of the three are
+> AGPL-3"*, which was wrong on both numbers, and `date_range` was missing from the
+> table above entirely. The audit finding that caught it said *"four of seven"* —
+> **also wrong**. The figure here is now derived from the seven `__manifest__.py`
+> `license` keys rather than from either document.
+>
+> This matters more than a tidy-up: **LIC-1 is the decision that rests on this
+> count**, and it is a decision meant to be taken with counsel. A legal question
+> answered from a document that miscounts its own inputs is answered wrongly.
+> Re-derive before quoting.
+
+Practically:
 
 - **Internal use is unrestricted.** Running them on your own server for your own
   company carries no obligation.
@@ -116,9 +132,8 @@ dependencies, so this is not an upstream bug and there is nothing to report.
 `docs/operations/ODOO_SERVICE_MANAGEMENT.md` says so at the point where somebody
 running `test` would notice.
 
-Also note `date_range` is **absent from the table at the top of this file** — that is
-audit finding **DOC-3**, unrelated to this deviation but worth fixing in the same pass
-as the rest of DOC-3.
+`date_range` was **absent from the table at the top of this file** — audit finding
+**DOC-3**, fixed 2026-08-23 in the same pass that corrected the AGPL count.
 
 `account_reports_interactive` also patches core's `ReportAction` component to widen
 report drill-down from single records to filtered lists. `account_financial_report`

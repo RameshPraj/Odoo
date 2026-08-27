@@ -52,9 +52,16 @@ suites.
 
 ## Structural defects
 
-**TST-1 — a test that disables itself when the thing it guards is broken.** Verified firing on
-the live database today. Replace the skip with an assertion and build the tax, tags and invoice as
-fixtures.
+**TST-1 — a test that disables itself when the thing it guards is broken. RESOLVED 2026-08-23**,
+and this paragraph contradicted the inventory table above it for a week. Settled by reading the
+code: `test_box_from_tax_tags_ties_to_ledger` now builds its own tax, tags and invoice through
+`_tagged_sale_tax()` and asserts an exact figure (226,000), with **no skip**.
+
+The `skipTest` that remains in that file at line 127 belongs to a **different** test,
+`test_chart_taxes_carry_repartition_tags`, and is a legitimate guard: that test asserts something
+about the Nepali chart and cannot mean anything on a company that has not adopted it. Distinguish
+the two before reading a `skipTest` as a TST-1 recurrence — one is the defect, the other is
+correct.
 
 **TST-2 — five suites assert on live database state.** Three assert the database is *empty*
 (`test_ships_with_no_form`, `test_ships_with_no_rates`, `test_is_configured_flag`) and will fail
@@ -243,13 +250,20 @@ writing it.
 
 ## Recommended sequence
 
-1. **BUG-6 / DEP-1** — make the suite installable at all. **XS**
-2. **STORY-1 / CI-1** — one command runs everything and **reports skip counts**. **M**
-3. **TST-1** then **FIN-1** — fix the test that hides the defect *before* the defect, so you can
-   watch it fail and then pass. **S + M**
-4. **FIN-2** — add a render assertion; it would have caught the P0 with one line. **S**
-5. **BS-1** — wire in `selftest.py`. **S**
-6. **TST-5**, **ACC-1**, **ACC-2** — tests for the untested money paths. **S each**
+Steps 1–6 are **done** as of 2026-08-23 and are struck rather than deleted, so the ordering
+argument stays readable. What is left is 7, 8 and 9.
+
+1. ~~**BUG-6 / DEP-1** — make the suite installable at all.~~ Done — with one residual:
+   `websocket-client` is still undeclared and three test files import it.
+2. ~~**STORY-1 / CI-1** — one command runs everything and **reports skip counts**.~~ Runner, lint
+   and skip reporting done; **automation on push is not**, and is blocked on there being a remote
+   (**SUP-2**).
+3. ~~**TST-1** then **FIN-1** — fix the test that hides the defect *before* the defect.~~ Done in
+   that order, deliberately, and the test was watched failing first.
+4. ~~**FIN-2** — add a render assertion.~~ Done 2026-08-15.
+5. ~~**BS-1** — wire in `selftest.py`.~~ **Already wired** — this step was never needed; see the
+   module-move note in `BACKLOG.md` under BS-1.
+6. ~~**TST-5**~~ done 2026-08-23. **ACC-1** and **ACC-2** remain — the untested money paths.
 7. **TST-2** — fixtures everywhere; assert module data, not database emptiness. **M**
 8. **COD-2** — one shared `lxml` mixin across all eight modules. **S**
 9. **Cross-tenant isolation suite** above — before the SaaS pivot, not after. **L**
