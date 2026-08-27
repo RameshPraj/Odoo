@@ -6,3 +6,5 @@ from . import test_menu_visibility
 from . import test_bs_calendar_integration
 from . import test_bs_migration
 from . import test_account_group_wiring
+from . import test_matching_column
+from . import test_js_unit

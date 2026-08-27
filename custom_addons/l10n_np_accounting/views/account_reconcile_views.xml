@@ -15,6 +15,40 @@
                             groups="account.group_account_user"/>
                 </header>
             </xpath>
+
+            <!--
+                The Matching column. Core declares
+                    <field name="matching_number" string="Matching" .../>
+                at account/views/account_move_views.xml:190, which renders a raw
+                token: the account.full.reconcile primary key when fully matched,
+                'P<n>' when partial, 'I<x>' when merely marked to be matched
+                later, and empty otherwise. On a real database that is a bare
+                integer on a few rows and blank on the rest, and the blanks
+                conflate "this account can never be reconciled" with "this is
+                reconcilable and still owed".
+
+                matching_number is DEMOTED, not removed. The search filters and
+                the group-by in account.view_account_move_line_filter reference it
+                by name (account_move_views.xml:343-348 and :381), and so may any
+                integration; keeping the field in the arch as optional="hide"
+                leaves the token one click away without spending a column on it.
+            -->
+            <xpath expr="//field[@name='matching_number']" position="attributes">
+                <attribute name="string">Matching #</attribute>
+                <attribute name="optional">hide</attribute>
+            </xpath>
+
+            <!--
+                readonly is required, not decorative: this list is multi_edit="1",
+                and without it Odoo offers to mass-edit a computed display string.
+                matching_status rides along invisibly because the widget colours
+                and gates the click on it.
+            -->
+            <xpath expr="//field[@name='matching_number']" position="after">
+                <field name="matching_status" column_invisible="True"/>
+                <field name="matching_label" string="Matching"
+                       widget="account_matching" readonly="1" optional="show"/>
+            </xpath>
         </field>
     </record>
 

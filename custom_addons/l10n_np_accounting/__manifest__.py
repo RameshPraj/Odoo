@@ -3,9 +3,11 @@
     'name': 'Accounting Nepal',
     # Bumped so migrations/19.0.1.1.0 runs: the Bikram Sambat group is
     # retired in favour of the calendar preference in nepali_calendar_core.
-    'version': '19.0.1.2.1',   # 1.1.0 = accounting group ladder;
+    'version': '19.0.1.3.0',   # 1.1.0 = accounting group ladder;
                               # 1.2.0 = app gated on accounting rights (SEC-12)
-                              # and the group-wiring guard test (UPG-1)
+                              # and the group-wiring guard test (UPG-1);
+                              # 1.3.0 = matching_status/matching_label and the
+                              # Matching column widget
     'countries': ['np'],
     'category': 'Accounting/Accounting',
     'sequence': 11,
@@ -97,6 +99,19 @@ authoritative: post test transactions freely, file nothing.
         'views/res_config_settings_views.xml',
         'views/np_accounting_menus.xml',
     ],
+    'assets': {
+        'web.assets_backend': [
+            # The Matching column widget. Two files, template after component,
+            # matching the ordering convention in nepali_calendar_core.
+            'l10n_np_accounting/static/src/matching_cell.js',
+            'l10n_np_accounting/static/src/matching_cell.xml',
+        ],
+        # Declared so the hoot suite is compiled; it is *run* by
+        # tests/test_js_unit.py, because declaring a bundle never executes it.
+        'web.assets_unit_tests': [
+            'l10n_np_accounting/static/tests/**/*',
+        ],
+    },
     'author': 'local',
     'license': 'LGPL-3',
     'installable': True,
