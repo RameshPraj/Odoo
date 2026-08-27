@@ -173,7 +173,7 @@ Differences from the Windows development config that matter:
 | `list_db` | `True` | `False` | Stops unauthenticated clients enumerating every database on the cluster. It does **not** close the manager: `/web/database/manager` is `auth="none"` with no `list_db` guard (`web/controllers/database.py:65-69`) and still serves create/drop/backup forms. Block it at the proxy, below |
 | `admin_passwd` | default, plaintext | strong, **hashed** | This is the only thing actually guarding the manager. While it verifies as `admin`, any POST to a manager route silently reassigns it to the attacker's value and proceeds (`database.py:73-75`) — finding SAAS-2 |
 | `proxy_mode` | unset | `True` | TLS is terminated by nginx in front |
-| `data_dir` | `.odoo_data` | `/var/lib/odoo` | Must be writable and in the unit's `ReadWritePaths` |
+| `data_dir` | `C:\Users\i81129\odoo-data` (**outside** the project tree since DAT-1) | `/var/lib/odoo` | Must be writable and in the unit's `ReadWritePaths`. Moved out of the tree on the dev host because the tree is OneDrive-synced and `data_dir` holds the filestore, session files and any dumps -- see DAT-1 |
 
 ## 5. Install the service
 

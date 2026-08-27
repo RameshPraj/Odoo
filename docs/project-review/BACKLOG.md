@@ -22,10 +22,23 @@ Every finding appears here exactly once. All other documents reference these IDs
 > it is that a total maintained by hand will drift. **Count it from the document; do not carry it
 > forward.**
 >
-> The count includes entries already closed. **27 are RESOLVED** — ACC-2, ACC-3, BS-1, BS-2, BS-4,
-> BS-20, DEP-1, DOC-3, FIN-1, FIN-2, FIN-3, OPS-1, OPS-2, OPS-7, QA-1, SCH-1, SEC-1, SEC-2, SEC-3,
-> SEC-6, SEC-12, SAAS-2, TST-1, TST-5, TST-8, TST-9, UPG-1 and UPG-2 — and four are PARTIAL (CI-1,
-> CI-2, OPS-6, TST-7), so the open figure is **96 entries / 98 findings**.
+> The count includes entries already closed. **Do not read a hand-typed total here as current** —
+> this line has now drifted three times, which is the whole point of the note above. As of
+> 2026-08-27 the *derived* figures are **32 RESOLVED, 4 PARTIAL (CI-1, CI-2, DAT-1, TST-7), 85 OPEN**.
+> Recover them from the document rather than from this sentence:
+>
+> ```bash
+> venv\Scripts\python.exe tools\check_backlog_counts.py   # also runs in `lint`
+> ```
+>
+> A grep pair was offered here first and was wrong: it returned 33 against a stated 31 + 3, because
+> the status text uses three spellings for partial and the two shapes of entry need different
+> patterns. That is the whole reason this is a tool and not a one-liner.
+>
+> The 2026-08-23 line claimed 27 resolved while the body already marked 31: **COD-2, TST-2 and
+> TST-3** were resolved in place and never added here, and OPS-6 was listed as PARTIAL without a
+> PARTIAL marker in its own entry. Corrected 2026-08-27, and stated as derived so the next
+> correction is a re-run rather than a re-count.
 >
 > Three of those "resolved" entries carry a residual a reader should not mistake for closed:
 > **FIN-1** is resolved as a *defect* (tags backfilled, test guards them) but its **go-live gate
@@ -224,7 +237,7 @@ about where the code should live. Private remains the sensible default for clien
 it is no longer a security requirement.
 
 ## DAT-1 · Database dumps, filestore, live sessions and credentials in corporate cloud sync
-**CONFIRMED** · Data protection
+**PARTLY RESOLVED 2026-08-27** · Data protection · local half done, cloud retention outstanding
 
 Inside `C:\Users\i81129\OneDrive - Verisk Analytics\Desktop\odoo-19.0`: two full `pg_dump` images
 (9.3 + 9.5 MB), the 113 MB filestore (572 blobs), **75 live session files**, `odoo.conf` with the
@@ -244,6 +257,34 @@ remain P0. Excluding `.odoo_data` from sync is now clearly the right call — it
 
 **Fix** Move the tree outside the sync root, or exclude `.git`, `.odoo_data`, `venv`; relocate the
 dumps. **Effort S–M.**
+
+**PARTLY RESOLVED 2026-08-27 — the local half is done; the cloud half cannot be done from here.**
+
+`data_dir` moved out of the sync root to `C:\Users\i81129\odoo-data`, chosen because the profile
+root is not a Known-Folder-Move target (`Desktop`, `Documents` and `Pictures` here are). What left
+the sync root: the 596-file / 130,593,454-byte filestore (copied and byte-verified, with sha256 spot
+checks on the five largest blobs, *before* the source was deleted), **154 session files** (purged,
+not migrated — a session file is a bearer credential, so destroying them is the point), the two
+`pg_dump` images (moved to `C:\Users\i81129\odoo-backups`, not deleted: they are the only
+pre-migration rollback images), and nine stray hand-redirected logs. `.odoo_data` no longer exists.
+Verified by reading attachment bytes back: **84 store-backed rows, 84 readable, 0 empty** —
+identical to the pre-move baseline, which was measured first precisely so a pre-existing `b''` could
+not be mistaken for damage. That is the technique the OPS-1 fix used.
+
+**The ACL step was dropped as security theatre after measuring it.** `odoo.conf` already grants only
+`NT AUTHORITY\SYSTEM`, `BUILTIN\Administrators` and `VERISK\I81129` — no broad groups. Stripping
+SYSTEM and Administrators would break backup and AV and buy nothing, because the sync client runs
+*as the user*: any user-readable file inside the sync root is replicated regardless of ACL. The ACL
+was never the lever; removing the file from the root was.
+
+**Residual, and why this is not RESOLVED.** Relocation stops *future* replication. It does not
+retract what the tenant already holds — OneDrive cloud copies, version history and the recycle
+bin / retention policy may still contain both dumps, the session files and `odoo.conf`. Purging that
+is a OneDrive-web or Verisk-IT action. **The go-live gate stays shut until that is confirmed.**
+
+Still in the sync root and out of scope for this pass: `.git` (340 MB, the *integrity* half of this
+finding), `venv` (205 MB) and `.runtime` (119 MB). Moving the whole tree would close those too, but
+it rewrites absolute paths in `odoo.conf`, both wrappers and the venv, and belongs in its own change.
 
 ## OPS-1 · Config points at deleted directories; attachments splitting across two filestores
 **RESOLVED 2026-08-14** · Runtime configuration · `odoo.conf:24,27`
@@ -1088,7 +1129,7 @@ autofix is not safe merely because it is mechanical.
 | **UPG-2** | **RESOLVED 2026-08-23** — the fix is the *check*, not the bump: `tools/check_module_versions.py` compares each module's last code change against the last commit that moved its `version` line, and fails on drift. Wired into `lint`. Bumping once would have been undone by the next change. It found **six** stale modules on first run (`account_financial_statements`, `account_reports_interactive`, `date_range`, `l10n_np_accounting`, `l10n_np_fiscal_year`, `l10n_np_tds`), all now bumped. Deliberately conservative: it flags pure-Python changes that did not strictly need a bump, because deciding "no data changed here" from a diff is exactly the judgement that goes wrong quietly | Upgrade | all 8 manifests | Zero migration scripts; every module frozen at `19.0.1.0.0` | Odoo never fires "outdated"; a deploy relying on version comparison skips them, leaving stale views and **ACLs** | Done | S |
 | **UPG-3** | CONFIRMED | Upgrade | `res_config_settings_views.xml:10` | xpath `//block[@id='analytic']` `position="before"` — sibling-relative into the most-churned arch in Odoo | A rename → `ParseError` → **the module fails to install** | Target the ancestor with `position="inside"` | S |
 | **UPG-4** | POSSIBLE | Upgrade | `wizard/account_lock_dates.py:18` | New model named `account.lock.dates` — inside core's namespace | If Odoo 20 adds that name, this silently *extends* it and the fields collide | Rename `l10n_np.account.lock.dates` | XS |
-| **DAT-2** | CONFIRMED | Data | `…\Downloads\odoo-19.0\.odoo_data` | Orphaned filestore, 11 files, no repo/config/owner. Caused by OPS-1, which is now fixed so it receives no further writes | **Reconciled 2026-08-14: contains nothing of value** — 5 regenerable asset bundles + 6 blobs referenced by no database row. **Zero business attachments.** Originally rated as holding business documents; that was wrong | Safe to delete. The 5 dangling rows then return `b''` per `ir_attachment.py:151-155` | XS |
+| **DAT-2** | **RESOLVED 2026-08-27** — deleted. Re-verified against the live database first rather than trusting the 2026-08-14 reconciliation: all five real blobs confirmed unreferenced by any `ir_attachment.store_fname`. The tree held **13 files / 11.96 MB**, not the 11 recorded here — it had also accrued **two stale session files**, which the original count missed. Scoped to `.odoo_data`; the stale `Downloads\odoo-19.0` tree itself is left for the user | Data | `…\Downloads\odoo-19.0\.odoo_data` | Orphaned filestore, 11 files, no repo/config/owner. Caused by OPS-1, which is now fixed so it receives no further writes | **Reconciled 2026-08-14: contains nothing of value** — 5 regenerable asset bundles + 6 blobs referenced by no database row. **Zero business attachments.** Originally rated as holding business documents; that was wrong | Safe to delete. The 5 dangling rows then return `b''` per `ir_attachment.py:151-155` | XS |
 | **SCH-1** | **RESOLVED 2026-08-23** — `company_id` indexed on all ten company-scoped models, plus the one2many parents (`vat.return.box.form_id`, `vat.return.line.return_id`, `tds.certificate.line.certificate_id`), the named `vat.return.line.box_id`, and `partner_id` on the loan and the TDS certificate. Verified present in `pg_indexes`. Done immediately after SEC-2 for the reason this row predicted: those record rules put `company_id` in the WHERE clause of every query against these tables | Schema | custom tables | Business FKs unindexed | `company_id` became hot the moment SEC-2 added rules | Done | XS |
 | **SCH-2** | CONFIRMED | Schema | all custom tables | **0 rows**; 3 posted journal entries cluster-wide | Nothing exercised at volume; no performance claim is evidence-based | Load representative data | M |
 | **COD-1** | CONFIRMED | Tests | `test_loan.py` (10 sites) | Money compared with `assertEqual`; the `currency.round()` mitigation appears in exactly one test | Brittle across rate/term combinations | Round consistently | S |

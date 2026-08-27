@@ -2293,6 +2293,12 @@ function Invoke-Lint {
     } else { $failed += 'XML well-formedness' }
 
     Write-Host ""
+    Write-Host "backlog counts (DOC-5)"
+    if (Invoke-LintTool @('tools/check_backlog_counts.py', '--quiet')) {
+        Write-Ok "BACKLOG.md's stated counts match its contents"
+    } else { $failed += 'backlog counts' }
+
+    Write-Host ""
     if ($failed.Count -eq 0) {
         Write-Ok 'Lint clean'
         exit 0

@@ -32,9 +32,18 @@ before BUG-14 so a second copy exists before anything moves.
 the defect. That ordering is the entire lesson of this pair, and it applies again at BUG-6 (add
 the render assertion in the same change).
 
-**Decide before step 3:** whether to rewrite history to purge the committed credentials. It is
-cheapest now, while no clones exist, and materially worse after the first push. Rotation reduces
-the risk either way, so this is hygiene, not exposure.
+**Decided 2026-08-27: no history rewrite is needed.** This item asked whether to purge committed
+credentials before the first push. Checked rather than assumed, and the premise was false:
+
+* `odoo.conf` was **never committed** — `git log --all -- odoo.conf` is empty. It has been
+  gitignored from the baseline commit onward.
+* `odoo.conf.example` *is* committed and carries `admin_passwd` and `db_password`, but every value
+  across all four commits touching it is a **9-character placeholder**, not a real secret.
+* The Enterprise password pasted into a chat session on 2026-08-27 appears in **zero** commits.
+
+So there is nothing to purge, and `git filter-repo` — irreversible, and guaranteed to invalidate
+every existing clone — must **not** be run for this. Recorded with the evidence so the question is
+not reopened as a precaution later. The one-time-window framing was wrong.
 
 **Exit criteria**
 - `verify_admin_password('admin')` is False; `/web/database/*` unreachable externally

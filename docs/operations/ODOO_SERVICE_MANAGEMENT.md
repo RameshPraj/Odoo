@@ -226,8 +226,10 @@ interrupted between the SMTP handoff and its commit is re-sent by the next cron 
 ## Logs
 
 `logfile` is unset in `odoo.conf`, so a hand-started Odoo logs to stderr and the output is lost unless
-the caller redirects it — which is why `.odoo_data/` accumulated nine hand-redirected log files. These
-scripts pass `--logfile` so Odoo owns `logs/odoo.log` and appends across restarts.
+the caller redirects it — which is why `data_dir` accumulated nine hand-redirected log files. These
+scripts pass `--logfile` so Odoo owns `logs/odoo.log` and appends across restarts. Those nine were
+deleted with the DAT-1 relocation (2026-08-27); `data_dir` is now `C:\Users\i81129\odoo-data`,
+outside the OneDrive-synced tree.
 
 Rotation differs, because Odoo's handler choice differs by platform (`odoo/netsvc.py:266-272`):
 
@@ -322,6 +324,8 @@ These scripts deliberately stop short of being a service manager. What is still 
   provenance, and upstream publishes no checksum for the Windows build to compare against.
 - `status`, `doctor` and `info` write to the console rather than the pipeline, so they are for humans.
   The machine-readable contract is the **exit code**; `logs` and `db-list` do write to stdout.
-- Neither script rotates a *running* server's log on Windows, and neither prunes `.odoo_data`.
+- Neither script rotates a *running* server's log on Windows, and neither prunes `data_dir`. The nine
+  stray logs that had accumulated there were removed by hand during DAT-1; nothing stops them
+  recurring, because the cause is Odoo writing dump/restore output to stderr.
 - Multi-worker Linux deployments (`workers > 0`) run Odoo evented, where `setup_pid_file()` is skipped
   (`odoo/cli/server.py:88`); `status` then falls back to identifying the process by port owner.

@@ -1819,6 +1819,14 @@ cmd_lint() {
     fi
 
     echo ""
+    echo "backlog counts (DOC-5)"
+    if lint_tool 'backlog' tools/check_backlog_counts.py --quiet; then
+        say_ok "BACKLOG.md's stated counts match its contents"
+    else
+        failed="$failed backlog-counts"
+    fi
+
+    echo ""
     if [ -z "$failed" ]; then
         say_ok 'Lint clean'
         exit 0
