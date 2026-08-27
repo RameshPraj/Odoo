@@ -113,6 +113,8 @@ this app provides the same statement, it is a locally written QWeb report, not a
 | **Loans / Loans Analysis** | `l10n_np_loan` — loan register, amortisation schedule (EMI, equal principal, interest-only), drawdown and instalment postings that split principal from interest, and Loans Analysis as a pivot over the schedule. Enterprise's `account_loans` is OEEL-1. **Correction:** an earlier version of this file said "no Community or OCA equivalent exists". That was overstated — only the local database and installed modules had been searched, not OCA's repositories, and OCA does ship an `account_loan`. Whether a 19.0 port exists could not be confirmed (GitHub is unreachable from this machine). The local module is named `l10n_np_loan` precisely so OCA's can be installed alongside it. |
 | **Reconcile** | `account.move.line.reconcile()` is public LGPL-3 code that does full and partial matching and raises exchange-difference moves; Community ships no button for it. `models/account_move_line.py` adds one, plus the precondition checks that turn a traceback into a sentence, and an action pre-filtered to posted items with a residual on reconcilable accounts. This is not the Enterprise drag-and-drop widget. |
 | **Lock Dates** | All five lock dates live on `res.company` and are enforced on every posting by Community, but are only reachable buried in Settings. `wizard/account_lock_dates.py` puts them on one screen. Hard-lock irreversibility is left to core's own check in `account/models/company.py`. |
+| **Bank Matching** (Match to Bank / Bank Transactions) | A payment through an Outstanding Receipts/Payments account stays on the balance sheet until the bank confirms it. Community ships the engine, the "No Bank Matching" filter (`account_payment_view.xml:108`) and an index for that query (`account_payment.py:204`) — and nothing that acts on what the filter finds. `wizard/bank_matching.py` does the one step: resolve a bank statement line's counterpart onto the outstanding account and reconcile it against the payment. **This is not Enterprise's widget** — no match suggestions, no batch processing, no reconciliation models. See "Bank matching" below for what it will refuse and what must not be edited afterwards. |
+| **Bank Transactions views** | Community defines **no view of any kind** for `account.bank.statement.line` (grep every `*.xml` under `odoo/addons`: zero hits), yet three core actions open that model — `account_payment.py:1200`, `company.py:518`, `account_move.py:5958` — and so land on ORM auto-generated views. `views/account_bank_statement_line_views.xml` defines the first list, search and form, which fixes those three screens too. |
 
 ### Genuinely missing, and why
 
@@ -128,6 +130,49 @@ this app provides the same statement, it is a locally written QWeb report, not a
 
 Enterprise's bank reconciliation *screen* is also absent; what is here is the engine plus a
 button, which reconciles correctly but does not look like the Enterprise widget.
+
+## Bank matching
+
+**Where it is.** *Accounting → Closing → Bank Transactions* lists statement lines, with a
+**Match Outstanding Payment** button. A payment that is still waiting on the bank also carries a
+**Match to Bank** button on its own form. Both open the same wizard; find the payments that need it
+with Community's own **No Bank Matching** filter on the Payments list.
+
+**Two ways to match.** *Match an existing bank transaction* when the statement has been entered or
+imported — this is the correct workflow, because the transaction is a fact from the bank. *Record
+the bank transaction now* when it has not, which asserts that the bank really did move the money;
+the wizard says so on screen. If the statement is imported later, the transaction is already there
+and must not be entered twice.
+
+**What it refuses, and why.** Each refusal is a sentence naming what is wrong:
+
+* a payment with no journal entry (still draft), or one already matched;
+* a payment that posts straight to the bank, so it has no in-transit amount at all;
+* an outstanding account not flagged *Allow Reconciliation*;
+* **anything not in the company currency** — matching across currencies has to post the
+  counterpart at the bank's rate rather than the system rate, which is separate work (ACC-1). It is
+  refused rather than approximated;
+* amounts that do not offset. This clears a payment **in full**; a bank amount that differs needs a
+  write-off and has to be done by hand;
+* a transaction already resolved onto another account, or on a different journal.
+
+**Do not edit a matched transaction.** Six fields on a statement line — Label, Amount, Amount in
+Currency, Foreign Currency, Currency and Partner — cause core to rebuild the journal entry
+(`account_bank_statement_line.py:800-804`), which unlinks the matched line and therefore
+**silently undoes the match**. `models/account_bank_statement_line.py` refuses those writes on a
+matched line and tells you to press **Unmatch** first. Unmatch is this module's own, not core's
+`action_undo_reconciliation`, because that method does `payment_ids.unlink()` — which would delete
+the payment. Nothing here ever writes `payment_ids`; the payment ↔ transaction link is derived by
+core from the reconciliation itself.
+
+**Licence.** Independently implemented from LGPL-3 Community source only. The sequence it performs
+is the one Odoo publishes in its own test suite — `account/tests/common.py:640-655` and
+`test_account_payment.py:396-406`, the latter prefaced *"Reconcile without the bank reconciliation
+widget since the widget is in enterprise."* No Enterprise source, screen or instance was read.
+
+**Still absent.** Bank statements themselves remain uncreatable from their own list
+(`account_bank_statement_views.xml:12` sets `create="false"`) and have no form view in Community.
+Statement import is not built here either.
 
 ## Nothing is duplicated
 

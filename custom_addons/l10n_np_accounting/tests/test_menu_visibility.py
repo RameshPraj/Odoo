@@ -140,7 +140,8 @@ class TestMenuVisibility(TransactionCase):
         walk(app)
 
         expected = [
-            "Journal Entries", "Assets", "Reconcile", "Lock Dates",
+            "Journal Entries", "Assets", "Reconcile", "Bank Transactions",
+            "Lock Dates",
             "VAT Returns", "TDS Returns", "Journal Items", "Audit Trail",
             "Balance Sheet", "Profit and Loss", "Cash Flow Statement",
             "Trial Balance", "General Ledger",

@@ -105,7 +105,8 @@ class TestMenuIntegrity(TransactionCase):
 
     def test_closing_section_is_complete(self):
         names = set(self._descendants(self._root()).mapped("name"))
-        for expected in ("Reconcile", "Lock Dates", "VAT Returns", "TDS Returns"):
+        for expected in ("Reconcile", "Bank Transactions", "Lock Dates",
+                         "VAT Returns", "TDS Returns"):
             self.assertIn(expected, names)
 
     def test_assets_and_liabilities_holds_registers_only(self):

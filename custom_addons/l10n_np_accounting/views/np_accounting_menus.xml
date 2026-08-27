@@ -141,6 +141,9 @@
     <menuitem id="menu_np_acc_reconcile" name="Reconcile"
               parent="menu_np_acc_closing" action="action_account_reconcile"
               sequence="5"/>
+    <menuitem id="menu_np_acc_bank_transactions" name="Bank Transactions"
+              parent="menu_np_acc_closing" action="action_bank_statement_line"
+              sequence="7"/>
     <menuitem id="menu_np_acc_bank_statements" name="Bank Statements"
               parent="menu_np_acc_closing" action="account.action_bank_statement_tree"
               sequence="10"/>
