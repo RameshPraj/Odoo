@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'Interactive Financial Reports',
-    'version': '19.0.1.1.1',   # 1.1.0 = OCA drill-down overlays and the
-                              # aged-balance date fix (FIN-3)
+    'version': '19.0.1.1.2',   # 1.1.0 = OCA drill-down overlays and the
+                              # aged-balance date fix (FIN-3);
+                              # 1.1.2 = the aged-balance render assertion counts
+                              # a per-row invariant instead of a live-data total
     'category': 'Accounting/Reporting',
     'summary': 'Click a figure in a financial report to reach the entries behind it',
     'description': """

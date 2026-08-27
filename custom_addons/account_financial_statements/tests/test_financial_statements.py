@@ -314,39 +314,67 @@ class TestFinancialStatements(TransactionCase):
             })
         return accounts
 
-    def test_cash_flow_reconciles(self):
-        """The core guarantee: classified movements must equal the change in cash."""
+    def _cash_flow(self):
+        wiz = self._wizard()
+        return self.env["report.account_financial_statements.cash_flow"]._get_report_values(
+            None, {"wizard_id": wiz.id})
+
+    def _seed_the_three_movements(self):
+        """One movement per section: operating, investing, financing."""
         a = self._accounts_for_cash_flow()
         self._cash_entry(a["cash"], a["income"], 300000.0, "2026-08-02", "Cash sale")
         self._cash_entry(a["cash"], a["fixed"], -500000.0, "2026-08-06", "Equipment")
         self._cash_entry(a["cash"], a["loan"], 800000.0, "2026-08-10", "Loan")
 
-        wiz = self._wizard()
-        cf = self.env["report.account_financial_statements.cash_flow"]._get_report_values(
-            None, {"wizard_id": wiz.id})
+    # These two measure the *delta* the seeded entries cause, not the period's
+    # absolute totals.
+    #
+    # They asserted `net_change == 600000.0` and `assertIn(300000.0, totals)`,
+    # which reads the whole company's cash movement for 2026-07-17..2026-08-31 and
+    # compares it to the seeded figures — sound only while the seeded entries are
+    # the *only* cash movements in the window. They stopped being that the first
+    # time the business transacted: a real 150.00 bank receipt on 2026-08-27 turned
+    # net_change into 600150.00 and the operating section into 300150.00, and both
+    # tests went red having found nothing wrong with the report.
+    #
+    # Same defect, same week, as the Aged Balance render assertion — a data
+    # snapshot written as if it were an invariant. A delta is the invariant: these
+    # three movements must move their three sections by exactly these amounts,
+    # whatever else the books contain.
+    def test_cash_flow_reconciles(self):
+        """The core guarantee: classified movements must equal the change in cash."""
+        before = self._cash_flow()
+        self._seed_the_three_movements()
+        cf = self._cash_flow()
+
         self.assertTrue(
             cf["reconciled"],
             f"unreconciled by {cf['difference']}: movements={cf['movement_total']} "
             f"net_change={cf['net_change']}",
         )
-        self.assertAlmostEqual(cf["net_change"], 600000.0, places=2)
+        self.assertAlmostEqual(
+            cf["net_change"] - before["net_change"], 600000.0, places=2,
+            msg=f"the three seeded movements must move net change by 600000.00; "
+                f"before={before['net_change']} after={cf['net_change']}")
+        # Unchanged, and the one assertion here that never depended on the data:
+        # whatever the figures, closing minus opening has to equal net change.
         self.assertAlmostEqual(cf["closing"] - cf["opening"], cf["net_change"], places=2)
 
     def test_cash_flow_classification(self):
         """Each counterpart type must land in the right section."""
-        a = self._accounts_for_cash_flow()
-        self._cash_entry(a["cash"], a["income"], 300000.0, "2026-08-02", "Cash sale")
-        self._cash_entry(a["cash"], a["fixed"], -500000.0, "2026-08-06", "Equipment")
-        self._cash_entry(a["cash"], a["loan"], 800000.0, "2026-08-10", "Loan")
+        before = {s["label"]: s["total"] for s in self._cash_flow()["sections"]}
+        self._seed_the_three_movements()
+        after = {s["label"]: s["total"] for s in self._cash_flow()["sections"]}
 
-        wiz = self._wizard()
-        cf = self.env["report.account_financial_statements.cash_flow"]._get_report_values(
-            None, {"wizard_id": wiz.id})
-        by_total = {s["label"]: s["total"] for s in cf["sections"]}
-        totals = list(by_total.values())
-        self.assertIn(300000.0, [round(t, 2) for t in totals], "operating inflow missing")
-        self.assertIn(-500000.0, [round(t, 2) for t in totals], "investing outflow missing")
-        self.assertIn(800000.0, [round(t, 2) for t in totals], "financing inflow missing")
+        deltas = [round(total - before.get(label, 0.0), 2)
+                  for label, total in after.items()]
+        for expected, what in ((300000.0, "operating inflow"),
+                               (-500000.0, "investing outflow"),
+                               (800000.0, "financing inflow")):
+            self.assertIn(
+                expected, deltas,
+                f"{what} missing: section deltas were {deltas}, so the movement "
+                f"was classified into the wrong section or not at all")
 
     def test_cash_flow_empty_period_reconciles(self):
         wiz = self._wizard()
