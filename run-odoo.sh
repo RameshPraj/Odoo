@@ -26,7 +26,20 @@ set -uo pipefail
 
 root="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 conf="${ODOO_CONF:-$root/odoo.conf}"
-python="${ODOO_PYTHON:-$root/venv/bin/python3}"
+# A venv is `bin/python3` on POSIX and `Scripts/python.exe` on Windows. This
+# script also runs under Git Bash on Windows, where only the second exists, and
+# hardcoding the first made `lint` report "[OK] clean" for every tool: the
+# interpreter was missing, so each tool exited non-zero, and lint_tool's
+# is-it-installed probe -- which needs that same interpreter -- also failed and
+# so concluded the tool was merely absent. A linter that checks nothing and
+# reports success is the failure mode this project keeps closing elsewhere.
+python="${ODOO_PYTHON:-}"
+if [ -z "$python" ]; then
+    for candidate in "$root/venv/bin/python3" "$root/venv/Scripts/python.exe"; do
+        if [ -x "$candidate" ]; then python="$candidate"; break; fi
+    done
+    python="${python:-$root/venv/bin/python3}"   # keep the POSIX path in errors
+fi
 log_dir="$root/logs"
 log_file="${ODOO_LOG:-$log_dir/odoo.log}"
 runtime_dir="$root/.runtime"
@@ -1728,12 +1741,23 @@ lint_tool() {
     # mandatory in CI, and pretending an absent tool passed would be worse.
     local label="$1"; shift
     say_note "> $(basename "$python") $*"
+    # The interpreter itself has to be there, or every probe below is meaningless
+    # and "not installed" would be indistinguishable from "not checkable".
+    if [ ! -x "$python" ]; then
+        say_fail "Interpreter not found: $python"
+        say_note "  Set ODOO_PYTHON, or create the venv with:"
+        say_note "    python -m venv venv && ./venv/bin/python3 -m pip install -r requirements-dev.txt"
+        return 1
+    fi
     ( cd "$root" && "$python" "$@" 2>&1 ) || {
         local code=$?
         if [ "$1" = "-m" ] && ! "$python" -c "import importlib.util, sys; sys.exit(0 if importlib.util.find_spec('$2') else 1)" 2>/dev/null; then
             say_warn "$2 is not installed; nothing was checked."
             say_note "  ./venv/bin/python3 -m pip install -r requirements-dev.txt"
-            return 0
+            # Deliberately 2, not 0: the caller prints "clean" on 0, and a tool
+            # that ran nothing has not established that anything is clean. 2 is
+            # distinguished from a findings exit so cmd_lint can say which it was.
+            return 2
         fi
         return "$code"
     }
@@ -1799,7 +1823,11 @@ cmd_lint() {
         say_ok 'Lint clean'
         exit 0
     fi
-    say_fail "Lint findings from:$failed"
+    # "did not pass" rather than "findings": a tool that could not run has not
+    # found anything, and saying it did would send the reader looking for a
+    # finding that is not there.
+    say_fail "Lint did not pass:$failed"
+    say_note '  Each entry either reported findings above, or could not run.'
     say_note '  Install the tooling with:'
     say_note '    ./venv/bin/python3 -m pip install -r requirements-dev.txt'
     exit 1

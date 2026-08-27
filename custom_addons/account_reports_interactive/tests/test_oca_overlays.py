@@ -30,6 +30,49 @@ def _recpay_accounts(case):
     ])
 
 
+def _seed_open_item(case, date="2026-08-10", label="open item"):
+    """One posted, unreconciled receivable entry, created unconditionally (TST-3).
+
+    Seeding is unconditional rather than conditional: a fixture that exists only
+    sometimes gives you a test that runs only sometimes, which is the defect rather
+    than a fix for it. Where the database already has books, this entry is simply
+    one more line among them.
+    """
+    receivable = _recpay_accounts(case).filtered(
+        lambda a: a.account_type == "asset_receivable")[:1]
+    if not receivable:
+        receivable = case.env["account.account"].create({
+            "code": "TST3AR", "name": "Test receivable",
+            "account_type": "asset_receivable", "reconcile": True,
+            "company_ids": [Command.set([case.env.company.id])],
+        })
+    income = case.env["account.account"].search(
+        [("account_type", "=", "income")], limit=1) or case.env["account.account"].create({
+            "code": "TST3IN", "name": "Test income", "account_type": "income",
+            "company_ids": [Command.set([case.env.company.id])],
+        })
+    journal = case.env["account.journal"].search(
+        [("type", "=", "general"), ("company_id", "=", case.env.company.id)],
+        limit=1) or case.env["account.journal"].create({
+            "name": "TST-3 General", "code": "T3OVL", "type": "general",
+            "company_id": case.env.company.id,
+        })
+    partner = case.env["res.partner"].create({"name": f"TST-3 Overlay {label}"})
+    move = case.env["account.move"].create({
+        "move_type": "entry", "date": date, "journal_id": journal.id,
+        "line_ids": [
+            Command.create({"account_id": receivable.id, "name": label,
+                            "debit": 1000.0, "credit": 0.0,
+                            "partner_id": partner.id}),
+            Command.create({"account_id": income.id, "name": label,
+                            "debit": 0.0, "credit": 1000.0,
+                            "partner_id": partner.id}),
+        ],
+    })
+    move.action_post()
+    return move
+
+
 def _aged_wizard(case, details=False):
     return case.env["aged.partner.balance.report.wizard"].create({
         "company_id": case.env.company.id,
@@ -37,6 +80,14 @@ def _aged_wizard(case, details=False):
         "target_move": "posted",
         "account_ids": [(6, 0, _recpay_accounts(case).ids)],
         "show_move_line_details": details,
+        # Pinned rather than inherited. This field has no default on the wizard and
+        # is filled from an `ir.default` written by Settings
+        # (account_financial_report/models/res_config_settings.py:15-22), so a
+        # company that configures aging intervals would silently switch the
+        # template from its five static bands to the dynamic `t-foreach` branch.
+        # The assertions below hold either way, but the branch under test should be
+        # a decision here rather than a property of whoever last opened Settings.
+        "age_partner_config_id": False,
     })
 
 
@@ -52,6 +103,14 @@ def _render_via_button(case, wizard):
     html, _ext = case.env["ir.actions.report"]._render_qweb_html(
         action["report_name"], wizard.ids, data=action["data"])
     return html.decode() if isinstance(html, bytes) else str(html)
+
+
+def _rows_with_domains(text):
+    """Detail rows that carry at least one drill-down, and how many each carries."""
+    rows = etree.HTML(text).xpath(
+        "//div[contains(@class,'act_as_row') and contains(@class,'lines')]")
+    counts = [len(row.xpath(".//*[@domain]")) for row in rows]
+    return [count for count in counts if count]
 
 
 def _domains_in(text):
@@ -106,15 +165,72 @@ class TestAgedPartnerBalanceOverlay(TransactionCase):
         The eight amounts live in the move-line detail template, which renders only
         when `show_move_line_details` is on — so a version of this test without that
         flag passes while exercising none of the fix.
+
+        **Two per row, not eight.** This asserted `len(domains) == 8`, carrying the
+        structural eight of the arch over to the render, where it does not belong.
+        Only two of the eight cells can ever emit a domain for a given line:
+
+          * `amount_residual` is unconditional, so it always emits;
+          * every other cell is `t-if="line['<band>'] == 0"` / `t-else`, and emits
+            only when that band is non-zero — and a line falls into exactly one
+            band, whether the five static ones or the dynamic `t-foreach`.
+
+        So a detail row emits residual plus its single band: two. Eight was
+        reachable only as four rows × two, which is consistent with the database
+        holding four open items on the day the assertion was written, and it went
+        red the moment that count changed — which is what it did here, at two rows.
+
+        The invariant below is the one worth having, because it is a property of the
+        template rather than of the data: **every row that drills down at all drills
+        down exactly twice.**
+
+        What it does and does not guard, stated precisely rather than generously.
+        It catches a cell losing its drill-down (the row would emit one), a
+        drill-down that resolves to nothing, and unevaluated Python text reaching
+        the output — that last one because `_domains_in` calls `literal_eval` on
+        every `@domain` it finds, so a bare attribute raises here rather than
+        silently counting. Sequential application of the eight inheritance specs is
+        *not* guarded here: if only the first were applied, the remaining seven
+        would still render as `@domain` attributes and this count would still be
+        two. That failure is caught by `test_no_raw_domain_attribute_survives` and
+        `test_all_eight_amounts_became_evaluated_domains`, on the arch, which is
+        where it belongs.
+
+        The `assertTrue(per_row)` guard is not decoration either: rendering with
+        `show_move_line_details` off produces zero rows carrying domains, verified
+        directly, so a version of this test that lost the flag fails instead of
+        passing while exercising nothing.
         """
+        seeded = _seed_open_item(self, label="render")
         text = _render_via_button(self, _aged_wizard(self, details=True))
+
         self.assertNotIn("t-att-domain", text,
                          "t-att-domain reached the output unevaluated")
+
+        per_row = _rows_with_domains(text)
+        self.assertTrue(
+            per_row,
+            "no row drilled down, so this render exercised none of the fix")
+        self.assertEqual(
+            set(per_row), {2},
+            f"each detail row must emit the residual plus its one non-zero band; "
+            f"got {per_row}")
+
         domains = _domains_in(text)
-        self.assertEqual(len(domains), 8,
-                         "expected the eight repaired amounts to emit domains")
+        self.assertEqual(len(domains), 2 * len(per_row))
         for domain in domains:
-            self.env["account.move.line"].search_count(domain)
+            self.assertTrue(
+                self.env["account.move.line"].search_count(domain),
+                f"a drill-down that resolves to nothing is not a drill-down: "
+                f"{domain}")
+
+        # And it points at real data, not merely at something searchable.
+        line = seeded.line_ids.filtered(
+            lambda aml: aml.account_id.account_type == "asset_receivable")
+        self.assertTrue(
+            any(line.id in self.env["account.move.line"].search(domain).ids
+                for domain in domains),
+            "the seeded open item is on the report but no drill-down reaches it")
 
     def test_the_vendored_file_itself_is_untouched(self):
         """VENDORED.md forbids editing these modules in place.
@@ -221,38 +337,7 @@ class TestDrilldownAddedWhereThereWasNone(TransactionCase):
         drill-down, whatever the total happens to be.
         """
         super().setUpClass()
-        receivable = _recpay_accounts(cls).filtered(
-            lambda a: a.account_type == "asset_receivable")[:1]
-        if not receivable:
-            receivable = cls.env["account.account"].create({
-                "code": "TST3AR", "name": "Test receivable",
-                "account_type": "asset_receivable", "reconcile": True,
-                "company_ids": [Command.set([cls.env.company.id])],
-            })
-        income = cls.env["account.account"].search(
-            [("account_type", "=", "income")], limit=1) or cls.env["account.account"].create({
-                "code": "TST3IN", "name": "Test income", "account_type": "income",
-                "company_ids": [Command.set([cls.env.company.id])],
-            })
-        journal = cls.env["account.journal"].search(
-            [("type", "=", "general"), ("company_id", "=", cls.env.company.id)],
-            limit=1) or cls.env["account.journal"].create({
-                "name": "TST-3 General", "code": "T3OVL", "type": "general",
-                "company_id": cls.env.company.id,
-            })
-        partner = cls.env["res.partner"].create({"name": "TST-3 Overlay Partner"})
-        cls.seeded = cls.env["account.move"].create({
-            "move_type": "entry", "date": "2026-08-10", "journal_id": journal.id,
-            "line_ids": [
-                Command.create({"account_id": receivable.id, "name": "open item",
-                                "debit": 1000.0, "credit": 0.0,
-                                "partner_id": partner.id}),
-                Command.create({"account_id": income.id, "name": "open item",
-                                "debit": 0.0, "credit": 1000.0,
-                                "partner_id": partner.id}),
-            ],
-        })
-        cls.seeded.action_post()
+        cls.seeded = _seed_open_item(cls)
 
     def test_open_items_totals_are_drillable(self):
         accounts = _recpay_accounts(self)
