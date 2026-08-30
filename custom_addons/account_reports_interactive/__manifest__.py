@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'Interactive Financial Reports',
-    'version': '19.0.1.2.1',   # 1.1.0 = OCA drill-down overlays and the
+    'version': '19.0.1.2.2',   # 1.1.0 = OCA drill-down overlays and the
                               # aged-balance date fix (FIN-3);
                               # 1.1.2 = the aged-balance render assertion counts
                               # a per-row invariant instead of a live-data total
@@ -28,7 +28,14 @@ editing them in place, so the fixes are QWeb inheritance here.
     # account_financial_report is a hard dependency, not an optional one: the
     # overlays inherit its templates by xmlid, so without it this module cannot
     # load at all.
-    'depends': ['account_financial_statements', 'account_financial_report'],
+    'depends': [
+        'account_financial_statements',
+        'account_financial_report',
+        # Reached transitively already, but this module imports its
+        # controller directly, so the dependency is declared rather than
+        # assumed present.
+        'report_xlsx',
+    ],
     'data': [
         # Security first, as elsewhere in this repository.
         'security/oca_acl_overrides.xml',

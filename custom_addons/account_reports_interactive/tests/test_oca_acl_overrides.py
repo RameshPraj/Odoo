@@ -20,7 +20,7 @@ Every check below is written against `base.group_user` alone, because that is th
 group the findings name: an ordinary employee with no accounting rights at all.
 """
 from odoo.exceptions import AccessError
-from odoo.tests import TransactionCase, tagged
+from odoo.tests import HttpCase, TransactionCase, tagged
 
 
 @tagged("-at_install", "post_install")
@@ -153,3 +153,60 @@ class TestOcaAclOverrides(TransactionCase):
             after - before, set(),
             "an export wrote a default with no user_id, which applies to every "
             "colleague in the company")
+
+
+@tagged("-at_install", "post_install")
+class TestXlsxRouteAuth(HttpCase):
+    """SEC-8: the xlsx report routes must require a logged-in user.
+
+    `report_xlsx` overrode both endpoints with a bare `@route()`, which inherits
+    the parent's `auth` rather than declaring one. Core says `auth='user'` today,
+    so the assertions below already held before the override -- and that is the
+    point. They pin the behaviour so that a change upstream, in a module two
+    dependencies away, fails here instead of silently widening access.
+
+    Asserted by calling the endpoint unauthenticated rather than by inspecting
+    `original_routing`, because what matters is what the server does with an
+    anonymous request, not what the decorator says.
+    """
+
+    def _assert_sent_to_login(self, url):
+        """The anonymous caller must be turned away by the *auth* layer.
+
+        Asserted as "redirected to /web/login", not as "did not return 200".
+        The weaker form was the first draft and is nearly vacuous here: an
+        authenticated call to /report/download with no `data` parameter is also
+        not a 200, so `assertNotEqual(200)` would have passed with the auth
+        pinning removed entirely. Only the login redirect distinguishes being
+        rejected for *who you are* from being rejected for *what you sent*.
+        """
+        response = self.url_open(url, allow_redirects=False)
+        self.assertIn(
+            response.status_code, (301, 302, 303),
+            f"{url} did not redirect an anonymous caller; got "
+            f"{response.status_code}")
+        self.assertIn(
+            "/web/login", response.headers.get("Location", ""),
+            f"{url} redirected somewhere other than the login page, so it was "
+            f"not the authentication layer that refused the caller")
+
+    def test_report_download_refuses_an_anonymous_caller(self):
+        self._assert_sent_to_login("/report/download")
+
+    def test_xlsx_report_route_refuses_an_anonymous_caller(self):
+        self._assert_sent_to_login(
+            "/report/xlsx/account_financial_report.trial_balance")
+
+    def test_an_authenticated_user_still_reaches_the_route(self):
+        """The negative control: pinning auth must not have broken the route.
+
+        A wrong `@route()` override -- restating the paths, or changing `type` --
+        would unregister the endpoint, and every assertion above would still
+        pass, because a 404 is also "not 200".
+        """
+        self.authenticate("admin", "admin")
+        response = self.url_open("/report/download", allow_redirects=False)
+        self.assertNotEqual(
+            response.status_code, 404,
+            "the endpoint disappeared: the override changed the routing rather "
+            "than only pinning auth")
