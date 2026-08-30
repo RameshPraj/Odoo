@@ -9,3 +9,4 @@ from . import test_account_group_wiring
 from . import test_matching_column
 from . import test_js_unit
 from . import test_bank_matching
+from . import test_database_hardening

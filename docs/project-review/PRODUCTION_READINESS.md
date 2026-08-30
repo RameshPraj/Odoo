@@ -31,7 +31,7 @@ before a second tenant exists. They are not go-live blockers for a single-tenant
 - [x] **FIN-1 + TST-1** — tags backfilled by migration (0 to 16 links); the guarding test cannot skip and was watched failing first (2026-08-23)
 - [x] **ACC-3** — Export fiscal position substitutes tax: export invoice `VAT 0% / tax=0.00`, domestic still `VAT 13% / tax=130.00`, both verified on the live database (2026-08-23)
 - [x] **ACC-2** — Balance Sheet balances after year one: an *Unallocated Earnings (prior years)* line carries the P&L that Community never closes into equity (2026-08-23). Watched failing first — a prior-year entry produced "Balance sheet out by -50000.0"
-- [ ] **ACC-1** — loan currency closed, or the field removed
+- [x] **ACC-1** — **closed 2026-08-30 by removing the field.** `currency_id` is related to the company, stored and readonly; the form field is gone. Real multi-currency lending was deliberately not built: it is a feature, and in Nepal it needs NRB approval, so it should not be reachable from a checkbox
 - [x] **TST-5** — TDS certificate path tested through a real posted withholding line, and the `getattr` defaults removed (2026-08-23). The path did not merely risk reporting zero: it queried an AbstractModel with no table and could never run. Certificate **layout** still needs an SME
 - [ ] **SCH-2** — a representative dataset loaded and statements verified against hand-computed figures
 - [ ] SME sign-off: chart per NFRS/NPSAS, TDS rates and thresholds, IRD form layout box by box, TDS certificate layout, depreciation classes
@@ -45,7 +45,7 @@ before a second tenant exists. They are not go-live blockers for a single-tenant
 - [x] **SEC-2** — ten global record rules across the three modules that own company-scoped models (2026-08-23). Negative control: with them disabled a company A manager reads company B's filed VAT return; with them active, refused
 - [x] **SEC-6** — the read-only role is read-only on return lines (2026-08-23). Not the "one-character fix" the note claimed: that row was also what granted every higher group its access, so the billing role needed its own row or computing a return would have broken
 - [x] **SEC-3** — the formula evaluator parses and walks an AST instead of calling `eval`, so `ast.Pow` is absent by construction rather than blacklisted (2026-08-23). A character class cannot express "one star but not two", which is why the regex admitted `**`
-- [ ] **PG-2 / PG-4** — revokes baked into provisioning, before any second database role exists. **PG-1 is excluded**: its revoke alters `ist_datahub`, a third-party corporate database, so it is the owner's action or an accepted risk — not a change this project makes
+- [x] **PG-2 / PG-4** — revokes baked into provisioning, before any second database role exists. **PG-1 is excluded**: its revoke alters `ist_datahub`, a third-party corporate database, so it is the owner's action or an accepted risk — not a change this project makes **Done 2026-08-30:** `REVOKE CONNECT ON DATABASE odoo19 FROM PUBLIC` and `REVOKE CREATE ON SCHEMA public FROM PUBLIC`, applied by `tools/harden_database.py` — which refuses any database not named `odoo*`, and would be refused by PostgreSQL anyway, since the `odoo` role is not a superuser and `ist_datahub` is owned by `postgres`. Asserted by `test_database_hardening.py`. `template1` deliberately untouched: a template change is cluster-wide and would alter another team's future databases
 
 ### Multi-tenant (additional)
 - [ ] **SAAS-1 / SAAS-11** — anchored `dbfilter`; `X-Odoo-Database` cannot select a tenant
@@ -58,7 +58,7 @@ before a second tenant exists. They are not go-live blockers for a single-tenant
 
 ### Operations
 - [x] **OPS-1** — config paths corrected, filestores reconciled, launcher guard added (2026-08-14)
-- [ ] **SUP-2** — remote created, history pushed
+- [ ] **SUP-2** — remote created, history pushed. **Deferred by decision 2026-08-30** to the production deployment; the app runs on localhost until then. Mitigated, not closed, by a `git bundle` in `C:\Users\i81129\odoo-backups` — a second copy on a different path, outside cloud sync. The gate stays shut: a bundle is not a remote, nothing is reviewed, and `.git` is still the one irreplaceable thing inside the OneDrive tree
 - [x] **DEP-1** — `nepali-datetime==1.0.8.5` pinned in `requirements.txt` and declared in `nepali_calendar_core`'s `external_dependencies`
 - [ ] Backup **and restore** rehearsed, per tenant
 - [ ] `wkhtmltopdf` installed **on the server** — without a patched-Qt build every PDF degrades to

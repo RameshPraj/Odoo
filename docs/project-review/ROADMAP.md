@@ -46,19 +46,29 @@ every existing clone — must **not** be run for this. Recorded with the evidenc
 not reopened as a precaution later. The one-time-window framing was wrong.
 
 **Exit criteria**
-- `verify_admin_password('admin')` is False; `/web/database/*` unreachable externally
-- Every referenced attachment resolves; no writes to the `Downloads` tree
-- History present on a remote; `git fsck` clean
-- No dump, filestore, session file or `odoo.conf` inside the sync root
-- All three statements render HTTP 200; a posted invoice produces non-zero VAT boxes tying to the
-  ledger, proven by a test that **cannot skip**
+- [x] `verify_admin_password('admin')` is False; `/web/database/*` unreachable externally
+- [x] Every referenced attachment resolves; no writes to the `Downloads` tree
+- [ ] ~~History present on a remote~~; `git fsck` clean — **remote deferred by decision
+  2026-08-30** to the production deployment. Mitigated by a `git bundle` outside the sync root; see
+  SUP-2. This criterion is *waived for Phase 1*, not met
+- [x] No dump, filestore, session file inside the sync root — done by DAT-1 2026-08-27. **`odoo.conf`
+  is the exception and stays**: it must sit beside the code for the wrappers to find it, and it is
+  the file the sync root still holds. `.git` also remains, which is the residual DAT-1 records
+- [ ] All three statements render HTTP 200; a posted invoice produces non-zero VAT boxes tying to the
+  ledger, proven by a test that **cannot skip** — blocked on the IRD box layout (SME register item 4)
+- [x] Loans cannot be denominated in a currency their postings do not use (ACC-1, 2026-08-30)
+- [x] PUBLIC holds neither CONNECT on the database nor CREATE on schema public (PG-2/PG-4,
+  2026-08-30), asserted by a test rather than by a runbook
+
+**Phase 1 is closed except for two items held open on purpose:** the remote (deferred by decision)
+and the VAT-box criterion (blocked on SME sign-off, not on engineering).
 
 ---
 
 ## Phase 2 — Stabilization
 *Bugs, tests and reliability. Make the suite trustworthy before building on it.*
 
-**Depends on** Phase 1 (a remote is needed for CI; paths must be stable).
+**Depends on** Phase 1 (a remote is needed for CI; paths must be stable). **Note 2026-08-30:** the remote is deferred, so **STORY-2 (CI on push) is blocked by that decision**, not merely unstarted — there is nothing to push to and no hook to fire. STORY-1 (one command runs every suite, reporting skip counts) does not depend on it and is already done: `run-odoo.ps1 test -FailOnSkip`. Paths are stable as of DAT-1, with `data_dir` now outside the project tree.
 
 | # | Ticket | What | Effort |
 |---|---|---|---|

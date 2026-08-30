@@ -24,7 +24,7 @@ Every finding appears here exactly once. All other documents reference these IDs
 >
 > The count includes entries already closed. **Do not read a hand-typed total here as current** —
 > this line has now drifted three times, which is the whole point of the note above. As of
-> 2026-08-27 the *derived* figures are **32 RESOLVED, 4 PARTIAL (CI-1, CI-2, DAT-1, TST-7), 85 OPEN**.
+> 2026-08-30 the *derived* figures are **35 RESOLVED, 4 PARTIAL (CI-1, CI-2, DAT-1, TST-7), 82 OPEN**.
 > Recover them from the document rather than from this sentence:
 >
 > ```bash
@@ -231,6 +231,27 @@ product standing in for a backup is itself the leading corruption risk, so it wo
 damage rather than protect against it. Combined with CI-1, **no change has ever been reviewed or
 verified.** **Fix** Create a remote and push. **Effort XS.**
 
+**DEFERRED by decision 2026-08-30 — stays OPEN.** The remote belongs with the future production
+deployment; the app runs on localhost until then. Recorded rather than left implicit, because a
+deferral nobody wrote down is indistinguishable from an oversight six months later.
+
+**The residual is now concentrated, not reduced.** DAT-1 moved the *data* out of cloud sync, which
+leaves `.git` (340 MB) as the one irreplaceable thing still inside it — and per DAT-1 the sync client
+is itself the leading corruption risk for a live `.git`, so it would replicate damage rather than
+protect against it. 69 commits, still never reviewed.
+
+**Mitigation applied, and it is not a substitute for a remote:** a `git bundle` written to
+`C:\Users\i81129\odoo-backups`, outside the sync root alongside the database dumps. A bundle holds
+every ref and object in one file, is checkable with `git bundle verify`, and can be cloned directly.
+It converts "one copy" into "two copies on different paths". Deliberately a manual step rather than
+an automated one — an unattended backup nobody has rehearsed restoring is its own kind of false
+comfort. Re-make it after significant work:
+
+```
+git bundle create "C:\Users\i81129\odoo-backups\odoo19-repo.bundle" --all
+git bundle verify "C:\Users\i81129\odoo-backups\odoo19-repo.bundle"
+```
+
 **Unblocked 2026-08-22.** This was held up by SEC-1: pushing would have published live
 credentials. They are rotated, so it publishes nothing usable and the decision is now purely
 about where the code should live. Private remains the sensible default for client work, but
@@ -405,7 +426,7 @@ tax, tags and invoice as fixtures; assert exact box values; the test must not be
 **Effort S.**
 
 ## ACC-1 · Loans post foreign-currency amounts as company currency
-**CONFIRMED** · Accounting · `l10n_np_loan/models/loan.py:286-297, 371-396`
+**RESOLVED 2026-08-30** · Accounting · `l10n_np_loan/models/loan.py:286-297, 371-396`
 
 `currency_id` is user-settable (`:39`) and exposed on the form under `base.group_multi_currency`
 (`views/loan_views.xml:74`); the schedule computes and rounds in it (`:178`). Both posting paths
@@ -419,6 +440,28 @@ by the FX rate.
 **Fix** Either add `currency_id` + `amount_currency` with conversion, or — safer given the
 module's stated scope — make `currency_id` `related='company_id.currency_id', readonly=True` and
 remove it from the form. **Effort S** (close the hole) / **M** (real multi-currency).
+
+**RESOLVED 2026-08-30** — the hole is closed, not papered over. `currency_id` is now
+`related='company_id.currency_id'`, stored and readonly, and the form field under
+`base.group_multi_currency` is gone. The figure the schedule rounds in is now, by construction, the
+figure the move lines are denominated in.
+
+The three `column_invisible` occurrences stay: the Monetary widgets need the field present in the
+view to render. `tests/test_multi_company.py` had to stop passing `currency_id` into `create()` —
+against a readonly related field that write's inverse target is the company's own currency.
+
+**Real multi-currency was deliberately not attempted.** It is a feature — `amount_currency` on every
+line, a rate on every posting date, revaluation at period end — not a bug fix. It is also not a
+bookkeeping toggle in Nepal, where foreign-currency borrowing requires Nepal Rastra Bank approval,
+so it should not be reachable from a checkbox on a loan form. If it is ever needed it becomes an SME
+sign-off item in its own right.
+
+Safe without a migration, verified rather than assumed: the database held **0 loan records**, one
+company, currency NPR, so nothing could be re-denominated by the change. Three tests added, of which
+the load-bearing one asserts that `create()` handed a *different* currency still yields a loan in the
+company's. Note that `test_drawdown_entry_is_balanced_and_hits_the_liability` passed throughout the
+defect — balance is preserved by it, because both sides were wrong by the same amount, which is why
+the new tests assert denomination rather than arithmetic.
 
 ## ACC-2 · Balance Sheet omits prior-year unallocated earnings
 **RESOLVED 2026-08-23.** The balance sheet now carries an **Unallocated Earnings (prior
@@ -1112,9 +1155,9 @@ autofix is not safe merely because it is mechanical.
 | **SAAS-13** | LIKELY | SaaS | `web/controllers/binary.py:99-102,142` | `/web/assets/**any**/…` bypasses the version check; no `Vary` on Host | Behind a shared CDN keyed on path, tenant A's bundle could be served to tenant B | Key cache on Host, or no shared CDN | S |
 | **SAAS-14** | CONFIRMED | SaaS | `odoo/http.py:1069-1075` | Session vacuum is cluster-wide with one `SESSION_LIFETIME` | Per-tenant session policy impossible at the store | Accept, or separate instances | — |
 | **PG-1** | CONFIRMED — **NOT OURS TO FIX** (scoped 2026-08-23) | PostgreSQL | live cluster | The `odoo` role **can connect** to an unrelated 12 GB corporate database (`ist_datahub`) and enumerate 52 table names — but **cannot read any** (0 selectable, no CREATE) | Metadata exposure; widens the blast radius of an Odoo compromise | **Do not run the revoke from this project.** `REVOKE CONNECT ON DATABASE ist_datahub FROM PUBLIC` alters a **third-party corporate database**, and anything else connecting there on `PUBLIC` would break. `ist_datahub` remains at `datacl = NULL`, PostgreSQL's untouched default — verified. Owner's action, or accept it, or move Odoo off this cluster | — |
-| **PG-2** | CONFIRMED | PostgreSQL | `datacl = NULL` on all DBs | New databases default to `PUBLIC CONNECT` | Harmless with one role; wrong the moment a reporting/metrics role exists | Revoke in provisioning | XS |
+| **PG-2** | **RESOLVED 2026-08-30** — `REVOKE CONNECT ON DATABASE odoo19 FROM PUBLIC`. `datacl` was NULL, so the built-in default applied and every role on the cluster could connect; it now reads `{=T/odoo,odoo=CTc/odoo}` and `has_database_privilege('public', …, 'CONNECT')` is false. PUBLIC retains TEMP, which is unreachable without CONNECT. Repeatable via `tools/harden_database.py`, asserted by `test_database_hardening.py` | PostgreSQL | `datacl = NULL` on all DBs | New databases default to `PUBLIC CONNECT` | Harmless with one role; wrong the moment a reporting/metrics role exists | Revoke in provisioning | XS |
 | **PG-3** | CONFIRMED | PostgreSQL | shared catalogs | From one tenant's connection, `pg_database`, `pg_roles`, `pg_stat_activity` enumerate all tenants | Tenant enumeration; other tenants' query strings visible in `pg_stat_activity` | `pg_stat_statements` restrictions; accept enumeration | S |
-| **PG-4** | CONFIRMED | PostgreSQL | `odoo/service/db.py:168-174` | `GRANT CREATE ON SCHEMA PUBLIC TO PUBLIC` on every new database, undoing PG15 hardening | Latent with one role; any additional login role gains CREATE in every tenant DB | `REVOKE` in provisioning | S |
+| **PG-4** | **RESOLVED 2026-08-30** — `REVOKE CREATE ON SCHEMA public FROM PUBLIC`. `nspacl` went from `=UC/pg_database_owner` to `=U/pg_database_owner`, i.e. PUBLIC keeps USAGE and loses CREATE. **This one comes back**: Odoo re-grants it on every database it creates (`odoo/service/db.py:168-174`), so `tools/harden_database.py` must run after each `createdb` — which is what 'revoke in provisioning' means. Asserted by `test_database_hardening.py` | PostgreSQL | `odoo/service/db.py:168-174` | `GRANT CREATE ON SCHEMA PUBLIC TO PUBLIC` on every new database, undoing PG15 hardening | Latent with one role; any additional login role gains CREATE in every tenant DB | `REVOKE` in provisioning | S |
 | **SEC-3** | **RESOLVED 2026-08-23** — not by banning `**` but by removing `eval`: the substituted expression is parsed with `ast` and walked, and `ast.Pow` is simply absent from the allowed node types, so there is no pattern to get wrong. The root cause is worth keeping: a **character class cannot express "one star but not two"**, so `[0-9eE+\-*/(). ]*` was always going to admit `**`. Ten tests, including that the allowed arithmetic still evaluates, and one that asserts the *refusal* of `9**9**9` rather than evaluating it — a test that hangs the runner to prove a hang was fixed is a test nobody runs. A second bug fell out: sequential `str.replace` of box codes could rewrite digits inside a float it had already substituted, so substitution is now one pass with boundaries | Security | `vat_return.py:195,201` | Regex whitelist admits `**`; verified `9**9**9` passes `fullmatch` | Worker hang; with `workers=0` and `limit_time_real=0` the whole server. RCE **is** correctly blocked and tested | Done | XS |
 | **SEC-6** | **RESOLVED 2026-08-23** — and it was **not** the one-character fix this row prescribed. That single row was also what granted every *higher* accounting group its access, because they all imply read-only; setting it to `1,0,0,0` alone would have stopped `action_compute` working, since computing a return unlinks and recreates every line. So the readonly row is now `1,0,0,0` and the billing and manager roles have rows of their own. Six tests, including that the read-only role can still *read* a line (which stops the fix becoming "delete the row") and that the billing role can still maintain them. A related hole surfaced while fixing it: `action_compute` checked no state, so a **filed** return could be recomputed in place and its filed figures would change with no trace — now refused until it is reset to draft | Security | `ir.model.access.csv:8` | `group_account_readonly` given write/create/unlink on VAT return lines | A read-only accountant can rewrite a filed return | Done | XS |
 | **BS-3** | CONFIRMED | Bikram Sambat | `bs_accounting_dates.py:57-60`; `account_move_views.xml:365` | Search and group-by buckets stay Gregorian | A BS user filtering "August 2026" gets Bhadra 16 – Ashoj 15, straddling two BS months. **The most consequential functional gap** — BS presentation stops where periodic reporting begins | BS-aware period filter and group-by | L |
