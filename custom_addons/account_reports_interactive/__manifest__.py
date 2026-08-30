@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'Interactive Financial Reports',
-    'version': '19.0.1.1.2',   # 1.1.0 = OCA drill-down overlays and the
+    'version': '19.0.1.2.1',   # 1.1.0 = OCA drill-down overlays and the
                               # aged-balance date fix (FIN-3);
                               # 1.1.2 = the aged-balance render assertion counts
                               # a per-row invariant instead of a live-data total
@@ -30,6 +30,8 @@ editing them in place, so the fixes are QWeb inheritance here.
     # load at all.
     'depends': ['account_financial_statements', 'account_financial_report'],
     'data': [
+        # Security first, as elsewhere in this repository.
+        'security/oca_acl_overrides.xml',
         'report/oca_drilldown_overlays.xml',
     ],
     'assets': {
