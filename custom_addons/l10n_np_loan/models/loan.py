@@ -37,9 +37,29 @@ class Loan(models.Model):
         # Indexed because SEC-2's record rule filters every query on it (SCH-1).
         index=True,
     )
+    # Related and readonly, not user-settable (ACC-1).
+    #
+    # This was a free Many2one shown on the form under `base.group_multi_currency`,
+    # and it could disagree with the books without saying so. The schedule computes
+    # and rounds in this currency, but both posting paths build their move lines
+    # with `debit`/`credit` only -- the company-currency columns -- and never set
+    # `currency_id` or `amount_currency`. A USD 100,000 loan in an NPR company
+    # therefore posted NPR 100,000. The entry balanced, so the drawdown test passed,
+    # and the ledger was wrong by the exchange rate with no symptom anywhere.
+    #
+    # Tying it to the company closes that by construction rather than by warning:
+    # the figure the schedule rounds in is now, always, the figure the move lines
+    # are denominated in. Real multi-currency lending is a feature -- amount_currency
+    # on every line, a rate on every posting date, revaluation at period end -- and
+    # is deliberately not attempted here. It also is not a bookkeeping toggle in
+    # Nepal: foreign-currency borrowing needs Nepal Rastra Bank approval, so it is
+    # not something a checkbox on this form should quietly enable.
+    #
+    # Stored so grouping, ordering and the Monetary widgets keep working, and so the
+    # existing column survives rather than being dropped and recreated.
     currency_id = fields.Many2one(
-        'res.currency', required=True,
-        default=lambda self: self.env.company.currency_id,
+        'res.currency', related='company_id.currency_id',
+        store=True, readonly=True,
     )
     partner_id = fields.Many2one(
         'res.partner', string="Lender", required=True, tracking=True, index=True,

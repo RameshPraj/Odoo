@@ -176,6 +176,52 @@ class TestLoan(TransactionCase):
         self.assertEqual(liability.credit, loan.principal,
                          "the drawdown must credit the loan account")
 
+    # ---- ACC-1: the loan is denominated in the company's currency -----------
+    #
+    # The old field was a free Many2one on the form. The schedule rounded in it,
+    # the postings ignored it — they build `debit`/`credit`, which are always
+    # company currency — so a foreign-currency loan posted its face value as NPR
+    # and balanced. `test_drawdown_entry_is_balanced_and_hits_the_liability`
+    # above passed throughout, because balance is preserved by the defect: both
+    # sides are wrong by the same amount. That is what makes this class of bug
+    # worth a test that looks at the denomination rather than the arithmetic.
+    def test_a_loan_uses_its_company_currency(self):
+        loan = self._loan()
+        self.assertEqual(loan.currency_id, self.company.currency_id)
+
+    def test_a_loan_cannot_be_given_a_different_currency(self):
+        """The hole ACC-1 describes, asserted shut at the point it was opened."""
+        other = self.env["res.currency"].with_context(active_test=False).search(
+            [("id", "!=", self.company.currency_id.id)], limit=1)
+        self.assertTrue(other, "fixture assumption: another currency exists")
+
+        loan = self._loan(currency_id=other.id)
+
+        self.assertEqual(
+            loan.currency_id, self.company.currency_id,
+            f"create() was handed {other.name} and the loan must still be "
+            f"denominated in {self.company.currency_id.name}; otherwise the "
+            f"schedule rounds in one currency while the postings use another")
+
+    def test_the_drawdown_posts_in_the_currency_the_schedule_used(self):
+        """The two halves that used to be able to disagree, compared directly."""
+        loan = self._loan()
+        loan.action_confirm()
+        loan.action_post_disbursement()
+
+        move = loan.disbursement_move_id
+        self.assertEqual(move.currency_id, loan.currency_id)
+        for line in move.line_ids:
+            self.assertEqual(
+                line.currency_id, self.company.currency_id,
+                "a line denominated in anything but the company currency would "
+                "need amount_currency, which these postings never set")
+        # And the figure itself, not merely its label.
+        liability = move.line_ids.filtered(
+            lambda aml: aml.account_id == self.acc_loan)
+        self.assertEqual(liability.credit, loan.principal)
+        self.assertEqual(liability.amount_currency, -loan.principal)
+
     def test_drawdown_cannot_be_posted_twice(self):
         loan = self._loan()
         loan.action_confirm()

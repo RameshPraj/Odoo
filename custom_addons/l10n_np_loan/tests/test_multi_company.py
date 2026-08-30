@@ -64,7 +64,6 @@ class TestLoanCompanyIsolation(TransactionCase):
         return cls.env["l10n_np.loan"].create({
             "name": f"SEC-2 loan {company.name}",
             "company_id": company.id,
-            "currency_id": company.currency_id.id,
             "partner_id": cls.partner.id,
             "principal": 1_000_000.0,
             "rate": 10.0,
