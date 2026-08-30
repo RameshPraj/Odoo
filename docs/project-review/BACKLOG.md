@@ -1080,10 +1080,37 @@ moved to `nepali_calendar_core`, which now carries **7 source files / 1,261 line
 suites**, executed from Python by `test_js_unit.py` (declaring a bundle never runs it). Across the
 three local JS-bearing modules: 1,534 lines, 4 suites.
 
-**So the finding is closed as written, and the real question is re-opened where it now lives:**
-whether 1,261 lines of `nepali_calendar_core` are adequately covered by two suites. That is a
-coverage judgement, not a zero-tests defect, and it is tracked as the remaining half of TASK-9.
+**So the finding is closed as written, and the real question was re-opened where it now lives:**
+whether `nepali_calendar_core`'s JavaScript is adequately covered.
 **PKG-1 cites `__manifest__.py:52` for the same dangling glob and is stale for the same reason.**
+
+**Measured 2026-08-30, and "1,261 lines against 2 suites" was my own overstatement.** Counting hoot
+suites per source file is the wrong instrument here, because most of this module is verified from
+Python by stronger means than a browser test could manage:
+
+| Source | Lines | Verified by |
+|---|---|---|
+| `bs_calendar_data.js` | 173 | `test_conversion_contract.py` — **all 46,022 days** against `nepali-datetime`, not sampled |
+| `bs_convert.js` | 161 | `bs_convert.test.js` + the format/parse/range/error contracts |
+| `registry_overrides.js` | 338 | `registry_overrides.test.js`, 611 lines, mounted views |
+| `exclusions.js` | 75 | `registry_overrides.test.js` — `isExcluded` imported directly, ~14 assertions incl. null/undefined |
+| *every* file | all | `test_calendar_ui.py` parses each one; a malformed file blanks the whole backend |
+| timezone behaviour | — | `test_timezone_and_reports.py`, 19 tests |
+
+That left **one** genuine gap, now closed: `remaining_days_patch.js` encoded the **date-vs-datetime
+zoning rule** — a `Datetime` is a UTC instant and must be shifted into the reader's zone before a
+day is read off it, a `Date` has no instant so shifting it invents one and moves the day west of
+UTC. `test_timezone_and_reports.py` calls that "the one that matters most" and covers it on the
+server; nothing covered its browser twin, where `invoice_date_due` is a `Date`. `bsTextFor` is now
+exported (the precedent is `installCalendarOverrides`, extracted for the same reason) and
+`remaining_days_patch.test.js` asserts it, using a fake whose `setZone` **throws** so "was it
+re-zoned?" is an assertion rather than an inspection. Proved to bite: deleting the type guard fails
+3 of its 6 tests.
+
+**Still uncovered, and deliberately:** `bs_date_field.js` (292) and `bs_calendar_action.js` (135)
+are OWL components whose untested surface is mount-and-interact behaviour. Their conversion and
+dispatch logic is already covered above; what remains is UI, which is integration-test territory
+rather than hoot. Recorded as a known limit rather than left as an implied gap.
 JS assertion checks a grid of >20 cells rendered and never validates a date. **Effort M.**
 
 ## LIC-1 · LGPL-3 manifests on what is legally an AGPL-3 combined work

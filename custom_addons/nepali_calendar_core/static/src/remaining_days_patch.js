@@ -39,7 +39,14 @@ const CALENDAR = session.calendar_system || "ad";
  * showing the Gregorian date is a cosmetic regression, showing a guess is a
  * correctness one.
  */
-function bsTextFor(record, name) {
+// Exported for the test suite, following the precedent set by
+// `installCalendarOverrides` in registry_overrides.js: the patch below is applied
+// at module load, keyed on `session.calendar_system`, which a test cannot change
+// after import. Pulling the decision out into a callable function is what made
+// that module testable, and this is the same shape -- the rules encoded here (in
+// particular the date-vs-datetime zoning guard) are the part worth asserting, not
+// the act of patching.
+export function bsTextFor(record, name) {
     const value = record.data[name];
     if (!value) {
         return null;

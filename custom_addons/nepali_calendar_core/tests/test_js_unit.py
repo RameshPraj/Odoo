@@ -37,6 +37,7 @@ JS_TESTS_DIR = os.path.join(MODULE_DIR, "static", "tests")
 SUITES = [
     "bs_convert",
     "registry_overrides",
+    "remaining_days_patch",
 ]
 
 
