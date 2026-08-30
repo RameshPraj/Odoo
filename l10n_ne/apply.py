@@ -43,9 +43,21 @@ ADDONS = os.path.join(ODOO_ROOT, "odoo", "addons")
 PO_DIR = os.path.join(HERE, "po")
 CONF = os.path.join(ODOO_ROOT, "odoo.conf")
 
+# Appended, not prepended (SEC-11).
+#
+# Both directories have to be importable: `odoo` is not pip-installed in this
+# venv -- it is found only because the repository root is on the path -- and
+# `translations` lives beside this script. But `insert(0, ...)` puts them ahead
+# of site-packages, so a file named `polib.py` dropped into either directory
+# would silently replace the installed polib for this process, and the same goes
+# for any other third-party name. Appending keeps both directories reachable
+# while letting properly installed packages win.
+#
+# Verified rather than assumed: `polib` resolves to venv/Lib/site-packages, and
+# `translations` resolves nowhere else, so appending still finds both.
 for p in (ODOO_ROOT, HERE):
     if p not in sys.path:
-        sys.path.insert(0, p)
+        sys.path.append(p)
 
 import polib  # noqa: E402
 from odoo import SUPERUSER_ID, api  # noqa: E402
@@ -112,6 +124,31 @@ def build_po(module):
     return out, len(po)
 
 
+def _module_subdir(module, *parts):
+    r"""A path under ADDONS/<module>/, refusing anything that escapes ADDONS (SEC-7).
+
+    `--modules` is joined straight into a filesystem path, and `os.path.join`
+    treats `..` and absolute components as instructions rather than as data:
+
+        os.path.join(ADDONS, "../../..", "i18n_extra")   -> outside the tree
+        os.path.join(ADDONS, "C:\Windows", "i18n_extra") -> ignores ADDONS entirely
+
+    Step 4 then calls `os.makedirs` and `shutil.copyfile` on the result, so a
+    mistyped or hostile value writes `ne.po` wherever it points. This is an
+    operator-run script, so the exposure is bounded -- but "bounded" is not the
+    same as "guarded", and a containment check costs one comparison.
+
+    `commonpath` rather than `startswith`: the string form would accept
+    `<addons>-evil/` as being inside `<addons>`.
+    """
+    target = os.path.realpath(os.path.join(ADDONS, module, *parts))
+    root = os.path.realpath(ADDONS)
+    if os.path.commonpath([root, target]) != root:
+        sys.exit(f"refusing to write outside the addons tree: module {module!r} "
+                 f"resolves to {target}")
+    return target
+
+
 def main():
     ap = argparse.ArgumentParser(description="Install Nepali translations")
     ap.add_argument("--db", default=None, help="database (default: db_name from odoo.conf)")
@@ -174,7 +211,7 @@ def main():
         # -- 4. deploy to i18n_extra (code translations) -------------------
         print()
         for mod, (path, _hits) in sorted(built.items()):
-            target_dir = os.path.join(ADDONS, mod, "i18n_extra")
+            target_dir = _module_subdir(mod, "i18n_extra")
             os.makedirs(target_dir, exist_ok=True)
             shutil.copyfile(path, os.path.join(target_dir, "ne.po"))
         print(f"deployed {len(built)} file(s) to <module>/i18n_extra/ne.po")

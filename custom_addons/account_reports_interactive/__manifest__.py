@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'Interactive Financial Reports',
-    'version': '19.0.1.2.2',   # 1.1.0 = OCA drill-down overlays and the
+    'version': '19.0.1.2.3',   # 1.1.0 = OCA drill-down overlays and the
                               # aged-balance date fix (FIN-3);
                               # 1.1.2 = the aged-balance render assertion counts
                               # a per-row invariant instead of a live-data total

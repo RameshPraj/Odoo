@@ -19,7 +19,7 @@ records.
 Every check below is written against `base.group_user` alone, because that is the
 group the findings name: an ordinary employee with no accounting rights at all.
 """
-from odoo.exceptions import AccessError
+from odoo.exceptions import AccessError, UserError
 from odoo.tests import HttpCase, TransactionCase, tagged
 
 
@@ -210,3 +210,41 @@ class TestXlsxRouteAuth(HttpCase):
             response.status_code, 404,
             "the endpoint disappeared: the override changed the routing rather "
             "than only pinning auth")
+
+
+@tagged("-at_install", "post_install")
+class TestGeneralLedgerDomain(TransactionCase):
+    """SEC-10: a mistyped Journal Items Domain is refused with a sentence.
+
+    The register prescribed swapping `literal_eval` for `safe_eval`. That was not
+    done, because measuring the wizard showed `literal_eval` is the *stricter*
+    of the two -- it refuses `__import__('os')` outright -- so the swap would
+    have widened the field while fixing nothing. The defect it did show is that
+    every rejection arrived as an unhandled traceback.
+    """
+
+    def _wizard(self, domain):
+        return self.env["general.ledger.report.wizard"].create({
+            "date_from": "2026-07-17", "date_to": "2026-08-31", "domain": domain,
+        })
+
+    def test_a_malformed_domain_is_refused_with_a_message(self):
+        for bad in ("[('x','=',1)", "not a domain", "{"):
+            with self.subTest(domain=bad):
+                with self.assertRaises(UserError) as caught:
+                    self._wizard(bad)._get_account_move_lines_domain()
+                self.assertIn("not a valid domain", str(caught.exception))
+
+    def test_code_is_still_refused_rather_than_executed(self):
+        """The property `literal_eval` already provided, pinned so a later
+        well-meaning swap to `safe_eval` cannot quietly widen this field."""
+        with self.assertRaises(UserError):
+            self._wizard("__import__('os').getcwd()")._get_account_move_lines_domain()
+
+    def test_a_valid_domain_still_parses(self):
+        """The negative control: translating the error must not reject good input."""
+        parsed = self._wizard("[('partner_id', '!=', False)]")             ._get_account_move_lines_domain()
+        self.assertEqual(parsed, [("partner_id", "!=", False)])
+
+    def test_an_empty_domain_is_still_the_empty_list(self):
+        self.assertEqual(self._wizard(False)._get_account_move_lines_domain(), [])
