@@ -93,7 +93,7 @@
                         as at <span t-field="wizard.date_to"/><br/>
                         <small>
                             Fiscal year <span t-esc="fy_from"/> to <span t-esc="fy_to"/>
-                            &#183; <span t-esc="dict(wizard._fields['target_move'].selection).get(wizard.target_move)"/>
+                            &#183; <span t-field="wizard.target_move"/>
                         </small>
                     </p>
 
@@ -201,7 +201,7 @@
                     <p class="text-muted">
                         <span t-field="wizard.company_id.name"/> &#8212;
                         <span t-field="wizard.date_from"/> to <span t-field="wizard.date_to"/><br/>
-                        <small t-esc="dict(wizard._fields['target_move'].selection).get(wizard.target_move)"/>
+                        <small t-field="wizard.target_move"/>
                     </p>
 
                     <table class="table table-sm">
@@ -329,7 +329,7 @@
                     <p class="text-muted">
                         <span t-field="wizard.company_id.name"/> &#8212;
                         <span t-field="wizard.date_from"/> to <span t-field="wizard.date_to"/><br/>
-                        <small t-esc="dict(wizard._fields['target_move'].selection).get(wizard.target_move)"/>
+                        <small t-field="wizard.target_move"/>
                     </p>
 
                     <table class="table table-sm">

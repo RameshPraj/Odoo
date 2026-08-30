@@ -23,14 +23,14 @@ class TestLockDates(TransactionCase):
         cls.env.user.company_ids = [(4, cls.company.id)]
 
     def _wizard(self, **values):
-        return self.env["account.lock.dates"].create(
+        return self.env["l10n_np.account.lock.dates"].create(
             dict(company_id=self.company.id, **values))
 
     def test_preloads_current_locks(self):
         """The form is an editor, not a blank slate: opening it and pressing
         Apply must not clear a lock that was already set."""
         self.company.fiscalyear_lock_date = "2026-07-15"
-        wizard = self.env["account.lock.dates"].with_company(self.company).create({})
+        wizard = self.env["l10n_np.account.lock.dates"].with_company(self.company).create({})
         self.assertEqual(str(wizard.fiscalyear_lock_date), "2026-07-15")
 
     def test_explicit_company_loads_that_company_s_locks(self):
@@ -40,7 +40,7 @@ class TestLockDates(TransactionCase):
         self.company.fiscalyear_lock_date = "2026-07-15"
         self.assertFalse(self.env.company.fiscalyear_lock_date,
                          "precondition: the ambient company has no global lock")
-        wizard = self.env["account.lock.dates"].create({"company_id": self.company.id})
+        wizard = self.env["l10n_np.account.lock.dates"].create({"company_id": self.company.id})
         self.assertEqual(str(wizard.fiscalyear_lock_date), "2026-07-15")
 
     def test_apply_writes_through(self):

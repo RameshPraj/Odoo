@@ -15,7 +15,19 @@ class AccountLockDates(models.TransientModel):
     through this wizard is exactly as safe as writing through Settings.
     """
 
-    _name = 'account.lock.dates'
+    # Prefixed, not `account.lock.dates` (UPG-4). A model name without a
+    # vendor prefix sits in Odoo's own namespace, and `_name` is not a
+    # reservation -- if Odoo 20 introduces `account.lock.dates`, this class stops
+    # *defining* a model and silently starts *extending* theirs, merging these
+    # five fields into it. That failure is quiet and arrives during an upgrade,
+    # which is the worst combination.
+    #
+    # Every other locally invented model in this suite is already prefixed
+    # (`l10n_np.loan`, `l10n_np.tds.category`, `l10n_np.vat.return`,
+    # `l10n_np.generate.fiscal.year`); this was the sole exception, on the
+    # reasoning that it is a thin editor over core `res.company` fields. That
+    # justifies the module it lives in, not the namespace it claims.
+    _name = 'l10n_np.account.lock.dates'
     _description = 'Accounting Lock Dates'
 
     LOCK_FIELDS = (

@@ -2,8 +2,8 @@
 <odoo>
 
     <record id="view_account_lock_dates_form" model="ir.ui.view">
-        <field name="name">account.lock.dates.form</field>
-        <field name="model">account.lock.dates</field>
+        <field name="name">l10n_np.account.lock.dates.form</field>
+        <field name="model">l10n_np.account.lock.dates</field>
         <field name="arch" type="xml">
             <form string="Lock Dates">
                 <group>
@@ -34,7 +34,7 @@
 
     <record id="action_account_lock_dates" model="ir.actions.act_window">
         <field name="name">Lock Dates</field>
-        <field name="res_model">account.lock.dates</field>
+        <field name="res_model">l10n_np.account.lock.dates</field>
         <field name="view_mode">form</field>
         <field name="target">new</field>
     </record>

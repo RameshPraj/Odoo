@@ -7,7 +7,24 @@
         <field name="priority" eval="50"/>
         <field name="inherit_id" ref="account.res_config_settings_view_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//block[@id='analytic']" position="before">
+            <!--
+                UPG-3: anchored to the Invoicing *app*, not to a sibling block.
+
+                This was `//block[@id='analytic']` with position="before". That
+                block is core's (account/views/res_config_settings_views.xml:354)
+                and sits in the arch Odoo churns most; if it is renamed, moved to
+                another module or dropped, the xpath does not degrade. It raises
+                ParseError, and a ParseError in a view this module *installs*
+                means the module fails to install at all.
+
+                `//app[@name='account']` is the container that block already lives
+                in (it spans :23-388), so the block still renders in the same
+                place in the Settings page and under the same visibility. What
+                changes is only that it is appended to the app rather than
+                positioned against a neighbour it never had a reason to know
+                about.
+            -->
+            <xpath expr="//app[@name='account']" position="inside">
                 <block title="Nepal" id="l10n_np_accounting"
                        groups="account.group_account_readonly">
                     <setting id="l10n_np_calendar_system"

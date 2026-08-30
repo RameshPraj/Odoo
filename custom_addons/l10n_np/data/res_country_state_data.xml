@@ -1,6 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <data noupdate="1">
+    <!--
+        UPG-6: deliberately NOT noupdate.
+
+        These records were `noupdate="1"` while carrying a NEEDS SME CONFIRMATION
+        flag, which is a contradiction: the flag says the names are expected to
+        change, and noupdate guarantees a change never reaches a database that
+        already exists. The correction would have landed in the source, passed
+        review, shipped, and silently done nothing.
+
+        Odoo's own localisations ship country states exactly this way.
+        `l10n_in/data/res_country_state_data.xml`, the same filename, carries no
+        noupdate, because official subdivisions are reference data, not user
+        content. A site has no business renaming a province, and if it did, it
+        would want the official correction anyway.
+    -->
+    <data>
 
         <!--
             Nepal's 7 provinces. Verified absent from the base data:

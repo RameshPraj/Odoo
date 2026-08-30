@@ -42,7 +42,7 @@ LEGACY_ALLOWLIST = {
     'account.payment.register': ('payment_date',),
     'account.bank.statement': ('date',),
     'account.bank.statement.line': ('date',),
-    'account.lock.dates': ('fiscalyear_lock_date', 'tax_lock_date', 'sale_lock_date',
+    'l10n_np.account.lock.dates': ('fiscalyear_lock_date', 'tax_lock_date', 'sale_lock_date',
                            'purchase_lock_date', 'hard_lock_date'),
     'account.financial.statements.wizard': ('date_from', 'date_to'),
     'l10n_np.vat.return': ('date_from', 'date_to'),
