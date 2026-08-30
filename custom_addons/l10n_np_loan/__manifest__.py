@@ -1,12 +1,14 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 {
     'name': 'Loans',
-    'version': '19.0.1.3.0',   # 1.1.0 = multi-company record rules (SEC-2);
+    'version': '19.0.1.3.1',   # 1.1.0 = multi-company record rules (SEC-2);
                               # 1.2.0 = indexes on the columns those rules
                               # filter on (SCH-1);
                               # 1.3.0 = currency_id related to the company, so a
                               # loan can no longer be denominated in a currency
-                              # its postings do not use (ACC-1)
+                              # its postings do not use (ACC-1);
+                              # 1.3.1 = money compared through the currency and
+                              # a clock-independent due test (COD-1, TST-6)
     'category': 'Accounting/Accounting',
     'summary': 'Loan register, amortisation schedule and instalment posting',
     'description': """

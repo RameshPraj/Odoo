@@ -9,6 +9,7 @@ loan that ends a few paisa out looks right on screen and leaves a balance on the
 liability account that nobody can clear.
 """
 import psycopg2
+from dateutil.relativedelta import relativedelta
 from odoo import fields
 from odoo.exceptions import UserError
 from odoo.tests import TransactionCase, tagged
@@ -58,28 +59,55 @@ class TestLoan(TransactionCase):
         values.update(overrides)
         return self.env["l10n_np.loan"].create(values)
 
+    # ---- comparing money (COD-1) --------------------------------------------
+    def assertMoneyEqual(self, actual, expected, msg=None):
+        """Compare two monetary amounts through the currency, not through floats.
+
+        Money in this suite was compared with bare ``assertEqual``. Several of
+        those comparisons sum a dozen already-rounded values and check the total
+        against a literal, which is the classic accumulation trap: the schedule
+        can be arithmetically perfect and still land a fraction of a paisa away,
+        and float equality calls that a failure.
+
+        ``compare_amounts`` is Odoo's own primitive and rounds to the currency's
+        configured precision, so the tolerance comes from the data rather than
+        from a number picked in the test — which is why this is preferred here
+        over ``assertAlmostEqual(..., places=2)``. It generalises the single
+        ``currency_id.round()`` call that used to be the only place this was
+        handled.
+
+        Note this is *not* a loose comparison: a difference of one paisa on a
+        two-decimal currency is still a failure. It only discards noise below the
+        currency's own precision, which is not a figure anyone can be owed.
+        """
+        currency = self.company.currency_id
+        self.assertEqual(
+            currency.compare_amounts(actual, expected), 0,
+            msg or f"{actual} != {expected} at {currency.name} precision")
+
     # ---- the schedule closes ------------------------------------------------
 
     def test_emi_schedule_closes_on_zero(self):
         loan = self._loan()
         loan.action_compute_schedule()
         self.assertEqual(len(loan.line_ids), 12)
-        self.assertEqual(loan.line_ids[-1].closing_balance, 0.0,
-                         "an EMI schedule must end on exactly zero")
+        self.assertMoneyEqual(loan.line_ids[-1].closing_balance, 0.0,
+                              "an EMI schedule must end on exactly zero")
 
     def test_equal_principal_schedule_closes_on_zero(self):
         loan = self._loan(method="equal_principal")
         loan.action_compute_schedule()
-        self.assertEqual(loan.line_ids[-1].closing_balance, 0.0)
+        self.assertMoneyEqual(loan.line_ids[-1].closing_balance, 0.0)
 
     def test_interest_only_repays_everything_at_maturity(self):
         loan = self._loan(method="interest_only")
         loan.action_compute_schedule()
-        self.assertEqual(loan.line_ids[-1].closing_balance, 0.0)
-        self.assertEqual(sum(loan.line_ids[:-1].mapped("principal")), 0.0,
-                         "interest-only must repay no principal before maturity")
-        self.assertEqual(loan.line_ids[-1].principal, loan.principal,
-                         "the whole principal falls due at maturity")
+        self.assertMoneyEqual(loan.line_ids[-1].closing_balance, 0.0)
+        self.assertMoneyEqual(
+            sum(loan.line_ids[:-1].mapped("principal")), 0.0,
+            "interest-only must repay no principal before maturity")
+        self.assertMoneyEqual(loan.line_ids[-1].principal, loan.principal,
+                              "the whole principal falls due at maturity")
 
     def test_principal_repaid_equals_principal_borrowed(self):
         """Under every method, and with awkward numbers that will not divide."""
@@ -87,11 +115,12 @@ class TestLoan(TransactionCase):
             loan = self._loan(method=method, principal=1_000_000.0,
                               rate=9.75, term=7)
             loan.action_compute_schedule()
-            # Rounded to the currency: summing a dozen rounded monetary values in
-            # Python accumulates float noise well below one paisa, which is not
-            # a defect in the schedule.
-            repaid = loan.currency_id.round(sum(loan.line_ids.mapped("principal")))
-            self.assertEqual(
+            # Summing a dozen rounded monetary values in Python accumulates
+            # float noise well below one paisa, which is not a defect in the
+            # schedule. assertMoneyEqual absorbs exactly that and nothing more,
+            # so the explicit round() this test used to need is now redundant.
+            repaid = sum(loan.line_ids.mapped("principal"))
+            self.assertMoneyEqual(
                 repaid, loan.principal,
                 f"{method}: repaid {repaid} against a principal of {loan.principal}")
 
@@ -110,29 +139,29 @@ class TestLoan(TransactionCase):
         loan = self._loan(rate=11.0, term=6)
         loan.action_compute_schedule()
         rows = loan.line_ids
-        self.assertEqual(rows[0].opening_balance, loan.principal)
+        self.assertMoneyEqual(rows[0].opening_balance, loan.principal)
         # strict=False: rows[1:] is one shorter by construction, which is the
         # point -- each row is compared with its successor.
         for previous, current in zip(rows, rows[1:], strict=False):
-            self.assertEqual(current.opening_balance, previous.closing_balance,
-                             f"row {current.sequence} does not open where "
-                             f"row {previous.sequence} closed")
+            self.assertMoneyEqual(current.opening_balance, previous.closing_balance,
+                                  f"row {current.sequence} does not open where "
+                                  f"row {previous.sequence} closed")
 
     # ---- the awkward inputs -------------------------------------------------
 
     def test_zero_rate_loan_does_not_divide_by_zero(self):
         loan = self._loan(rate=0.0, term=10, principal=1_000_000.0)
         loan.action_compute_schedule()
-        self.assertEqual(sum(loan.line_ids.mapped("interest")), 0.0)
-        self.assertEqual(loan.line_ids[-1].closing_balance, 0.0)
-        self.assertEqual(sum(loan.line_ids.mapped("principal")), 1_000_000.0)
+        self.assertMoneyEqual(sum(loan.line_ids.mapped("interest")), 0.0)
+        self.assertMoneyEqual(loan.line_ids[-1].closing_balance, 0.0)
+        self.assertMoneyEqual(sum(loan.line_ids.mapped("principal")), 1_000_000.0)
 
     def test_single_instalment_loan(self):
         loan = self._loan(term=1)
         loan.action_compute_schedule()
         self.assertEqual(len(loan.line_ids), 1)
-        self.assertEqual(loan.line_ids.principal, loan.principal)
-        self.assertEqual(loan.line_ids.closing_balance, 0.0)
+        self.assertMoneyEqual(loan.line_ids.principal, loan.principal)
+        self.assertMoneyEqual(loan.line_ids.closing_balance, 0.0)
 
     def test_payment_below_interest_is_refused(self):
         """At an absurd rate the level payment never clears the principal.
@@ -169,12 +198,12 @@ class TestLoan(TransactionCase):
         loan.action_post_disbursement()
         move = loan.disbursement_move_id
         self.assertEqual(move.state, "posted")
-        self.assertEqual(sum(move.line_ids.mapped("debit")),
-                         sum(move.line_ids.mapped("credit")))
+        self.assertMoneyEqual(sum(move.line_ids.mapped("debit")),
+                              sum(move.line_ids.mapped("credit")))
         liability = move.line_ids.filtered(
             lambda aml: aml.account_id == self.acc_loan)
-        self.assertEqual(liability.credit, loan.principal,
-                         "the drawdown must credit the loan account")
+        self.assertMoneyEqual(liability.credit, loan.principal,
+                              "the drawdown must credit the loan account")
 
     # ---- ACC-1: the loan is denominated in the company's currency -----------
     #
@@ -219,8 +248,8 @@ class TestLoan(TransactionCase):
         # And the figure itself, not merely its label.
         liability = move.line_ids.filtered(
             lambda aml: aml.account_id == self.acc_loan)
-        self.assertEqual(liability.credit, loan.principal)
-        self.assertEqual(liability.amount_currency, -loan.principal)
+        self.assertMoneyEqual(liability.credit, loan.principal)
+        self.assertMoneyEqual(liability.amount_currency, -loan.principal)
 
     def test_drawdown_cannot_be_posted_twice(self):
         loan = self._loan()
@@ -237,12 +266,12 @@ class TestLoan(TransactionCase):
 
         move = line.move_id
         self.assertEqual(move.state, "posted")
-        self.assertEqual(sum(move.line_ids.mapped("debit")),
-                         sum(move.line_ids.mapped("credit")))
+        self.assertMoneyEqual(sum(move.line_ids.mapped("debit")),
+                              sum(move.line_ids.mapped("credit")))
         by_account = {aml.account_id: aml for aml in move.line_ids}
-        self.assertEqual(by_account[self.acc_loan].debit, line.principal)
-        self.assertEqual(by_account[self.acc_interest].debit, line.interest)
-        self.assertEqual(by_account[self.acc_bank].credit, line.payment)
+        self.assertMoneyEqual(by_account[self.acc_loan].debit, line.principal)
+        self.assertMoneyEqual(by_account[self.acc_interest].debit, line.interest)
+        self.assertMoneyEqual(by_account[self.acc_bank].credit, line.payment)
 
     def test_instalment_cannot_be_posted_twice(self):
         loan = self._loan()
@@ -255,20 +284,19 @@ class TestLoan(TransactionCase):
     def test_outstanding_follows_posted_instalments_only(self):
         loan = self._loan()
         loan.action_confirm()
-        self.assertEqual(loan.outstanding, loan.principal,
-                         "a scheduled instalment must not reduce the balance")
+        self.assertMoneyEqual(loan.outstanding, loan.principal,
+                              "a scheduled instalment must not reduce the balance")
         first = loan.line_ids[0]
         first.action_post()
-        self.assertEqual(loan.outstanding,
-                         loan.currency_id.round(loan.principal - first.principal))
+        self.assertMoneyEqual(loan.outstanding, loan.principal - first.principal)
 
     def test_loan_closes_when_every_instalment_is_posted(self):
         loan = self._loan(term=2)
         loan.action_confirm()
         loan.line_ids.action_post()
         self.assertEqual(loan.state, "closed")
-        self.assertEqual(loan.outstanding, 0.0,
-                         "a fully repaid loan must leave nothing outstanding")
+        self.assertMoneyEqual(loan.outstanding, 0.0,
+                              "a fully repaid loan must leave nothing outstanding")
 
     def test_posting_requires_a_running_loan(self):
         loan = self._loan()
@@ -303,8 +331,17 @@ class TestLoan(TransactionCase):
         self.assertIn("No instalment is due", str(caught.exception))
 
         # Backdate so that exactly two instalments have fallen due.
-        loan.line_ids[0].date = "2026-01-01"
-        loan.line_ids[1].date = "2026-02-01"
+        #
+        # Relative to `today`, not the literals "2026-01-01"/"2026-02-01" this
+        # used to carry (TST-6). Those were backdates only while the clock was
+        # past February 2026 — the test would have started failing on its own,
+        # with no code change, at the turn of the year. They also read oddly,
+        # dating instalments before the loan they belong to had started.
+        #
+        # Offsets say the thing the assertion below actually depends on: two
+        # instalments are in the past and the rest are not.
+        loan.line_ids[0].date = today - relativedelta(months=2)
+        loan.line_ids[1].date = today - relativedelta(months=1)
         loan.action_post_due()
         states = loan.line_ids.mapped("state")
         self.assertEqual(states[:2], ["posted", "posted"])
