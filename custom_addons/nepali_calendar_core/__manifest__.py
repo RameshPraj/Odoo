@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'Nepali Calendar (Core)',
-    'version': '19.0.1.0.5',   # 1.0.1 = README, lint fixes (no data change)
+    'version': '19.0.1.0.6',   # 1.0.1 = README, lint fixes (no data change)
     'summary': 'Bikram Sambat as a platform capability: conversion, preference, widgets, reports',
     'description': """
 Nepali Calendar (Core)

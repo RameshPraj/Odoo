@@ -35,7 +35,36 @@ export function bsMonthLength(year, month) {
     if (year < BS_MIN_YEAR || year > BS_MAX_YEAR) {
         throw new BSRangeError(`BS year ${year} outside ${BS_MIN_YEAR}..${BS_MAX_YEAR}`);
     }
+    // The month was unchecked (BS-11). `BS_MONTH_DAYS[y][month - 1]` is an
+    // array index, so month 13 read one past the row and month 0 read index -1,
+    // and JavaScript answers `undefined` to both rather than failing. That
+    // `undefined` then propagated into date arithmetic as NaN, which surfaces
+    // far from here as a blank or nonsense date. The year check above already
+    // sets the precedent: refuse, do not guess.
+    if (!Number.isInteger(month) || month < 1 || month > 12) {
+        throw new BSRangeError(`BS month ${month} outside 1..12`);
+    }
     return BS_MONTH_DAYS[year - BS_MIN_YEAR][month - 1];
+}
+
+/**
+ * Throw unless (year, month, day) is a date that actually exists.
+ *
+ * Round-tripping through `Date.UTC` is the check: it normalises out-of-range
+ * components, so a date survives unchanged if and only if it was real.
+ */
+function assertRealGregorianDate(year, month, day) {
+    if (![year, month, day].every(Number.isInteger)) {
+        throw new BSRangeError(`${year}-${month}-${day} is not a whole date`);
+    }
+    const probe = new Date(Date.UTC(year, month - 1, day));
+    if (
+        probe.getUTCFullYear() !== year ||
+        probe.getUTCMonth() !== month - 1 ||
+        probe.getUTCDate() !== day
+    ) {
+        throw new BSRangeError(`${year}-${month}-${day} is not a real date`);
+    }
 }
 
 /** Days elapsed between two Gregorian dates, calendar-day accurate (UTC math). */
@@ -51,6 +80,13 @@ function daysBetweenUTC(y1, m1, d1, y2, m2, d2) {
  * @returns {{year:number, month:number, day:number}}
  */
 export function adToBs(year, month, day) {
+    // Gregorian input is validated here (BS-12), because `Date.UTC` normalises
+    // rather than rejects: `Date.UTC(2026, 8, 31)` is the 1st of October, so
+    // `adToBs(2026, 9, 31)` used to return a real BS date for a day that never
+    // existed. Silently converting a non-existent date is the same class of
+    // fault as converting one out of range -- a plausible wrong answer -- and
+    // this module's rule is that a guess is worse than a refusal.
+    assertRealGregorianDate(year, month, day);
     let remaining = daysBetweenUTC(BS_EPOCH_AD[0], BS_EPOCH_AD[1], BS_EPOCH_AD[2], year, month, day);
     if (remaining < 0) {
         throw new BSRangeError(`${year}-${month}-${day} is before the supported range`);

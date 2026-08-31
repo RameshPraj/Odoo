@@ -5,12 +5,19 @@ A Nepali fiscal year runs Shrawan 1 of BS year N to Ashar end of BS year N+1.
 Both endpoints are derived from the Bikram Sambat calendar, so the Gregorian
 dates are exact for every year rather than an approximation.
 """
+import re
+
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 
 # Bikram Sambat month numbers
 SHRAWAN = 4   # first month of the fiscal year
 ASHAR = 3     # last month of the fiscal year
+
+#: Names this wizard produces, and therefore the only ones it may replace
+#: (BS-15). It must stay in step with `_fiscal_year_range`, which builds them;
+#: a test asserts the two agree rather than trusting that they do.
+_GENERATED_NAME = re.compile(r"^FY \d{4}/\d{2} \(Shrawan-Ashar\)$")
 
 
 class GenerateNPFiscalYear(models.TransientModel):
@@ -81,6 +88,7 @@ class GenerateNPFiscalYear(models.TransientModel):
         FiscalYear = self.env['account.fiscal.year']
         created = self.env['account.fiscal.year']
         skipped = []
+        replaced = []
 
         for bs_year in range(self.bs_year_from, self.bs_year_to + 1):
             name, date_from, date_to = self._fiscal_year_range(bs_year)
@@ -94,7 +102,39 @@ class GenerateNPFiscalYear(models.TransientModel):
                 if not self.overwrite:
                     skipped.append(name)
                     continue
-                overlapping.unlink()
+                # Only this wizard's own records may be replaced (BS-15).
+                #
+                # This used to be a bare `overlapping.unlink()`. The search above
+                # filters on company and dates alone, so ticking "Replace
+                # existing" deleted EVERY account.fiscal.year overlapping the
+                # range -- including years a site entered by hand, and any owned
+                # by the OCA account_fiscal_year module. Nothing named what was
+                # about to go, and unlinking a fiscal year is not recoverable
+                # from the UI.
+                #
+                # The generator has a signature -- `_fiscal_year_range` builds
+                # "FY <yyyy>/<yy> (Shrawan-Ashar)" -- so it can tell its own
+                # records from a site's, and only claims the former.
+                mine = overlapping.filtered(
+                    lambda fy: _GENERATED_NAME.match(fy.name or ''))
+                theirs = overlapping - mine
+                if theirs:
+                    # Refused, not skipped. The two wrong outcomes here are
+                    # deleting a stranger's record and quietly not producing the
+                    # year that was asked for. Naming the obstacle is neither,
+                    # and leaves the decision with the person who can make it.
+                    raise UserError(_(
+                        "%(year)s overlaps fiscal year(s) this wizard did not "
+                        "create, so they will not be replaced:\n%(names)s\n\n"
+                        "Rename or remove them first if you want %(year)s "
+                        "generated, or clear 'Replace existing' to skip it.",
+                        year=name,
+                        names="\n".join(
+                            f"- {fy.name} ({fy.date_from} to {fy.date_to})"
+                            for fy in theirs),
+                    ))
+                replaced.extend(mine.mapped('name'))
+                mine.unlink()
 
             created |= FiscalYear.create({
                 'name': name,

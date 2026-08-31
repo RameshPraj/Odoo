@@ -226,3 +226,45 @@ describe("month lengths", () => {
         }
     });
 });
+
+describe("refusing input that is not a date", () => {
+    // Both of these returned a plausible answer for an impossible input, which
+    // is the worst outcome for a converter: a wrong date nobody questions.
+    // Refusing is not a regression -- showing a guess is.
+
+    test("a month outside 1..12 is refused, not read past the row", () => {
+        // BS-11. `BS_MONTH_DAYS[y][month - 1]` is an array index, so month 13
+        // read one past the row and month 0 read index -1; JavaScript answers
+        // `undefined` to both, which becomes NaN downstream.
+        for (const month of [0, 13, 99, -1]) {
+            expect(() => bsMonthLength(2083, month)).toThrow(BSRangeError);
+        }
+        expect(() => bsMonthLength(2083, 1.5)).toThrow(BSRangeError);
+    });
+
+    test("a Gregorian date that never existed is refused", () => {
+        // BS-12. `Date.UTC(2026, 8, 31)` is the 1st of October, so this used to
+        // convert the 31st of September into a real BS date.
+        expect(() => adToBs(2026, 9, 31)).toThrow(BSRangeError);
+        expect(() => adToBs(2026, 2, 30)).toThrow(BSRangeError);
+        expect(() => adToBs(2025, 2, 29)).toThrow(BSRangeError);  // not a leap year
+        expect(() => adToBs(2026, 13, 1)).toThrow(BSRangeError);
+        expect(() => adToBs(2026, 0, 1)).toThrow(BSRangeError);
+    });
+
+    test("the 29th of February is accepted in a leap year", () => {
+        // The control for the rule above: the check must reject impossible
+        // dates without rejecting awkward real ones.
+        expect(() => adToBs(2024, 2, 29)).not.toThrow();
+    });
+
+    test("valid input still converts", () => {
+        // The control that matters most. Every rejection test above would also
+        // pass against a function that threw unconditionally.
+        expect(bsMonthLength(2083, 5)).toBeGreaterThan(28);
+        const bs = adToBs(2026, 9, 9);
+        expect(bs.year).toBe(2083);
+        expect(bs.month).toBe(5);
+        expect(bs.day).toBe(24);
+    });
+});
