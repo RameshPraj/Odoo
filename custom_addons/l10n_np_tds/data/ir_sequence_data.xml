@@ -1,12 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data noupdate="1">
+        <!--
+            Scoped to the main company, not global (ACC-6).
+
+            This shipped with `company_id` False. `next_by_code` matches
+            `company_id in (False, env.company.id)`, so every company drew from
+            this one row and issuing a certificate in one advanced the numbering
+            of all the others. A statutory series belongs to its issuer.
+
+            Companies beyond this one get their own series created on first use
+            by `_certificate_sequence()` in models/tds_certificate.py, because a
+            data file cannot enumerate companies that do not exist yet.
+
+            `noupdate="1"` on the surrounding data element is deliberate and
+            stays: re-applying this record on every upgrade would reset
+            `number_next` and reissue certificate numbers that have already been
+            printed.
+
+            The prefix still interpolates the GREGORIAN year: `range_year` comes
+            from `range_date`, which defaults to now
+            (odoo/addons/base/models/ir_sequence.py:220-227). A Nepali TDS
+            certificate belongs to a Bikram Sambat fiscal year, so this reads
+            2026 where the relevant year is 2083/84. Left alone deliberately: it
+            changes what a statutory document's identifier says, and the
+            certificate format is SME sign-off item 3. Recorded under ACC-6.
+        -->
         <record id="seq_tds_certificate" model="ir.sequence">
             <field name="name">Nepal TDS Certificate</field>
             <field name="code">l10n_np.tds.certificate</field>
             <field name="prefix">TDS/%(range_year)s/</field>
             <field name="padding">4</field>
-            <field name="company_id" eval="False"/>
+            <field name="company_id" ref="base.main_company"/>
         </record>
     </data>
 </odoo>

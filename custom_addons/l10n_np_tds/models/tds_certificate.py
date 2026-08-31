@@ -48,12 +48,51 @@ class TdsCertificate(models.Model):
             rec.amount_base = sum(rec.line_ids.mapped('amount_base'))
             rec.amount_tds = sum(rec.line_ids.mapped('amount_tds'))
 
+    SEQUENCE_CODE = 'l10n_np.tds.certificate'
+
+    def _certificate_sequence(self, company):
+        """The certificate series for one company, created on first use (ACC-6).
+
+        The module used to ship a single sequence with ``company_id = False``.
+        ``next_by_code`` matches ``company_id in (False, env.company.id)``, so
+        every company drew from that one row: issuing a certificate in one
+        company advanced the numbering of all the others. A statutory series
+        must belong to its issuer, and this is also the shape the SAAS findings
+        warn about -- shared mutable state that is invisible while there is one
+        company and wrong the moment there are two.
+
+        Looked up with ``sudo()`` because ``ir.sequence`` is not readable by the
+        accountants who issue certificates, and scoped explicitly to the company
+        passed in rather than to ``self.env.company``: see ``create`` below.
+        """
+        Sequence = self.env['ir.sequence'].sudo()
+        sequence = Sequence.search([
+            ('code', '=', self.SEQUENCE_CODE),
+            ('company_id', '=', company.id),
+        ], limit=1)
+        if sequence:
+            return sequence
+        return Sequence.create({
+            'name': _("Nepal TDS Certificate (%s)", company.name),
+            'code': self.SEQUENCE_CODE,
+            'prefix': 'TDS/%(range_year)s/',
+            'padding': 4,
+            'company_id': company.id,
+        })
+
     @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
             if vals.get('name', _('New')) == _('New'):
-                vals['name'] = self.env['ir.sequence'].next_by_code(
-                    'l10n_np.tds.certificate') or _('New')
+                # Keyed on the certificate's OWN company, not `env.company`.
+                # `next_by_code` would use the active company, and the two differ
+                # exactly when a multi-company user issues a certificate for a
+                # company other than the one they are currently in -- which is
+                # when a number drawn from the wrong series would be least
+                # likely to be noticed.
+                company = self.env['res.company'].browse(
+                    vals.get('company_id')) or self.env.company
+                vals['name'] = self._certificate_sequence(company).next_by_id()                     or _('New')
         return super().create(vals_list)
 
     # ------------------------------------------------------------------
