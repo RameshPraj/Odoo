@@ -1,7 +1,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 {
     'name': 'Nepal - VAT Return (IRD)',
-    'version': '19.0.1.2.3',   # 1.1.0 = multi-company record rules (SEC-2),
+    'version': '19.0.1.2.4',   # 1.1.0 = multi-company record rules (SEC-2),
                               # plus company_id on the box and line models;
                               # 1.2.0 = formula evaluator (SEC-3), return-line
                               # ACLs (SEC-6), indexes (SCH-1)
@@ -43,4 +43,5 @@ the return traces back to the ledger and can be drilled into during an audit.
     'author': 'local',
     'license': 'LGPL-3',
     'installable': True,
+    'application': False,
 }

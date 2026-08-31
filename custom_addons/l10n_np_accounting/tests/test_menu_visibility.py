@@ -55,6 +55,28 @@ class TestMenuVisibility(TransactionCase):
         self.assertTrue(app, f"the Accounting Nepal app is not delivered to {user.login}")
         return {menus[child]["name"] for child in app["children"]}
 
+    def _delivered_names(self, user):
+        """*Every* menu name under the app, at any depth, for this user (COD-8).
+
+        The app lookup and the recursive walk were each written out separately in
+        the two tests below. Both need `load_menus`, because searching
+        `ir.ui.menu` as a user does NOT apply menu group filtering -- see the
+        module docstring -- so neither could be simplified into a search, and
+        both ended up repeating the same eight lines.
+        """
+        app, menus = self._app(user)
+        self.assertTrue(app, f"the Accounting Nepal app is not delivered to {user.login}")
+
+        delivered = set()
+
+        def walk(node):
+            for child in node["children"]:
+                delivered.add(menus[child]["name"])
+                walk(menus[child])
+
+        walk(app)
+        return delivered
+
     def _user_without_accounting_rights(self):
         """An ordinary internal user: employee, and nothing accounting at all.
 
@@ -124,20 +146,7 @@ class TestMenuVisibility(TransactionCase):
 
     def test_gated_leaves_are_delivered_not_just_the_parents(self):
         """A visible parent with all children filtered out is still a dead end."""
-        admin = self.env.ref("base.user_admin")
-        menus = self.env["ir.ui.menu"].with_user(admin).load_menus(False)
-        root = menus["root"]
-        app = next(menus[c] for c in root["children"]
-                   if menus[c]["name"] == "Accounting Nepal")
-
-        delivered = set()
-
-        def walk(node):
-            for child in node["children"]:
-                delivered.add(menus[child]["name"])
-                walk(menus[child])
-
-        walk(app)
+        delivered = self._delivered_names(self.env.ref("base.user_admin"))
 
         expected = [
             "Journal Entries", "Assets", "Reconcile", "Bank Transactions",
@@ -164,19 +173,8 @@ class TestMenuVisibility(TransactionCase):
         })
 
         def analytic_menus_visible(for_user):
-            menus = self.env["ir.ui.menu"].with_user(for_user).load_menus(False)
-            root = menus["root"]
-            app = next(menus[c] for c in root["children"]
-                       if menus[c]["name"] == "Accounting Nepal")
-            found = set()
-
-            def walk(node):
-                for child in node["children"]:
-                    found.add(menus[child]["name"])
-                    walk(menus[child])
-
-            walk(app)
-            return {"Analytic Items", "Analytic Report"} & found
+            return ({"Analytic Items", "Analytic Report"}
+                    & self._delivered_names(for_user))
 
         self.assertFalse(analytic_menus_visible(user),
                          "analytic menus must stay hidden until the setting is on")

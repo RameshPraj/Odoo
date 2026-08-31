@@ -19,6 +19,7 @@ These tests assert the *contract*, not the implementations:
                               null -- asserted so it cannot drift silently
 """
 import datetime
+import inspect
 import os
 import re
 
@@ -323,3 +324,59 @@ class TestWeekdayContract(TransactionCase):
         """An unset date is not a Saturday."""
         self.assertIsNone(bs.weekday(None))
         self.assertFalse(bs.is_weekend(None))
+
+
+@tagged("-at_install", "post_install")
+class TestMonthLengthUsesPublicApiOnly(TransactionCase):
+    """`month_length` must not need `nepali_datetime._days_in_month` (COD-10).
+
+    The private function still exists on the pinned version, so it is used here
+    as the oracle: the point is that `bs.month_length` no longer *calls* it while
+    still agreeing with it everywhere.
+
+    Swept across the library's entire range rather than a sample, because the
+    first replacement written for this finding was wrong at exactly one point.
+    Deriving the length by subtracting Gregorian dates -- the 1st of this month
+    from the 1st of the next -- needs BS 2101-01-01 to size BS 2100-12, which the
+    library refuses. `month_length(2100, 12)` would have raised where it used to
+    return 30, and BS 2100 is in scope: BS_MAX_YEAR is 2100 and the fiscal-year
+    wizard offers `current + 4`. The sweep that "verified" it ran
+    MINYEAR+1..MAXYEAR-1 and skipped the one year that broke.
+    """
+
+    def test_it_agrees_with_the_private_function_across_the_whole_range(self):
+        import nepali_datetime
+
+        mismatches = []
+        checked = 0
+        for year in range(nepali_datetime.MINYEAR, nepali_datetime.MAXYEAR + 1):
+            for month in range(1, 13):
+                try:
+                    expected = nepali_datetime._days_in_month(year, month)  # noqa: SLF001
+                except (ValueError, KeyError, IndexError):  # noqa: S112
+                    # The oracle itself has gaps at the extremes; months it
+                    # cannot answer for are skipped rather than asserted on.
+                    continue
+                checked += 1
+                if bs.month_length(year, month) != expected:
+                    mismatches.append((year, month))
+        self.assertGreater(checked, 1500, "the sweep covered almost nothing")
+        self.assertEqual(mismatches, [], f"{len(mismatches)} month(s) disagree")
+
+    def test_the_last_month_of_the_last_year_still_works(self):
+        """The boundary the first attempt broke, pinned on its own."""
+        self.assertEqual(bs.month_length(bs.BS_MAX_YEAR, 12), 30)
+
+    def test_month_length_does_not_call_the_private_helper(self):
+        """The finding itself: no `_days_in_month` reference remains in the source."""
+        source = inspect.getsource(bs.month_length)
+        self.assertNotIn(
+            "_days_in_month(", source,
+            "month_length calls nepali_datetime._days_in_month again; a leading "
+            "underscore is the author saying the name may change without notice")
+
+    def test_out_of_range_is_still_refused_rather_than_guessed(self):
+        with self.assertRaises(UserError):
+            bs.month_length(bs.BS_MAX_YEAR + 1, 1)
+        with self.assertRaises(UserError):
+            bs.month_length(bs.BS_MIN_YEAR, 13)

@@ -47,10 +47,19 @@ __pycache__/
 # Local tooling
 #   .claude/settings.local.json holds per-machine tool permissions. It is
 #   personal configuration, not project code, so it stays untracked.
-#   If the team ever wants a SHARED Claude Code config, that belongs in
-#   .claude/settings.json (no .local) -- add a negation here at that point.
+#
+#   QA-3: the negation the note above promised is now here rather than pending.
+#   A shared config belongs in .claude/settings.json (no .local), and with a
+#   wholesale `.claude/` ignore the first person to write one would have found it
+#   silently untracked -- the failure being that nothing happens, which is the
+#   kind nobody notices.
+#
+#   Order matters and the directory rule cannot simply be negated: git will not
+#   re-include a file inside an excluded *directory*, so the directory is
+#   unexcluded and its contents excluded instead, leaving one file allowed.
 # ---------------------------------------------------------------------------
-.claude/
+.claude/*
+!.claude/settings.json
 
 # ---------------------------------------------------------------------------
 # Editors / OS

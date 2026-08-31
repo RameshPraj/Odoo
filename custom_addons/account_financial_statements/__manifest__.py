@@ -1,7 +1,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 {
     'name': 'Financial Statements (Balance Sheet & P&L)',
-    'version': '19.0.1.2.3',   # 1.1.0 = interactive drill-down and anomaly
+    'version': '19.0.1.2.4',   # 1.1.0 = interactive drill-down and anomaly
                               # panel on the three statements (FIN-2);
                               # 1.2.0 = unallocated prior-year earnings on the
                               # balance sheet (ACC-2);
@@ -35,4 +35,5 @@ Reachable at Accounting > Reporting > Balance Sheet / P&L.
     'author': 'local',
     'license': 'LGPL-3',
     'installable': True,
+    'application': False,
 }

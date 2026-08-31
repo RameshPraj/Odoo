@@ -174,8 +174,42 @@ def month_length(year, month):
         ))
     if not 1 <= month <= 12:
         raise UserError(_("%s is not a valid Bikram Sambat month (1-12).", month))
+    # Derived from public API, not `nepali_datetime._days_in_month` (COD-10).
+    #
+    # The private call worked, and the library is pinned
+    # (`nepali-datetime==1.0.8.5`), so this was never load-bearing risk. But a
+    # leading underscore is the author saying the name may change without notice,
+    # and a pin is a decision somebody eventually revisits.
+    #
+    # The length is found by asking which day numbers the library will accept:
+    # BS months run 29 to 32 days, and `date()` refuses an invalid one.
+    #
+    # The obvious derivation -- Gregorian of the 1st of this month subtracted
+    # from the 1st of the next -- was written first and is **wrong at the top of
+    # the range**. December of BS 2100 needs BS 2101-01-01, which the library
+    # refuses, so `month_length(2100, 12)` would have raised where it used to
+    # return 30. That year is in scope: BS_MAX_YEAR is 2100 and the docstring
+    # above notes the fiscal-year wizard reaches BS 2097 by default. The first
+    # verification missed it by sweeping MINYEAR+1..MAXYEAR-1, which excluded
+    # precisely the boundary that broke.
+    #
+    # This form has no boundary case, and was checked against the private
+    # function across the library's **entire** range: 1,512 months, zero
+    # mismatches, BS 2100-12 included.
     try:
-        return nepali_datetime._days_in_month(year, month)  # noqa: SLF001
+        for length in (32, 31, 30, 29):
+            # ValueError, not Exception: it is the library's answer to "is this a
+            # real day", verified as the type raised for an over-long day, an
+            # invalid month and an out-of-range year alike. Catching broadly here
+            # would swallow a genuine fault and return a wrong month length, which
+            # is exactly the silent-wrong-date failure this module exists to
+            # prevent.
+            try:
+                nepali_datetime.date(year, month, length)
+            except ValueError:  # noqa: S112 - the exception IS the signal
+                continue
+            return length
+        raise ValueError(f"no valid day count for BS {year}-{month}")
     except Exception as exc:
         raise UserError(_(
             "Could not determine the length of BS %(y)s-%(m)s. "

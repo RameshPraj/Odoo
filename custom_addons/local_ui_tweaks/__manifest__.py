@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'Local UI Tweaks',
-    'version': '19.0.1.0.0',
+    'version': '19.0.1.0.1',
     'category': 'Technical',
     'summary': 'Deliberate, documented deviations from stock Odoo menus and UI',
     'description': """
@@ -33,4 +33,5 @@ behaving in ways nobody chose.
     'author': 'local',
     'license': 'LGPL-3',
     'installable': True,
+    'application': False,
 }
