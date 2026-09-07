@@ -702,7 +702,9 @@ the widget today — but `supportedTypes` invites one.
 `Asia/Kathmandu`. **Effort S.**
 
 ## SAAS-7 · Cron enumerates all role-owned databases and ignores `dbfilter`
-**CONFIRMED** · SaaS · `odoo/service/server.py:99-100`; `odoo/service/db.py:449`
+**CONFIRMED — now asserted by a check, still unfixed (2026-08-31)** · SaaS · `odoo/service/server.py:99-100`; `odoo/service/db.py:449`
+
+**`tools/check_tenant_isolation.py` now reports this as a tracked GAP on every tenant provision**, quoting the coupling rather than describing it: `db_name` scopes cron *and* pins routing, so unsetting it to let `dbfilter` route necessarily turns cron loose. The check does not fail a run — the finding is unfixed by decision, not by oversight — but a provision can no longer happen without someone being told.
 
 `cron_database_list()` returns `config['db_name'] or list_dbs(True)`, and `list_dbs` selects
 every database owned by the connecting role. **`db_filter` is never applied.**
@@ -714,7 +716,9 @@ multi-tenancy opens routing *and* cron simultaneously. **Fix** Filter the cron l
 explicit allowlist. **Effort M.**
 
 ## SAAS-8 · `db_maxconn` is a global per-process pool, not per-database
-**CONFIRMED** · SaaS / PostgreSQL · `odoo/sql_db.py:816-832, 664-690`
+**CONFIRMED — now asserted by a check, still unfixed (2026-08-31)** · SaaS / PostgreSQL · `odoo/sql_db.py:816-832, 664-690`
+
+**Measured 2026-08-31 and worse than the finding's own framing:** `db_maxconn = 64` × 2 processes = **128 against PostgreSQL's `max_connections = 100`** — already over-subscribed with a single tenant, before any second one exists. So PgBouncer in session mode belongs with `workers > 0`, not at the "before ~50 tenants" threshold recorded below. Asserted as a tracked GAP by `tools/check_tenant_isolation.py`, which prints the arithmetic.
 
 `_Pool` is a module-level singleton sized `int(db_maxconn)`; connections are reusable only when
 the DSN (including dbname) matches, and at cap the pool evicts an idle connection of any database
