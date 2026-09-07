@@ -3,45 +3,112 @@
 Two corrections to stock Point of Sale, both reported from the live till and both
 diagnosed against the database before anything was changed.
 
-## 1. A cash sale can be invoiced without selecting a customer
+## 1. A walk-in cash sale is no longer stranded in invoice mode
 
-Stock Odoo already makes the customer optional for a plain cash sale.
-`isCustomerRequired` (`point_of_sale/static/src/app/models/pos_order.js:158-169`)
-demands one only when the order is **to be invoiced**, when a `split_transactions`
-payment method is used, or when a preset needs a name or an address. The reported
-case was the first: the order carried `to_invoice = True`, so the till refused to
-validate without a customer.
+Reported symptom, on an ordinary walk-in cash sale:
 
-**Business decision:** the customer is optional even when invoicing. The concern
-raised at the time — a Nepali VAT tax invoice normally names the buyer, and a PAN
-is required above the threshold — was overridden by the owner. Whether an unnamed
-buyer satisfies the IRD is **SME sign-off item 6** and remains open.
+> **Invalid Operation** — The 'Customer' field is required to validate the
+> invoice. You probably don't want to explain to your auditor that you invoiced
+> an invisible man :)
 
-### Why there is a Walk-in Customer setting
+That text is `account/models/account_move.py:5623`, raised while **posting** a
+sale document with no `partner_id`. "Invalid Operation" is only the generic
+dialog title Odoo gives any `UserError`
+(`web/static/src/core/errors/error_dialogs.js:37`). So the message is *server
+side*, and the order had already reached invoice creation — the till was not
+merely asking for a name.
 
-A *genuinely* partnerless invoice does not merely offend an auditor, it breaks.
-`_reconcile_invoice_payments` resolves the receivable account through
-`_find_accounting_partner(invoice.partner_id).property_account_receivable_id`
-(`point_of_sale/models/pos_order.py:1225`). With no partner that is an empty
-recordset, so nothing reconciles — **the invoice posts, looks correct, and leaves
-an open receivable on every cash sale.** Silently.
+**Two independent routes reach that message.** The first fix closed only one of
+them, which is why the report came back.
 
-So the customer is optional *at the till*, and the configured **Walk-in Customer**
-(Point of Sale ▸ Configuration ▸ Settings ▸ Payment) is written onto the order at
-invoice time. If none is configured the invoice is **refused**, with a message
-naming the setting — failing in front of the person who can fix it beats posting
-an invoice that cannot be paid.
+### Route A — at the till: `to_invoice` is set implicitly and never reset
 
-### What was deliberately not relaxed
+1. `setPartner()` calls `setToInvoice(true)` whenever the chosen partner
+   `is_company` (`pos_order.js:595-597`). **Picking a company customer silently
+   converts the sale into a formal invoice.** No setting is involved — there is
+   no `iface_invoicing` config flag in v19, and `to_invoice` is a plain Boolean
+   with no default (`pos_order.py:355`).
+2. Nothing ever turns it off. `setToInvoice(false)` appears **nowhere** in
+   `point_of_sale/static/src`; core only ever passes `true`.
+3. Closing the customer dialog without picking anyone reaches
+   `setPartnerToCurrentOrder(payload || false)` (`pos_store.js:2557`), so
+   `setPartner(false)` runs — `partner_id` is cleared and `to_invoice` is left
+   alone.
 
-* **Pay-later / Customer Account** methods still require a customer. An
-  on-credit sale with no named debtor leaves a receivable nobody can collect.
-* **Presets** needing a name (Takeout) or an address (Delivery) still require
-  one. A delivery with no address cannot be delivered.
+After (1) then (3) the order holds `to_invoice = true` with no partner, which is
+exactly the state `account_move.py:5623` refuses. The cashier never asked for an
+invoice and had no visible way to withdraw the request.
 
-Asserted clause by clause in `static/tests/customer_optional.test.js`, including
-the two that must still fire — the risk in deleting one condition from a getter is
-not that it stops working, it is that it relaxes something else too.
+This is a **code defect in core's front-end state management**, not a
+configuration problem. Nothing in `pos.config` causes it and no setting fixes it.
+
+**Fix:** `static/src/to_invoice_reset.js` adds the missing reset, and nothing
+else — when the partner is cleared, the flag that was set alongside it is
+cleared too.
+
+### Route B — the backend Invoice button
+
+Reported against `/odoo/pos-orders/25` (`Ramesh - 000003`:
+`state=done, to_invoice=false, partner_id=NULL`). **No JavaScript is involved in
+this path at all**, which is why fixing route A did not close the report.
+
+The **Invoice** button on the order form is offered whenever
+`state in ('paid', 'done')` and the order is not already invoiced —
+`invisible="state not in ['paid', 'done'] or account_move"`
+(`point_of_sale/views/pos_order_view.xml:10-11`). **Nothing about the partner.**
+`action_pos_order_invoice` (`pos_order.py:1166-1174`) then writes
+`to_invoice = True` and invoices with no check, so the refusal arrives from
+`account_move.py:5623`, four calls down, phrased as a problem with an invoice the
+reader cannot see — while they are looking at a point of sale order, and are not
+told that the remedy is to set Customer on the record in front of them.
+
+**Blocking is the correct outcome and is kept.** Pressing that button *is* an
+explicit invoice request, so a customer is mandatory. Only the timing and the
+wording change: `models/pos_order.py` refuses at the button, before `to_invoice`
+is written and before any `account.move` exists, with a message naming the field
+and offering the walk-in alternative.
+
+The guard is **strictly stricter** than core — every order it stops is one core
+would have stopped a moment later, so it cannot change an outcome core allowed.
+Ordering matters beyond phrasing too: core writes `to_invoice = True` *before*
+attempting the invoice, so a failed attempt is clean only because the
+transaction unwinds. It does today; refusing ahead of that write means
+correctness no longer rests on it.
+
+### What was deliberately left alone
+
+Core's rule that **an invoice requires a customer is untouched.** It is not the
+defect. All three enforcement points still stand:
+
+* `isCustomerRequired` (`pos_order.js:159-170`), which gates `canBeValidated()`
+  (`:719-721`) and disables the Validate button;
+* the "Please select the Customer" dialog in
+  `order_payment_validation.js:310-323`;
+* `account_move.py:5623` on the server, as the last line of defence.
+
+Pressing the **Invoice** toggle does not call `setPartner`, so a cashier who
+genuinely wants an invoice is still stopped until a customer is named. Pay-later
+/ Customer Account methods and presets needing a name or address still require
+one too.
+
+**No placeholder partner is ever substituted.** An invoice either names the real
+buyer or is not issued.
+
+### A note on the earlier version of this module
+
+Version `19.0.1.0.0` (commit `40eef74b`) did the opposite of the above: it
+patched the `isToInvoice()` clause out of `isCustomerRequired` and substituted a
+configured "Walk-in Customer" onto partnerless invoices. Both were **reverted**
+in `19.0.2.0.0` as contrary to requirement — anonymous customer invoices and
+invented buyers are each ruled out, and the real defect was the sticky flag all
+along. The removed pieces were the JS getter patch,
+`pos_order._prepare_invoice_vals`, the `pos.config.np_pos_default_partner_id`
+field and its settings view.
+
+`test_invoice_requires_customer.py` asserts the reverted behaviour deliberately —
+scenario 3 checks the refusal still fires, and `test_3b` checks no partner was
+substituted before it — so either coming back is a test failure rather than a
+discovery.
 
 ## 2. A session's Journal Items now include the reversal
 

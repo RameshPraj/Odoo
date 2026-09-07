@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!--
+        Do not offer Invoice on an order that cannot be invoiced.
+
+        Core shows the button whenever the order is paid or done and not already
+        invoiced (`point_of_sale/views/pos_order_view.xml:10-11`):
+
+            invisible="state not in ['paid', 'done'] or account_move"
+
+        Nothing about the partner. So every walk-in cash sale carries an Invoice
+        button whose only possible outcome is a refusal, because an invoice with
+        no named buyer is rejected by `account_move.py:5623` and, since this
+        module, at the button itself.
+
+        `not partner_id` is added to that condition. The rule is unchanged and
+        nothing new is permitted; an action that could only fail is simply no
+        longer presented.
+
+        The path to invoicing stays open and is now signposted rather than
+        guessed at: `partner_id` is only `readonly="account_move"`
+        (`pos_order_view.xml:59`), so Customer remains editable on a paid or done
+        order, and filling it in makes the button appear.
+
+        `models/pos_order.py` keeps the server-side refusal. This is the visible
+        half; that is the enforcing half, and it still covers callers that never
+        render this view at all, such as RPC and server actions.
+    -->
+    <record id="view_pos_pos_form_invoice_button" model="ir.ui.view">
+        <field name="name">pos.order.form.invoice.needs.customer</field>
+        <field name="model">pos.order</field>
+        <field name="inherit_id" ref="point_of_sale.view_pos_pos_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_pos_order_invoice']" position="attributes">
+                <attribute name="invisible">state not in ['paid', 'done'] or account_move or not partner_id</attribute>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

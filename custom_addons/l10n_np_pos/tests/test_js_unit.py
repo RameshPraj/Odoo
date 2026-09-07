@@ -23,7 +23,7 @@ JS_TESTS_DIR = os.path.join(MODULE_DIR, "static", "tests")
 
 #: Suite names, i.e. `static/tests/<name>.test.js` addressed as `@<module>/<name>`.
 SUITES = [
-    "customer_optional",
+    "to_invoice_reset",
 ]
 
 

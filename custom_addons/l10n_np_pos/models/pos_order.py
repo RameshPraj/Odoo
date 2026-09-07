@@ -1,43 +1,46 @@
 # -*- coding: utf-8 -*-
-"""Let a cash sale be invoiced without the cashier selecting a customer.
+"""Refuse the backend Invoice button early, and say what to do about it.
 
-Stock Odoo already makes the customer optional for a plain cash sale.
-`isCustomerRequired` (`point_of_sale/static/src/app/models/pos_order.js:158-169`)
-demands one only when the order is *to be invoiced*, when a
-`split_transactions` payment method is used, or when a preset needs a name or an
-address. The reported case was the first of those: the order carried
-`to_invoice = True`, so the till asked for a customer before it would validate.
+This is the **second** route to the reported message, and it involves no
+JavaScript at all. Reported against `/odoo/pos-orders/25` -- the backend order
+form, not the till.
 
-**Decision, taken by the business owner and recorded here rather than argued
-again:** the customer is optional even when invoicing. The concern raised at the
-time was that a Nepali VAT tax invoice normally names the buyer and requires a
-PAN above the threshold; that was overridden. Whether an unnamed buyer satisfies
-the IRD remains open under the SME sign-off register, and this docstring exists
-so the decision is traceable to a person rather than discovered later as a bug.
+`action_pos_order_invoice` (`pos_order.py:1166-1174`) writes `to_invoice = True`
+and calls `_generate_pos_order_invoice()` with no check on the partner. On a
+walk-in order the refusal therefore arrives from
+`account_move.py:5619-5624`, four calls deep, phrased as
 
-Why a fallback partner rather than no partner at all
----------------------------------------------------
-A genuinely partnerless invoice does not merely offend an auditor -- it breaks.
-Two places in core dereference the partner:
+    The 'Customer' field is required to validate the invoice.
+    You probably don't want to explain to your auditor that you invoiced an
+    invisible man :)
 
-* `_prepare_invoice_vals` does `self.partner_id.address_get(['invoice'])`
-  (`pos_order.py:934`);
-* `_reconcile_invoice_payments` resolves the receivable account through
-  `_find_accounting_partner(invoice.partner_id).property_account_receivable_id`
-  (`pos_order.py:1225`). With no partner that is an empty recordset, so
-  `receivable_account` is empty, **the reconciliation quietly does nothing**, and
-  every cash sale leaves a posted-but-unpaid invoice with an open receivable.
+and titled "Invalid Operation", which is only the generic label Odoo gives any
+`UserError` (`web/static/src/core/errors/error_dialogs.js:37`). The reader is
+looking at a *point of sale order*, is told about an *invoice* they cannot see,
+and is not told that the fix is to set Customer on the record in front of them.
 
-That is a worse defect than the one being fixed, and a silent one. So the
-customer is optional *at the till* while the invoice still resolves an accounting
-partner: the configured walk-in contact is written onto the order at invoice
-time. Writing it to the order rather than only into the invoice vals is
-deliberate -- the order should say who it was billed to, and an invoice whose
-partner disagrees with its order is a reconciliation puzzle for somebody later.
+The button offers the dead end unconditionally: its only condition is
+`state not in ['paid', 'done'] or account_move`
+(`point_of_sale/views/pos_order_view.xml:10-11`), which says nothing about the
+partner.
 
-If no walk-in contact is configured, the invoice is **refused** with a message
-naming the setting. Failing at the till, in front of the person who can fix it,
-beats posting an invoice that cannot be paid.
+Blocking is the correct outcome and is deliberately kept
+------------------------------------------------------
+Pressing that button **is** an explicit request for an invoice, so a customer is
+mandatory and the order must be refused. Core's validation is not the defect and
+nothing here relaxes it: no partner is invented, no placeholder is substituted,
+and an invoice is still never posted without a named buyer.
+
+What changes is only *when* and *how* the refusal happens. The guard runs before
+`to_invoice` is written and before any `account.move` exists, so it cannot alter
+an outcome core would have allowed -- every order it stops is one core would
+have stopped a moment later. It is strictly stricter, and only the message and
+its timing differ.
+
+Ordering also matters for a reason beyond phrasing. Core writes `to_invoice =
+True` *before* attempting the invoice, so the failed attempt depends on the
+transaction rolling back to leave the flag clean. It does today. Refusing before
+the write means correctness does not rest on that.
 """
 from odoo import _, models
 from odoo.exceptions import UserError
@@ -46,34 +49,26 @@ from odoo.exceptions import UserError
 class PosOrder(models.Model):
     _inherit = 'pos.order'
 
-    def _prepare_invoice_vals(self):
-        """Substitute the walk-in customer before core reads `partner_id`.
+    def action_pos_order_invoice(self):
+        """Stop a partnerless order at the button, naming the field to fill.
 
-        This is the single funnel: `_generate_pos_order_invoice` calls it exactly
-        once (`pos_order.py:1197`), and every later partner dereference -- the
-        payment term, `address_get`, and the receivable resolution during
-        reconciliation -- happens downstream of it.
+        Guarded on `not account_move` to match the button's own condition: an
+        order that is already invoiced takes core's early-exit branch and never
+        reaches the validation, so refusing it here would break re-opening an
+        existing invoice.
         """
-        missing = self.filtered(lambda order: not order.partner_id)
-        if missing:
-            # Grouped by config: a multi-shop database can legitimately have a
-            # different walk-in contact per till, and one refusal naming the
-            # wrong shop would send somebody to the wrong settings page.
-            for config, orders in missing.grouped('config_id').items():
-                fallback = config.np_pos_default_partner_id
-                if not fallback:
-                    raise UserError(_(
-                        "%(orders)s must be invoiced, but no customer was "
-                        "selected and the %(config)s point of sale has no "
-                        "Walk-in Customer configured.\n\n"
-                        "Set one under Point of Sale > Configuration > "
-                        "Settings > Walk-in Customer, or select a customer on "
-                        "the order.\n\n"
-                        "An invoice with no customer cannot be reconciled "
-                        "against its payment, so it would post as unpaid and "
-                        "leave the receivable open.",
-                        orders=", ".join(orders.mapped('name')),
-                        config=config.display_name,
-                    ))
-                orders.write({'partner_id': fallback.id})
-        return super()._prepare_invoice_vals()
+        for order in self:
+            if order.account_move or order.partner_id:
+                continue
+            raise UserError(_(
+                "%(order)s has no customer, so it cannot be invoiced.\n\n"
+                "Set Customer on this order and press Invoice again -- a tax "
+                "invoice is a legal document naming the buyer, and it needs a "
+                "partner to carry the receivable it settles.\n\n"
+                "If this was an ordinary walk-in sale, no invoice is needed. "
+                "The sale is already recorded and paid: its revenue, tax and "
+                "stock are posted through the session's closing entry, and the "
+                "customer has the point of sale receipt.",
+                order=order.display_name,
+            ))
+        return super().action_pos_order_invoice()
