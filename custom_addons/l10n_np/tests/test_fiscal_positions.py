@@ -9,8 +9,6 @@ what was wrong: the position was applied to the invoice correctly and then subst
 nothing. A test asserting "the Export position exists and lists VAT 0%" would have
 passed throughout the defect.
 """
-import unittest
-
 from odoo import Command
 from odoo.tests import TransactionCase, tagged
 
@@ -21,21 +19,18 @@ class TestExportZeroRating(TransactionCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        cls.company = cls.env.company
-        if cls.company.chart_template != "np":
-            # SkipTest directly: skipTest() is an instance method and raises rather
-            # than returns, so `raise cls.skipTest(...)` is wrong in setUpClass.
-            # DELIBERATE SKIP, kept after the TST-3 sweep. Every other
-            # conditional skip in this suite was replaced with a fixture that
-            # cannot be absent; this one stays because the assertion it guards is
-            # *meaningless* off the Nepali chart rather than merely inconvenient.
-            # There is no NP fiscal position to substitute anything, so a created
-            # fixture would test a fabrication. Adopting the chart inside the test
-            # is the alternative and it is slow enough to matter.
-            #
-            # It is now visible either way: `run-odoo test` reports the skip count
-            # and names every skipped test, and `--fail-on-skip` makes CI refuse it.
-            raise unittest.SkipTest("company is not on the Nepali chart")
+        nepal = cls.env.ref("base.np")
+        cls.company = cls.env["res.company"].create({
+            "name": "Nepal Fiscal Position Test",
+            "country_id": nepal.id,
+        })
+        cls.env["account.chart.template"].try_loading(
+            "np", company=cls.company, install_demo=False,
+        )
+        cls.env = cls.env(context={
+            **cls.env.context,
+            "allowed_company_ids": [cls.company.id],
+        })
         cls.vat13 = cls.env["account.tax"].search([
             ("company_id", "=", cls.company.id),
             ("amount", "=", 13.0), ("type_tax_use", "=", "sale"),

@@ -9,6 +9,8 @@ classic bug in this kind of report: Odoo stores debit-positive balances, so
 liabilities, equity and income must be flipped for presentation, and the
 current-period result must be added to equity or the sheet will not tie.
 """
+from datetime import timedelta
+
 from odoo import Command
 from odoo.tests import HttpCase, TransactionCase, tagged
 from odoo.tools.safe_eval import safe_eval
@@ -134,7 +136,10 @@ class TestFinancialStatements(TransactionCase):
         audit finding TST-2.
         """
         before = self._balance_sheet()
-        self._post_expense(50000.0, date="2026-06-01")
+        prior_date = self.company.compute_fiscalyear_dates(
+            self._wizard().date_to
+        )["date_from"] - timedelta(days=1)
+        self._post_expense(50000.0, date=prior_date)
         after = self._balance_sheet()
 
         self.assertAlmostEqual(
@@ -737,9 +742,45 @@ class TestPrintPath(TransactionCase):
     pdf one up by that name.
     """
 
+    def _seed_balance_sheet_lines(self):
+        """Give the render fixture a real expandable block and line.
+
+        A bare database has no chart of accounts, so merely disabling
+        ``hide_zero`` cannot produce the rows that carry the interactive
+        attributes.  A balanced draft move is sufficient here because this
+        print-path test explicitly includes draft entries.
+        """
+        account_model = self.env["account.account"]
+        company = self.env.company
+        asset = account_model.create({
+            "code": "TSTPRINTA", "name": "Print fixture asset",
+            "account_type": "asset_current",
+            "company_ids": [Command.set([company.id])],
+        })
+        liability = account_model.create({
+            "code": "TSTPRINTL", "name": "Print fixture liability",
+            "account_type": "liability_current",
+            "company_ids": [Command.set([company.id])],
+        })
+        journal = self.env["account.journal"].search([
+            ("company_id", "=", company.id), ("type", "=", "general"),
+        ], limit=1) or self.env["account.journal"].create({
+            "name": "Print fixture journal", "code": "TPJ",
+            "type": "general", "company_id": company.id,
+        })
+        self.env["account.move"].create({
+            "move_type": "entry", "date": "2026-08-01", "journal_id": journal.id,
+            "line_ids": [
+                Command.create({"name": "Print fixture", "account_id": asset.id, "debit": 1}),
+                Command.create({"name": "Print fixture", "account_id": liability.id, "credit": 1}),
+            ],
+        })
+
     def _wizard(self):
+        self._seed_balance_sheet_lines()
         return self.env["account.financial.statements.wizard"].create({
             "date_from": "2026-07-17", "date_to": "2026-08-31",
+            "target_move": "all", "hide_zero": False,
         })
 
     def test_each_statement_has_both_an_html_and_a_pdf_action(self):

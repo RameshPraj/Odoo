@@ -31,6 +31,8 @@ described.
 from odoo import Command
 from odoo.tests import TransactionCase, tagged
 
+from .common import create_pos_config
+
 
 @tagged("-at_install", "post_install")
 class TestSessionJournalItems(TransactionCase):
@@ -58,8 +60,7 @@ class TestSessionJournalItems(TransactionCase):
         # survive into the next. The first version of this fixture used the live
         # config and both assertions came out a constant 90.00 (three unrelated
         # sales) too high. Isolating the config makes the figures attributable.
-        template = self.env["pos.config"].search([], limit=1)
-        self.assertTrue(template, "the database has no pos.config to copy")
+        template = create_pos_config(self.env, "PoS JI Test Template")
         # A dedicated cash journal and payment method too, not the live ones.
         #
         # `payment_method_ids` is copy=False, so it does not come across; and a

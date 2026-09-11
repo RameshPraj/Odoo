@@ -2144,6 +2144,11 @@ def _find_executable():
             '%ProgramFiles%\\Google\\Chrome\\Application\\chrome.exe',
             '%ProgramFiles(x86)%\\Google\\Chrome\\Application\\chrome.exe',
             '%LocalAppData%\\Google\\Chrome\\Application\\chrome.exe',
+            # Edge is Chromium-based and supports the Chrome DevTools protocol
+            # used by the browser test harness.  It is present by default on
+            # supported Windows installations, so use it when Chrome is absent.
+            '%ProgramFiles%\\Microsoft\\Edge\\Application\\msedge.exe',
+            '%ProgramFiles(x86)%\\Microsoft\\Edge\\Application\\msedge.exe',
         ]
         for bin_ in bins:
             bin_ = os.path.expandvars(bin_)

@@ -42,6 +42,8 @@ from odoo import Command
 from odoo.exceptions import UserError
 from odoo.tests import TransactionCase, tagged
 
+from .common import create_pos_config
+
 
 @tagged("-at_install", "post_install")
 class TestInvoiceRequiresCustomer(TransactionCase):
@@ -59,8 +61,7 @@ class TestInvoiceRequiresCustomer(TransactionCase):
         # (`pos.payment.method` raises "This cash payment method is already
         # used in another Point of Sale"). So the journal and the method are
         # built here, not borrowed from the live configuration.
-        template = cls.env["pos.config"].search([], limit=1)
-        assert template, "the database has no pos.config to copy"
+        template = create_pos_config(cls.env, "PoS Invoice Test Template")
         company = template.company_id
         journal = cls.env["account.journal"].create({
             "name": "PoS Invoice Test Cash", "code": "ITCA", "type": "cash",

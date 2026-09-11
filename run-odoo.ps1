@@ -187,6 +187,14 @@ $RuntimeDir = Join-Path $Root '.runtime'
 $PidFile   = Get-Env 'ODOO_PIDFILE' (Join-Path $RuntimeDir 'odoo.pid')
 $LockDir   = Join-Path $RuntimeDir 'start.lock'
 
+# Keep an optional project-local Node runtime self-contained.  This makes the
+# JavaScript test tooling available to every command launched by this runner
+# without requiring a machine-wide PATH change or a new shell session.
+$LocalNodeDir = Join-Path $RuntimeDir 'node'
+if (Test-Path -LiteralPath (Join-Path $LocalNodeDir 'node.exe')) {
+    $env:Path = "$LocalNodeDir;$env:Path"
+}
+
 # Note on stderr: a detached child cannot both have its own console (needed for
 # a graceful Ctrl-C stop) and have its streams redirected -- redirection forces
 # UseShellExecute=false, which shares the caller's console. Odoo configures

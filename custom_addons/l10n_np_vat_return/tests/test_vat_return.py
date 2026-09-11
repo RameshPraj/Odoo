@@ -140,14 +140,16 @@ class TestVatReturn(TransactionCase):
         risk is the live database drifting from it, because Odoo instantiates chart
         data when a company *adopts* the chart, not on `-u`.
         """
-        if self.company.chart_template != "np":
-            # DELIBERATE SKIP — see the equivalent note in
-            # l10n_np/tests/test_fiscal_positions.py. This asserts a property of
-            # the shipped NP chart's taxes; off that chart there is nothing to
-            # assert about. Reported by the skip counter rather than silent.
-            self.skipTest("company is not on the Nepali chart")
+        nepal = self.env.ref("base.np")
+        company = self.env["res.company"].create({
+            "name": "Nepal VAT Chart Test",
+            "country_id": nepal.id,
+        })
+        self.env["account.chart.template"].try_loading(
+            "np", company=company, install_demo=False,
+        )
         taxes = self.env["account.tax"].search([
-            ("company_id", "=", self.company.id),
+            ("company_id", "=", company.id),
             ("amount", "=", 13.0),
             ("amount_type", "=", "percent"),
         ])
