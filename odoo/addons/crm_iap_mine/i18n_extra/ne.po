@@ -1,0 +1,186 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0 (crm_iap_mine)\n"
+"Report-Msgid-Bugs-To: \n"
+"Language-Team: Nepali\n"
+"Language: ne\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: crm_iap_mine
+#: model_terms:ir.ui.view,arch_db:crm_iap_mine.crm_iap_lead_mining_request_view_form
+msgid "Cancel"
+msgstr "रद्द गर्नुहोस्"
+
+#. module: crm_iap_mine
+#: model:ir.model.fields.selection,name:crm_iap_mine.selection__crm_iap_lead_mining_request__search_type__companies
+msgid "Companies"
+msgstr "कम्पनीहरू"
+
+#. module: crm_iap_mine
+#: model:ir.model.fields,field_description:crm_iap_mine.field_crm_iap_lead_mining_request__country_ids
+msgid "Countries"
+msgstr "देशहरू"
+
+#. module: crm_iap_mine
+#: model:ir.model.fields,field_description:crm_iap_mine.field_crm_iap_lead_helpers__create_uid
+#: model:ir.model.fields,field_description:crm_iap_mine.field_crm_iap_lead_industry__create_uid
+#: model:ir.model.fields,field_description:crm_iap_mine.field_crm_iap_lead_mining_request__create_uid
+#: model:ir.model.fields,field_description:crm_iap_mine.field_crm_iap_lead_role__create_uid
+#: model:ir.model.fields,field_description:crm_iap_mine.field_crm_iap_lead_seniority__create_uid
+msgid "Created by"
+msgstr "सिर्जना गर्ने"
+
+#. module: crm_iap_mine
+#: model:ir.model.fields,field_description:crm_iap_mine.field_crm_iap_lead_helpers__create_date
+#: model:ir.model.fields,field_description:crm_iap_mine.field_crm_iap_lead_industry__create_date
+#: model:ir.model.fields,field_description:crm_iap_mine.field_crm_iap_lead_mining_request__create_date
+#: model:ir.model.fields,field_description:crm_iap_mine.field_crm_iap_lead_role__create_date
+#: model:ir.model.fields,field_description:crm_iap_mine.field_crm_iap_lead_seniority__create_date
+msgid "Created on"
+msgstr "सिर्जना मिति"
+
+#. module: crm_iap_mine
+#: model:ir.model.fields,field_description:crm_iap_mine.field_crm_iap_lead_helpers__display_name
+#: model:ir.model.fields,field_description:crm_iap_mine.field_crm_iap_lead_industry__display_name
+#: model:ir.model.fields,field_description:crm_iap_mine.field_crm_iap_lead_mining_request__display_name
+#: model:ir.model.fields,field_description:crm_iap_mine.field_crm_iap_lead_role__display_name
+#: model:ir.model.fields,field_description:crm_iap_mine.field_crm_iap_lead_seniority__display_name
+#: model:ir.model.fields,field_description:crm_iap_mine.field_crm_lead__display_name
+msgid "Display Name"
+msgstr "प्रदर्शन नाम"
+
+#. module: crm_iap_mine
+#: model:ir.model.fields.selection,name:crm_iap_mine.selection__crm_iap_lead_mining_request__state__done
+#: model_terms:ir.ui.view,arch_db:crm_iap_mine.crm_iap_lead_mining_request_view_search
+msgid "Done"
+msgstr "सम्पन्न"
+
+#. module: crm_iap_mine
+#: model:ir.model.fields.selection,name:crm_iap_mine.selection__crm_iap_lead_mining_request__state__draft
+#: model_terms:ir.ui.view,arch_db:crm_iap_mine.crm_iap_lead_mining_request_view_search
+msgid "Draft"
+msgstr "मस्यौदा"
+
+#. module: crm_iap_mine
+#: model_terms:ir.ui.view,arch_db:crm_iap_mine.enrich_company
+msgid "Email"
+msgstr "इमेल"
+
+#. module: crm_iap_mine
+#: model:ir.model.fields.selection,name:crm_iap_mine.selection__crm_iap_lead_mining_request__state__error
+#: model_terms:ir.ui.view,arch_db:crm_iap_mine.crm_iap_lead_mining_request_view_search
+msgid "Error"
+msgstr "त्रुटि"
+
+#. module: crm_iap_mine
+#: model:ir.model.fields,field_description:crm_iap_mine.field_crm_iap_lead_helpers__id
+#: model:ir.model.fields,field_description:crm_iap_mine.field_crm_iap_lead_industry__id
+#: model:ir.model.fields,field_description:crm_iap_mine.field_crm_iap_lead_mining_request__id
+#: model:ir.model.fields,field_description:crm_iap_mine.field_crm_iap_lead_role__id
+#: model:ir.model.fields,field_description:crm_iap_mine.field_crm_iap_lead_seniority__id
+#: model:ir.model.fields,field_description:crm_iap_mine.field_crm_lead__id
+msgid "ID"
+msgstr "आईडी"
+
+#. module: crm_iap_mine
+#: model:ir.model.fields,field_description:crm_iap_mine.field_crm_iap_lead_industry__name
+msgid "Industry"
+msgstr "उद्योग"
+
+#. module: crm_iap_mine
+#: model:ir.model.fields,field_description:crm_iap_mine.field_crm_iap_lead_helpers__write_uid
+#: model:ir.model.fields,field_description:crm_iap_mine.field_crm_iap_lead_industry__write_uid
+#: model:ir.model.fields,field_description:crm_iap_mine.field_crm_iap_lead_mining_request__write_uid
+#: model:ir.model.fields,field_description:crm_iap_mine.field_crm_iap_lead_role__write_uid
+#: model:ir.model.fields,field_description:crm_iap_mine.field_crm_iap_lead_seniority__write_uid
+msgid "Last Updated by"
+msgstr "अन्तिम अद्यावधिक गर्ने"
+
+#. module: crm_iap_mine
+#: model:ir.model.fields,field_description:crm_iap_mine.field_crm_iap_lead_helpers__write_date
+#: model:ir.model.fields,field_description:crm_iap_mine.field_crm_iap_lead_industry__write_date
+#: model:ir.model.fields,field_description:crm_iap_mine.field_crm_iap_lead_mining_request__write_date
+#: model:ir.model.fields,field_description:crm_iap_mine.field_crm_iap_lead_role__write_date
+#: model:ir.model.fields,field_description:crm_iap_mine.field_crm_iap_lead_seniority__write_date
+msgid "Last Updated on"
+msgstr "अन्तिम अद्यावधिक मिति"
+
+#. module: crm_iap_mine
+#: model:ir.model.fields,field_description:crm_iap_mine.field_crm_iap_lead_seniority__name
+#: model_terms:ir.ui.view,arch_db:crm_iap_mine.enrich_company
+msgid "Name"
+msgstr "नाम"
+
+#. module: crm_iap_mine
+#. odoo-python
+#: code:addons/crm_iap_mine/models/crm_iap_lead_mining_request.py:0
+msgid "New"
+msgstr "नयाँ"
+
+#. module: crm_iap_mine
+#: model:ir.model.fields.selection,name:crm_iap_mine.selection__crm_iap_lead_mining_request__lead_type__opportunity
+#: model_terms:ir.ui.view,arch_db:crm_iap_mine.crm_iap_lead_mining_request_view_search
+msgid "Opportunities"
+msgstr "अवसरहरू"
+
+#. module: crm_iap_mine
+#: model_terms:ir.ui.view,arch_db:crm_iap_mine.enrich_company
+msgid "Phone"
+msgstr "फोन"
+
+#. module: crm_iap_mine
+#: model:crm.iap.lead.role,name:crm_iap_mine.crm_iap_mine_role_17
+msgid "Product"
+msgstr "उत्पादन"
+
+#. module: crm_iap_mine
+#: model_terms:ir.ui.view,arch_db:crm_iap_mine.crm_iap_lead_mining_request_view_form
+msgid "Retry"
+msgstr "पुनः प्रयास गर्नुहोस्"
+
+#. module: crm_iap_mine
+#: model:ir.model.fields,field_description:crm_iap_mine.field_crm_iap_lead_mining_request__team_id
+#: model_terms:ir.ui.view,arch_db:crm_iap_mine.crm_iap_lead_mining_request_view_search
+msgid "Sales Team"
+msgstr "बिक्री टोली"
+
+#. module: crm_iap_mine
+#: model:ir.model.fields,field_description:crm_iap_mine.field_crm_iap_lead_mining_request__user_id
+#: model_terms:ir.ui.view,arch_db:crm_iap_mine.crm_iap_lead_mining_request_view_search
+msgid "Salesperson"
+msgstr "बिक्रेता"
+
+#. module: crm_iap_mine
+#: model:ir.model.fields,field_description:crm_iap_mine.field_crm_iap_lead_industry__sequence
+msgid "Sequence"
+msgstr "क्रम"
+
+#. module: crm_iap_mine
+#: model:ir.model.fields,field_description:crm_iap_mine.field_crm_iap_lead_mining_request__company_size_min
+msgid "Size"
+msgstr "आकार"
+
+#. module: crm_iap_mine
+#: model:ir.model.fields,field_description:crm_iap_mine.field_crm_iap_lead_mining_request__state
+msgid "Status"
+msgstr "स्थिति"
+
+#. module: crm_iap_mine
+#: model:ir.model.fields,field_description:crm_iap_mine.field_crm_iap_lead_mining_request__tag_ids
+msgid "Tags"
+msgstr "ट्यागहरू"
+
+#. module: crm_iap_mine
+#: model:ir.model.fields,field_description:crm_iap_mine.field_crm_iap_lead_mining_request__search_type
+msgid "Target"
+msgstr "लक्ष्य"
+
+#. module: crm_iap_mine
+#: model:ir.model.fields,field_description:crm_iap_mine.field_crm_iap_lead_mining_request__lead_type
+#: model_terms:ir.ui.view,arch_db:crm_iap_mine.crm_iap_lead_mining_request_view_search
+msgid "Type"
+msgstr "प्रकार"

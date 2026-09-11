@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_l10n_np_bank_matching_form" model="ir.ui.view">
+        <field name="name">l10n_np.bank.matching.form</field>
+        <field name="model">l10n_np.bank.matching</field>
+        <field name="arch" type="xml">
+            <form string="Match to Bank">
+                <field name="available_statement_line_ids" invisible="1"/>
+                <field name="available_statement_line_count" invisible="1"/>
+                <field name="currency_id" invisible="1"/>
+                <field name="company_id" invisible="1"/>
+                <group>
+                    <group string="Payment">
+                        <field name="payment_id" options="{'no_create': True}"
+                               required="1"/>
+                        <field name="partner_id" readonly="1"/>
+                        <field name="amount" readonly="1"/>
+                        <field name="outstanding_account_id" readonly="1"/>
+                        <field name="journal_id" readonly="1"/>
+                    </group>
+                    <group string="Bank">
+                        <field name="mode" widget="radio"/>
+                        <field name="statement_line_id"
+                               invisible="mode != 'existing'"
+                               required="mode == 'existing'"
+                               domain="[('id', 'in', available_statement_line_ids)]"
+                               options="{'no_create': True}"/>
+                        <field name="date" invisible="mode != 'create'"
+                               required="mode == 'create'"/>
+                        <field name="payment_ref" invisible="mode != 'create'"/>
+                    </group>
+                </group>
+                <div class="alert alert-info" role="alert"
+                     invisible="mode != 'existing' or available_statement_line_count">
+                    No bank transaction on this journal offsets this payment, so there
+                    is nothing to match against yet. Either enter the statement, or
+                    choose <b>Record the bank transaction now</b>.
+                </div>
+                <div class="alert alert-warning" role="alert"
+                     invisible="mode != 'create'">
+                    This records a bank transaction that is not on an imported
+                    statement, which asserts that the bank really did move this money.
+                    Enter the date and label the bank shows. If the statement is
+                    imported later, this transaction will already be there and should
+                    not be entered twice.
+                </div>
+                <footer>
+                    <button name="action_match" string="Match"
+                            type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+</odoo>

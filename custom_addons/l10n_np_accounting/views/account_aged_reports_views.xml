@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- OCA ships one combined "Aged Partner Balance" wizard whose scope is set
+         by two booleans. Enterprise presents receivables and payables as two
+         separate reports, so give each its own action that pre-ticks the right
+         box. The wizard itself is untouched; the booleans stay visible and
+         editable on the form. -->
+
+    <record id="action_aged_receivable" model="ir.actions.act_window">
+        <field name="name">Aged Receivable</field>
+        <field name="res_model">aged.partner.balance.report.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="account_financial_report.aged_partner_balance_wizard"/>
+        <field name="target">new</field>
+        <field name="context">{'default_receivable_accounts_only': True, 'default_payable_accounts_only': False}</field>
+    </record>
+
+    <record id="action_aged_payable" model="ir.actions.act_window">
+        <field name="name">Aged Payable</field>
+        <field name="res_model">aged.partner.balance.report.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="account_financial_report.aged_partner_balance_wizard"/>
+        <field name="target">new</field>
+        <field name="context">{'default_receivable_accounts_only': False, 'default_payable_accounts_only': True}</field>
+    </record>
+
+</odoo>

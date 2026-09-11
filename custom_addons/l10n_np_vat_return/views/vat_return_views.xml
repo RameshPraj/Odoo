@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ===================== FORM VERSIONS ===================== -->
+    <record id="view_vat_return_form_list" model="ir.ui.view">
+        <field name="name">l10n_np.vat.return.form.list</field>
+        <field name="model">l10n_np.vat.return.form</field>
+        <field name="arch" type="xml">
+            <list string="VAT Return Forms">
+                <field name="name"/>
+                <field name="date_from"/>
+                <field name="date_to"/>
+                <field name="company_id" column_invisible="True"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_vat_return_form_form" model="ir.ui.view">
+        <field name="name">l10n_np.vat.return.form.form</field>
+        <field name="model">l10n_np.vat.return.form</field>
+        <field name="arch" type="xml">
+            <form string="VAT Return Form">
+                <div class="alert alert-warning" role="alert">
+                    This is the statutory IRD form layout. It is <b>not</b> shipped with the
+                    software because the IRD defines it. Add one version per revision of the
+                    form and set the dates it applies to, so returns already filed keep
+                    rendering against the version in force at the time.
+                </div>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                        <group>
+                            <field name="date_from"/>
+                            <field name="date_to"/>
+                            <field name="active" widget="boolean_toggle"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Boxes">
+                            <field name="box_ids">
+                                <list editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="code"/>
+                                    <field name="label_en"/>
+                                    <field name="label_ne"/>
+                                    <field name="box_type"/>
+                                    <field name="tag_ids" widget="many2many_tags"
+                                           column_invisible="False"/>
+                                    <field name="formula"/>
+                                    <field name="sign"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Source">
+                            <field name="note"
+                                   placeholder="IRD circular or form reference this layout came from"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_vat_return_form" model="ir.actions.act_window">
+        <field name="name">VAT Return Forms</field>
+        <field name="res_model">l10n_np.vat.return.form</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Define the IRD VAT return form</p>
+            <p>
+                No form is configured. Ask your accountant for the current IRD VAT
+                return, then add one box per line on the form and map each to the tax
+                tags that feed it.
+            </p>
+        </field>
+    </record>
+
+    <!-- ===================== RETURNS ===================== -->
+    <record id="view_vat_return_list" model="ir.ui.view">
+        <field name="name">l10n_np.vat.return.list</field>
+        <field name="model">l10n_np.vat.return</field>
+        <field name="arch" type="xml">
+            <list string="VAT Returns">
+                <field name="name"/>
+                <field name="date_from"/>
+                <field name="date_to"/>
+                <field name="form_id"/>
+                <field name="state" widget="badge"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_vat_return_form_view" model="ir.ui.view">
+        <field name="name">l10n_np.vat.return.form</field>
+        <field name="model">l10n_np.vat.return</field>
+        <field name="arch" type="xml">
+            <form string="VAT Return">
+                <header>
+                    <button name="action_compute" string="Compute" type="object"
+                            class="btn-primary" invisible="state == 'filed'"/>
+                    <button name="action_file" string="Mark Filed" type="object"
+                            invisible="state != 'computed'"/>
+                    <button name="action_draft" string="Reset to Draft" type="object"
+                            invisible="state == 'draft'"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_title"><h1><field name="name" placeholder="e.g. VAT 2083-04"/></h1></div>
+                    <group>
+                        <group>
+                            <field name="date_from"/>
+                            <field name="date_to"/>
+                            <field name="target_move" widget="radio"/>
+                        </group>
+                        <group>
+                            <field name="form_id"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                    </group>
+                    <field name="line_ids">
+                        <list>
+                            <field name="code"/>
+                            <field name="label_en"/>
+                            <field name="label_ne" optional="show"/>
+                            <field name="amount"/>
+                            <field name="currency_id" column_invisible="True"/>
+                        </list>
+                    </field>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_vat_return" model="ir.actions.act_window">
+        <field name="name">VAT Returns</field>
+        <field name="res_model">l10n_np.vat.return</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="menu_vat_return"
+              name="VAT Returns"
+              parent="account.menu_finance_reports"
+              action="action_vat_return"
+              groups="account.group_account_readonly"
+              sequence="62"/>
+
+    <menuitem id="menu_vat_return_form"
+              name="VAT Return Forms"
+              parent="account.account_account_menu"
+              action="action_vat_return_form"
+              groups="account.group_account_manager"
+              sequence="81"/>
+
+</odoo>

@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!--
+        Community ships no view of any kind for account.bank.statement.line.
+        Grep every *.xml under odoo/addons for the model name and there are zero
+        hits, yet three core actions open the model anyway:
+
+            account_payment.py:1200   button_open_statement_lines
+            company.py:518            _get_unreconciled_statement_lines_redirect_action
+            account_move.py:5958      action_open_business_doc
+
+        All three therefore land on ORM auto-generated views today. Defining a list,
+        search and form here fixes those three screens as well as serving the
+        matching button below.
+    -->
+    <record id="view_bank_statement_line_list" model="ir.ui.view">
+        <field name="name">account.bank.statement.line.list</field>
+        <field name="model">account.bank.statement.line</field>
+        <field name="arch" type="xml">
+            <list string="Bank Transactions"
+                  decoration-warning="not is_reconciled"
+                  decoration-muted="state != 'posted'"
+                  create="false" edit="false">
+                <header>
+                    <button name="action_l10n_np_match_payment" type="object"
+                            string="Match Outstanding Payment" class="btn-primary"
+                            groups="account.group_account_user"/>
+                    <button name="action_unmatch" type="object"
+                            string="Unmatch" class="btn-secondary"
+                            groups="account.group_account_user"/>
+                </header>
+                <field name="date"/>
+                <field name="payment_ref"/>
+                <field name="partner_id"/>
+                <field name="journal_id"/>
+                <field name="statement_id" optional="show"/>
+                <field name="amount" sum="Total"/>
+                <field name="amount_residual" optional="show"/>
+                <field name="is_reconciled" string="Resolved"/>
+                <field name="currency_id" column_invisible="True"/>
+                <field name="company_id" column_invisible="True"
+                       groups="base.group_multi_company"/>
+                <field name="state" column_invisible="True"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_bank_statement_line_search" model="ir.ui.view">
+        <field name="name">account.bank.statement.line.search</field>
+        <field name="model">account.bank.statement.line</field>
+        <field name="arch" type="xml">
+            <search string="Search Bank Transactions">
+                <field name="payment_ref" string="Label"/>
+                <field name="partner_id"/>
+                <field name="statement_id"/>
+                <field name="journal_id"/>
+                <filter name="unresolved" string="Not Resolved"
+                        domain="[('is_reconciled', '=', False)]"/>
+                <filter name="resolved" string="Resolved"
+                        domain="[('is_reconciled', '=', True)]"/>
+                <separator/>
+                <filter name="orphan" string="Not on a Statement"
+                        domain="[('statement_id', '=', False)]"/>
+                <separator/>
+                <filter name="filter_date" date="date"/>
+                <group>
+                    <filter string="Journal" name="group_journal"
+                            context="{'group_by': 'journal_id'}"/>
+                    <filter string="Statement" name="group_statement"
+                            context="{'group_by': 'statement_id'}"/>
+                    <filter string="Date" name="group_date"
+                            context="{'group_by': 'date'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!--
+        Readonly by design. A statement line's amount, label and partner are all in
+        the six-field set that rebuilds the journal entry
+        (account_bank_statement_line.py:800-804), and on a matched line that rebuild
+        silently destroys the match. The guard in
+        models/account_bank_statement_line.py refuses those writes, but a form that
+        invites them and then refuses is a worse screen than one that does not
+        invite them. Transactions are created by import or by the matching wizard.
+    -->
+    <record id="view_bank_statement_line_form" model="ir.ui.view">
+        <field name="name">account.bank.statement.line.form</field>
+        <field name="model">account.bank.statement.line</field>
+        <field name="arch" type="xml">
+            <form string="Bank Transaction" create="false" edit="false">
+                <header>
+                    <button name="action_l10n_np_match_payment" type="object"
+                            string="Match Outstanding Payment" class="btn-primary"
+                            invisible="is_reconciled"
+                            groups="account.group_account_user"/>
+                    <button name="action_unmatch" type="object" string="Unmatch"
+                            invisible="not is_reconciled"
+                            groups="account.group_account_user"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="date"/>
+                            <field name="payment_ref"/>
+                            <field name="partner_id"/>
+                            <field name="account_number"/>
+                        </group>
+                        <group>
+                            <field name="journal_id"/>
+                            <field name="statement_id"/>
+                            <field name="amount"/>
+                            <field name="amount_residual"/>
+                            <field name="is_reconciled" string="Resolved"/>
+                            <field name="currency_id" invisible="1"/>
+                            <field name="company_id" invisible="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Journal Entry" name="journal_entry">
+                            <field name="move_id" readonly="1"/>
+                            <field name="line_ids" readonly="1">
+                                <list>
+                                    <field name="account_id"/>
+                                    <field name="name"/>
+                                    <field name="partner_id" optional="hide"/>
+                                    <field name="debit"/>
+                                    <field name="credit"/>
+                                    <field name="matching_status" column_invisible="True"/>
+                                    <field name="matching_label" string="Matching"
+                                           widget="account_matching"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_bank_statement_line" model="ir.actions.act_window">
+        <field name="name">Bank Transactions</field>
+        <field name="res_model">account.bank.statement.line</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_bank_statement_line_search"/>
+        <field name="domain">[('journal_id.type', 'in', ('bank', 'cash', 'credit'))]</field>
+        <field name="context">{'search_default_unresolved': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">No bank transactions yet</p>
+            <p>
+                A bank transaction is one line of a bank statement. Transactions
+                arrive by importing a statement, or are recorded here when you
+                match an outstanding payment to the bank.
+            </p>
+        </field>
+    </record>
+
+    <!-- The payment side of the same wizard: the act half of the "No Bank
+         Matching" filter Community already ships (account_payment_view.xml:108).
+         `is_matched` is already in the arch as invisible="1" (:175), so the
+         button's condition needs nothing added. -->
+    <record id="view_account_payment_form_match" model="ir.ui.view">
+        <field name="name">account.payment.form.bank.matching</field>
+        <field name="model">account.payment</field>
+        <field name="inherit_id" ref="account.view_account_payment_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='state'][@widget='statusbar']" position="before">
+                <button name="action_l10n_np_match_to_bank" type="object"
+                        string="Match to Bank" class="btn-secondary"
+                        invisible="is_matched or state not in ('in_process', 'paid')"
+                        groups="account.group_account_user"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

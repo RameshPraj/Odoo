@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="nepali_calendar_core.BSDateField">
+        <div class="o_field_bs_date position-relative">
+
+            <!-- readonly -->
+            <span t-if="props.readonly"
+                  t-att-class="isOutOfRange ? 'text-warning' : ''"
+                  t-esc="displayText"/>
+
+            <!-- editable -->
+            <div t-else="" class="d-flex align-items-center">
+                <input type="text"
+                       t-ref="input"
+                       class="o_input o_field_bs_date_input"
+                       t-att-class="state.error ? 'is-invalid' : ''"
+                       t-att-value="displayText"
+                       placeholder="YYYY-MM-DD"
+                       t-on-change="onInputChange"
+                       t-on-focus="() => this.state.open = false"/>
+                <button class="btn btn-link p-1 o_bs_date_toggle"
+                        type="button"
+                        title="Open Nepali calendar"
+                        t-on-click.stop="togglePicker">
+                    <i class="fa fa-calendar"/>
+                </button>
+            </div>
+
+            <!-- picker -->
+            <div t-if="state.open" class="o_bs_datepicker shadow rounded bg-view border p-2">
+                <div class="d-flex align-items-center justify-content-between mb-1">
+                    <button class="btn btn-sm btn-light" type="button"
+                            t-on-click.stop="() => this.shiftMonth(-1)">
+                        <i class="fa fa-chevron-left"/>
+                    </button>
+                    <strong t-esc="headerLabel"/>
+                    <button class="btn btn-sm btn-light" type="button"
+                            t-on-click.stop="() => this.shiftMonth(1)">
+                        <i class="fa fa-chevron-right"/>
+                    </button>
+                </div>
+
+                <div class="o_bs_grid">
+                    <div t-foreach="weekdayLabels" t-as="wd" t-key="wd"
+                         class="o_bs_wd text-center small text-muted"
+                         t-esc="wd"/>
+                    <t t-foreach="monthCells" t-as="cell" t-key="cell.key">
+                        <div t-if="cell.blank" class="o_bs_cell"/>
+                        <!-- OWL expressions support `and`/`or` but NOT `not`; use `!` instead. -->
+                        <button t-else=""
+                                type="button"
+                                class="o_bs_cell btn btn-sm"
+                                t-att-class="{
+                                    'btn-primary': cell.selected,
+                                    'o_bs_today': cell.today and !cell.selected,
+                                    'btn-light': !cell.selected,
+                                }"
+                                t-on-click.stop="() => this.pick(cell.day)"
+                                t-esc="cell.label"/>
+                    </t>
+                </div>
+
+                <div class="d-flex justify-content-between mt-2">
+                    <button class="btn btn-sm btn-secondary" type="button"
+                            t-on-click.stop="pickToday">आज</button>
+                    <button class="btn btn-sm btn-light" type="button"
+                            t-on-click.stop="clear">खाली</button>
+                </div>
+            </div>
+        </div>
+    </t>
+
+</templates>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!--
+        NB: never put a double hyphen inside an XML comment. It is illegal XML and
+        invalidates the whole file, which in Odoo can blank the entire web client.
+        Use "=" for separators.
+    -->
+
+    <!-- ================================================================
+         Discuss: hide the child menu that repeats the app's own name.
+
+         Stock Odoo 19 ships two menus called "Discuss", both pointing at the
+         same action `mail.action_discuss` (odoo/addons/mail/views/mail_menus.xml
+         lines 3 and 11): the app root, and its first child. Opening the app
+         therefore shows "Discuss" twice, once as the app and once as a menu
+         entry that goes where you already are.
+
+         Hiding the child is safe because the ROOT carries the same action, so
+         the tile still opens Discuss. Channels, Configuration and Technical are
+         untouched.
+
+         TO REVERT: this writes to a record owned by `mail`, so uninstalling this
+         module does NOT restore it. Either set Active back to true on the menu
+         (Settings, Technical, User Interface, Menu Items, filter for Discuss), or:
+
+             env.ref('mail.main_menu_discuss').active = True
+
+         Verified surviving `-u mail`: the stock menuitem does not specify
+         `active`, and Odoo writes only the fields a record actually lists, so a
+         core upgrade leaves this alone.
+         ================================================================ -->
+    <record id="mail.main_menu_discuss" model="ir.ui.menu">
+        <field name="active" eval="False"/>
+    </record>
+
+</odoo>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Multi-company record rules (SEC-2).
+
+  Without these, company A's accountant can read and edit company B's loans: the
+  ACLs in ir.model.access.csv grant the model, and nothing narrows the rows.
+  Only one company exists today, so the exposure is latent, which is exactly why
+  it is cheaper to close now than after a second company holds data.
+
+  Deliberately NOT noupdate. A rule frozen at install is a rule that cannot be
+  corrected by an upgrade, and stale security surviving a code change is the
+  hazard UPG-1 and UPG-2 already record for this repo.
+
+  No groups are set, so each rule is global and applies to every user except the
+  superuser. That is what isolation requires: a rule restricted to a group leaves
+  every other group unfiltered.
+-->
+<odoo>
+    <record id="l10n_np_loan_company_rule" model="ir.rule">
+        <field name="name">Loan multi-company</field>
+        <field name="model_id" ref="model_l10n_np_loan"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    </record>
+
+    <record id="l10n_np_loan_line_company_rule" model="ir.rule">
+        <field name="name">Loan schedule line multi-company</field>
+        <field name="model_id" ref="model_l10n_np_loan_line"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    </record>
+</odoo>

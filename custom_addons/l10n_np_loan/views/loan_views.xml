@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_loan_list" model="ir.ui.view">
+        <field name="name">l10n_np.loan.list</field>
+        <field name="model">l10n_np.loan</field>
+        <field name="arch" type="xml">
+            <list string="Loans" decoration-muted="state in ('closed', 'cancel')">
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="date_start"/>
+                <field name="principal" sum="Principal"/>
+                <field name="rate"/>
+                <field name="term" string="No."/>
+                <field name="frequency" optional="hide"/>
+                <field name="method" optional="hide"/>
+                <field name="total_interest" sum="Interest" optional="show"/>
+                <field name="outstanding" sum="Outstanding"/>
+                <field name="state" widget="badge"
+                       decoration-success="state == 'closed'"
+                       decoration-info="state == 'open'"/>
+                <field name="currency_id" column_invisible="True"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_loan_form" model="ir.ui.view">
+        <field name="name">l10n_np.loan.form</field>
+        <field name="model">l10n_np.loan</field>
+        <field name="arch" type="xml">
+            <form string="Loan">
+                <header>
+                    <button name="action_confirm" string="Confirm" type="object"
+                            class="oe_highlight" invisible="state != 'draft'"/>
+                    <button name="action_compute_schedule" string="Recompute Schedule"
+                            type="object" invisible="state not in ('draft', 'open')"/>
+                    <button name="action_post_disbursement" string="Post Drawdown"
+                            type="object" class="oe_highlight"
+                            invisible="state != 'open' or disbursement_move_id"/>
+                    <button name="action_post_due" string="Post Due Instalments"
+                            type="object" invisible="state != 'open'"/>
+                    <button name="action_cancel" string="Cancel" type="object"
+                            invisible="state in ('cancel', 'closed')"/>
+                    <button name="action_draft" string="Back to Draft" type="object"
+                            invisible="state != 'cancel'"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,open,closed"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_moves" type="object"
+                                class="oe_stat_button" icon="fa-book"
+                                invisible="not posted_count and not disbursement_move_id">
+                            <field name="posted_count" widget="statinfo"
+                                   string="Posted"/>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1><field name="name" placeholder="e.g. Term loan 2083"/></h1>
+                    </div>
+                    <group>
+                        <group string="Terms">
+                            <field name="partner_id"/>
+                            <field name="principal"/>
+                            <field name="rate"/>
+                            <field name="date_start"/>
+                            <field name="term"/>
+                            <field name="frequency"/>
+                            <field name="method"/>
+                        </group>
+                        <group string="Accounting">
+                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="journal_id"/>
+                            <field name="loan_account_id"/>
+                            <field name="interest_account_id"/>
+                            <field name="payment_account_id"/>
+                            <field name="disbursement_move_id" readonly="1"
+                                   invisible="not disbursement_move_id"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Schedule" name="schedule">
+                            <field name="line_ids" readonly="1">
+                                <list decoration-muted="state == 'posted'">
+                                    <field name="sequence" string="No."/>
+                                    <field name="date"/>
+                                    <field name="opening_balance"/>
+                                    <field name="payment" sum="Total paid"/>
+                                    <field name="principal" sum="Principal"/>
+                                    <field name="interest" sum="Interest"/>
+                                    <field name="closing_balance"/>
+                                    <field name="state" widget="badge"
+                                           decoration-success="state == 'posted'"/>
+                                    <field name="move_id" optional="show"/>
+                                    <field name="currency_id" column_invisible="True"/>
+                                    <button name="action_post" type="object"
+                                            string="Post" icon="fa-check"
+                                            invisible="state == 'posted'"/>
+                                </list>
+                            </field>
+                            <group class="oe_subtotal_footer oe_right">
+                                <field name="total_payment"/>
+                                <field name="total_interest"/>
+                                <field name="outstanding"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_loan_search" model="ir.ui.view">
+        <field name="name">l10n_np.loan.search</field>
+        <field name="model">l10n_np.loan</field>
+        <field name="arch" type="xml">
+            <search string="Loans">
+                <field name="name"/>
+                <field name="partner_id"/>
+                <filter string="Running" name="running" domain="[('state', '=', 'open')]"/>
+                <filter string="Closed" name="closed" domain="[('state', '=', 'closed')]"/>
+                <separator/>
+                <filter string="Outstanding" name="outstanding"
+                        domain="[('outstanding', '>', 0)]"/>
+                <group>
+                    <filter string="Lender" name="group_partner" domain="[]"
+                            context="{'group_by': 'partner_id'}"/>
+                    <filter string="Method" name="group_method" domain="[]"
+                            context="{'group_by': 'method'}"/>
+                    <filter string="Status" name="group_state" domain="[]"
+                            context="{'group_by': 'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_loan" model="ir.actions.act_window">
+        <field name="name">Loans</field>
+        <field name="res_model">l10n_np.loan</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Record a loan</p>
+            <p>
+                Enter the amount, rate, term and repayment method. Odoo builds the
+                amortisation schedule, and each instalment posts as a journal
+                entry splitting principal from interest.
+            </p>
+        </field>
+    </record>
+
+    <!-- Loans Analysis: the schedule across every loan, as a pivot. -->
+    <record id="view_loan_line_pivot" model="ir.ui.view">
+        <field name="name">l10n_np.loan.line.pivot</field>
+        <field name="model">l10n_np.loan.line</field>
+        <field name="arch" type="xml">
+            <pivot string="Loans Analysis">
+                <field name="loan_id" type="row"/>
+                <field name="date" interval="year" type="col"/>
+                <field name="principal" type="measure"/>
+                <field name="interest" type="measure"/>
+                <field name="payment" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="view_loan_line_graph" model="ir.ui.view">
+        <field name="name">l10n_np.loan.line.graph</field>
+        <field name="model">l10n_np.loan.line</field>
+        <field name="arch" type="xml">
+            <graph string="Loans Analysis" type="bar" stacked="1">
+                <field name="date" interval="month"/>
+                <field name="principal" type="measure"/>
+                <field name="interest" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="view_loan_line_list" model="ir.ui.view">
+        <field name="name">l10n_np.loan.line.list</field>
+        <field name="model">l10n_np.loan.line</field>
+        <field name="arch" type="xml">
+            <list string="Instalments" create="false">
+                <field name="loan_id"/>
+                <field name="partner_id" optional="show"/>
+                <field name="sequence" string="No."/>
+                <field name="date"/>
+                <field name="opening_balance" optional="hide"/>
+                <field name="payment" sum="Total"/>
+                <field name="principal" sum="Principal"/>
+                <field name="interest" sum="Interest"/>
+                <field name="closing_balance" optional="hide"/>
+                <field name="state" widget="badge"
+                       decoration-success="state == 'posted'"/>
+                <field name="currency_id" column_invisible="True"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_loan_line_search" model="ir.ui.view">
+        <field name="name">l10n_np.loan.line.search</field>
+        <field name="model">l10n_np.loan.line</field>
+        <field name="arch" type="xml">
+            <search string="Instalments">
+                <field name="loan_id"/>
+                <field name="partner_id"/>
+                <filter string="Posted" name="posted" domain="[('state', '=', 'posted')]"/>
+                <filter string="Scheduled" name="scheduled" domain="[('state', '=', 'draft')]"/>
+                <separator/>
+                <filter string="Due" name="due"
+                        domain="[('state', '=', 'draft'), ('date', '&lt;=', context_today().strftime('%Y-%m-%d'))]"/>
+                <group>
+                    <filter string="Loan" name="group_loan" domain="[]"
+                            context="{'group_by': 'loan_id'}"/>
+                    <filter string="Lender" name="group_partner" domain="[]"
+                            context="{'group_by': 'partner_id'}"/>
+                    <filter string="Date" name="group_date" domain="[]"
+                            context="{'group_by': 'date'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_loan_analysis" model="ir.actions.act_window">
+        <field name="name">Loans Analysis</field>
+        <field name="res_model">l10n_np.loan.line</field>
+        <field name="view_mode">pivot,graph,list</field>
+        <field name="context">{'search_default_group_loan': 1}</field>
+    </record>
+
+</odoo>

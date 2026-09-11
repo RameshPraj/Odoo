@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_tds_certificate_list" model="ir.ui.view">
+        <field name="name">l10n_np.tds.certificate.list</field>
+        <field name="model">l10n_np.tds.certificate</field>
+        <field name="arch" type="xml">
+            <list string="TDS Certificates">
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="date_from"/>
+                <field name="date_to"/>
+                <field name="amount_base" sum="Base"/>
+                <field name="amount_tds" sum="TDS"/>
+                <field name="state" widget="badge"/>
+                <field name="currency_id" column_invisible="True"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_tds_certificate_form" model="ir.ui.view">
+        <field name="name">l10n_np.tds.certificate.form</field>
+        <field name="model">l10n_np.tds.certificate</field>
+        <field name="arch" type="xml">
+            <form string="TDS Certificate">
+                <header>
+                    <button name="action_collect_lines" string="Collect Withholding"
+                            type="object" class="btn-primary" invisible="state != 'draft'"/>
+                    <button name="action_issue" string="Issue" type="object"
+                            invisible="state != 'draft'"/>
+                    <button name="action_cancel" string="Cancel" type="object"
+                            invisible="state == 'cancel'"/>
+                    <button name="action_draft" string="Reset to Draft" type="object"
+                            invisible="state != 'cancel'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,issued"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name" readonly="1"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="partner_id" readonly="state != 'draft'"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                        <group>
+                            <field name="date_from" readonly="state != 'draft'"/>
+                            <field name="date_to" readonly="state != 'draft'"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Withholding">
+                            <field name="line_ids">
+                                <list>
+                                    <field name="date"/>
+                                    <field name="name"/>
+                                    <field name="category_id"/>
+                                    <field name="amount_base" sum="Base"/>
+                                    <field name="amount_tds" sum="TDS"/>
+                                    <field name="currency_id" column_invisible="True"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Notes">
+                            <field name="note" placeholder="Internal notes"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_tds_certificate" model="ir.actions.act_window">
+        <field name="name">TDS Certificates</field>
+        <field name="res_model">l10n_np.tds.certificate</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="view_tds_return_list" model="ir.ui.view">
+        <field name="name">l10n_np.tds.return.list</field>
+        <field name="model">l10n_np.tds.return</field>
+        <field name="arch" type="xml">
+            <list string="TDS Returns">
+                <field name="name"/>
+                <field name="date_from"/>
+                <field name="date_to"/>
+                <field name="amount_total" sum="Total"/>
+                <field name="state" widget="badge"/>
+                <field name="currency_id" column_invisible="True"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_tds_return_form" model="ir.ui.view">
+        <field name="name">l10n_np.tds.return.form</field>
+        <field name="model">l10n_np.tds.return</field>
+        <field name="arch" type="xml">
+            <form string="TDS Return">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                        <group>
+                            <field name="date_from"/>
+                            <field name="date_to"/>
+                            <field name="state"/>
+                        </group>
+                    </group>
+                    <field name="certificate_ids"/>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_tds_return" model="ir.actions.act_window">
+        <field name="name">TDS Returns</field>
+        <field name="res_model">l10n_np.tds.return</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+</odoo>

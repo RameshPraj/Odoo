@@ -1,0 +1,1332 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0 (stock)\n"
+"Report-Msgid-Bugs-To: \n"
+"Language-Team: Nepali\n"
+"Language: ne\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: stock
+#: model:ir.model.fields,field_description:stock.field_stock_rule__action
+msgid "Action"
+msgstr "कार्य"
+
+#. module: stock
+#: model:ir.model.fields,field_description:stock.field_stock_lot__message_needaction
+#: model:ir.model.fields,field_description:stock.field_stock_picking__message_needaction
+#: model:ir.model.fields,field_description:stock.field_stock_scrap__message_needaction
+msgid "Action Needed"
+msgstr "कार्य आवश्यक"
+
+#. module: stock
+#: model:ir.model.fields,field_description:stock.field_stock_location__active
+#: model:ir.model.fields,field_description:stock.field_stock_picking_type__active
+#: model:ir.model.fields,field_description:stock.field_stock_putaway_rule__active
+#: model:ir.model.fields,field_description:stock.field_stock_route__active
+#: model:ir.model.fields,field_description:stock.field_stock_rule__active
+#: model:ir.model.fields,field_description:stock.field_stock_warehouse__active
+#: model:ir.model.fields,field_description:stock.field_stock_warehouse_orderpoint__active
+msgid "Active"
+msgstr "सक्रिय"
+
+#. module: stock
+#: model:ir.model.fields,field_description:stock.field_stock_lot__activity_ids
+#: model:ir.model.fields,field_description:stock.field_stock_picking__activity_ids
+msgid "Activities"
+msgstr "गतिविधिहरू"
+
+#. module: stock
+#: model:ir.model.fields,field_description:stock.field_stock_lot__activity_exception_decoration
+#: model:ir.model.fields,field_description:stock.field_stock_picking__activity_exception_decoration
+msgid "Activity Exception Decoration"
+msgstr "गतिविधि अपवाद सजावट"
+
+#. module: stock
+#: model:ir.model.fields,field_description:stock.field_stock_lot__activity_state
+#: model:ir.model.fields,field_description:stock.field_stock_picking__activity_state
+msgid "Activity State"
+msgstr "गतिविधि अवस्था"
+
+#. module: stock
+#: model:ir.model.fields,field_description:stock.field_stock_lot__activity_type_icon
+#: model:ir.model.fields,field_description:stock.field_stock_picking__activity_type_icon
+msgid "Activity Type Icon"
+msgstr "गतिविधि प्रकार आइकन"
+
+#. module: stock
+#: model:ir.model.fields,field_description:stock.field_stock_picking__warehouse_address_id
+#: model:ir.model.fields,field_description:stock.field_stock_warehouse__partner_id
+msgid "Address"
+msgstr "ठेगाना"
+
+#. module: stock
+#: model_terms:ir.ui.view,arch_db:stock.stock_picking_type_kanban
+msgid "All"
+msgstr "सबै"
+
+#. module: stock
+#: model:ir.model.fields.selection,name:stock.selection__stock_picking_type__create_backorder__always
+msgid "Always"
+msgstr "सधैँ"
+
+#. module: stock
+#: model_terms:ir.ui.view,arch_db:stock.view_stock_quant_tree_inventory_editable
+msgid "Apply"
+msgstr "लागू गर्नुहोस्"
+
+#. module: stock
+#: model_terms:ir.ui.view,arch_db:stock.stock_location_route_form_view
+#: model_terms:ir.ui.view,arch_db:stock.stock_location_route_view_search
+#: model_terms:ir.ui.view,arch_db:stock.stock_reorder_report_search
+#: model_terms:ir.ui.view,arch_db:stock.stock_warehouse_view_search
+#: model_terms:ir.ui.view,arch_db:stock.view_location_form
+#: model_terms:ir.ui.view,arch_db:stock.view_location_search
+#: model_terms:ir.ui.view,arch_db:stock.view_picking_type_form
+#: model_terms:ir.ui.view,arch_db:stock.view_pickingtype_filter
+#: model_terms:ir.ui.view,arch_db:stock.view_stock_rule_filter
+#: model_terms:ir.ui.view,arch_db:stock.view_stock_rule_form
+#: model_terms:ir.ui.view,arch_db:stock.view_warehouse
+#: model_terms:ir.ui.view,arch_db:stock.view_warehouse_orderpoint_form
+#: model_terms:ir.ui.view,arch_db:stock.warehouse_orderpoint_search
+msgid "Archived"
+msgstr "संग्रहित"
+
+#. module: stock
+#: model:ir.model.fields,field_description:stock.field_stock_lot__message_attachment_count
+#: model:ir.model.fields,field_description:stock.field_stock_picking__message_attachment_count
+#: model:ir.model.fields,field_description:stock.field_stock_scrap__message_attachment_count
+msgid "Attachment Count"
+msgstr "संलग्न संख्या"
+
+#. module: stock
+#: model:ir.model.fields,field_description:stock.field_stock_location__barcode
+#: model:ir.model.fields,field_description:stock.field_stock_package_type__barcode
+#: model:ir.model.fields,field_description:stock.field_stock_picking_type__barcode
+#: model_terms:ir.ui.view,arch_db:stock.report_package_barcode_content
+#: model_terms:ir.ui.view,arch_db:stock.res_config_settings_view_form
+msgid "Barcode"
+msgstr "बारकोड"
+
+#. module: stock
+#: model_terms:ir.ui.view,arch_db:stock.lot_label_layout_form_picking
+#: model_terms:ir.ui.view,arch_db:stock.picking_label_type_form
+#: model_terms:ir.ui.view,arch_db:stock.replenishment_option_warning_view
+#: model_terms:ir.ui.view,arch_db:stock.view_picking_form
+#: model_terms:ir.ui.view,arch_db:stock.view_stock_quantity_history
+#: model_terms:ir.ui.view,arch_db:stock.view_stock_rules_report
+msgid "Cancel"
+msgstr "रद्द गर्नुहोस्"
+
+#. module: stock
+#: model:ir.model.fields.selection,name:stock.selection__stock_move__state__cancel
+#: model:ir.model.fields.selection,name:stock.selection__stock_picking__state__cancel
+msgid "Cancelled"
+msgstr "रद्द गरिएको"
+
+#. module: stock
+#: model:ir.ui.menu,name:stock.menu_product_category_config_stock
+msgid "Categories"
+msgstr "श्रेणीहरू"
+
+#. module: stock
+#: model_terms:ir.ui.view,arch_db:stock.product_search_form_view_stock_report
+#: model_terms:ir.ui.view,arch_db:stock.stock_move_line_view_search
+#: model_terms:ir.ui.view,arch_db:stock.stock_reorder_report_search
+msgid "Category"
+msgstr "श्रेणी"
+
+#. module: stock
+#: model_terms:ir.ui.view,arch_db:stock.view_stock_quant_tree_inventory_editable
+msgid "Clear"
+msgstr "खाली गर्नुहोस्"
+
+#. module: stock
+#: model_terms:ir.ui.view,arch_db:stock.view_stock_replenishment_info
+msgid "Close"
+msgstr "बन्द गर्नुहोस्"
+
+#. module: stock
+#: model:ir.model.fields,field_description:stock.field_stock_picking_type__color
+#: model:ir.model.fields,field_description:stock.field_stock_scrap_reason_tag__color
+msgid "Color"
+msgstr "रङ"
+
+#. module: stock
+#: model:ir.model,name:stock.model_res_company
+msgid "Companies"
+msgstr "कम्पनीहरू"
+
+#. module: stock
+#: model:ir.model.fields,field_description:stock.field_product_replenish__company_id
+#: model:ir.model.fields,field_description:stock.field_report_stock_quantity__company_id
+#: model:ir.model.fields,field_description:stock.field_stock_location__company_id
+#: model:ir.model.fields,field_description:stock.field_stock_lot__company_id
+#: model:ir.model.fields,field_description:stock.field_stock_move__company_id
+#: model:ir.model.fields,field_description:stock.field_stock_move_line__company_id
+#: model:ir.model.fields,field_description:stock.field_stock_package__company_id
+#: model:ir.model.fields,field_description:stock.field_stock_package_history__company_id
+#: model:ir.model.fields,field_description:stock.field_stock_package_type__company_id
+#: model:ir.model.fields,field_description:stock.field_stock_picking__company_id
+#: model:ir.model.fields,field_description:stock.field_stock_picking_type__company_id
+#: model:ir.model.fields,field_description:stock.field_stock_putaway_rule__company_id
+#: model:ir.model.fields,field_description:stock.field_stock_quant__company_id
+#: model:ir.model.fields,field_description:stock.field_stock_quant_relocate__company_id
+#: model:ir.model.fields,field_description:stock.field_stock_return_picking__company_id
+#: model:ir.model.fields,field_description:stock.field_stock_route__company_id
+#: model:ir.model.fields,field_description:stock.field_stock_rule__company_id
+#: model:ir.model.fields,field_description:stock.field_stock_scrap__company_id
+#: model:ir.model.fields,field_description:stock.field_stock_storage_category__company_id
+#: model:ir.model.fields,field_description:stock.field_stock_storage_category_capacity__company_id
+#: model:ir.model.fields,field_description:stock.field_stock_warehouse__company_id
+#: model:ir.model.fields,field_description:stock.field_stock_warehouse_orderpoint__company_id
+#: model_terms:ir.ui.view,arch_db:stock.quant_search_view
+#: model_terms:ir.ui.view,arch_db:stock.search_product_lot_filter
+msgid "Company"
+msgstr "कम्पनी"
+
+#. module: stock
+#: model:ir.model,name:stock.model_res_config_settings
+msgid "Config Settings"
+msgstr "कन्फिग सेटिङहरू"
+
+#. module: stock
+#: model:ir.ui.menu,name:stock.menu_stock_config_settings
+#: model_terms:ir.ui.view,arch_db:stock.stock_package_type_form
+#: model_terms:ir.ui.view,arch_db:stock.stock_picking_type_kanban
+msgid "Configuration"
+msgstr "कन्फिगरेसन"
+
+#. module: stock
+#: model_terms:ir.ui.view,arch_db:stock.lot_label_layout_form_picking
+#: model_terms:ir.ui.view,arch_db:stock.picking_label_type_form
+#: model_terms:ir.ui.view,arch_db:stock.stock_inventory_request_count_form_view
+#: model_terms:ir.ui.view,arch_db:stock.stock_package_destination_form_view
+#: model_terms:ir.ui.view,arch_db:stock.stock_quant_relocate_view_form
+#: model_terms:ir.ui.view,arch_db:stock.stock_warn_insufficient_qty_form_view
+#: model_terms:ir.ui.view,arch_db:stock.view_product_replenish
+#: model_terms:ir.ui.view,arch_db:stock.view_stock_quantity_history
+msgid "Confirm"
+msgstr "पुष्टि गर्नुहोस्"
+
+#. module: stock
+#: model:ir.model,name:stock.model_res_partner
+#: model:ir.model.fields,field_description:stock.field_stock_move_line__picking_partner_id
+#: model:ir.model.fields,field_description:stock.field_stock_picking__partner_id
+#: model_terms:ir.ui.view,arch_db:stock.view_picking_form
+msgid "Contact"
+msgstr "सम्पर्क"
+
+#. module: stock
+#: model_terms:ir.ui.view,arch_db:stock.inventory_warning_reset_view
+#: model_terms:ir.ui.view,arch_db:stock.inventory_warning_set_view
+msgid "Continue"
+msgstr "जारी राख्नुहोस्"
+
+#. module: stock
+#: model:ir.model.fields,field_description:stock.field_stock_picking__partner_country_id
+msgid "Country"
+msgstr "देश"
+
+#. module: stock
+#: model:ir.model,website_form_label:stock.model_res_partner
+msgid "Create a Customer"
+msgstr "ग्राहक सिर्जना गर्नुहोस्"
+
+#. module: stock
+#: model:ir.model.fields,field_description:stock.field_lot_label_layout__create_uid
+#: model:ir.model.fields,field_description:stock.field_picking_label_type__create_uid
+#: model:ir.model.fields,field_description:stock.field_product_removal__create_uid
+#: model:ir.model.fields,field_description:stock.field_product_replenish__create_uid
+#: model:ir.model.fields,field_description:stock.field_stock_backorder_confirmation__create_uid
+#: model:ir.model.fields,field_description:stock.field_stock_backorder_confirmation_line__create_uid
+#: model:ir.model.fields,field_description:stock.field_stock_inventory_adjustment_name__create_uid
+#: model:ir.model.fields,field_description:stock.field_stock_inventory_conflict__create_uid
+#: model:ir.model.fields,field_description:stock.field_stock_inventory_warning__create_uid
+#: model:ir.model.fields,field_description:stock.field_stock_location__create_uid
+#: model:ir.model.fields,field_description:stock.field_stock_lot__create_uid
+#: model:ir.model.fields,field_description:stock.field_stock_move__create_uid
+#: model:ir.model.fields,field_description:stock.field_stock_move_line__create_uid
+#: model:ir.model.fields,field_description:stock.field_stock_orderpoint_snooze__create_uid
+#: model:ir.model.fields,field_description:stock.field_stock_package__create_uid
+#: model:ir.model.fields,field_description:stock.field_stock_package_destination__create_uid
+#: model:ir.model.fields,field_description:stock.field_stock_package_history__create_uid
+#: model:ir.model.fields,field_description:stock.field_stock_package_type__create_uid
+#: model:ir.model.fields,field_description:stock.field_stock_picking__create_uid
+#: model:ir.model.fields,field_description:stock.field_stock_picking_type__create_uid
+#: model:ir.model.fields,field_description:stock.field_stock_put_in_pack__create_uid
+#: model:ir.model.fields,field_description:stock.field_stock_putaway_rule__create_uid
+#: model:ir.model.fields,field_description:stock.field_stock_quant__create_uid
+#: model:ir.model.fields,field_description:stock.field_stock_quant_relocate__create_uid
+#: model:ir.model.fields,field_description:stock.field_stock_quantity_history__create_uid
+#: model:ir.model.fields,field_description:stock.field_stock_reference__create_uid
+#: model:ir.model.fields,field_description:stock.field_stock_replenishment_info__create_uid
+#: model:ir.model.fields,field_description:stock.field_stock_replenishment_option__create_uid
+#: model:ir.model.fields,field_description:stock.field_stock_request_count__create_uid
+#: model:ir.model.fields,field_description:stock.field_stock_return_picking__create_uid
+#: model:ir.model.fields,field_description:stock.field_stock_return_picking_line__create_uid
+#: model:ir.model.fields,field_description:stock.field_stock_route__create_uid
+#: model:ir.model.fields,field_description:stock.field_stock_rule__create_uid
+#: model:ir.model.fields,field_description:stock.field_stock_rules_report__create_uid
+#: model:ir.model.fields,field_description:stock.field_stock_scrap__create_uid
+#: model:ir.model.fields,field_description:stock.field_stock_scrap_reason_tag__create_uid
+#: model:ir.model.fields,field_description:stock.field_stock_storage_category__create_uid
+#: model:ir.model.fields,field_description:stock.field_stock_storage_category_capacity__create_uid
+#: model:ir.model.fields,field_description:stock.field_stock_traceability_report__create_uid
+#: model:ir.model.fields,field_description:stock.field_stock_warehouse__create_uid
+#: model:ir.model.fields,field_description:stock.field_stock_warehouse_orderpoint__create_uid
+#: model:ir.model.fields,field_description:stock.field_stock_warn_insufficient_qty_scrap__create_uid
+msgid "Created by"
+msgstr "सिर्जना गर्ने"
+
+#. module: stock
+#: model:ir.model.fields,field_description:stock.field_lot_label_layout__create_date
+#: model:ir.model.fields,field_description:stock.field_picking_label_type__create_date
+#: model:ir.model.fields,field_description:stock.field_product_removal__create_date
+#: model:ir.model.fields,field_description:stock.field_product_replenish__create_date
+#: model:ir.model.fields,field_description:stock.field_stock_backorder_confirmation__create_date
+#: model:ir.model.fields,field_description:stock.field_stock_backorder_confirmation_line__create_date
+#: model:ir.model.fields,field_description:stock.field_stock_inventory_adjustment_name__create_date
+#: model:ir.model.fields,field_description:stock.field_stock_inventory_conflict__create_date
+#: model:ir.model.fields,field_description:stock.field_stock_inventory_warning__create_date
+#: model:ir.model.fields,field_description:stock.field_stock_location__create_date
+#: model:ir.model.fields,field_description:stock.field_stock_lot__create_date
+#: model:ir.model.fields,field_description:stock.field_stock_move__create_date
+#: model:ir.model.fields,field_description:stock.field_stock_move_line__create_date
+#: model:ir.model.fields,field_description:stock.field_stock_orderpoint_snooze__create_date
+#: model:ir.model.fields,field_description:stock.field_stock_package__create_date
+#: model:ir.model.fields,field_description:stock.field_stock_package_destination__create_date
+#: model:ir.model.fields,field_description:stock.field_stock_package_history__create_date
+#: model:ir.model.fields,field_description:stock.field_stock_package_type__create_date
+#: model:ir.model.fields,field_description:stock.field_stock_picking__create_date
+#: model:ir.model.fields,field_description:stock.field_stock_picking_type__create_date
+#: model:ir.model.fields,field_description:stock.field_stock_put_in_pack__create_date
+#: model:ir.model.fields,field_description:stock.field_stock_putaway_rule__create_date
+#: model:ir.model.fields,field_description:stock.field_stock_quant__create_date
+#: model:ir.model.fields,field_description:stock.field_stock_quant_relocate__create_date
+#: model:ir.model.fields,field_description:stock.field_stock_quantity_history__create_date
+#: model:ir.model.fields,field_description:stock.field_stock_reference__create_date
+#: model:ir.model.fields,field_description:stock.field_stock_replenishment_info__create_date
+#: model:ir.model.fields,field_description:stock.field_stock_replenishment_option__create_date
+#: model:ir.model.fields,field_description:stock.field_stock_request_count__create_date
+#: model:ir.model.fields,field_description:stock.field_stock_return_picking__create_date
+#: model:ir.model.fields,field_description:stock.field_stock_return_picking_line__create_date
+#: model:ir.model.fields,field_description:stock.field_stock_route__create_date
+#: model:ir.model.fields,field_description:stock.field_stock_rule__create_date
+#: model:ir.model.fields,field_description:stock.field_stock_rules_report__create_date
+#: model:ir.model.fields,field_description:stock.field_stock_scrap__create_date
+#: model:ir.model.fields,field_description:stock.field_stock_scrap_reason_tag__create_date
+#: model:ir.model.fields,field_description:stock.field_stock_storage_category__create_date
+#: model:ir.model.fields,field_description:stock.field_stock_storage_category_capacity__create_date
+#: model:ir.model.fields,field_description:stock.field_stock_traceability_report__create_date
+#: model:ir.model.fields,field_description:stock.field_stock_warehouse__create_date
+#: model:ir.model.fields,field_description:stock.field_stock_warehouse_orderpoint__create_date
+#: model:ir.model.fields,field_description:stock.field_stock_warn_insufficient_qty_scrap__create_date
+msgid "Created on"
+msgstr "सिर्जना मिति"
+
+#. module: stock
+#: model:ir.model.fields.selection,name:stock.selection__product_label_layout__move_quantity__custom
+#: model:ir.model.fields.selection,name:stock.selection__stock_orderpoint_snooze__predefined_date__custom
+msgid "Custom"
+msgstr "अनुकूल"
+
+#. module: stock
+#: model:ir.model.fields.selection,name:stock.selection__stock_location__usage__customer
+#: model_terms:ir.ui.view,arch_db:stock.view_location_search
+#: model_terms:ir.ui.view,arch_db:stock.view_production_lot_form
+msgid "Customer"
+msgstr "ग्राहक"
+
+#. module: stock
+#: model_terms:ir.ui.view,arch_db:stock.search_product_lot_filter
+msgid "Customers"
+msgstr "ग्राहकहरू"
+
+#. module: stock
+#. odoo-javascript
+#: code:addons/stock/static/src/client_actions/stock_traceability_report_backend.xml:0
+#: model:ir.model.fields,field_description:stock.field_report_stock_quantity__date
+#: model:ir.model.fields,field_description:stock.field_stock_move_line__date
+#: model:ir.model.fields,field_description:stock.field_stock_scrap__date_done
+#: model_terms:ir.ui.view,arch_db:stock.report_stock_body_print
+#: model_terms:ir.ui.view,arch_db:stock.stock_move_line_view_search
+#: model_terms:ir.ui.view,arch_db:stock.view_move_search
+msgid "Date"
+msgstr "मिति"
+
+#. module: stock
+#: model:ir.model.fields,field_description:stock.field_stock_move__date_deadline
+#: model:ir.model.fields,field_description:stock.field_stock_picking__date_deadline
+#: model:ir.model.fields,field_description:stock.field_stock_warehouse_orderpoint__deadline_date
+#: model_terms:ir.ui.view,arch_db:stock.view_warehouse_orderpoint_tree_editable
+msgid "Deadline"
+msgstr "अन्तिम म्याद"
+
+#. module: stock
+#: model:ir.model.fields.selection,name:stock.selection__stock_picking_type__code__outgoing
+#: model:ir.ui.menu,name:stock.menu_delivery
+msgid "Delivery"
+msgstr "डेलिभरी"
+
+#. module: stock
+#: model_terms:ir.ui.view,arch_db:stock.view_picking_form
+msgid "Delivery Address"
+msgstr "डेलिभरी ठेगाना"
+
+#. module: stock
+#: model:ir.model.fields,field_description:stock.field_stock_lot__note
+#: model_terms:ir.ui.view,arch_db:stock.view_picking_form
+#: model_terms:ir.ui.view,arch_db:stock.view_production_lot_form
+msgid "Description"
+msgstr "विवरण"
+
+#. module: stock
+#. odoo-javascript
+#: code:addons/stock/static/src/widgets/lots_dialog.xml:0
+#: model_terms:ir.ui.view,arch_db:stock.inventory_warning_reset_view
+#: model_terms:ir.ui.view,arch_db:stock.inventory_warning_set_view
+#: model_terms:ir.ui.view,arch_db:stock.stock_inventory_adjustment_name_form_view
+#: model_terms:ir.ui.view,arch_db:stock.stock_inventory_conflict_form_view
+#: model_terms:ir.ui.view,arch_db:stock.stock_inventory_request_count_form_view
+#: model_terms:ir.ui.view,arch_db:stock.stock_package_destination_form_view
+#: model_terms:ir.ui.view,arch_db:stock.stock_put_in_pack_form
+#: model_terms:ir.ui.view,arch_db:stock.stock_quant_relocate_view_form
+#: model_terms:ir.ui.view,arch_db:stock.stock_scrap_form_view2
+#: model_terms:ir.ui.view,arch_db:stock.stock_warn_insufficient_qty_form_view
+#: model_terms:ir.ui.view,arch_db:stock.stock_warn_insufficient_qty_scrap_form_view
+#: model_terms:ir.ui.view,arch_db:stock.view_backorder_confirmation
+#: model_terms:ir.ui.view,arch_db:stock.view_product_replenish
+#: model_terms:ir.ui.view,arch_db:stock.view_stock_orderpoint_snooze
+#: model_terms:ir.ui.view,arch_db:stock.view_stock_return_picking_form
+msgid "Discard"
+msgstr "खारेज गर्नुहोस्"
+
+#. module: stock
+#: model:ir.model.fields,field_description:stock.field_barcode_rule__display_name
+#: model:ir.model.fields,field_description:stock.field_ir_actions_report__display_name
+#: model:ir.model.fields,field_description:stock.field_lot_label_layout__display_name
+#: model:ir.model.fields,field_description:stock.field_picking_label_type__display_name
+#: model:ir.model.fields,field_description:stock.field_product_catalog_mixin__display_name
+#: model:ir.model.fields,field_description:stock.field_product_category__display_name
+#: model:ir.model.fields,field_description:stock.field_product_label_layout__display_name
+#: model:ir.model.fields,field_description:stock.field_product_product__display_name
+#: model:ir.model.fields,field_description:stock.field_product_removal__display_name
+#: model:ir.model.fields,field_description:stock.field_product_replenish__display_name
+#: model:ir.model.fields,field_description:stock.field_product_template__display_name
+#: model:ir.model.fields,field_description:stock.field_report_stock_label_lot_template_view__display_name
+#: model:ir.model.fields,field_description:stock.field_report_stock_label_product_product_view__display_name
+#: model:ir.model.fields,field_description:stock.field_report_stock_quantity__display_name
+#: model:ir.model.fields,field_description:stock.field_report_stock_report_reception__display_name
+#: model:ir.model.fields,field_description:stock.field_report_stock_report_stock_rule__display_name
+#: model:ir.model.fields,field_description:stock.field_res_company__display_name
+#: model:ir.model.fields,field_description:stock.field_res_config_settings__display_name
+#: model:ir.model.fields,field_description:stock.field_res_partner__display_name
+#: model:ir.model.fields,field_description:stock.field_res_users__display_name
+#: model:ir.model.fields,field_description:stock.field_stock_backorder_confirmation__display_name
+#: model:ir.model.fields,field_description:stock.field_stock_backorder_confirmation_line__display_name
+#: model:ir.model.fields,field_description:stock.field_stock_forecasted_product_product__display_name
+#: model:ir.model.fields,field_description:stock.field_stock_forecasted_product_template__display_name
+#: model:ir.model.fields,field_description:stock.field_stock_inventory_adjustment_name__display_name
+#: model:ir.model.fields,field_description:stock.field_stock_inventory_conflict__display_name
+#: model:ir.model.fields,field_description:stock.field_stock_inventory_warning__display_name
+#: model:ir.model.fields,field_description:stock.field_stock_location__display_name
+#: model:ir.model.fields,field_description:stock.field_stock_lot__display_name
+#: model:ir.model.fields,field_description:stock.field_stock_move__display_name
+#: model:ir.model.fields,field_description:stock.field_stock_move_line__display_name
+#: model:ir.model.fields,field_description:stock.field_stock_orderpoint_snooze__display_name
+#: model:ir.model.fields,field_description:stock.field_stock_package__display_name
+#: model:ir.model.fields,field_description:stock.field_stock_package_destination__display_name
+#: model:ir.model.fields,field_description:stock.field_stock_package_history__display_name
+#: model:ir.model.fields,field_description:stock.field_stock_package_type__display_name
+#: model:ir.model.fields,field_description:stock.field_stock_picking__display_name
+#: model:ir.model.fields,field_description:stock.field_stock_picking_type__display_name
+#: model:ir.model.fields,field_description:stock.field_stock_put_in_pack__display_name
+#: model:ir.model.fields,field_description:stock.field_stock_putaway_rule__display_name
+#: model:ir.model.fields,field_description:stock.field_stock_quant__display_name
+#: model:ir.model.fields,field_description:stock.field_stock_quant_relocate__display_name
+#: model:ir.model.fields,field_description:stock.field_stock_quantity_history__display_name
+#: model:ir.model.fields,field_description:stock.field_stock_reference__display_name
+#: model:ir.model.fields,field_description:stock.field_stock_replenish_mixin__display_name
+#: model:ir.model.fields,field_description:stock.field_stock_replenishment_info__display_name
+#: model:ir.model.fields,field_description:stock.field_stock_replenishment_option__display_name
+#: model:ir.model.fields,field_description:stock.field_stock_request_count__display_name
+#: model:ir.model.fields,field_description:stock.field_stock_return_picking__display_name
+#: model:ir.model.fields,field_description:stock.field_stock_return_picking_line__display_name
+#: model:ir.model.fields,field_description:stock.field_stock_route__display_name
+#: model:ir.model.fields,field_description:stock.field_stock_rule__display_name
+#: model:ir.model.fields,field_description:stock.field_stock_rules_report__display_name
+#: model:ir.model.fields,field_description:stock.field_stock_scrap__display_name
+#: model:ir.model.fields,field_description:stock.field_stock_scrap_reason_tag__display_name
+#: model:ir.model.fields,field_description:stock.field_stock_storage_category__display_name
+#: model:ir.model.fields,field_description:stock.field_stock_storage_category_capacity__display_name
+#: model:ir.model.fields,field_description:stock.field_stock_traceability_report__display_name
+#: model:ir.model.fields,field_description:stock.field_stock_warehouse__display_name
+#: model:ir.model.fields,field_description:stock.field_stock_warehouse_orderpoint__display_name
+#: model:ir.model.fields,field_description:stock.field_stock_warn_insufficient_qty__display_name
+#: model:ir.model.fields,field_description:stock.field_stock_warn_insufficient_qty_scrap__display_name
+#: model:ir.model.fields,field_description:stock.field_uom_uom__display_name
+#: model_terms:ir.ui.view,arch_db:stock.report_reception_body
+msgid "Display Name"
+msgstr "प्रदर्शन नाम"
+
+#. module: stock
+#: model_terms:ir.ui.view,arch_db:stock.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:stock.view_picking_type_form
+msgid "Documentation"
+msgstr "कागजात"
+
+#. module: stock
+#: model:ir.model.fields.selection,name:stock.selection__stock_move__state__done
+#: model:ir.model.fields.selection,name:stock.selection__stock_picking__state__done
+#: model:ir.model.fields.selection,name:stock.selection__stock_scrap__state__done
+#: model_terms:ir.ui.view,arch_db:stock.stock_move_line_view_search
+#: model_terms:ir.ui.view,arch_db:stock.view_move_search
+msgid "Done"
+msgstr "सम्पन्न"
+
+#. module: stock
+#: model:ir.model.fields.selection,name:stock.selection__stock_picking__state__draft
+#: model:ir.model.fields.selection,name:stock.selection__stock_scrap__state__draft
+#: model_terms:ir.ui.view,arch_db:stock.report_picking
+#: model_terms:ir.ui.view,arch_db:stock.view_picking_internal_search
+msgid "Draft"
+msgstr "मस्यौदा"
+
+#. module: stock
+#: model_terms:ir.ui.view,arch_db:stock.view_pickingtype_filter
+msgid "Favorites"
+msgstr "मनपर्ने"
+
+#. module: stock
+#: model:ir.model.fields,field_description:stock.field_stock_lot__message_follower_ids
+#: model:ir.model.fields,field_description:stock.field_stock_picking__message_follower_ids
+#: model:ir.model.fields,field_description:stock.field_stock_scrap__message_follower_ids
+msgid "Followers"
+msgstr "अनुयायीहरू"
+
+#. module: stock
+#: model:ir.model.fields,field_description:stock.field_stock_lot__message_partner_ids
+#: model:ir.model.fields,field_description:stock.field_stock_picking__message_partner_ids
+#: model:ir.model.fields,field_description:stock.field_stock_scrap__message_partner_ids
+msgid "Followers (Partners)"
+msgstr "अनुयायीहरू (साझेदारहरू)"
+
+#. module: stock
+#. odoo-javascript
+#: code:addons/stock/static/src/stock_forecasted/forecasted_header.xml:0
+#: model_terms:ir.ui.view,arch_db:stock.product_product_stock_tree
+#: model_terms:ir.ui.view,arch_db:stock.view_stock_product_template_tree
+#: model_terms:ir.ui.view,arch_db:stock.view_stock_product_tree
+msgid "Forecasted"
+msgstr "अनुमानित"
+
+#. module: stock
+#: model:ir.model.fields,field_description:stock.field_lot_label_layout__print_format
+#: model:ir.model.fields,field_description:stock.field_product_label_layout__print_format
+msgid "Format"
+msgstr "ढाँचा"
+
+#. module: stock
+#: model_terms:ir.ui.view,arch_db:stock.search_product_lot_filter
+#: model_terms:ir.ui.view,arch_db:stock.view_picking_internal_search
+msgid "Future Activities"
+msgstr "भविष्यका गतिविधिहरू"
+
+#. module: stock
+#: model:ir.model.fields,field_description:stock.field_stock_lot__has_message
+#: model:ir.model.fields,field_description:stock.field_stock_picking__has_message
+#: model:ir.model.fields,field_description:stock.field_stock_scrap__has_message
+msgid "Has Message"
+msgstr "सन्देश छ"
+
+#. module: stock
+#: model:ir.model.fields,field_description:stock.field_stock_package_type__height
+#: model_terms:ir.ui.view,arch_db:stock.stock_package_type_form
+msgid "Height"
+msgstr "उचाइ"
+
+#. module: stock
+#. odoo-python
+#: code:addons/stock/models/stock_quant.py:0
+#: model_terms:ir.ui.view,arch_db:stock.product_product_stock_tree
+#: model_terms:ir.ui.view,arch_db:stock.view_stock_quant_tree_editable
+#: model_terms:ir.ui.view,arch_db:stock.view_stock_quant_tree_inventory_editable
+msgid "History"
+msgstr "इतिहास"
+
+#. module: stock
+#: model:ir.model.fields,field_description:stock.field_barcode_rule__id
+#: model:ir.model.fields,field_description:stock.field_ir_actions_report__id
+#: model:ir.model.fields,field_description:stock.field_lot_label_layout__id
+#: model:ir.model.fields,field_description:stock.field_picking_label_type__id
+#: model:ir.model.fields,field_description:stock.field_product_catalog_mixin__id
+#: model:ir.model.fields,field_description:stock.field_product_category__id
+#: model:ir.model.fields,field_description:stock.field_product_label_layout__id
+#: model:ir.model.fields,field_description:stock.field_product_product__id
+#: model:ir.model.fields,field_description:stock.field_product_removal__id
+#: model:ir.model.fields,field_description:stock.field_product_replenish__id
+#: model:ir.model.fields,field_description:stock.field_product_template__id
+#: model:ir.model.fields,field_description:stock.field_report_stock_label_lot_template_view__id
+#: model:ir.model.fields,field_description:stock.field_report_stock_label_product_product_view__id
+#: model:ir.model.fields,field_description:stock.field_report_stock_quantity__id
+#: model:ir.model.fields,field_description:stock.field_report_stock_report_reception__id
+#: model:ir.model.fields,field_description:stock.field_report_stock_report_stock_rule__id
+#: model:ir.model.fields,field_description:stock.field_res_company__id
+#: model:ir.model.fields,field_description:stock.field_res_config_settings__id
+#: model:ir.model.fields,field_description:stock.field_res_partner__id
+#: model:ir.model.fields,field_description:stock.field_res_users__id
+#: model:ir.model.fields,field_description:stock.field_stock_backorder_confirmation__id
+#: model:ir.model.fields,field_description:stock.field_stock_backorder_confirmation_line__id
+#: model:ir.model.fields,field_description:stock.field_stock_forecasted_product_product__id
+#: model:ir.model.fields,field_description:stock.field_stock_forecasted_product_template__id
+#: model:ir.model.fields,field_description:stock.field_stock_inventory_adjustment_name__id
+#: model:ir.model.fields,field_description:stock.field_stock_inventory_conflict__id
+#: model:ir.model.fields,field_description:stock.field_stock_inventory_warning__id
+#: model:ir.model.fields,field_description:stock.field_stock_location__id
+#: model:ir.model.fields,field_description:stock.field_stock_lot__id
+#: model:ir.model.fields,field_description:stock.field_stock_move__id
+#: model:ir.model.fields,field_description:stock.field_stock_move_line__id
+#: model:ir.model.fields,field_description:stock.field_stock_orderpoint_snooze__id
+#: model:ir.model.fields,field_description:stock.field_stock_package__id
+#: model:ir.model.fields,field_description:stock.field_stock_package_destination__id
+#: model:ir.model.fields,field_description:stock.field_stock_package_history__id
+#: model:ir.model.fields,field_description:stock.field_stock_package_type__id
+#: model:ir.model.fields,field_description:stock.field_stock_picking__id
+#: model:ir.model.fields,field_description:stock.field_stock_picking_type__id
+#: model:ir.model.fields,field_description:stock.field_stock_put_in_pack__id
+#: model:ir.model.fields,field_description:stock.field_stock_putaway_rule__id
+#: model:ir.model.fields,field_description:stock.field_stock_quant__id
+#: model:ir.model.fields,field_description:stock.field_stock_quant_relocate__id
+#: model:ir.model.fields,field_description:stock.field_stock_quantity_history__id
+#: model:ir.model.fields,field_description:stock.field_stock_reference__id
+#: model:ir.model.fields,field_description:stock.field_stock_replenish_mixin__id
+#: model:ir.model.fields,field_description:stock.field_stock_replenishment_info__id
+#: model:ir.model.fields,field_description:stock.field_stock_replenishment_option__id
+#: model:ir.model.fields,field_description:stock.field_stock_request_count__id
+#: model:ir.model.fields,field_description:stock.field_stock_return_picking__id
+#: model:ir.model.fields,field_description:stock.field_stock_return_picking_line__id
+#: model:ir.model.fields,field_description:stock.field_stock_route__id
+#: model:ir.model.fields,field_description:stock.field_stock_rule__id
+#: model:ir.model.fields,field_description:stock.field_stock_rules_report__id
+#: model:ir.model.fields,field_description:stock.field_stock_scrap__id
+#: model:ir.model.fields,field_description:stock.field_stock_scrap_reason_tag__id
+#: model:ir.model.fields,field_description:stock.field_stock_storage_category__id
+#: model:ir.model.fields,field_description:stock.field_stock_storage_category_capacity__id
+#: model:ir.model.fields,field_description:stock.field_stock_traceability_report__id
+#: model:ir.model.fields,field_description:stock.field_stock_warehouse__id
+#: model:ir.model.fields,field_description:stock.field_stock_warehouse_orderpoint__id
+#: model:ir.model.fields,field_description:stock.field_stock_warn_insufficient_qty__id
+#: model:ir.model.fields,field_description:stock.field_stock_warn_insufficient_qty_scrap__id
+#: model:ir.model.fields,field_description:stock.field_uom_uom__id
+msgid "ID"
+msgstr "आईडी"
+
+#. module: stock
+#: model:ir.model.fields,field_description:stock.field_stock_lot__activity_exception_icon
+#: model:ir.model.fields,field_description:stock.field_stock_picking__activity_exception_icon
+msgid "Icon"
+msgstr "आइकन"
+
+#. module: stock
+#: model:ir.model.fields,field_description:stock.field_stock_lot__ref
+msgid "Internal Reference"
+msgstr "आन्तरिक सन्दर्भ"
+
+#. module: stock
+#: model:ir.actions.server,name:stock.action_view_inventory_tree
+#: model:ir.actions.server,name:stock.action_view_quants
+#: model:ir.model.fields,field_description:stock.field_stock_move__is_inventory
+#: model:ir.model.fields,field_description:stock.field_stock_move_line__is_inventory
+#: model:ir.ui.menu,name:stock.menu_stock_root
+#: model:res.groups.privilege,name:stock.res_groups_privilege_inventory
+#: model_terms:ir.ui.view,arch_db:stock.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:stock.view_move_search
+#: model_terms:ir.ui.view,arch_db:stock.view_partner_stock_form
+#: model_terms:ir.ui.view,arch_db:stock.view_production_lot_form
+#: model_terms:ir.ui.view,arch_db:stock.view_stock_quant_pivot
+msgid "Inventory"
+msgstr "मौज्दात व्यवस्थापन"
+
+#. module: stock
+#: model:ir.model.fields,field_description:stock.field_stock_lot__message_is_follower
+#: model:ir.model.fields,field_description:stock.field_stock_picking__message_is_follower
+#: model:ir.model.fields,field_description:stock.field_stock_scrap__message_is_follower
+msgid "Is Follower"
+msgstr "अनुयायी हो"
+
+#. module: stock
+#: model:ir.model.fields,field_description:stock.field_lot_label_layout__write_uid
+#: model:ir.model.fields,field_description:stock.field_picking_label_type__write_uid
+#: model:ir.model.fields,field_description:stock.field_product_removal__write_uid
+#: model:ir.model.fields,field_description:stock.field_product_replenish__write_uid
+#: model:ir.model.fields,field_description:stock.field_stock_backorder_confirmation__write_uid
+#: model:ir.model.fields,field_description:stock.field_stock_backorder_confirmation_line__write_uid
+#: model:ir.model.fields,field_description:stock.field_stock_inventory_adjustment_name__write_uid
+#: model:ir.model.fields,field_description:stock.field_stock_inventory_conflict__write_uid
+#: model:ir.model.fields,field_description:stock.field_stock_inventory_warning__write_uid
+#: model:ir.model.fields,field_description:stock.field_stock_location__write_uid
+#: model:ir.model.fields,field_description:stock.field_stock_lot__write_uid
+#: model:ir.model.fields,field_description:stock.field_stock_move__write_uid
+#: model:ir.model.fields,field_description:stock.field_stock_move_line__write_uid
+#: model:ir.model.fields,field_description:stock.field_stock_orderpoint_snooze__write_uid
+#: model:ir.model.fields,field_description:stock.field_stock_package__write_uid
+#: model:ir.model.fields,field_description:stock.field_stock_package_destination__write_uid
+#: model:ir.model.fields,field_description:stock.field_stock_package_history__write_uid
+#: model:ir.model.fields,field_description:stock.field_stock_package_type__write_uid
+#: model:ir.model.fields,field_description:stock.field_stock_picking__write_uid
+#: model:ir.model.fields,field_description:stock.field_stock_picking_type__write_uid
+#: model:ir.model.fields,field_description:stock.field_stock_put_in_pack__write_uid
+#: model:ir.model.fields,field_description:stock.field_stock_putaway_rule__write_uid
+#: model:ir.model.fields,field_description:stock.field_stock_quant__write_uid
+#: model:ir.model.fields,field_description:stock.field_stock_quant_relocate__write_uid
+#: model:ir.model.fields,field_description:stock.field_stock_quantity_history__write_uid
+#: model:ir.model.fields,field_description:stock.field_stock_reference__write_uid
+#: model:ir.model.fields,field_description:stock.field_stock_replenishment_info__write_uid
+#: model:ir.model.fields,field_description:stock.field_stock_replenishment_option__write_uid
+#: model:ir.model.fields,field_description:stock.field_stock_request_count__write_uid
+#: model:ir.model.fields,field_description:stock.field_stock_return_picking__write_uid
+#: model:ir.model.fields,field_description:stock.field_stock_return_picking_line__write_uid
+#: model:ir.model.fields,field_description:stock.field_stock_route__write_uid
+#: model:ir.model.fields,field_description:stock.field_stock_rule__write_uid
+#: model:ir.model.fields,field_description:stock.field_stock_rules_report__write_uid
+#: model:ir.model.fields,field_description:stock.field_stock_scrap__write_uid
+#: model:ir.model.fields,field_description:stock.field_stock_scrap_reason_tag__write_uid
+#: model:ir.model.fields,field_description:stock.field_stock_storage_category__write_uid
+#: model:ir.model.fields,field_description:stock.field_stock_storage_category_capacity__write_uid
+#: model:ir.model.fields,field_description:stock.field_stock_traceability_report__write_uid
+#: model:ir.model.fields,field_description:stock.field_stock_warehouse__write_uid
+#: model:ir.model.fields,field_description:stock.field_stock_warehouse_orderpoint__write_uid
+#: model:ir.model.fields,field_description:stock.field_stock_warn_insufficient_qty_scrap__write_uid
+msgid "Last Updated by"
+msgstr "अन्तिम अद्यावधिक गर्ने"
+
+#. module: stock
+#: model:ir.model.fields,field_description:stock.field_lot_label_layout__write_date
+#: model:ir.model.fields,field_description:stock.field_picking_label_type__write_date
+#: model:ir.model.fields,field_description:stock.field_product_removal__write_date
+#: model:ir.model.fields,field_description:stock.field_product_replenish__write_date
+#: model:ir.model.fields,field_description:stock.field_stock_backorder_confirmation__write_date
+#: model:ir.model.fields,field_description:stock.field_stock_backorder_confirmation_line__write_date
+#: model:ir.model.fields,field_description:stock.field_stock_inventory_adjustment_name__write_date
+#: model:ir.model.fields,field_description:stock.field_stock_inventory_conflict__write_date
+#: model:ir.model.fields,field_description:stock.field_stock_inventory_warning__write_date
+#: model:ir.model.fields,field_description:stock.field_stock_location__write_date
+#: model:ir.model.fields,field_description:stock.field_stock_lot__write_date
+#: model:ir.model.fields,field_description:stock.field_stock_move__write_date
+#: model:ir.model.fields,field_description:stock.field_stock_move_line__write_date
+#: model:ir.model.fields,field_description:stock.field_stock_orderpoint_snooze__write_date
+#: model:ir.model.fields,field_description:stock.field_stock_package__write_date
+#: model:ir.model.fields,field_description:stock.field_stock_package_destination__write_date
+#: model:ir.model.fields,field_description:stock.field_stock_package_history__write_date
+#: model:ir.model.fields,field_description:stock.field_stock_package_type__write_date
+#: model:ir.model.fields,field_description:stock.field_stock_picking__write_date
+#: model:ir.model.fields,field_description:stock.field_stock_picking_type__write_date
+#: model:ir.model.fields,field_description:stock.field_stock_put_in_pack__write_date
+#: model:ir.model.fields,field_description:stock.field_stock_putaway_rule__write_date
+#: model:ir.model.fields,field_description:stock.field_stock_quant__write_date
+#: model:ir.model.fields,field_description:stock.field_stock_quant_relocate__write_date
+#: model:ir.model.fields,field_description:stock.field_stock_quantity_history__write_date
+#: model:ir.model.fields,field_description:stock.field_stock_reference__write_date
+#: model:ir.model.fields,field_description:stock.field_stock_replenishment_info__write_date
+#: model:ir.model.fields,field_description:stock.field_stock_replenishment_option__write_date
+#: model:ir.model.fields,field_description:stock.field_stock_request_count__write_date
+#: model:ir.model.fields,field_description:stock.field_stock_return_picking__write_date
+#: model:ir.model.fields,field_description:stock.field_stock_return_picking_line__write_date
+#: model:ir.model.fields,field_description:stock.field_stock_route__write_date
+#: model:ir.model.fields,field_description:stock.field_stock_rule__write_date
+#: model:ir.model.fields,field_description:stock.field_stock_rules_report__write_date
+#: model:ir.model.fields,field_description:stock.field_stock_scrap__write_date
+#: model:ir.model.fields,field_description:stock.field_stock_scrap_reason_tag__write_date
+#: model:ir.model.fields,field_description:stock.field_stock_storage_category__write_date
+#: model:ir.model.fields,field_description:stock.field_stock_storage_category_capacity__write_date
+#: model:ir.model.fields,field_description:stock.field_stock_traceability_report__write_date
+#: model:ir.model.fields,field_description:stock.field_stock_warehouse__write_date
+#: model:ir.model.fields,field_description:stock.field_stock_warehouse_orderpoint__write_date
+#: model:ir.model.fields,field_description:stock.field_stock_warn_insufficient_qty_scrap__write_date
+msgid "Last Updated on"
+msgstr "अन्तिम अद्यावधिक मिति"
+
+#. module: stock
+#: model_terms:ir.ui.view,arch_db:stock.search_product_lot_filter
+#: model_terms:ir.ui.view,arch_db:stock.view_picking_internal_search
+msgid "Late Activities"
+msgstr "ढिलो गतिविधिहरू"
+
+#. module: stock
+#: model:ir.model.fields,field_description:stock.field_product_product__location_id
+#: model:ir.model.fields,field_description:stock.field_product_template__location_id
+#: model:ir.model.fields,field_description:stock.field_stock_lot__location_id
+#: model:ir.model.fields,field_description:stock.field_stock_package__location_id
+#: model:ir.model.fields,field_description:stock.field_stock_quant__location_id
+#: model:ir.model.fields,field_description:stock.field_stock_storage_category__location_ids
+#: model:ir.model.fields,field_description:stock.field_stock_warehouse_orderpoint__location_id
+#: model:ir.model.fields,field_description:stock.field_stock_warn_insufficient_qty__location_id
+#: model:ir.model.fields,field_description:stock.field_stock_warn_insufficient_qty_scrap__location_id
+#: model:ir.model.fields.selection,name:stock.selection__barcode_rule__type__location
+#: model_terms:ir.ui.view,arch_db:stock.package_history_search_view
+#: model_terms:ir.ui.view,arch_db:stock.quant_search_view
+#: model_terms:ir.ui.view,arch_db:stock.report_inventory
+#: model_terms:ir.ui.view,arch_db:stock.search_product_lot_filter
+#: model_terms:ir.ui.view,arch_db:stock.stock_move_line_view_search
+#: model_terms:ir.ui.view,arch_db:stock.stock_package_view_search
+#: model_terms:ir.ui.view,arch_db:stock.stock_reorder_report_search
+#: model_terms:ir.ui.view,arch_db:stock.stock_scrap_search_view
+#: model_terms:ir.ui.view,arch_db:stock.view_location_tree2
+#: model_terms:ir.ui.view,arch_db:stock.view_move_search
+#: model_terms:ir.ui.view,arch_db:stock.warehouse_orderpoint_search
+msgid "Location"
+msgstr "स्थान"
+
+#. module: stock
+#: model:ir.actions.act_window,name:stock.action_location_form
+#: model:ir.actions.act_window,name:stock.action_prod_inv_location_form
+#: model:ir.actions.act_window,name:stock.action_storage_category_locations
+#: model:ir.actions.act_window,name:stock.stock_quant_action
+#: model:ir.ui.menu,name:stock.menu_action_location_form
+#: model:ir.ui.menu,name:stock.menu_valuation
+#: model_terms:ir.ui.view,arch_db:stock.product_product_stock_tree
+#: model_terms:ir.ui.view,arch_db:stock.report_location_barcode
+#: model_terms:ir.ui.view,arch_db:stock.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:stock.stock_reorder_report_search
+#: model_terms:ir.ui.view,arch_db:stock.stock_storage_category_form
+#: model_terms:ir.ui.view,arch_db:stock.view_picking_type_form
+#: model_terms:ir.ui.view,arch_db:stock.view_warehouse
+msgid "Locations"
+msgstr "स्थानहरू"
+
+#. module: stock
+#: model:ir.model.fields,field_description:stock.field_stock_lot__message_has_error
+#: model:ir.model.fields,field_description:stock.field_stock_picking__message_has_error
+#: model:ir.model.fields,field_description:stock.field_stock_scrap__message_has_error
+msgid "Message Delivery error"
+msgstr "सन्देश पठाउन त्रुटि"
+
+#. module: stock
+#: model:ir.model.fields,field_description:stock.field_stock_lot__message_ids
+#: model:ir.model.fields,field_description:stock.field_stock_picking__message_ids
+#: model:ir.model.fields,field_description:stock.field_stock_scrap__message_ids
+msgid "Messages"
+msgstr "सन्देशहरू"
+
+#. module: stock
+#: model:ir.model.fields,field_description:stock.field_product_removal__method
+msgid "Method"
+msgstr "विधि"
+
+#. module: stock
+#: model_terms:ir.ui.view,arch_db:stock.search_product_lot_filter
+#: model_terms:ir.ui.view,arch_db:stock.view_picking_internal_search
+msgid "My Activities"
+msgstr "मेरा गतिविधिहरू"
+
+#. module: stock
+#: model:ir.model.fields,field_description:stock.field_stock_lot__my_activity_date_deadline
+#: model:ir.model.fields,field_description:stock.field_stock_picking__my_activity_date_deadline
+msgid "My Activity Deadline"
+msgstr "मेरो गतिविधि म्याद"
+
+#. module: stock
+#: model:ir.model.fields,field_description:stock.field_product_removal__name
+#: model:ir.model.fields,field_description:stock.field_stock_rule__name
+#: model:ir.model.fields,field_description:stock.field_stock_scrap_reason_tag__name
+#: model:ir.model.fields,field_description:stock.field_stock_warehouse_orderpoint__name
+#: model_terms:ir.ui.view,arch_db:stock.stock_reference_search_view
+msgid "Name"
+msgstr "नाम"
+
+#. module: stock
+#: model:ir.model.fields.selection,name:stock.selection__stock_picking_type__create_backorder__never
+msgid "Never"
+msgstr "कहिल्यै होइन"
+
+#. module: stock
+#. odoo-javascript
+#. odoo-python
+#: code:addons/stock/models/stock_scrap.py:0
+#: code:addons/stock/static/src/widgets/lots_dialog.xml:0
+#: model:ir.model.fields.selection,name:stock.selection__stock_move__state__draft
+#: model_terms:ir.ui.view,arch_db:stock.stock_picking_type_kanban
+#: model_terms:ir.ui.view,arch_db:stock.view_picking_form
+msgid "New"
+msgstr "नयाँ"
+
+#. module: stock
+#: model:ir.model.fields,field_description:stock.field_stock_lot__activity_calendar_event_id
+#: model:ir.model.fields,field_description:stock.field_stock_picking__activity_calendar_event_id
+msgid "Next Activity Calendar Event"
+msgstr "अर्को गतिविधि पात्रो कार्यक्रम"
+
+#. module: stock
+#: model:ir.model.fields,field_description:stock.field_stock_lot__activity_date_deadline
+#: model:ir.model.fields,field_description:stock.field_stock_picking__activity_date_deadline
+msgid "Next Activity Deadline"
+msgstr "अर्को गतिविधि म्याद"
+
+#. module: stock
+#: model:ir.model.fields,field_description:stock.field_stock_lot__activity_summary
+#: model:ir.model.fields,field_description:stock.field_stock_picking__activity_summary
+msgid "Next Activity Summary"
+msgstr "अर्को गतिविधि सारांश"
+
+#. module: stock
+#: model:ir.model.fields,field_description:stock.field_stock_lot__activity_type_id
+#: model:ir.model.fields,field_description:stock.field_stock_picking__activity_type_id
+msgid "Next Activity Type"
+msgstr "अर्को गतिविधि प्रकार"
+
+#. module: stock
+#: model:ir.model.fields.selection,name:stock.selection__stock_putaway_rule__sublocation__no
+msgid "No"
+msgstr "होइन"
+
+#. module: stock
+#: model_terms:ir.ui.view,arch_db:stock.view_picking_form
+msgid "Note"
+msgstr "टिपोट"
+
+#. module: stock
+#: model:ir.model.fields,field_description:stock.field_stock_picking__note
+msgid "Notes"
+msgstr "टिपोटहरू"
+
+#. module: stock
+#: model:ir.model.fields,field_description:stock.field_stock_lot__message_needaction_counter
+#: model:ir.model.fields,field_description:stock.field_stock_picking__message_needaction_counter
+#: model:ir.model.fields,field_description:stock.field_stock_scrap__message_needaction_counter
+msgid "Number of Actions"
+msgstr "कार्यहरूको संख्या"
+
+#. module: stock
+#: model:ir.model.fields,field_description:stock.field_stock_lot__message_has_error_counter
+#: model:ir.model.fields,field_description:stock.field_stock_picking__message_has_error_counter
+#: model:ir.model.fields,field_description:stock.field_stock_scrap__message_has_error_counter
+msgid "Number of errors"
+msgstr "त्रुटिहरूको संख्या"
+
+#. module: stock
+#. odoo-javascript
+#: code:addons/stock/static/src/stock_forecasted/forecasted_header.xml:0
+#: model:ir.model.fields,field_description:stock.field_stock_quant__on_hand
+#: model:ir.model.fields,field_description:stock.field_stock_warehouse_orderpoint__qty_on_hand
+#: model_terms:ir.ui.view,arch_db:stock.product_form_view_procurement_button
+#: model_terms:ir.ui.view,arch_db:stock.product_product_stock_tree
+#: model_terms:ir.ui.view,arch_db:stock.product_template_form_view_procurement_button
+#: model_terms:ir.ui.view,arch_db:stock.search_product_lot_filter
+#: model_terms:ir.ui.view,arch_db:stock.view_stock_product_template_tree
+#: model_terms:ir.ui.view,arch_db:stock.view_stock_product_tree
+#: model_terms:ir.ui.view,arch_db:stock.view_stock_quant_tree_inventory_editable
+#: model_terms:ir.ui.view,arch_db:stock.view_stock_quant_tree_simple
+msgid "On Hand"
+msgstr "मौज्दातमा"
+
+#. module: stock
+#: model_terms:ir.ui.view,arch_db:stock.stock_picking_type_kanban
+msgid "Open"
+msgstr "खोल्नुहोस्"
+
+#. module: stock
+#: model_terms:ir.ui.view,arch_db:stock.view_stock_rule_form
+msgid "Options"
+msgstr "विकल्पहरू"
+
+#. module: stock
+#. odoo-javascript
+#: code:addons/stock/static/src/views/stock_orderpoint_list_view.xml:0
+#: model_terms:ir.ui.view,arch_db:stock.replenishment_option_warning_view
+#: model_terms:ir.ui.view,arch_db:stock.view_warehouse_orderpoint_tree_editable
+msgid "Order"
+msgstr "क्रम"
+
+#. module: stock
+#: model:ir.model.fields,field_description:stock.field_stock_lot__partner_ids
+#: model_terms:ir.ui.view,arch_db:stock.view_move_search
+msgid "Partner"
+msgstr "साझेदार"
+
+#. module: stock
+#. odoo-javascript
+#: code:addons/stock/static/src/client_actions/stock_traceability_report_backend.xml:0
+#: code:addons/stock/static/src/components/reception_report_main/stock_reception_report_main.xml:0
+#: model_terms:ir.ui.view,arch_db:stock.view_picking_form
+msgid "Print"
+msgstr "छाप्नुहोस्"
+
+#. module: stock
+#: model:ir.model.fields,field_description:stock.field_stock_move__priority
+#: model:ir.model.fields,field_description:stock.field_stock_picking__priority
+#: model:ir.model.fields,field_description:stock.field_stock_putaway_rule__sequence
+msgid "Priority"
+msgstr "प्राथमिकता"
+
+#. module: stock
+#. odoo-javascript
+#: code:addons/stock/static/src/client_actions/stock_traceability_report_backend.xml:0
+#: model:ir.model,name:stock.model_product_template
+#: model:ir.model.fields,field_description:stock.field_product_replenish__product_id
+#: model:ir.model.fields,field_description:stock.field_report_stock_quantity__product_id
+#: model:ir.model.fields,field_description:stock.field_stock_lot__product_id
+#: model:ir.model.fields,field_description:stock.field_stock_move__product_id
+#: model:ir.model.fields,field_description:stock.field_stock_move_line__product_id
+#: model:ir.model.fields,field_description:stock.field_stock_picking__product_id
+#: model:ir.model.fields,field_description:stock.field_stock_putaway_rule__product_id
+#: model:ir.model.fields,field_description:stock.field_stock_quant__product_id
+#: model:ir.model.fields,field_description:stock.field_stock_replenishment_info__product_id
+#: model:ir.model.fields,field_description:stock.field_stock_replenishment_option__product_id
+#: model:ir.model.fields,field_description:stock.field_stock_return_picking_line__product_id
+#: model:ir.model.fields,field_description:stock.field_stock_rules_report__product_id
+#: model:ir.model.fields,field_description:stock.field_stock_scrap__product_id
+#: model:ir.model.fields,field_description:stock.field_stock_storage_category_capacity__product_id
+#: model:ir.model.fields,field_description:stock.field_stock_warehouse_orderpoint__product_id
+#: model:ir.model.fields,field_description:stock.field_stock_warn_insufficient_qty__product_id
+#: model:ir.model.fields,field_description:stock.field_stock_warn_insufficient_qty_scrap__product_id
+#: model_terms:ir.ui.view,arch_db:stock.product_product_stock_tree
+#: model_terms:ir.ui.view,arch_db:stock.quant_search_view
+#: model_terms:ir.ui.view,arch_db:stock.report_delivery_document
+#: model_terms:ir.ui.view,arch_db:stock.report_inventory
+#: model_terms:ir.ui.view,arch_db:stock.report_package_barcode_content
+#: model_terms:ir.ui.view,arch_db:stock.report_stock_body_print
+#: model_terms:ir.ui.view,arch_db:stock.search_product_lot_filter
+#: model_terms:ir.ui.view,arch_db:stock.stock_move_line_view_search
+#: model_terms:ir.ui.view,arch_db:stock.stock_putaway_list
+#: model_terms:ir.ui.view,arch_db:stock.stock_reorder_report_search
+#: model_terms:ir.ui.view,arch_db:stock.stock_scrap_search_view
+#: model_terms:ir.ui.view,arch_db:stock.view_move_search
+#: model_terms:ir.ui.view,arch_db:stock.warehouse_orderpoint_search
+msgid "Product"
+msgstr "उत्पादन"
+
+#. module: stock
+#: model:ir.model,name:stock.model_product_category
+#: model:ir.model.fields,field_description:stock.field_stock_move__product_category_id
+#: model:ir.model.fields,field_description:stock.field_stock_move_line__product_category_name
+#: model:ir.model.fields,field_description:stock.field_stock_putaway_rule__category_id
+#: model:ir.model.fields,field_description:stock.field_stock_quant__product_categ_id
+#: model:ir.model.fields,field_description:stock.field_stock_warehouse_orderpoint__product_category_id
+#: model_terms:ir.ui.view,arch_db:stock.quant_search_view
+#: model_terms:ir.ui.view,arch_db:stock.stock_putaway_list
+msgid "Product Category"
+msgstr "उत्पादन श्रेणी"
+
+#. module: stock
+#: model:ir.model.fields,field_description:stock.field_product_replenish__product_tmpl_id
+#: model:ir.model.fields,field_description:stock.field_stock_move__product_tmpl_id
+#: model:ir.model.fields,field_description:stock.field_stock_quant__product_tmpl_id
+#: model:ir.model.fields,field_description:stock.field_stock_rules_report__product_tmpl_id
+#: model:ir.model.fields,field_description:stock.field_stock_warehouse_orderpoint__product_tmpl_id
+msgid "Product Template"
+msgstr "उत्पादन ढाँचा"
+
+#. module: stock
+#. odoo-python
+#: code:addons/stock/wizard/stock_quantity_history.py:0
+#: model:ir.actions.act_window,name:stock.act_product_location_open
+#: model:ir.actions.act_window,name:stock.product_template_action_product
+#: model:ir.model.fields,field_description:stock.field_stock_route__product_ids
+#: model:ir.ui.menu,name:stock.menu_product_in_config_stock
+#: model:ir.ui.menu,name:stock.menu_product_variant_config_stock
+#: model:ir.ui.menu,name:stock.menu_stock_inventory_control
+#: model_terms:ir.ui.view,arch_db:stock.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:stock.stock_location_route_form_view
+#: model_terms:ir.ui.view,arch_db:stock.view_location_form
+msgid "Products"
+msgstr "उत्पादनहरू"
+
+#. module: stock
+#: model:ir.model.fields,field_description:stock.field_stock_lot__lot_properties
+#: model:ir.model.fields,field_description:stock.field_stock_picking__picking_properties
+#: model:ir.model.fields,field_description:stock.field_stock_quant__lot_properties
+#: model_terms:ir.ui.view,arch_db:stock.search_product_lot_filter
+#: model_terms:ir.ui.view,arch_db:stock.view_picking_internal_search
+msgid "Properties"
+msgstr "गुणहरू"
+
+#. module: stock
+#. odoo-javascript
+#: code:addons/stock/static/src/client_actions/stock_traceability_report_backend.xml:0
+#: model:ir.model.fields,field_description:stock.field_product_replenish__quantity
+#: model:ir.model.fields,field_description:stock.field_report_stock_quantity__product_qty
+#: model:ir.model.fields,field_description:stock.field_stock_move__quantity
+#: model:ir.model.fields,field_description:stock.field_stock_move_line__quantity
+#: model:ir.model.fields,field_description:stock.field_stock_quant__quantity
+#: model:ir.model.fields,field_description:stock.field_stock_return_picking_line__quantity
+#: model:ir.model.fields,field_description:stock.field_stock_scrap__scrap_qty
+#: model:ir.model.fields,field_description:stock.field_stock_storage_category_capacity__quantity
+#: model:ir.model.fields,field_description:stock.field_stock_warn_insufficient_qty__quantity
+#: model:ir.model.fields,field_description:stock.field_stock_warn_insufficient_qty_scrap__quantity
+#: model_terms:ir.ui.view,arch_db:stock.report_inventory
+#: model_terms:ir.ui.view,arch_db:stock.report_package_barcode_content
+#: model_terms:ir.ui.view,arch_db:stock.report_stock_body_print
+#: model_terms:ir.ui.view,arch_db:stock.stock_inventory_conflict_form_view
+#: model_terms:ir.ui.view,arch_db:stock.view_move_kandan
+#: model_terms:ir.ui.view,arch_db:stock.view_move_line_form
+#: model_terms:ir.ui.view,arch_db:stock.view_move_line_tree
+#: model_terms:ir.ui.view,arch_db:stock.view_move_line_tree_detailed
+#: model_terms:ir.ui.view,arch_db:stock.view_move_tree
+#: model_terms:ir.ui.view,arch_db:stock.view_picking_form
+#: model_terms:ir.ui.view,arch_db:stock.view_picking_move_tree
+#: model_terms:ir.ui.view,arch_db:stock.view_stock_move_line_kanban
+#: model_terms:ir.ui.view,arch_db:stock.view_stock_move_line_operation_tree
+msgid "Quantity"
+msgstr "परिमाण"
+
+#. module: stock
+#: model:ir.model.fields,field_description:stock.field_stock_lot__rating_ids
+#: model:ir.model.fields,field_description:stock.field_stock_picking__rating_ids
+#: model:ir.model.fields,field_description:stock.field_stock_scrap__rating_ids
+msgid "Ratings"
+msgstr "मूल्याङ्कनहरू"
+
+#. module: stock
+#. odoo-javascript
+#: code:addons/stock/static/src/client_actions/stock_traceability_report_backend.xml:0
+#: model:ir.model.fields,field_description:stock.field_stock_move__reference
+#: model:ir.model.fields,field_description:stock.field_stock_move_line__reference
+#: model:ir.model.fields,field_description:stock.field_stock_picking__name
+#: model:ir.model.fields,field_description:stock.field_stock_reference__name
+#: model:ir.model.fields,field_description:stock.field_stock_scrap__name
+#: model_terms:ir.ui.view,arch_db:stock.report_stock_body_print
+#: model_terms:ir.ui.view,arch_db:stock.stock_move_line_view_search
+#: model_terms:ir.ui.view,arch_db:stock.stock_scrap_search_view
+#: model_terms:ir.ui.view,arch_db:stock.view_move_line_form
+#: model_terms:ir.ui.view,arch_db:stock.view_move_line_tree
+#: model_terms:ir.ui.view,arch_db:stock.view_move_search
+#: model_terms:ir.ui.view,arch_db:stock.view_move_tree_receipt_picking
+#: model_terms:ir.ui.view,arch_db:stock.view_production_lot_form
+msgid "Reference"
+msgstr "सन्दर्भ"
+
+#. module: stock
+#: model_terms:ir.ui.view,arch_db:stock.stock_package_view_list_editable
+msgid "Remove"
+msgstr "हटाउनुहोस्"
+
+#. module: stock
+#: model:ir.ui.menu,name:stock.menu_warehouse_report
+#: model_terms:ir.ui.view,arch_db:stock.stock_picking_type_kanban
+msgid "Reporting"
+msgstr "प्रतिवेदन"
+
+#. module: stock
+#: model:ir.model.fields,field_description:stock.field_product_product__responsible_id
+#: model:ir.model.fields,field_description:stock.field_product_template__responsible_id
+#: model:ir.model.fields,field_description:stock.field_stock_picking__user_id
+msgid "Responsible"
+msgstr "जिम्मेवार"
+
+#. module: stock
+#: model:ir.model.fields,field_description:stock.field_stock_lot__activity_user_id
+#: model:ir.model.fields,field_description:stock.field_stock_picking__activity_user_id
+msgid "Responsible User"
+msgstr "जिम्मेवार प्रयोगकर्ता"
+
+#. module: stock
+#: model:ir.model.fields,field_description:stock.field_stock_lot__message_has_sms_error
+#: model:ir.model.fields,field_description:stock.field_stock_picking__message_has_sms_error
+#: model:ir.model.fields,field_description:stock.field_stock_scrap__message_has_sms_error
+msgid "SMS Delivery error"
+msgstr "एसएमएस पठाउन त्रुटि"
+
+#. module: stock
+#: model_terms:ir.ui.view,arch_db:stock.view_stock_replenishment_info
+msgid "Save"
+msgstr "सुरक्षित गर्नुहोस्"
+
+#. module: stock
+#: model:ir.model.fields,field_description:stock.field_stock_move__sequence
+#: model:ir.model.fields,field_description:stock.field_stock_package_type__sequence
+#: model:ir.model.fields,field_description:stock.field_stock_picking_type__sequence
+#: model:ir.model.fields,field_description:stock.field_stock_route__sequence
+#: model:ir.model.fields,field_description:stock.field_stock_rule__sequence
+#: model:ir.model.fields,field_description:stock.field_stock_scrap_reason_tag__sequence
+#: model:ir.model.fields,field_description:stock.field_stock_warehouse__sequence
+#: model_terms:ir.ui.view,arch_db:stock.stock_location_route_form_view
+#: model_terms:ir.ui.view,arch_db:stock.view_stock_rule_form
+msgid "Sequence"
+msgstr "क्रम"
+
+#. module: stock
+#: model:ir.actions.act_window,name:stock.action_stock_config_settings
+#: model:ir.ui.menu,name:stock.menu_stock_general_settings
+msgid "Settings"
+msgstr "सेटिङहरू"
+
+#. module: stock
+#: model_terms:ir.ui.view,arch_db:stock.res_config_settings_view_form
+msgid "Shipping"
+msgstr "ढुवानी"
+
+#. module: stock
+#: model_terms:ir.ui.view,arch_db:stock.stock_package_type_form
+msgid "Size"
+msgstr "आकार"
+
+#. module: stock
+#: model:ir.model.fields,field_description:stock.field_stock_move_line__origin
+msgid "Source"
+msgstr "स्रोत"
+
+#. module: stock
+#: model_terms:ir.ui.view,arch_db:stock.view_picking_internal_search
+msgid "Starred"
+msgstr "तारांकित"
+
+#. module: stock
+#: model:ir.model.fields,field_description:stock.field_report_stock_quantity__state
+msgid "State"
+msgstr "अवस्था"
+
+#. module: stock
+#: model:ir.model.fields,field_description:stock.field_stock_move__state
+#: model:ir.model.fields,field_description:stock.field_stock_move_line__state
+#: model:ir.model.fields,field_description:stock.field_stock_picking__state
+#: model:ir.model.fields,field_description:stock.field_stock_scrap__state
+#: model_terms:ir.ui.view,arch_db:stock.stock_move_line_view_search
+#: model_terms:ir.ui.view,arch_db:stock.view_move_search
+#: model_terms:ir.ui.view,arch_db:stock.view_picking_internal_search
+msgid "Status"
+msgstr "स्थिति"
+
+#. module: stock
+#. odoo-javascript
+#. odoo-python
+#: code:addons/stock/models/stock_picking.py:0
+#: code:addons/stock/static/src/stock_forecasted/forecasted_header.xml:0
+#: code:addons/stock/static/src/widgets/json_widget.xml:0
+#: model:ir.model.fields.selection,name:stock.selection__stock_picking__search_date_category__today
+#: model_terms:ir.ui.view,arch_db:stock.stock_inventory_adjustment_name_form_view
+#: model_terms:ir.ui.view,arch_db:stock.view_picking_internal_search
+msgid "Today"
+msgstr "आज"
+
+#. module: stock
+#: model_terms:ir.ui.view,arch_db:stock.search_product_lot_filter
+#: model_terms:ir.ui.view,arch_db:stock.view_picking_internal_search
+msgid "Today Activities"
+msgstr "आजका गतिविधिहरू"
+
+#. module: stock
+#. odoo-python
+#: code:addons/stock/models/stock_picking.py:0
+#: model:ir.model.fields.selection,name:stock.selection__stock_picking__search_date_category__day_1
+#: model_terms:ir.ui.view,arch_db:stock.view_picking_internal_search
+msgid "Tomorrow"
+msgstr "भोलि"
+
+#. module: stock
+#: model:ir.model.fields,field_description:stock.field_barcode_rule__type
+#: model_terms:ir.ui.view,arch_db:stock.stock_package_view_add_list
+msgid "Type"
+msgstr "प्रकार"
+
+#. module: stock
+#: model:ir.model.fields,field_description:stock.field_product_replenish__forecast_uom_id
+#: model:ir.model.fields,field_description:stock.field_stock_lot__product_uom_id
+#: model:ir.model.fields,field_description:stock.field_stock_move__product_uom
+#: model:ir.model.fields,field_description:stock.field_stock_move_line__product_uom_id
+#: model:ir.model.fields,field_description:stock.field_stock_quant__product_uom_id
+#: model:ir.model.fields,field_description:stock.field_stock_return_picking_line__uom_id
+#: model:ir.model.fields,field_description:stock.field_stock_scrap__product_uom_id
+#: model:ir.model.fields,field_description:stock.field_stock_storage_category_capacity__product_uom_id
+#: model:ir.model.fields,field_description:stock.field_stock_warehouse_orderpoint__product_uom
+#: model:ir.model.fields,field_description:stock.field_stock_warn_insufficient_qty__product_uom_name
+#: model:ir.model.fields,field_description:stock.field_stock_warn_insufficient_qty_scrap__product_uom_name
+#: model_terms:ir.ui.view,arch_db:stock.view_warehouse_orderpoint_tree_editable
+msgid "Unit"
+msgstr "एकाइ"
+
+#. module: stock
+#: model:ir.model,name:stock.model_res_users
+#: model:res.groups,name:stock.group_stock_user
+#: model_terms:ir.ui.view,arch_db:stock.view_stock_quant_tree_inventory_editable
+msgid "User"
+msgstr "प्रयोगकर्ता"
+
+#. module: stock
+#: model:ir.model.fields.selection,name:stock.selection__stock_location__usage__supplier
+#: model_terms:ir.ui.view,arch_db:stock.view_location_search
+msgid "Vendor"
+msgstr "विक्रेता"
+
+#. module: stock
+#: model_terms:ir.ui.view,arch_db:stock.stock_picking_type_kanban
+#: model_terms:ir.ui.view,arch_db:stock.view_stock_package_history_list
+msgid "View"
+msgstr "हेर्नुहोस्"
+
+#. module: stock
+#: model_terms:ir.ui.view,arch_db:stock.stock_location_route_form_view
+#: model_terms:ir.ui.view,arch_db:stock.stock_storage_category_form
+#: model_terms:ir.ui.view,arch_db:stock.view_location_form
+#: model_terms:ir.ui.view,arch_db:stock.view_production_lot_form
+#: model_terms:ir.ui.view,arch_db:stock.view_stock_rule_form
+msgid "Visible to all"
+msgstr "सबैलाई देखिने"
+
+#. module: stock
+#: model:ir.model,name:stock.model_stock_warehouse
+#: model:ir.model.fields,field_description:stock.field_product_product__warehouse_id
+#: model:ir.model.fields,field_description:stock.field_product_replenish__warehouse_id
+#: model:ir.model.fields,field_description:stock.field_product_template__warehouse_id
+#: model:ir.model.fields,field_description:stock.field_report_stock_quantity__warehouse_id
+#: model:ir.model.fields,field_description:stock.field_stock_location__warehouse_id
+#: model:ir.model.fields,field_description:stock.field_stock_move__warehouse_id
+#: model:ir.model.fields,field_description:stock.field_stock_picking_type__warehouse_id
+#: model:ir.model.fields,field_description:stock.field_stock_quant__warehouse_id
+#: model:ir.model.fields,field_description:stock.field_stock_rule__warehouse_id
+#: model:ir.model.fields,field_description:stock.field_stock_warehouse__name
+#: model:ir.model.fields,field_description:stock.field_stock_warehouse_orderpoint__warehouse_id
+#: model_terms:ir.ui.view,arch_db:stock.replenishment_option_tree_view
+#: model_terms:ir.ui.view,arch_db:stock.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:stock.stock_reorder_report_search
+#: model_terms:ir.ui.view,arch_db:stock.stock_warehouse_view_search
+#: model_terms:ir.ui.view,arch_db:stock.view_location_search
+#: model_terms:ir.ui.view,arch_db:stock.view_pickingtype_filter
+#: model_terms:ir.ui.view,arch_db:stock.view_stock_rule_filter
+#: model_terms:ir.ui.view,arch_db:stock.view_warehouse
+#: model_terms:ir.ui.view,arch_db:stock.view_warehouse_tree
+#: model_terms:ir.ui.view,arch_db:stock.warehouse_orderpoint_search
+msgid "Warehouse"
+msgstr "गोदाम"
+
+#. module: stock
+#. odoo-python
+#: code:addons/stock/models/product_strategy.py:0
+#: code:addons/stock/models/stock_move.py:0
+#: code:addons/stock/models/stock_move_line.py:0
+#: code:addons/stock/models/stock_quant.py:0
+#: code:addons/stock/models/stock_scrap.py:0
+#: code:addons/stock/models/stock_warehouse.py:0
+msgid "Warning"
+msgstr "चेतावनी"
+
+#. module: stock
+#: model:ir.model.fields,field_description:stock.field_stock_lot__website_message_ids
+#: model:ir.model.fields,field_description:stock.field_stock_picking__website_message_ids
+#: model:ir.model.fields,field_description:stock.field_stock_scrap__website_message_ids
+msgid "Website Messages"
+msgstr "वेबसाइट सन्देशहरू"
+
+#. module: stock
+#: model:ir.model.fields,help:stock.field_stock_lot__website_message_ids
+#: model:ir.model.fields,help:stock.field_stock_picking__website_message_ids
+#: model:ir.model.fields,help:stock.field_stock_scrap__website_message_ids
+msgid "Website communication history"
+msgstr "वेबसाइट सञ्चार इतिहास"
+
+#. module: stock
+#: model:ir.model.fields,field_description:stock.field_stock_package_type__width
+#: model_terms:ir.ui.view,arch_db:stock.stock_package_type_form
+msgid "Width"
+msgstr "चौडाइ"
+
+#. module: stock
+#. odoo-python
+#: code:addons/stock/models/stock_picking.py:0
+#: model:ir.model.fields.selection,name:stock.selection__stock_picking__search_date_category__yesterday
+#: model_terms:ir.ui.view,arch_db:stock.view_picking_internal_search
+msgid "Yesterday"
+msgstr "हिजो"

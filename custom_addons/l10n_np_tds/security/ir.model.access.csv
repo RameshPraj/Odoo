@@ -1,0 +1,8 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_tds_category_user,tds.category.user,model_l10n_np_tds_category,account.group_account_invoice,1,0,0,0
+access_tds_category_manager,tds.category.manager,model_l10n_np_tds_category,account.group_account_manager,1,1,1,1
+access_tds_certificate_user,tds.certificate.user,model_l10n_np_tds_certificate,account.group_account_invoice,1,1,1,0
+access_tds_certificate_manager,tds.certificate.manager,model_l10n_np_tds_certificate,account.group_account_manager,1,1,1,1
+access_tds_certificate_line_user,tds.certificate.line.user,model_l10n_np_tds_certificate_line,account.group_account_invoice,1,1,1,1
+access_tds_return_user,tds.return.user,model_l10n_np_tds_return,account.group_account_invoice,1,0,0,0
+access_tds_return_manager,tds.return.manager,model_l10n_np_tds_return,account.group_account_manager,1,1,1,1

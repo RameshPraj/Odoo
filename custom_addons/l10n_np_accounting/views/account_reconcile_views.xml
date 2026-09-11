@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Community has no button that calls account.move.line.reconcile().
+         Add one to the Journal Items list. -->
+    <record id="view_move_line_tree_reconcile" model="ir.ui.view">
+        <field name="name">account.move.line.list.reconcile</field>
+        <field name="model">account.move.line</field>
+        <field name="inherit_id" ref="account.view_move_line_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//list[@name='move_line_tree']" position="inside">
+                <header>
+                    <button name="action_reconcile_selected" type="object"
+                            string="Reconcile" class="btn-primary"
+                            groups="account.group_account_user"/>
+                </header>
+            </xpath>
+
+            <!--
+                The Matching column. Core declares
+                    <field name="matching_number" string="Matching" .../>
+                at account/views/account_move_views.xml:190, which renders a raw
+                token: the account.full.reconcile primary key when fully matched,
+                'P<n>' when partial, 'I<x>' when merely marked to be matched
+                later, and empty otherwise. On a real database that is a bare
+                integer on a few rows and blank on the rest, and the blanks
+                conflate "this account can never be reconciled" with "this is
+                reconcilable and still owed".
+
+                matching_number is DEMOTED, not removed. The search filters and
+                the group-by in account.view_account_move_line_filter reference it
+                by name (account_move_views.xml:343-348 and :381), and so may any
+                integration; keeping the field in the arch as optional="hide"
+                leaves the token one click away without spending a column on it.
+            -->
+            <xpath expr="//field[@name='matching_number']" position="attributes">
+                <attribute name="string">Matching #</attribute>
+                <attribute name="optional">hide</attribute>
+            </xpath>
+
+            <!--
+                readonly is required, not decorative: this list is multi_edit="1",
+                and without it Odoo offers to mass-edit a computed display string.
+                matching_status rides along invisibly because the widget colours
+                and gates the click on it.
+            -->
+            <xpath expr="//field[@name='matching_number']" position="after">
+                <field name="matching_status" column_invisible="True"/>
+                <field name="matching_label" string="Matching"
+                       widget="account_matching" readonly="1" optional="show"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="action_account_reconcile" model="ir.actions.act_window">
+        <field name="name">Reconcile</field>
+        <field name="res_model">account.move.line</field>
+        <field name="view_mode">list,pivot,graph</field>
+        <field name="view_id" ref="account.view_move_line_tree"/>
+        <!-- Open items only: posted, still carrying a residual, on an account
+             flagged 'Allow Reconciliation'. Grouped by account because
+             reconcile() requires a single account. -->
+        <field name="domain">[('display_type', 'not in', ('line_section', 'line_subsection', 'line_note')),
+                              ('account_id.reconcile', '=', True),
+                              ('parent_state', '=', 'posted'),
+                              ('amount_residual', '!=', 0)]</field>
+        <field name="context">{'search_default_group_by_account': 1, 'expand': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Nothing left to reconcile</p>
+            <p>
+                Every posted item on a reconcilable account is fully matched.
+                To reconcile, select two or more items on the <b>same account</b>
+                whose debits and credits offset, then press <b>Reconcile</b>.
+            </p>
+        </field>
+    </record>
+
+</odoo>

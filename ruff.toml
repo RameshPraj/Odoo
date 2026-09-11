@@ -1,0 +1,91 @@
+# Ruff configuration (audit finding QA-1).
+#
+# Scoped to code written here plus the tooling. Vendored OCA modules are excluded
+# on purpose: they are upstream code carried verbatim apart from the deviations
+# recorded in custom_addons/VENDORED.md, and reformatting them would make the next
+# upstream sync unreadable. `odoo/` -- the vendored core, 98.6% of the tree -- is
+# excluded for the same reason, more so.
+#
+# Run:  .\run-odoo.ps1 lint     /     ./run-odoo.sh lint
+
+line-length = 88
+target-version = "py310"          # Odoo 19 declares 3.10-3.14; match the floor.
+
+include = [
+    "custom_addons/l10n_np*/**/*.py",
+    "custom_addons/nepali_calendar_core/**/*.py",
+    "custom_addons/local_ui_tweaks/**/*.py",
+    "custom_addons/account_reports_interactive/**/*.py",
+    "custom_addons/account_financial_statements/**/*.py",
+    "tools/**/*.py",
+    "l10n_ne/**/*.py",
+]
+
+[lint]
+select = [
+    "F",      # pyflakes: undefined names, unused imports, f-string mistakes
+    "E",      # pycodestyle errors
+    "W",      # pycodestyle warnings
+    "I",      # import sorting
+    "UP",     # pyupgrade: syntax that is obsolete on 3.10+
+    "B",      # bugbear: mutable defaults, loop-variable binding, assert-on-tuple
+    "C4",     # comprehension simplifications
+    "RET",    # unnecessary branches around return
+    "SIM",    # simplifiable constructs
+    "S",      # bandit: the security subset, which is why this is here at all
+]
+
+ignore = [
+    # Odoo idioms that are not defects. Each of these would otherwise fire on
+    # essentially every file, and a linter that cries wolf gets switched off.
+    "E501",    # line length: reported by W505 style anyway, and Odoo XML-ish
+               # strings and long URLs in comments are not worth rewrapping
+    "S101",    # assert: used deliberately in migrations to fail loudly, which is
+               # the whole point of the FIN-1 and ACC-3 migrations
+    "B008",    # function call in default argument: `default=lambda self: ...` is
+               # the documented Odoo pattern, and `fields.Date.context_today`
+    "SIM108",  # ternary instead of if/else: often less readable in these models
+    "RET504",  # assign-then-return: frequently clearer with a named result
+    "UP009",   # `# -*- coding: utf-8 -*-`: redundant on Python 3, but it is the
+               # convention across Odoo's own addons and this tree has 67 of them.
+               # Stripping them is 67 files of pure churn for no behaviour change,
+               # and it would obscure the next real diff in each file.
+]
+
+[lint.per-file-ignores]
+# An Odoo manifest is a bare dict literal at module level -- that is the entire
+# file format, and B018 "useless expression" fires on every one of them.
+"**/__manifest__.py" = ["B018"]
+# `from . import models` in an Odoo package is a side-effect import: it is how the
+# ORM discovers models, and the name is never referenced. All 62 F401 findings in
+# this tree were of that kind, none was dead code.
+#
+# I001 is off here for a stronger reason: in an Odoo package the import ORDER IS
+# SEMANTIC, not stylistic. Sorting them broke `l10n_np_accounting/__init__.py`,
+# whose own comment reads "`wizard` first: models/ extends account.lock.dates,
+# which is defined in wizard/, and an extension cannot precede its model" -- and
+# the alphabetical fix put `models` first while leaving the comment in place,
+# describing the opposite of the code. Caught by reading the diff; reverted. An
+# autofix is not safe merely because it is mechanical.
+"**/__init__.py" = ["F401", "I001"]
+# Test files legitimately use assert and build throwaway credentials. They also
+# read a JavaScript source file to assert on its contents (SIM115: a bare open()
+# whose handle dies with the statement is fine for a one-line read in a test), nest
+# `with self.subTest(...)` inside a file open (SIM117: combining them loses which
+# subtest failed), and shell out to `node` to syntax-check the JS bundle (S603:
+# the argument list is literal).
+"**/tests/*.py" = ["S105", "S106", "S311", "SIM115", "SIM117", "S603"]
+# The generator that writes the JavaScript BS lookup table is a standalone script
+# whose output is source code; percent-formatting reads better than f-strings when
+# the template itself contains braces.
+"custom_addons/nepali_calendar_core/tools/gen_js_data.py" = ["UP031"]
+# bs.py re-exports the shared month and weekday names partway down the module, on
+# purpose and with a comment saying so, so that `bs.MONTHS_NE` keeps working for
+# existing callers while the single source of truth lives in names.py.
+"custom_addons/nepali_calendar_core/tools/bs.py" = ["E402"]
+# Migrations are scripts, not modules: a late import keeps them cheap to load and
+# is how Odoo's own migration scripts are written.
+"**/migrations/**/*.py" = ["PLC0415"]
+
+[lint.isort]
+known-third-party = ["odoo"]

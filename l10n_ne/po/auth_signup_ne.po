@@ -1,0 +1,78 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0 (auth_signup)\n"
+"Report-Msgid-Bugs-To: \n"
+"Language-Team: Nepali\n"
+"Language: ne\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: auth_signup
+#: model_terms:ir.ui.view,arch_db:auth_signup.reset_password_email
+msgid "Change password"
+msgstr "पासवर्ड परिवर्तन गर्नुहोस्"
+
+#. module: auth_signup
+#: model:ir.model,name:auth_signup.model_res_config_settings
+msgid "Config Settings"
+msgstr "कन्फिग सेटिङहरू"
+
+#. module: auth_signup
+#: model:ir.model.fields.selection,name:auth_signup.selection__res_users__state__active
+msgid "Confirmed"
+msgstr "पुष्टि भएको"
+
+#. module: auth_signup
+#: model:ir.model,name:auth_signup.model_res_partner
+msgid "Contact"
+msgstr "सम्पर्क"
+
+#. module: auth_signup
+#: model:ir.model,website_form_label:auth_signup.model_res_partner
+msgid "Create a Customer"
+msgstr "ग्राहक सिर्जना गर्नुहोस्"
+
+#. module: auth_signup
+#: model:ir.model.fields,field_description:auth_signup.field_ir_http__display_name
+#: model:ir.model.fields,field_description:auth_signup.field_res_config_settings__display_name
+#: model:ir.model.fields,field_description:auth_signup.field_res_partner__display_name
+#: model:ir.model.fields,field_description:auth_signup.field_res_users__display_name
+msgid "Display Name"
+msgstr "प्रदर्शन नाम"
+
+#. module: auth_signup
+#: model_terms:ir.ui.view,arch_db:auth_signup.reset_password
+#: model_terms:ir.ui.view,arch_db:auth_signup.signup
+msgid "Email"
+msgstr "इमेल"
+
+#. module: auth_signup
+#: model:ir.model.fields,field_description:auth_signup.field_ir_http__id
+#: model:ir.model.fields,field_description:auth_signup.field_res_config_settings__id
+#: model:ir.model.fields,field_description:auth_signup.field_res_partner__id
+#: model:ir.model.fields,field_description:auth_signup.field_res_users__id
+msgid "ID"
+msgstr "आईडी"
+
+#. module: auth_signup
+#: model_terms:ir.ui.view,arch_db:auth_signup.signup
+msgid "Name"
+msgstr "नाम"
+
+#. module: auth_signup
+#: model_terms:ir.ui.view,arch_db:auth_signup.fields
+msgid "Password"
+msgstr "पासवर्ड"
+
+#. module: auth_signup
+#: model:ir.model.fields,field_description:auth_signup.field_res_users__state
+msgid "Status"
+msgstr "स्थिति"
+
+#. module: auth_signup
+#: model:ir.model,name:auth_signup.model_res_users
+msgid "User"
+msgstr "प्रयोगकर्ता"

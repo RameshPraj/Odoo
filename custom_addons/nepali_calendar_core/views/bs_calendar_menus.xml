@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- The browsable Bikram Sambat month grid -->
+    <record id="action_bs_calendar" model="ir.actions.client">
+        <field name="name">Nepali Calendar</field>
+        <field name="tag">nepali_calendar_core.calendar</field>
+        <field name="target">main</field>
+    </record>
+
+    <!-- Top-level app entry, so it is reachable from the apps menu -->
+    <menuitem id="menu_bs_calendar_root"
+              name="Nepali Calendar"
+              web_icon="nepali_calendar_core,static/description/icon.png"
+              action="action_bs_calendar"
+              sequence="95"/>
+
+</odoo>

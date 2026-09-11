@@ -1,0 +1,74 @@
+# ---------------------------------------------------------------------------
+# Python
+# ---------------------------------------------------------------------------
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.eggs/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# ---------------------------------------------------------------------------
+# Virtual environment (recreate with: py -3.12 -m venv venv)
+# ---------------------------------------------------------------------------
+/venv/
+/.venv/
+/env/
+
+# ---------------------------------------------------------------------------
+# Odoo runtime data
+#   .odoo_data/ is the data_dir: filestore, sessions, compiled assets.
+#   The filestore holds real attachments -- back it up separately, alongside a
+#   pg_dump. It is deliberately NOT in git (binary, large, environment-local).
+# ---------------------------------------------------------------------------
+/.odoo_data/
+*.log
+*.pid
+.gunicorn.pid
+#   logs/ and .runtime/ are created by run-odoo.ps1 / run-odoo.sh: the
+#   Odoo log and the pidfile plus the start lock. The two globs above
+#   already match their contents; these entries state the intent, and cover
+#   anything else that lands there (a boot log, a lock directory).
+/logs/
+/.runtime/
+
+# ---------------------------------------------------------------------------
+# Local configuration
+#   odoo.conf carries the database password, so it stays untracked.
+#   odoo.conf.example is the tracked template -- copy it to odoo.conf and edit.
+#   If you would rather version the real file (local-only repo), delete the
+#   line below and run:  git add -f odoo.conf
+# ---------------------------------------------------------------------------
+/odoo.conf
+
+# ---------------------------------------------------------------------------
+# Local tooling
+#   .claude/settings.local.json holds per-machine tool permissions. It is
+#   personal configuration, not project code, so it stays untracked.
+#
+#   QA-3: the negation the note above promised is now here rather than pending.
+#   A shared config belongs in .claude/settings.json (no .local), and with a
+#   wholesale `.claude/` ignore the first person to write one would have found it
+#   silently untracked -- the failure being that nothing happens, which is the
+#   kind nobody notices.
+#
+#   Order matters and the directory rule cannot simply be negated: git will not
+#   re-include a file inside an excluded *directory*, so the directory is
+#   unexcluded and its contents excluded instead, leaving one file allowed.
+# ---------------------------------------------------------------------------
+.claude/*
+!.claude/settings.json
+
+# ---------------------------------------------------------------------------
+# Editors / OS
+# ---------------------------------------------------------------------------
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+desktop.ini

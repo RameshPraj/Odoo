@@ -1,0 +1,2355 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0 (base)\n"
+"Report-Msgid-Bugs-To: \n"
+"Language-Team: Nepali\n"
+"Language: ne\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: base
+#: model:ir.model.fields,field_description:base.field_res_users__api_key_ids
+#: model_terms:ir.ui.view,arch_db:base.view_users_form
+#: model_terms:ir.ui.view,arch_db:base.view_users_form_simple_modif
+msgid "API Keys"
+msgstr "एपीआई कुञ्जीहरू"
+
+#. module: base
+#. odoo-python
+#: code:addons/base/models/res_users.py:0
+#: model:ir.actions.act_window,name:base.ir_access_act
+#: model:ir.ui.menu,name:base.menu_ir_access_act
+#: model:res.groups,name:base.group_erp_manager
+#: model_terms:ir.ui.view,arch_db:base.ir_access_view_form
+#: model_terms:ir.ui.view,arch_db:base.ir_access_view_search
+#: model_terms:ir.ui.view,arch_db:base.ir_access_view_tree
+#: model_terms:ir.ui.view,arch_db:base.ir_access_view_tree_edition
+#: model_terms:ir.ui.view,arch_db:base.view_groups_form
+#: model_terms:ir.ui.view,arch_db:base.view_model_fields_form
+#: model_terms:ir.ui.view,arch_db:base.view_model_form
+#: model_terms:ir.ui.view,arch_db:base.view_rule_form
+#: model_terms:ir.ui.view,arch_db:base.view_users_form
+#: model_terms:ir.ui.view,arch_db:base.view_users_simple_form
+#: model_terms:ir.ui.view,arch_db:base.view_view_form
+msgid "Access Rights"
+msgstr "पहुँच अधिकार"
+
+#. module: base
+#: model:ir.module.category,name:base.module_category_accounting
+#: model:ir.module.module,shortdesc:base.module_accountant
+msgid "Accounting"
+msgstr "लेखा"
+
+#. module: base
+#: model:ir.model.fields,field_description:base.field_ir_actions_act_window_view__act_window_id
+#: model:ir.model.fields,field_description:base.field_ir_actions_server_history__action_id
+#: model:ir.model.fields,field_description:base.field_ir_actions_todo__action_id
+#: model:ir.model.fields,field_description:base.field_ir_embedded_actions__action_id
+#: model:ir.model.fields,field_description:base.field_ir_filters__action_id
+#: model:ir.model.fields,field_description:base.field_ir_ui_menu__action
+#: model:ir.model.fields,field_description:base.field_server_action_history_wizard__action_id
+#: model:ir.model.fields.selection,name:base.selection__ir_actions_act_url__binding_type__action
+#: model:ir.model.fields.selection,name:base.selection__ir_actions_act_window__binding_type__action
+#: model:ir.model.fields.selection,name:base.selection__ir_actions_act_window_close__binding_type__action
+#: model:ir.model.fields.selection,name:base.selection__ir_actions_actions__binding_type__action
+#: model:ir.model.fields.selection,name:base.selection__ir_actions_client__binding_type__action
+#: model:ir.model.fields.selection,name:base.selection__ir_actions_report__binding_type__action
+#: model:ir.model.fields.selection,name:base.selection__ir_actions_server__binding_type__action
+#: model_terms:ir.ui.view,arch_db:base.action_view
+#: model_terms:ir.ui.view,arch_db:base.action_view_search
+#: model_terms:ir.ui.view,arch_db:base.action_view_tree
+#: model_terms:ir.ui.view,arch_db:base.view_window_action_search
+msgid "Action"
+msgstr "कार्य"
+
+#. module: base
+#: model:ir.actions.act_window,name:base.ir_sequence_actions
+#: model:ir.model,name:base.model_ir_actions_actions
+#: model:ir.ui.menu,name:base.menu_ir_sequence_actions
+#: model:ir.ui.menu,name:base.next_id_6
+msgid "Actions"
+msgstr "कार्यहरू"
+
+#. module: base
+#: model:ir.model.fields,field_description:base.field_ir_cron__active
+#: model:ir.model.fields,field_description:base.field_ir_filters__active
+#: model:ir.model.fields,field_description:base.field_ir_mail_server__active
+#: model:ir.model.fields,field_description:base.field_ir_model_access__active
+#: model:ir.model.fields,field_description:base.field_ir_rule__active
+#: model:ir.model.fields,field_description:base.field_ir_sequence__active
+#: model:ir.model.fields,field_description:base.field_ir_ui_menu__active
+#: model:ir.model.fields,field_description:base.field_ir_ui_view__active
+#: model:ir.model.fields,field_description:base.field_res_bank__active
+#: model:ir.model.fields,field_description:base.field_res_company__active
+#: model:ir.model.fields,field_description:base.field_res_currency__active
+#: model:ir.model.fields,field_description:base.field_res_lang__active
+#: model:ir.model.fields,field_description:base.field_res_partner__active
+#: model:ir.model.fields,field_description:base.field_res_partner_bank__active
+#: model:ir.model.fields,field_description:base.field_res_partner_category__active
+#: model:ir.model.fields,field_description:base.field_res_partner_industry__active
+#: model:ir.model.fields,field_description:base.field_res_users__active
+#: model_terms:ir.ui.view,arch_db:base.asset_view_search
+#: model_terms:ir.ui.view,arch_db:base.res_lang_search
+#: model_terms:ir.ui.view,arch_db:base.view_currency_search
+#: model_terms:ir.ui.view,arch_db:base.view_view_search
+msgid "Active"
+msgstr "सक्रिय"
+
+#. module: base
+#: model_terms:ir.ui.view,arch_db:base.view_base_language_install
+msgid "Add"
+msgstr "थप्नुहोस्"
+
+#. module: base
+#: model_terms:ir.ui.view,arch_db:base.view_users_form
+#: model_terms:ir.ui.view,arch_db:base.view_users_form_simple_modif
+msgid "Add API Key"
+msgstr "एपीआई कुञ्जी थप्नुहोस्"
+
+#. module: base
+#: model_terms:ir.ui.view,arch_db:base.view_users_form
+#: model_terms:ir.ui.view,arch_db:base.view_users_form_simple_modif
+msgid "Add a language"
+msgstr "भाषा थप्नुहोस्"
+
+#. module: base
+#. odoo-python
+#: code:addons/base/models/ir_qweb_fields.py:0
+#: code:addons/base/models/res_partner.py:0
+#: model_terms:ir.ui.view,arch_db:base.contact
+#: model_terms:ir.ui.view,arch_db:base.no_contact
+#: model_terms:ir.ui.view,arch_db:base.view_company_form
+#: model_terms:ir.ui.view,arch_db:base.view_partner_address_form
+msgid "Address"
+msgstr "ठेगाना"
+
+#. module: base
+#: model_terms:ir.ui.view,arch_db:base.ir_cron_view_search
+msgid "All"
+msgstr "सबै"
+
+#. module: base
+#: model:ir.module.module,shortdesc:base.module_analytic
+msgid "Analytic Accounting"
+msgstr "विश्लेषणात्मक लेखा"
+
+#. module: base
+#: model_terms:ir.ui.view,arch_db:base.res_config_view_base
+msgid "Apply"
+msgstr "लागू गर्नुहोस्"
+
+#. module: base
+#: model:ir.actions.act_window,name:base.open_module_tree
+#: model:ir.ui.menu,name:base.menu_apps
+#: model:ir.ui.menu,name:base.menu_management
+#: model_terms:ir.ui.view,arch_db:base.module_tree
+#: model_terms:ir.ui.view,arch_db:base.view_module_filter
+msgid "Apps"
+msgstr "एपहरू"
+
+#. module: base
+#: model_terms:ir.ui.view,arch_db:base.view_partner_bank_form
+msgid "Archive"
+msgstr "संग्रह गर्नुहोस्"
+
+#. module: base
+#: model_terms:ir.ui.view,arch_db:base.edit_menu_access_search
+#: model_terms:ir.ui.view,arch_db:base.ir_access_view_search
+#: model_terms:ir.ui.view,arch_db:base.ir_cron_view_search
+#: model_terms:ir.ui.view,arch_db:base.ir_filters_view_search
+#: model_terms:ir.ui.view,arch_db:base.ir_mail_server_form
+#: model_terms:ir.ui.view,arch_db:base.res_bank_view_search
+#: model_terms:ir.ui.view,arch_db:base.res_partner_category_view_search
+#: model_terms:ir.ui.view,arch_db:base.res_partner_industry_view_search
+#: model_terms:ir.ui.view,arch_db:base.res_partner_kanban_view
+#: model_terms:ir.ui.view,arch_db:base.view_ir_mail_server_search
+#: model_terms:ir.ui.view,arch_db:base.view_partner_bank_form
+#: model_terms:ir.ui.view,arch_db:base.view_partner_bank_search
+#: model_terms:ir.ui.view,arch_db:base.view_partner_form
+#: model_terms:ir.ui.view,arch_db:base.view_res_bank_form
+#: model_terms:ir.ui.view,arch_db:base.view_res_partner_filter
+#: model_terms:ir.ui.view,arch_db:base.view_rule_search
+#: model_terms:ir.ui.view,arch_db:base.view_sequence_search
+#: model_terms:ir.ui.view,arch_db:base.view_users_form
+msgid "Archived"
+msgstr "संग्रहित"
+
+#. module: base
+#: model:ir.model,name:base.model_ir_attachment
+#: model_terms:ir.ui.view,arch_db:base.view_attachment_search
+msgid "Attachment"
+msgstr "संलग्न"
+
+#. module: base
+#: model:ir.actions.act_window,name:base.action_attachment
+#: model:ir.ui.menu,name:base.menu_action_attachment
+#: model_terms:ir.ui.view,arch_db:base.view_attachment_form
+#: model_terms:ir.ui.view,arch_db:base.view_attachment_search
+#: model_terms:ir.ui.view,arch_db:base.view_attachment_tree
+msgid "Attachments"
+msgstr "संलग्नहरू"
+
+#. module: base
+#: model:ir.ui.menu,name:base.menu_automation
+msgid "Automation"
+msgstr "स्वचालन"
+
+#. module: base
+#: model:ir.model.fields,field_description:base.field_res_users__barcode
+msgid "Badge ID"
+msgstr "परिचयपत्र नम्बर"
+
+#. module: base
+#: model:ir.model,name:base.model_res_bank
+#: model:ir.model.fields,field_description:base.field_res_partner_bank__bank_id
+#: model_terms:ir.ui.view,arch_db:base.view_partner_bank_tree
+#: model_terms:ir.ui.view,arch_db:base.view_res_bank_form
+msgid "Bank"
+msgstr "बैंक"
+
+#. module: base
+#: model:ir.actions.act_window,name:base.action_res_partner_bank_account_form
+#: model:ir.model,name:base.model_res_partner_bank
+#: model_terms:ir.ui.view,arch_db:base.view_partner_bank_search
+#: model_terms:ir.ui.view,arch_db:base.view_partner_bank_tree
+msgid "Bank Accounts"
+msgstr "बैंक खाताहरू"
+
+#. module: base
+#: model:ir.actions.act_window,name:base.action_res_bank_form
+#: model:ir.model.fields,field_description:base.field_res_company__bank_ids
+#: model:ir.model.fields,field_description:base.field_res_partner__bank_ids
+#: model:ir.model.fields,field_description:base.field_res_users__bank_ids
+#: model_terms:ir.ui.view,arch_db:base.view_res_bank_tree
+msgid "Banks"
+msgstr "बैंकहरू"
+
+#. module: base
+#: model:ir.model.fields,field_description:base.field_res_partner__barcode
+#: model:ir.module.category,name:base.module_category_human_resources_barcode
+#: model:ir.module.module,shortdesc:base.module_barcodes
+#: model:ir.module.module,shortdesc:base.module_stock_barcode
+msgid "Barcode"
+msgstr "बारकोड"
+
+#. module: base
+#. odoo-python
+#: code:addons/base/models/res_company.py:0
+#: model:ir.model.fields,field_description:base.field_res_company__child_ids
+#: model_terms:ir.ui.view,arch_db:base.view_company_form
+msgid "Branches"
+msgstr "शाखाहरू"
+
+#. module: base
+#: model:ir.model.fields.selection,name:base.selection__ir_actions_act_window_view__view_mode__calendar
+#: model:ir.model.fields.selection,name:base.selection__ir_ui_view__type__calendar
+#: model:ir.module.category,name:base.module_category_productivity_calendar
+#: model:ir.module.module,shortdesc:base.module_calendar
+#: model_terms:ir.ui.view,arch_db:base.view_users_form
+#: model_terms:ir.ui.view,arch_db:base.view_users_form_simple_modif
+msgid "Calendar"
+msgstr "पात्रो"
+
+#. module: base
+#: model_terms:ir.ui.view,arch_db:base.base_partner_merge_automatic_wizard_form
+#: model_terms:ir.ui.view,arch_db:base.change_password_own_form
+#: model_terms:ir.ui.view,arch_db:base.change_password_wizard_view
+#: model_terms:ir.ui.view,arch_db:base.enable_profiling_wizard
+#: model_terms:ir.ui.view,arch_db:base.form_res_users_key_description
+#: model_terms:ir.ui.view,arch_db:base.res_config_view_base
+#: model_terms:ir.ui.view,arch_db:base.reset_view_arch_wizard_view
+#: model_terms:ir.ui.view,arch_db:base.server_action_history_wizard_view
+#: model_terms:ir.ui.view,arch_db:base.view_base_import_language
+#: model_terms:ir.ui.view,arch_db:base.view_base_language_install
+#: model_terms:ir.ui.view,arch_db:base.view_base_module_update
+#: model_terms:ir.ui.view,arch_db:base.view_base_module_upgrade
+#: model_terms:ir.ui.view,arch_db:base.view_base_module_upgrade_install
+#: model_terms:ir.ui.view,arch_db:base.view_model_menu_create
+#: model_terms:ir.ui.view,arch_db:base.wizard_lang_export
+msgid "Cancel"
+msgstr "रद्द गर्नुहोस्"
+
+#. module: base
+#: model_terms:ir.ui.view,arch_db:base.view_module_filter
+msgid "Categories"
+msgstr "श्रेणीहरू"
+
+#. module: base
+#: model:ir.model.fields,field_description:base.field_ir_module_module__category_id
+#: model:ir.model.fields,field_description:base.field_res_groups_privilege__category_id
+#: model:ir.model.fields,field_description:base.field_res_partner_category__parent_id
+#: model_terms:ir.ui.view,arch_db:base.res_partner_category_view_search
+#: model_terms:ir.ui.view,arch_db:base.view_module_filter
+#: model_terms:ir.ui.view,arch_db:base.view_partner_category_list
+msgid "Category"
+msgstr "श्रेणी"
+
+#. module: base
+#: model:res.currency,currency_subunit_label:base.ANG
+#: model:res.currency,currency_subunit_label:base.AUD
+#: model:res.currency,currency_subunit_label:base.AWG
+#: model:res.currency,currency_subunit_label:base.BBD
+#: model:res.currency,currency_subunit_label:base.BMD
+#: model:res.currency,currency_subunit_label:base.BND
+#: model:res.currency,currency_subunit_label:base.BSD
+#: model:res.currency,currency_subunit_label:base.BZD
+#: model:res.currency,currency_subunit_label:base.CAD
+#: model:res.currency,currency_subunit_label:base.ERN
+#: model:res.currency,currency_subunit_label:base.ETB
+#: model:res.currency,currency_subunit_label:base.EUR
+#: model:res.currency,currency_subunit_label:base.FJD
+#: model:res.currency,currency_subunit_label:base.GYD
+#: model:res.currency,currency_subunit_label:base.HKD
+#: model:res.currency,currency_subunit_label:base.JMD
+#: model:res.currency,currency_subunit_label:base.KES
+#: model:res.currency,currency_subunit_label:base.KYD
+#: model:res.currency,currency_subunit_label:base.LKR
+#: model:res.currency,currency_subunit_label:base.LRD
+#: model:res.currency,currency_subunit_label:base.MUR
+#: model:res.currency,currency_subunit_label:base.NAD
+#: model:res.currency,currency_subunit_label:base.NZD
+#: model:res.currency,currency_subunit_label:base.SBD
+#: model:res.currency,currency_subunit_label:base.SCR
+#: model:res.currency,currency_subunit_label:base.SGD
+#: model:res.currency,currency_subunit_label:base.SLE
+#: model:res.currency,currency_subunit_label:base.SLL
+#: model:res.currency,currency_subunit_label:base.SRD
+#: model:res.currency,currency_subunit_label:base.SZL
+#: model:res.currency,currency_subunit_label:base.TTD
+#: model:res.currency,currency_subunit_label:base.TWD
+#: model:res.currency,currency_subunit_label:base.UGX
+#: model:res.currency,currency_subunit_label:base.USD
+#: model:res.currency,currency_subunit_label:base.XCD
+#: model:res.currency,currency_subunit_label:base.XCG
+#: model:res.currency,currency_subunit_label:base.ZAR
+msgid "Cents"
+msgstr "सेन्ट"
+
+#. module: base
+#: model:ir.actions.act_window,name:base.action_res_users_my
+msgid "Change My Preferences"
+msgstr "मेरो प्राथमिकताहरू परिवर्तन गर्नुहोस्"
+
+#. module: base
+#: model_terms:ir.ui.view,arch_db:base.view_users_form
+#: model_terms:ir.ui.view,arch_db:base.view_users_form_simple_modif
+msgid "Change password"
+msgstr "पासवर्ड परिवर्तन गर्नुहोस्"
+
+#. module: base
+#: model:ir.model.fields,field_description:base.field_res_bank__city
+#: model:ir.model.fields,field_description:base.field_res_company__city
+#: model:ir.model.fields,field_description:base.field_res_device__city
+#: model:ir.model.fields,field_description:base.field_res_device_log__city
+#: model:ir.model.fields,field_description:base.field_res_partner__city
+#: model:ir.model.fields,field_description:base.field_res_users__city
+#: model_terms:ir.ui.view,arch_db:base.view_company_form
+#: model_terms:ir.ui.view,arch_db:base.view_partner_address_form
+#: model_terms:ir.ui.view,arch_db:base.view_partner_form
+#: model_terms:ir.ui.view,arch_db:base.view_res_bank_form
+msgid "City"
+msgstr "सहर"
+
+#. module: base
+#: model_terms:ir.ui.view,arch_db:base.base_partner_merge_automatic_wizard_form
+#: model_terms:ir.ui.view,arch_db:base.language_install_view_form_lang_switch
+#: model_terms:ir.ui.view,arch_db:base.view_base_module_update
+#: model_terms:ir.ui.view,arch_db:base.wizard_lang_export
+msgid "Close"
+msgstr "बन्द गर्नुहोस्"
+
+#. module: base
+#: model:ir.model.fields,field_description:base.field_ir_actions_server_history__code
+#: model:ir.model.fields,field_description:base.field_res_country_group__code
+#: model_terms:ir.ui.view,arch_db:base.view_base_import_language
+#: model_terms:ir.ui.view,arch_db:base.view_server_action_form
+msgid "Code"
+msgstr "कोड"
+
+#. module: base
+#: model:ir.model.fields,field_description:base.field_res_company__color
+#: model:ir.model.fields,field_description:base.field_res_partner_bank__color
+#: model:ir.model.fields,field_description:base.field_res_partner_category__color
+#: model_terms:ir.ui.view,arch_db:base.res_partner_category_view_search
+msgid "Color"
+msgstr "रङ"
+
+#. module: base
+#: model:ir.model.fields,field_description:base.field_res_groups__comment
+msgid "Comment"
+msgstr "टिप्पणी"
+
+#. module: base
+#: model:ir.actions.act_window,name:base.action_res_company_form
+#: model:ir.model,name:base.model_res_company
+#: model:ir.model.fields,field_description:base.field_res_users__company_ids
+#: model:ir.ui.menu,name:base.menu_action_res_company_form
+#: model_terms:ir.ui.view,arch_db:base.view_company_tree
+#: model_terms:ir.ui.view,arch_db:base.view_res_partner_filter
+#: model_terms:ir.ui.view,arch_db:base.view_users_form
+msgid "Companies"
+msgstr "कम्पनीहरू"
+
+#. module: base
+#. odoo-python
+#: code:addons/base/models/ir_qweb_fields.py:0
+#: model:ir.model.fields,field_description:base.field_ir_attachment__company_id
+#: model:ir.model.fields,field_description:base.field_ir_default__company_id
+#: model:ir.model.fields,field_description:base.field_ir_sequence__company_id
+#: model:ir.model.fields,field_description:base.field_res_currency_rate__company_id
+#: model:ir.model.fields,field_description:base.field_res_partner__company_id
+#: model:ir.model.fields,field_description:base.field_res_partner_bank__company_id
+#: model:ir.model.fields,field_description:base.field_res_users__company_id
+#: model:ir.model.fields.selection,name:base.selection__res_partner__company_type__company
+#: model_terms:ir.ui.view,arch_db:base.ir_default_search_view
+#: model_terms:ir.ui.view,arch_db:base.view_attachment_search
+#: model_terms:ir.ui.view,arch_db:base.view_company_form
+#: model_terms:ir.ui.view,arch_db:base.view_partner_form
+#: model_terms:ir.ui.view,arch_db:base.view_res_partner_filter
+#: model_terms:ir.ui.view,arch_db:base.view_users_search
+#: model_terms:ir.ui.view,arch_db:base.view_users_simple_form
+msgid "Company"
+msgstr "कम्पनी"
+
+#. module: base
+#. odoo-python
+#: code:addons/base/models/res_partner.py:0
+#: model:ir.model.fields,field_description:base.field_res_company__company_registry
+#: model:ir.model.fields,field_description:base.field_res_partner__company_registry
+#: model:ir.model.fields,field_description:base.field_res_users__company_registry
+msgid "Company ID"
+msgstr "कम्पनी आईडी"
+
+#. module: base
+#: model:ir.model.fields,field_description:base.field_res_company__name
+#: model:ir.model.fields,field_description:base.field_res_partner__company_name
+#: model:ir.model.fields,field_description:base.field_res_users__company_name
+msgid "Company Name"
+msgstr "कम्पनीको नाम"
+
+#. module: base
+#: model_terms:ir.ui.view,arch_db:base.view_partner_form
+#: model_terms:ir.ui.view,arch_db:base.view_partner_simple_form
+msgid "Company Name..."
+msgstr "कम्पनीको नाम..."
+
+#. module: base
+#: model:ir.model.fields,field_description:base.field_res_partner__company_type
+#: model:ir.model.fields,field_description:base.field_res_users__company_type
+msgid "Company Type"
+msgstr "कम्पनी प्रकार"
+
+#. module: base
+#: model:ir.model.fields,field_description:base.field_res_partner__contact_address
+#: model:ir.model.fields,field_description:base.field_res_users__contact_address
+msgid "Complete Address"
+msgstr "पूरा ठेगाना"
+
+#. module: base
+#: model:ir.model.fields,field_description:base.field_res_partner__complete_name
+#: model:ir.model.fields,field_description:base.field_res_users__complete_name
+msgid "Complete Name"
+msgstr "पूरा नाम"
+
+#. module: base
+#: model:ir.model,name:base.model_res_config_settings
+msgid "Config Settings"
+msgstr "कन्फिग सेटिङहरू"
+
+#. module: base
+#: model_terms:ir.ui.view,arch_db:base.res_config_view_base
+msgid "Configuration"
+msgstr "कन्फिगरेसन"
+
+#. module: base
+#: model_terms:ir.ui.view,arch_db:base.view_base_module_upgrade
+msgid "Confirm"
+msgstr "पुष्टि गर्नुहोस्"
+
+#. module: base
+#: model:ir.model,name:base.model_res_partner
+#: model:ir.model.fields,field_description:base.field_res_partner__child_ids
+#: model:ir.model.fields,field_description:base.field_res_users__child_ids
+#: model:ir.model.fields.selection,name:base.selection__res_partner__type__contact
+#: model:res.groups.privilege,name:base.res_groups_privilege_contact
+#: model_terms:ir.ui.view,arch_db:base.view_company_form
+#: model_terms:ir.ui.view,arch_db:base.view_partner_simple_form
+msgid "Contact"
+msgstr "सम्पर्क"
+
+#. module: base
+#: model:ir.actions.act_window,name:base.action_partner_category_form
+#: model_terms:ir.ui.view,arch_db:base.view_partner_category_list
+msgid "Contact Tags"
+msgstr "सम्पर्क ट्यागहरू"
+
+#. module: base
+#: model:ir.model.fields,field_description:base.field_base_partner_merge_automatic_wizard__partner_ids
+#: model:ir.module.module,shortdesc:base.module_contacts
+#: model_terms:ir.ui.view,arch_db:base.view_partner_form
+#: model_terms:ir.ui.view,arch_db:base.view_partner_tree
+msgid "Contacts"
+msgstr "सम्पर्कहरू"
+
+#. module: base
+#: model:ir.actions.act_window,name:base.action_country
+#: model:ir.model.fields,field_description:base.field_res_country_group__country_ids
+#: model_terms:ir.ui.view,arch_db:base.view_country_search
+msgid "Countries"
+msgstr "देशहरू"
+
+#. module: base
+#: model:ir.model,name:base.model_res_country
+#: model:ir.model.fields,field_description:base.field_ir_module_module__country_ids
+#: model:ir.model.fields,field_description:base.field_res_bank__country
+#: model:ir.model.fields,field_description:base.field_res_company__country_id
+#: model:ir.model.fields,field_description:base.field_res_country_state__country_id
+#: model:ir.model.fields,field_description:base.field_res_device__country
+#: model:ir.model.fields,field_description:base.field_res_device_log__country
+#: model:ir.model.fields,field_description:base.field_res_partner__country_id
+#: model:ir.model.fields,field_description:base.field_res_users__country_id
+#: model_terms:ir.ui.view,arch_db:base.view_company_form
+#: model_terms:ir.ui.view,arch_db:base.view_country_state_search
+#: model_terms:ir.ui.view,arch_db:base.view_country_tree
+#: model_terms:ir.ui.view,arch_db:base.view_partner_address_form
+#: model_terms:ir.ui.view,arch_db:base.view_partner_form
+#: model_terms:ir.ui.view,arch_db:base.view_res_bank_form
+#: model_terms:ir.ui.view,arch_db:base.view_res_partner_filter
+msgid "Country"
+msgstr "देश"
+
+#. module: base
+#: model:ir.model.fields,field_description:base.field_res_bank__country_code
+#: model:ir.model.fields,field_description:base.field_res_company__country_code
+#: model:ir.model.fields,field_description:base.field_res_country__code
+#: model:ir.model.fields,field_description:base.field_res_partner__country_code
+#: model:ir.model.fields,field_description:base.field_res_partner_bank__country_code
+#: model:ir.model.fields,field_description:base.field_res_users__country_code
+msgid "Country Code"
+msgstr "देश कोड"
+
+#. module: base
+#: model:ir.model,website_form_label:base.model_res_partner
+msgid "Create a Customer"
+msgstr "ग्राहक सिर्जना गर्नुहोस्"
+
+#. module: base
+#: model:ir.model.fields,field_description:base.field_base_enable_profiling_wizard__create_uid
+#: model:ir.model.fields,field_description:base.field_base_language_export__create_uid
+#: model:ir.model.fields,field_description:base.field_base_language_import__create_uid
+#: model:ir.model.fields,field_description:base.field_base_language_install__create_uid
+#: model:ir.model.fields,field_description:base.field_base_module_uninstall__create_uid
+#: model:ir.model.fields,field_description:base.field_base_module_update__create_uid
+#: model:ir.model.fields,field_description:base.field_base_module_upgrade__create_uid
+#: model:ir.model.fields,field_description:base.field_base_partner_merge_automatic_wizard__create_uid
+#: model:ir.model.fields,field_description:base.field_base_partner_merge_line__create_uid
+#: model:ir.model.fields,field_description:base.field_change_password_own__create_uid
+#: model:ir.model.fields,field_description:base.field_change_password_user__create_uid
+#: model:ir.model.fields,field_description:base.field_change_password_wizard__create_uid
+#: model:ir.model.fields,field_description:base.field_decimal_precision__create_uid
+#: model:ir.model.fields,field_description:base.field_ir_actions_act_url__create_uid
+#: model:ir.model.fields,field_description:base.field_ir_actions_act_window__create_uid
+#: model:ir.model.fields,field_description:base.field_ir_actions_act_window_close__create_uid
+#: model:ir.model.fields,field_description:base.field_ir_actions_act_window_view__create_uid
+#: model:ir.model.fields,field_description:base.field_ir_actions_actions__create_uid
+#: model:ir.model.fields,field_description:base.field_ir_actions_client__create_uid
+#: model:ir.model.fields,field_description:base.field_ir_actions_report__create_uid
+#: model:ir.model.fields,field_description:base.field_ir_actions_server__create_uid
+#: model:ir.model.fields,field_description:base.field_ir_actions_server_history__create_uid
+#: model:ir.model.fields,field_description:base.field_ir_actions_todo__create_uid
+#: model:ir.model.fields,field_description:base.field_ir_asset__create_uid
+#: model:ir.model.fields,field_description:base.field_ir_attachment__create_uid
+#: model:ir.model.fields,field_description:base.field_ir_config_parameter__create_uid
+#: model:ir.model.fields,field_description:base.field_ir_cron__create_uid
+#: model:ir.model.fields,field_description:base.field_ir_cron_progress__create_uid
+#: model:ir.model.fields,field_description:base.field_ir_cron_trigger__create_uid
+#: model:ir.model.fields,field_description:base.field_ir_default__create_uid
+#: model:ir.model.fields,field_description:base.field_ir_demo__create_uid
+#: model:ir.model.fields,field_description:base.field_ir_demo_failure__create_uid
+#: model:ir.model.fields,field_description:base.field_ir_demo_failure_wizard__create_uid
+#: model:ir.model.fields,field_description:base.field_ir_embedded_actions__create_uid
+#: model:ir.model.fields,field_description:base.field_ir_exports__create_uid
+#: model:ir.model.fields,field_description:base.field_ir_exports_line__create_uid
+#: model:ir.model.fields,field_description:base.field_ir_filters__create_uid
+#: model:ir.model.fields,field_description:base.field_ir_logging__create_uid
+#: model:ir.model.fields,field_description:base.field_ir_mail_server__create_uid
+#: model:ir.model.fields,field_description:base.field_ir_model__create_uid
+#: model:ir.model.fields,field_description:base.field_ir_model_access__create_uid
+#: model:ir.model.fields,field_description:base.field_ir_model_constraint__create_uid
+#: model:ir.model.fields,field_description:base.field_ir_model_data__create_uid
+#: model:ir.model.fields,field_description:base.field_ir_model_fields__create_uid
+#: model:ir.model.fields,field_description:base.field_ir_model_fields_selection__create_uid
+#: model:ir.model.fields,field_description:base.field_ir_model_relation__create_uid
+#: model:ir.model.fields,field_description:base.field_ir_module_category__create_uid
+#: model:ir.model.fields,field_description:base.field_ir_module_module__create_uid
+#: model:ir.model.fields,field_description:base.field_ir_module_module_exclusion__create_uid
+#: model:ir.model.fields,field_description:base.field_ir_rule__create_uid
+#: model:ir.model.fields,field_description:base.field_ir_sequence__create_uid
+#: model:ir.model.fields,field_description:base.field_ir_sequence_date_range__create_uid
+#: model:ir.model.fields,field_description:base.field_ir_ui_menu__create_uid
+#: model:ir.model.fields,field_description:base.field_ir_ui_view__create_uid
+#: model:ir.model.fields,field_description:base.field_ir_ui_view_custom__create_uid
+#: model:ir.model.fields,field_description:base.field_properties_base_definition__create_uid
+#: model:ir.model.fields,field_description:base.field_report_layout__create_uid
+#: model:ir.model.fields,field_description:base.field_report_paperformat__create_uid
+#: model:ir.model.fields,field_description:base.field_res_bank__create_uid
+#: model:ir.model.fields,field_description:base.field_res_company__create_uid
+#: model:ir.model.fields,field_description:base.field_res_config__create_uid
+#: model:ir.model.fields,field_description:base.field_res_config_settings__create_uid
+#: model:ir.model.fields,field_description:base.field_res_country__create_uid
+#: model:ir.model.fields,field_description:base.field_res_country_group__create_uid
+#: model:ir.model.fields,field_description:base.field_res_country_state__create_uid
+#: model:ir.model.fields,field_description:base.field_res_currency__create_uid
+#: model:ir.model.fields,field_description:base.field_res_currency_rate__create_uid
+#: model:ir.model.fields,field_description:base.field_res_device__create_uid
+#: model:ir.model.fields,field_description:base.field_res_device_log__create_uid
+#: model:ir.model.fields,field_description:base.field_res_groups__create_uid
+#: model:ir.model.fields,field_description:base.field_res_groups_privilege__create_uid
+#: model:ir.model.fields,field_description:base.field_res_lang__create_uid
+#: model:ir.model.fields,field_description:base.field_res_partner__create_uid
+#: model:ir.model.fields,field_description:base.field_res_partner_bank__create_uid
+#: model:ir.model.fields,field_description:base.field_res_partner_category__create_uid
+#: model:ir.model.fields,field_description:base.field_res_partner_industry__create_uid
+#: model:ir.model.fields,field_description:base.field_res_users__create_uid
+#: model:ir.model.fields,field_description:base.field_res_users_apikeys_description__create_uid
+#: model:ir.model.fields,field_description:base.field_res_users_deletion__create_uid
+#: model:ir.model.fields,field_description:base.field_res_users_identitycheck__create_uid
+#: model:ir.model.fields,field_description:base.field_res_users_log__create_uid
+#: model:ir.model.fields,field_description:base.field_res_users_settings__create_uid
+#: model:ir.model.fields,field_description:base.field_reset_view_arch_wizard__create_uid
+#: model:ir.model.fields,field_description:base.field_server_action_history_wizard__create_uid
+#: model:ir.model.fields,field_description:base.field_wizard_ir_model_menu_create__create_uid
+#: model_terms:ir.ui.view,arch_db:base.view_attachment_search
+msgid "Created by"
+msgstr "सिर्जना गर्ने"
+
+#. module: base
+#: model:ir.model.fields,field_description:base.field_base_enable_profiling_wizard__create_date
+#: model:ir.model.fields,field_description:base.field_base_language_export__create_date
+#: model:ir.model.fields,field_description:base.field_base_language_import__create_date
+#: model:ir.model.fields,field_description:base.field_base_language_install__create_date
+#: model:ir.model.fields,field_description:base.field_base_module_uninstall__create_date
+#: model:ir.model.fields,field_description:base.field_base_module_update__create_date
+#: model:ir.model.fields,field_description:base.field_base_module_upgrade__create_date
+#: model:ir.model.fields,field_description:base.field_base_partner_merge_automatic_wizard__create_date
+#: model:ir.model.fields,field_description:base.field_base_partner_merge_line__create_date
+#: model:ir.model.fields,field_description:base.field_change_password_own__create_date
+#: model:ir.model.fields,field_description:base.field_change_password_user__create_date
+#: model:ir.model.fields,field_description:base.field_change_password_wizard__create_date
+#: model:ir.model.fields,field_description:base.field_decimal_precision__create_date
+#: model:ir.model.fields,field_description:base.field_ir_actions_act_url__create_date
+#: model:ir.model.fields,field_description:base.field_ir_actions_act_window__create_date
+#: model:ir.model.fields,field_description:base.field_ir_actions_act_window_close__create_date
+#: model:ir.model.fields,field_description:base.field_ir_actions_act_window_view__create_date
+#: model:ir.model.fields,field_description:base.field_ir_actions_actions__create_date
+#: model:ir.model.fields,field_description:base.field_ir_actions_client__create_date
+#: model:ir.model.fields,field_description:base.field_ir_actions_report__create_date
+#: model:ir.model.fields,field_description:base.field_ir_actions_server__create_date
+#: model:ir.model.fields,field_description:base.field_ir_actions_server_history__create_date
+#: model:ir.model.fields,field_description:base.field_ir_actions_todo__create_date
+#: model:ir.model.fields,field_description:base.field_ir_asset__create_date
+#: model:ir.model.fields,field_description:base.field_ir_attachment__create_date
+#: model:ir.model.fields,field_description:base.field_ir_config_parameter__create_date
+#: model:ir.model.fields,field_description:base.field_ir_cron__create_date
+#: model:ir.model.fields,field_description:base.field_ir_cron_progress__create_date
+#: model:ir.model.fields,field_description:base.field_ir_cron_trigger__create_date
+#: model:ir.model.fields,field_description:base.field_ir_default__create_date
+#: model:ir.model.fields,field_description:base.field_ir_demo__create_date
+#: model:ir.model.fields,field_description:base.field_ir_demo_failure__create_date
+#: model:ir.model.fields,field_description:base.field_ir_demo_failure_wizard__create_date
+#: model:ir.model.fields,field_description:base.field_ir_embedded_actions__create_date
+#: model:ir.model.fields,field_description:base.field_ir_exports__create_date
+#: model:ir.model.fields,field_description:base.field_ir_exports_line__create_date
+#: model:ir.model.fields,field_description:base.field_ir_filters__create_date
+#: model:ir.model.fields,field_description:base.field_ir_logging__create_date
+#: model:ir.model.fields,field_description:base.field_ir_mail_server__create_date
+#: model:ir.model.fields,field_description:base.field_ir_model__create_date
+#: model:ir.model.fields,field_description:base.field_ir_model_access__create_date
+#: model:ir.model.fields,field_description:base.field_ir_model_constraint__create_date
+#: model:ir.model.fields,field_description:base.field_ir_model_data__create_date
+#: model:ir.model.fields,field_description:base.field_ir_model_fields__create_date
+#: model:ir.model.fields,field_description:base.field_ir_model_fields_selection__create_date
+#: model:ir.model.fields,field_description:base.field_ir_module_category__create_date
+#: model:ir.model.fields,field_description:base.field_ir_module_module__create_date
+#: model:ir.model.fields,field_description:base.field_ir_module_module_exclusion__create_date
+#: model:ir.model.fields,field_description:base.field_ir_rule__create_date
+#: model:ir.model.fields,field_description:base.field_ir_sequence__create_date
+#: model:ir.model.fields,field_description:base.field_ir_sequence_date_range__create_date
+#: model:ir.model.fields,field_description:base.field_ir_ui_menu__create_date
+#: model:ir.model.fields,field_description:base.field_ir_ui_view__create_date
+#: model:ir.model.fields,field_description:base.field_ir_ui_view_custom__create_date
+#: model:ir.model.fields,field_description:base.field_properties_base_definition__create_date
+#: model:ir.model.fields,field_description:base.field_report_layout__create_date
+#: model:ir.model.fields,field_description:base.field_report_paperformat__create_date
+#: model:ir.model.fields,field_description:base.field_res_bank__create_date
+#: model:ir.model.fields,field_description:base.field_res_company__create_date
+#: model:ir.model.fields,field_description:base.field_res_config__create_date
+#: model:ir.model.fields,field_description:base.field_res_config_settings__create_date
+#: model:ir.model.fields,field_description:base.field_res_country__create_date
+#: model:ir.model.fields,field_description:base.field_res_country_group__create_date
+#: model:ir.model.fields,field_description:base.field_res_country_state__create_date
+#: model:ir.model.fields,field_description:base.field_res_currency__create_date
+#: model:ir.model.fields,field_description:base.field_res_currency_rate__create_date
+#: model:ir.model.fields,field_description:base.field_res_device__create_date
+#: model:ir.model.fields,field_description:base.field_res_device_log__create_date
+#: model:ir.model.fields,field_description:base.field_res_groups__create_date
+#: model:ir.model.fields,field_description:base.field_res_groups_privilege__create_date
+#: model:ir.model.fields,field_description:base.field_res_lang__create_date
+#: model:ir.model.fields,field_description:base.field_res_partner__create_date
+#: model:ir.model.fields,field_description:base.field_res_partner_bank__create_date
+#: model:ir.model.fields,field_description:base.field_res_partner_category__create_date
+#: model:ir.model.fields,field_description:base.field_res_partner_industry__create_date
+#: model:ir.model.fields,field_description:base.field_res_users_apikeys_description__create_date
+#: model:ir.model.fields,field_description:base.field_res_users_deletion__create_date
+#: model:ir.model.fields,field_description:base.field_res_users_identitycheck__create_date
+#: model:ir.model.fields,field_description:base.field_res_users_log__create_date
+#: model:ir.model.fields,field_description:base.field_res_users_settings__create_date
+#: model:ir.model.fields,field_description:base.field_reset_view_arch_wizard__create_date
+#: model:ir.model.fields,field_description:base.field_server_action_history_wizard__create_date
+#: model:ir.model.fields,field_description:base.field_wizard_ir_model_menu_create__create_date
+msgid "Created on"
+msgstr "सिर्जना मिति"
+
+#. module: base
+#: model:ir.actions.act_window,name:base.action_currency_form
+#: model_terms:ir.ui.view,arch_db:base.view_currency_search
+#: model_terms:ir.ui.view,arch_db:base.view_currency_tree
+msgid "Currencies"
+msgstr "मुद्राहरू"
+
+#. module: base
+#: model:ir.model,name:base.model_res_currency
+#: model:ir.model.fields,field_description:base.field_res_company__currency_id
+#: model:ir.model.fields,field_description:base.field_res_country__currency_id
+#: model:ir.model.fields,field_description:base.field_res_currency__name
+#: model:ir.model.fields,field_description:base.field_res_currency_rate__currency_id
+#: model:ir.model.fields,field_description:base.field_res_partner_bank__currency_id
+#: model_terms:ir.ui.view,arch_db:base.view_currency_form
+#: model_terms:ir.ui.view,arch_db:base.view_currency_search
+msgid "Currency"
+msgstr "मुद्रा"
+
+#. module: base
+#: model:ir.model.fields.selection,name:base.selection__report_paperformat__format__custom
+#: model:ir.model.fields.selection,name:base.selection__res_company__layout_background__custom
+#: model_terms:ir.ui.view,arch_db:base.view_model_fields_search
+#: model_terms:ir.ui.view,arch_db:base.view_model_search
+msgid "Custom"
+msgstr "अनुकूल"
+
+#. module: base
+#: model:ir.actions.act_window,name:base.action_partner_customer_form
+#: model:ir.actions.act_window,name:base.action_partner_form
+msgid "Customers"
+msgstr "ग्राहकहरू"
+
+#. module: base
+#: model:ir.module.category,name:base.module_category_productivity_dashboard
+msgid "Dashboard"
+msgstr "ड्यासबोर्ड"
+
+#. module: base
+#: model:ir.module.module,shortdesc:base.module_board
+msgid "Dashboards"
+msgstr "ड्यासबोर्डहरू"
+
+#. module: base
+#. odoo-python
+#: code:addons/base/models/ir_qweb_fields.py:0
+#: model:ir.model.fields,field_description:base.field_res_currency__date
+#: model:ir.model.fields,field_description:base.field_res_currency_rate__name
+#: model_terms:ir.ui.view,arch_db:base.view_currency_rate_search
+msgid "Date"
+msgstr "मिति"
+
+#. module: base
+#: model:ir.model.fields,field_description:base.field_ir_rule__perm_unlink
+#: model_terms:ir.ui.view,arch_db:base.res_users_apikeys_view_kanban
+#: model_terms:ir.ui.view,arch_db:base.view_rule_search
+msgid "Delete"
+msgstr "मेटाउनुहोस्"
+
+#. module: base
+#: model:ir.model.fields.selection,name:base.selection__res_partner__type__delivery
+#: model:ir.module.category,name:base.module_category_sales_delivery
+msgid "Delivery"
+msgstr "डेलिभरी"
+
+#. module: base
+#. odoo-python
+#: code:addons/base/models/res_partner.py:0
+msgid "Delivery Address"
+msgstr "डेलिभरी ठेगाना"
+
+#. module: base
+#: model:ir.model.fields,field_description:base.field_ir_attachment__description
+#: model:ir.model.fields,field_description:base.field_ir_module_category__description
+#: model:ir.model.fields,field_description:base.field_ir_module_module__description
+#: model:ir.model.fields,field_description:base.field_ir_profile__name
+#: model:ir.model.fields,field_description:base.field_res_groups_privilege__description
+#: model:ir.model.fields,field_description:base.field_res_users_apikeys__name
+#: model:ir.model.fields,field_description:base.field_res_users_apikeys_description__name
+#: model_terms:ir.ui.view,arch_db:base.view_attachment_form
+msgid "Description"
+msgstr "विवरण"
+
+#. module: base
+#: model:ir.model,name:base.model_res_device
+#: model_terms:ir.ui.view,arch_db:base.view_users_form
+#: model_terms:ir.ui.view,arch_db:base.view_users_form_simple_modif
+msgid "Devices"
+msgstr "उपकरणहरू"
+
+#. module: base
+#: model_terms:ir.ui.view,arch_db:base.res_users_identitycheck_view_form
+#: model_terms:ir.ui.view,arch_db:base.view_base_module_uninstall
+#: model_terms:ir.ui.view,arch_db:base.view_users_form_simple_modif
+msgid "Discard"
+msgstr "खारेज गर्नुहोस्"
+
+#. module: base
+#: model:ir.model.fields,field_description:base.field__unknown__display_name
+#: model:ir.model.fields,field_description:base.field_avatar_mixin__display_name
+#: model:ir.model.fields,field_description:base.field_base__display_name
+#: model:ir.model.fields,field_description:base.field_base_enable_profiling_wizard__display_name
+#: model:ir.model.fields,field_description:base.field_base_language_export__display_name
+#: model:ir.model.fields,field_description:base.field_base_language_import__display_name
+#: model:ir.model.fields,field_description:base.field_base_language_install__display_name
+#: model:ir.model.fields,field_description:base.field_base_module_uninstall__display_name
+#: model:ir.model.fields,field_description:base.field_base_module_update__display_name
+#: model:ir.model.fields,field_description:base.field_base_module_upgrade__display_name
+#: model:ir.model.fields,field_description:base.field_base_partner_merge_automatic_wizard__display_name
+#: model:ir.model.fields,field_description:base.field_base_partner_merge_line__display_name
+#: model:ir.model.fields,field_description:base.field_change_password_own__display_name
+#: model:ir.model.fields,field_description:base.field_change_password_user__display_name
+#: model:ir.model.fields,field_description:base.field_change_password_wizard__display_name
+#: model:ir.model.fields,field_description:base.field_decimal_precision__display_name
+#: model:ir.model.fields,field_description:base.field_format_address_mixin__display_name
+#: model:ir.model.fields,field_description:base.field_format_vat_label_mixin__display_name
+#: model:ir.model.fields,field_description:base.field_image_mixin__display_name
+#: model:ir.model.fields,field_description:base.field_ir_actions_act_url__display_name
+#: model:ir.model.fields,field_description:base.field_ir_actions_act_window__display_name
+#: model:ir.model.fields,field_description:base.field_ir_actions_act_window_close__display_name
+#: model:ir.model.fields,field_description:base.field_ir_actions_act_window_view__display_name
+#: model:ir.model.fields,field_description:base.field_ir_actions_actions__display_name
+#: model:ir.model.fields,field_description:base.field_ir_actions_client__display_name
+#: model:ir.model.fields,field_description:base.field_ir_actions_report__display_name
+#: model:ir.model.fields,field_description:base.field_ir_actions_server__display_name
+#: model:ir.model.fields,field_description:base.field_ir_actions_server_history__display_name
+#: model:ir.model.fields,field_description:base.field_ir_actions_todo__display_name
+#: model:ir.model.fields,field_description:base.field_ir_asset__display_name
+#: model:ir.model.fields,field_description:base.field_ir_attachment__display_name
+#: model:ir.model.fields,field_description:base.field_ir_autovacuum__display_name
+#: model:ir.model.fields,field_description:base.field_ir_binary__display_name
+#: model:ir.model.fields,field_description:base.field_ir_config_parameter__display_name
+#: model:ir.model.fields,field_description:base.field_ir_cron__display_name
+#: model:ir.model.fields,field_description:base.field_ir_cron_progress__display_name
+#: model:ir.model.fields,field_description:base.field_ir_cron_trigger__display_name
+#: model:ir.model.fields,field_description:base.field_ir_default__display_name
+#: model:ir.model.fields,field_description:base.field_ir_demo__display_name
+#: model:ir.model.fields,field_description:base.field_ir_demo_failure__display_name
+#: model:ir.model.fields,field_description:base.field_ir_demo_failure_wizard__display_name
+#: model:ir.model.fields,field_description:base.field_ir_embedded_actions__display_name
+#: model:ir.model.fields,field_description:base.field_ir_exports__display_name
+#: model:ir.model.fields,field_description:base.field_ir_exports_line__display_name
+#: model:ir.model.fields,field_description:base.field_ir_fields_converter__display_name
+#: model:ir.model.fields,field_description:base.field_ir_filters__display_name
+#: model:ir.model.fields,field_description:base.field_ir_http__display_name
+#: model:ir.model.fields,field_description:base.field_ir_logging__display_name
+#: model:ir.model.fields,field_description:base.field_ir_mail_server__display_name
+#: model:ir.model.fields,field_description:base.field_ir_model__display_name
+#: model:ir.model.fields,field_description:base.field_ir_model_access__display_name
+#: model:ir.model.fields,field_description:base.field_ir_model_constraint__display_name
+#: model:ir.model.fields,field_description:base.field_ir_model_data__display_name
+#: model:ir.model.fields,field_description:base.field_ir_model_fields__display_name
+#: model:ir.model.fields,field_description:base.field_ir_model_fields_selection__display_name
+#: model:ir.model.fields,field_description:base.field_ir_model_inherit__display_name
+#: model:ir.model.fields,field_description:base.field_ir_model_relation__display_name
+#: model:ir.model.fields,field_description:base.field_ir_module_category__display_name
+#: model:ir.model.fields,field_description:base.field_ir_module_module__display_name
+#: model:ir.model.fields,field_description:base.field_ir_module_module_dependency__display_name
+#: model:ir.model.fields,field_description:base.field_ir_module_module_exclusion__display_name
+#: model:ir.model.fields,field_description:base.field_ir_profile__display_name
+#: model:ir.model.fields,field_description:base.field_ir_qweb__display_name
+#: model:ir.model.fields,field_description:base.field_ir_qweb_field__display_name
+#: model:ir.model.fields,field_description:base.field_ir_qweb_field_barcode__display_name
+#: model:ir.model.fields,field_description:base.field_ir_qweb_field_contact__display_name
+#: model:ir.model.fields,field_description:base.field_ir_qweb_field_date__display_name
+#: model:ir.model.fields,field_description:base.field_ir_qweb_field_datetime__display_name
+#: model:ir.model.fields,field_description:base.field_ir_qweb_field_duration__display_name
+#: model:ir.model.fields,field_description:base.field_ir_qweb_field_float__display_name
+#: model:ir.model.fields,field_description:base.field_ir_qweb_field_float_time__display_name
+#: model:ir.model.fields,field_description:base.field_ir_qweb_field_html__display_name
+#: model:ir.model.fields,field_description:base.field_ir_qweb_field_image__display_name
+#: model:ir.model.fields,field_description:base.field_ir_qweb_field_image_url__display_name
+#: model:ir.model.fields,field_description:base.field_ir_qweb_field_integer__display_name
+#: model:ir.model.fields,field_description:base.field_ir_qweb_field_many2many__display_name
+#: model:ir.model.fields,field_description:base.field_ir_qweb_field_many2one__display_name
+#: model:ir.model.fields,field_description:base.field_ir_qweb_field_monetary__display_name
+#: model:ir.model.fields,field_description:base.field_ir_qweb_field_one2many__display_name
+#: model:ir.model.fields,field_description:base.field_ir_qweb_field_qweb__display_name
+#: model:ir.model.fields,field_description:base.field_ir_qweb_field_relative__display_name
+#: model:ir.model.fields,field_description:base.field_ir_qweb_field_selection__display_name
+#: model:ir.model.fields,field_description:base.field_ir_qweb_field_text__display_name
+#: model:ir.model.fields,field_description:base.field_ir_qweb_field_time__display_name
+#: model:ir.model.fields,field_description:base.field_ir_rule__display_name
+#: model:ir.model.fields,field_description:base.field_ir_sequence__display_name
+#: model:ir.model.fields,field_description:base.field_ir_sequence_date_range__display_name
+#: model:ir.model.fields,field_description:base.field_ir_ui_menu__display_name
+#: model:ir.model.fields,field_description:base.field_ir_ui_view__display_name
+#: model:ir.model.fields,field_description:base.field_ir_ui_view_custom__display_name
+#: model:ir.model.fields,field_description:base.field_properties_base_definition__display_name
+#: model:ir.model.fields,field_description:base.field_properties_base_definition_mixin__display_name
+#: model:ir.model.fields,field_description:base.field_report_base_report_irmodulereference__display_name
+#: model:ir.model.fields,field_description:base.field_report_layout__display_name
+#: model:ir.model.fields,field_description:base.field_report_paperformat__display_name
+#: model:ir.model.fields,field_description:base.field_res_bank__display_name
+#: model:ir.model.fields,field_description:base.field_res_company__display_name
+#: model:ir.model.fields,field_description:base.field_res_config__display_name
+#: model:ir.model.fields,field_description:base.field_res_config_settings__display_name
+#: model:ir.model.fields,field_description:base.field_res_country__display_name
+#: model:ir.model.fields,field_description:base.field_res_country_group__display_name
+#: model:ir.model.fields,field_description:base.field_res_country_state__display_name
+#: model:ir.model.fields,field_description:base.field_res_currency__display_name
+#: model:ir.model.fields,field_description:base.field_res_currency_rate__display_name
+#: model:ir.model.fields,field_description:base.field_res_device__display_name
+#: model:ir.model.fields,field_description:base.field_res_device_log__display_name
+#: model:ir.model.fields,field_description:base.field_res_groups__display_name
+#: model:ir.model.fields,field_description:base.field_res_groups_privilege__display_name
+#: model:ir.model.fields,field_description:base.field_res_lang__display_name
+#: model:ir.model.fields,field_description:base.field_res_partner__display_name
+#: model:ir.model.fields,field_description:base.field_res_partner_bank__display_name
+#: model:ir.model.fields,field_description:base.field_res_partner_category__display_name
+#: model:ir.model.fields,field_description:base.field_res_partner_industry__display_name
+#: model:ir.model.fields,field_description:base.field_res_users__display_name
+#: model:ir.model.fields,field_description:base.field_res_users_apikeys__display_name
+#: model:ir.model.fields,field_description:base.field_res_users_apikeys_description__display_name
+#: model:ir.model.fields,field_description:base.field_res_users_apikeys_show__display_name
+#: model:ir.model.fields,field_description:base.field_res_users_deletion__display_name
+#: model:ir.model.fields,field_description:base.field_res_users_identitycheck__display_name
+#: model:ir.model.fields,field_description:base.field_res_users_log__display_name
+#: model:ir.model.fields,field_description:base.field_res_users_settings__display_name
+#: model:ir.model.fields,field_description:base.field_reset_view_arch_wizard__display_name
+#: model:ir.model.fields,field_description:base.field_server_action_history_wizard__display_name
+#: model:ir.model.fields,field_description:base.field_wizard_ir_model_menu_create__display_name
+msgid "Display Name"
+msgstr "प्रदर्शन नाम"
+
+#. module: base
+#: model_terms:ir.ui.view,arch_db:base.view_base_module_uninstall
+msgid "Document"
+msgstr "कागजात"
+
+#. module: base
+#: model:ir.module.category,name:base.module_category_productivity_documents
+#: model:ir.module.module,shortdesc:base.module_documents
+msgid "Documents"
+msgstr "कागजातहरू"
+
+#. module: base
+#: model:res.currency,currency_unit_label:base.AUD
+#: model:res.currency,currency_unit_label:base.BBD
+#: model:res.currency,currency_unit_label:base.BMD
+#: model:res.currency,currency_unit_label:base.BND
+#: model:res.currency,currency_unit_label:base.BSD
+#: model:res.currency,currency_unit_label:base.BZD
+#: model:res.currency,currency_unit_label:base.CAD
+#: model:res.currency,currency_unit_label:base.FJD
+#: model:res.currency,currency_unit_label:base.GYD
+#: model:res.currency,currency_unit_label:base.HKD
+#: model:res.currency,currency_unit_label:base.JMD
+#: model:res.currency,currency_unit_label:base.KYD
+#: model:res.currency,currency_unit_label:base.LRD
+#: model:res.currency,currency_unit_label:base.NAD
+#: model:res.currency,currency_unit_label:base.NZD
+#: model:res.currency,currency_unit_label:base.SBD
+#: model:res.currency,currency_unit_label:base.SGD
+#: model:res.currency,currency_unit_label:base.SRD
+#: model:res.currency,currency_unit_label:base.TTD
+#: model:res.currency,currency_unit_label:base.TWD
+#: model:res.currency,currency_unit_label:base.USD
+#: model:res.currency,currency_unit_label:base.XCD
+msgid "Dollars"
+msgstr "डलर"
+
+#. module: base
+#: model:ir.model.fields,field_description:base.field_ir_cron_progress__done
+#: model:ir.model.fields.selection,name:base.selection__ir_actions_todo__state__done
+#: model:ir.model.fields.selection,name:base.selection__res_users_deletion__state__done
+msgid "Done"
+msgstr "सम्पन्न"
+
+#. module: base
+#: model:ir.model.fields.selection,name:base.selection__ir_actions_act_url__target__download
+msgid "Download"
+msgstr "डाउनलोड गर्नुहोस्"
+
+#. module: base
+#: model:ir.model.fields,field_description:base.field_ir_profile__duration
+#: model:ir.model.fields,field_description:base.field_res_users_apikeys_description__duration
+msgid "Duration"
+msgstr "अवधि"
+
+#. module: base
+#. odoo-python
+#: code:addons/base/models/ir_qweb_fields.py:0
+#: code:addons/base/models/res_users.py:0
+#: model:ir.model.fields,field_description:base.field_base_partner_merge_automatic_wizard__group_by_email
+#: model:ir.model.fields,field_description:base.field_res_bank__email
+#: model:ir.model.fields,field_description:base.field_res_company__email
+#: model:ir.model.fields,field_description:base.field_res_partner__email
+#: model:ir.model.fields,field_description:base.field_res_users__email
+#: model:ir.ui.menu,name:base.menu_email
+#: model_terms:ir.ui.view,arch_db:base.contact
+#: model_terms:ir.ui.view,arch_db:base.view_partner_form
+#: model_terms:ir.ui.view,arch_db:base.view_users_form
+#: model_terms:ir.ui.view,arch_db:base.view_users_form_simple_modif
+msgid "Email"
+msgstr "इमेल"
+
+#. module: base
+#: model:ir.model.fields,field_description:base.field_res_partner__employee
+#: model:ir.model.fields,field_description:base.field_res_users__employee
+msgid "Employee"
+msgstr "कर्मचारी"
+
+#. module: base
+#: model:ir.module.category,name:base.module_category_human_resources_employees
+#: model:ir.module.module,shortdesc:base.module_hr
+#: model:res.partner.category,name:base.res_partner_category_3
+msgid "Employees"
+msgstr "कर्मचारीहरू"
+
+#. module: base
+#: model:ir.model.fields,field_description:base.field_ir_demo_failure__error
+msgid "Error"
+msgstr "त्रुटि"
+
+#. module: base
+#: model:ir.model.fields,field_description:base.field_ir_exports_line__export_id
+#: model:res.groups.privilege,name:base.res_groups_privilege_export
+#: model_terms:ir.ui.view,arch_db:base.wizard_lang_export
+msgid "Export"
+msgstr "निर्यात गर्नुहोस्"
+
+#. module: base
+#: model:ir.model.fields,field_description:base.field_ir_default__field_id
+#: model:ir.model.fields,field_description:base.field_ir_model_fields_selection__field_id
+#: model_terms:ir.ui.view,arch_db:base.view_model_fields_search
+#: model_terms:ir.ui.view,arch_db:base.view_model_fields_selection_search
+msgid "Field"
+msgstr "फिल्ड"
+
+#. module: base
+#: model:ir.actions.act_window,name:base.action_model_fields
+#: model:ir.model,name:base.model_ir_model_fields
+#: model:ir.model.fields,field_description:base.field_ir_model__field_id
+#: model:ir.ui.menu,name:base.ir_model_model_fields
+#: model_terms:ir.ui.view,arch_db:base.view_model_fields_form
+#: model_terms:ir.ui.view,arch_db:base.view_model_fields_search
+#: model_terms:ir.ui.view,arch_db:base.view_model_fields_selection_form
+#: model_terms:ir.ui.view,arch_db:base.view_model_fields_selection_search
+#: model_terms:ir.ui.view,arch_db:base.view_model_fields_tree
+#: model_terms:ir.ui.view,arch_db:base.view_model_form
+#: model_terms:ir.ui.view,arch_db:base.view_server_action_form
+msgid "Fields"
+msgstr "फिल्डहरू"
+
+#. module: base
+#: model:ir.model.fields,field_description:base.field_base_language_export__data
+#: model:ir.model.fields,field_description:base.field_base_language_import__data
+#: model:ir.model.fields.selection,name:base.selection__ir_attachment__type__binary
+msgid "File"
+msgstr "फाइल"
+
+#. module: base
+#: model:ir.model.fields,field_description:base.field_ir_actions_act_window__filter
+#: model:ir.model.fields,field_description:base.field_ir_embedded_actions__filter_ids
+msgid "Filter"
+msgstr "फिल्टर"
+
+#. module: base
+#: model:ir.model,name:base.model_ir_filters
+#: model_terms:ir.ui.view,arch_db:base.ir_filters_view_form
+#: model_terms:ir.ui.view,arch_db:base.ir_filters_view_search
+#: model_terms:ir.ui.view,arch_db:base.ir_filters_view_tree
+#: model_terms:ir.ui.view,arch_db:base.view_window_action_form
+msgid "Filters"
+msgstr "फिल्टरहरू"
+
+#. module: base
+#. odoo-python
+#: code:addons/base/models/ir_qweb_fields.py:0
+msgid "Format"
+msgstr "ढाँचा"
+
+#. module: base
+#: model:ir.model.fields,field_description:base.field_ir_logging__func
+msgid "Function"
+msgstr "कार्यभार"
+
+#. module: base
+#: model:ir.ui.menu,name:base.menu_config
+#: model_terms:ir.ui.view,arch_db:base.view_window_action_form
+msgid "General Settings"
+msgstr "सामान्य सेटिङहरू"
+
+#. module: base
+#: model:ir.model.fields.selection,name:base.selection__ir_actions_act_window_view__view_mode__graph
+#: model:ir.model.fields.selection,name:base.selection__ir_ui_view__type__graph
+msgid "Graph"
+msgstr "ग्राफ"
+
+#. module: base
+#: model:ir.model.fields,field_description:base.field_ir_model_access__group_id
+#: model_terms:ir.ui.view,arch_db:base.ir_access_view_search
+#: model_terms:ir.ui.view,arch_db:base.view_groups_search
+#: model_terms:ir.ui.view,arch_db:base.view_rule_search
+msgid "Group"
+msgstr "समूह"
+
+#. module: base
+#. odoo-python
+#: code:addons/base/models/res_users.py:0
+#: model:ir.actions.act_window,name:base.action_res_groups
+#: model:ir.model.fields,field_description:base.field_ir_actions_act_window__group_ids
+#: model:ir.model.fields,field_description:base.field_ir_actions_report__group_ids
+#: model:ir.model.fields,field_description:base.field_ir_embedded_actions__groups_ids
+#: model:ir.model.fields,field_description:base.field_ir_model_fields__groups
+#: model:ir.model.fields,field_description:base.field_ir_rule__groups
+#: model:ir.model.fields,field_description:base.field_ir_ui_menu__group_ids
+#: model:ir.model.fields,field_description:base.field_ir_ui_view__group_ids
+#: model:ir.model.fields,field_description:base.field_res_groups_privilege__group_ids
+#: model:ir.model.fields,field_description:base.field_res_users__group_ids
+#: model:ir.ui.menu,name:base.menu_action_res_groups
+#: model_terms:ir.ui.view,arch_db:base.view_default_groups_form
+#: model_terms:ir.ui.view,arch_db:base.view_groups_form
+#: model_terms:ir.ui.view,arch_db:base.view_groups_search
+#: model_terms:ir.ui.view,arch_db:base.view_res_groups_privilege_form
+#: model_terms:ir.ui.view,arch_db:base.view_users_form
+msgid "Groups"
+msgstr "समूहहरू"
+
+#. module: base
+#. odoo-python
+#: code:addons/base/models/ir_qweb_fields.py:0
+msgid "Height"
+msgstr "उचाइ"
+
+#. module: base
+#: model_terms:ir.ui.view,arch_db:base.view_client_action_form
+#: model_terms:ir.ui.view,arch_db:base.view_server_action_form
+#: model_terms:ir.ui.view,arch_db:base.view_window_action_form
+msgid "Help"
+msgstr "मद्दत"
+
+#. module: base
+#: model_terms:ir.ui.view,arch_db:base.view_attachment_form
+msgid "History"
+msgstr "इतिहास"
+
+#. module: base
+#: model:ir.model.fields,field_description:base.field__unknown__id
+#: model:ir.model.fields,field_description:base.field_avatar_mixin__id
+#: model:ir.model.fields,field_description:base.field_base__id
+#: model:ir.model.fields,field_description:base.field_base_enable_profiling_wizard__id
+#: model:ir.model.fields,field_description:base.field_base_language_export__id
+#: model:ir.model.fields,field_description:base.field_base_language_import__id
+#: model:ir.model.fields,field_description:base.field_base_language_install__id
+#: model:ir.model.fields,field_description:base.field_base_module_uninstall__id
+#: model:ir.model.fields,field_description:base.field_base_module_update__id
+#: model:ir.model.fields,field_description:base.field_base_module_upgrade__id
+#: model:ir.model.fields,field_description:base.field_base_partner_merge_automatic_wizard__id
+#: model:ir.model.fields,field_description:base.field_base_partner_merge_line__id
+#: model:ir.model.fields,field_description:base.field_change_password_own__id
+#: model:ir.model.fields,field_description:base.field_change_password_user__id
+#: model:ir.model.fields,field_description:base.field_change_password_wizard__id
+#: model:ir.model.fields,field_description:base.field_decimal_precision__id
+#: model:ir.model.fields,field_description:base.field_format_address_mixin__id
+#: model:ir.model.fields,field_description:base.field_format_vat_label_mixin__id
+#: model:ir.model.fields,field_description:base.field_image_mixin__id
+#: model:ir.model.fields,field_description:base.field_ir_actions_act_url__id
+#: model:ir.model.fields,field_description:base.field_ir_actions_act_window__id
+#: model:ir.model.fields,field_description:base.field_ir_actions_act_window_close__id
+#: model:ir.model.fields,field_description:base.field_ir_actions_act_window_view__id
+#: model:ir.model.fields,field_description:base.field_ir_actions_actions__id
+#: model:ir.model.fields,field_description:base.field_ir_actions_client__id
+#: model:ir.model.fields,field_description:base.field_ir_actions_report__id
+#: model:ir.model.fields,field_description:base.field_ir_actions_server__id
+#: model:ir.model.fields,field_description:base.field_ir_actions_server_history__id
+#: model:ir.model.fields,field_description:base.field_ir_actions_todo__id
+#: model:ir.model.fields,field_description:base.field_ir_asset__id
+#: model:ir.model.fields,field_description:base.field_ir_attachment__id
+#: model:ir.model.fields,field_description:base.field_ir_autovacuum__id
+#: model:ir.model.fields,field_description:base.field_ir_binary__id
+#: model:ir.model.fields,field_description:base.field_ir_config_parameter__id
+#: model:ir.model.fields,field_description:base.field_ir_cron__id
+#: model:ir.model.fields,field_description:base.field_ir_cron_progress__id
+#: model:ir.model.fields,field_description:base.field_ir_cron_trigger__id
+#: model:ir.model.fields,field_description:base.field_ir_default__id
+#: model:ir.model.fields,field_description:base.field_ir_demo__id
+#: model:ir.model.fields,field_description:base.field_ir_demo_failure__id
+#: model:ir.model.fields,field_description:base.field_ir_demo_failure_wizard__id
+#: model:ir.model.fields,field_description:base.field_ir_embedded_actions__id
+#: model:ir.model.fields,field_description:base.field_ir_exports__id
+#: model:ir.model.fields,field_description:base.field_ir_exports_line__id
+#: model:ir.model.fields,field_description:base.field_ir_fields_converter__id
+#: model:ir.model.fields,field_description:base.field_ir_filters__id
+#: model:ir.model.fields,field_description:base.field_ir_http__id
+#: model:ir.model.fields,field_description:base.field_ir_logging__id
+#: model:ir.model.fields,field_description:base.field_ir_mail_server__id
+#: model:ir.model.fields,field_description:base.field_ir_model__id
+#: model:ir.model.fields,field_description:base.field_ir_model_access__id
+#: model:ir.model.fields,field_description:base.field_ir_model_constraint__id
+#: model:ir.model.fields,field_description:base.field_ir_model_data__id
+#: model:ir.model.fields,field_description:base.field_ir_model_fields__id
+#: model:ir.model.fields,field_description:base.field_ir_model_fields_selection__id
+#: model:ir.model.fields,field_description:base.field_ir_model_inherit__id
+#: model:ir.model.fields,field_description:base.field_ir_model_relation__id
+#: model:ir.model.fields,field_description:base.field_ir_module_category__id
+#: model:ir.model.fields,field_description:base.field_ir_module_module__id
+#: model:ir.model.fields,field_description:base.field_ir_module_module_dependency__id
+#: model:ir.model.fields,field_description:base.field_ir_module_module_exclusion__id
+#: model:ir.model.fields,field_description:base.field_ir_profile__id
+#: model:ir.model.fields,field_description:base.field_ir_qweb__id
+#: model:ir.model.fields,field_description:base.field_ir_qweb_field__id
+#: model:ir.model.fields,field_description:base.field_ir_qweb_field_barcode__id
+#: model:ir.model.fields,field_description:base.field_ir_qweb_field_contact__id
+#: model:ir.model.fields,field_description:base.field_ir_qweb_field_date__id
+#: model:ir.model.fields,field_description:base.field_ir_qweb_field_datetime__id
+#: model:ir.model.fields,field_description:base.field_ir_qweb_field_duration__id
+#: model:ir.model.fields,field_description:base.field_ir_qweb_field_float__id
+#: model:ir.model.fields,field_description:base.field_ir_qweb_field_float_time__id
+#: model:ir.model.fields,field_description:base.field_ir_qweb_field_html__id
+#: model:ir.model.fields,field_description:base.field_ir_qweb_field_image__id
+#: model:ir.model.fields,field_description:base.field_ir_qweb_field_image_url__id
+#: model:ir.model.fields,field_description:base.field_ir_qweb_field_integer__id
+#: model:ir.model.fields,field_description:base.field_ir_qweb_field_many2many__id
+#: model:ir.model.fields,field_description:base.field_ir_qweb_field_many2one__id
+#: model:ir.model.fields,field_description:base.field_ir_qweb_field_monetary__id
+#: model:ir.model.fields,field_description:base.field_ir_qweb_field_one2many__id
+#: model:ir.model.fields,field_description:base.field_ir_qweb_field_qweb__id
+#: model:ir.model.fields,field_description:base.field_ir_qweb_field_relative__id
+#: model:ir.model.fields,field_description:base.field_ir_qweb_field_selection__id
+#: model:ir.model.fields,field_description:base.field_ir_qweb_field_text__id
+#: model:ir.model.fields,field_description:base.field_ir_qweb_field_time__id
+#: model:ir.model.fields,field_description:base.field_ir_rule__id
+#: model:ir.model.fields,field_description:base.field_ir_sequence__id
+#: model:ir.model.fields,field_description:base.field_ir_sequence_date_range__id
+#: model:ir.model.fields,field_description:base.field_ir_ui_menu__id
+#: model:ir.model.fields,field_description:base.field_ir_ui_view__id
+#: model:ir.model.fields,field_description:base.field_ir_ui_view_custom__id
+#: model:ir.model.fields,field_description:base.field_properties_base_definition__id
+#: model:ir.model.fields,field_description:base.field_properties_base_definition_mixin__id
+#: model:ir.model.fields,field_description:base.field_report_base_report_irmodulereference__id
+#: model:ir.model.fields,field_description:base.field_report_layout__id
+#: model:ir.model.fields,field_description:base.field_report_paperformat__id
+#: model:ir.model.fields,field_description:base.field_res_bank__id
+#: model:ir.model.fields,field_description:base.field_res_company__id
+#: model:ir.model.fields,field_description:base.field_res_config__id
+#: model:ir.model.fields,field_description:base.field_res_config_settings__id
+#: model:ir.model.fields,field_description:base.field_res_country__id
+#: model:ir.model.fields,field_description:base.field_res_country_group__id
+#: model:ir.model.fields,field_description:base.field_res_country_state__id
+#: model:ir.model.fields,field_description:base.field_res_currency__id
+#: model:ir.model.fields,field_description:base.field_res_currency_rate__id
+#: model:ir.model.fields,field_description:base.field_res_device__id
+#: model:ir.model.fields,field_description:base.field_res_device_log__id
+#: model:ir.model.fields,field_description:base.field_res_groups__id
+#: model:ir.model.fields,field_description:base.field_res_groups_privilege__id
+#: model:ir.model.fields,field_description:base.field_res_lang__id
+#: model:ir.model.fields,field_description:base.field_res_partner__id
+#: model:ir.model.fields,field_description:base.field_res_partner_bank__id
+#: model:ir.model.fields,field_description:base.field_res_partner_category__id
+#: model:ir.model.fields,field_description:base.field_res_partner_industry__id
+#: model:ir.model.fields,field_description:base.field_res_users__id
+#: model:ir.model.fields,field_description:base.field_res_users_apikeys__id
+#: model:ir.model.fields,field_description:base.field_res_users_apikeys_description__id
+#: model:ir.model.fields,field_description:base.field_res_users_apikeys_show__id
+#: model:ir.model.fields,field_description:base.field_res_users_deletion__id
+#: model:ir.model.fields,field_description:base.field_res_users_identitycheck__id
+#: model:ir.model.fields,field_description:base.field_res_users_log__id
+#: model:ir.model.fields,field_description:base.field_res_users_settings__id
+#: model:ir.model.fields,field_description:base.field_reset_view_arch_wizard__id
+#: model:ir.model.fields,field_description:base.field_server_action_history_wizard__id
+#: model:ir.model.fields,field_description:base.field_wizard_ir_model_menu_create__id
+msgid "ID"
+msgstr "आईडी"
+
+#. module: base
+#: model:ir.model.fields,field_description:base.field_ir_module_module__icon_image
+#: model_terms:ir.ui.view,arch_db:base.module_view_kanban
+#: model_terms:ir.ui.view,arch_db:base.view_base_module_uninstall
+msgid "Icon"
+msgstr "आइकन"
+
+#. module: base
+#: model:ir.model.fields,field_description:base.field_avatar_mixin__image_1920
+#: model:ir.model.fields,field_description:base.field_image_mixin__image_1920
+#: model:ir.model.fields,field_description:base.field_res_lang__flag_image
+#: model:ir.model.fields,field_description:base.field_res_partner__image_1920
+#: model:ir.model.fields,field_description:base.field_res_users__image_1920
+msgid "Image"
+msgstr "तस्बिर"
+
+#. module: base
+#: model_terms:ir.ui.view,arch_db:base.view_base_import_language
+msgid "Import"
+msgstr "आयात गर्नुहोस्"
+
+#. module: base
+#: model:ir.model,name:base.model_res_partner_industry
+#: model:ir.model.fields,field_description:base.field_res_partner__industry_id
+#: model:ir.model.fields,field_description:base.field_res_users__industry_id
+#: model_terms:ir.ui.view,arch_db:base.res_partner_industry_view_form
+#: model_terms:ir.ui.view,arch_db:base.res_partner_industry_view_tree
+msgid "Industry"
+msgstr "उद्योग"
+
+#. module: base
+#: model_terms:ir.ui.view,arch_db:base.view_partner_bank_form
+#: model_terms:ir.ui.view,arch_db:base.view_partner_form
+msgid "Internal notes..."
+msgstr "आन्तरिक टिपोटहरू..."
+
+#. module: base
+#: model:ir.module.category,name:base.module_category_inventory
+#: model:ir.module.category,name:base.module_category_inventory_inventory
+#: model:ir.module.category,name:base.module_category_supply_chain_inventory
+#: model:ir.module.module,shortdesc:base.module_stock
+msgid "Inventory"
+msgstr "मौज्दात व्यवस्थापन"
+
+#. module: base
+#: model:ir.model.fields.selection,name:base.selection__res_partner__type__invoice
+msgid "Invoice"
+msgstr "बीजक"
+
+#. module: base
+#. odoo-python
+#: code:addons/base/models/res_partner.py:0
+msgid "Invoice Address"
+msgstr "बीजक ठेगाना"
+
+#. module: base
+#: model:ir.module.category,name:base.module_category_accounting_accounting
+#: model:ir.module.module,shortdesc:base.module_account
+#: model:ir.module.module,shortdesc:base.module_account_accountant
+msgid "Invoicing"
+msgstr "बीजक प्रणाली"
+
+#. module: base
+#: model:ir.model.fields,field_description:base.field_res_partner__is_company
+#: model:ir.model.fields,field_description:base.field_res_users__is_company
+msgid "Is a Company"
+msgstr "कम्पनी हो"
+
+#. module: base
+#: model:ir.model.fields,field_description:base.field_res_partner__function
+#: model:ir.model.fields,field_description:base.field_res_users__function
+msgid "Job Position"
+msgstr "पद"
+
+#. module: base
+#: model:ir.model.fields.selection,name:base.selection__ir_actions_act_window_view__view_mode__kanban
+#: model:ir.model.fields.selection,name:base.selection__ir_ui_view__type__kanban
+#: model_terms:ir.ui.view,arch_db:base.view_view_search
+msgid "Kanban"
+msgstr "कानबान"
+
+#. module: base
+#: model:ir.model.fields,field_description:base.field_ir_config_parameter__key
+#: model:ir.model.fields,field_description:base.field_ir_ui_view__key
+#: model:ir.model.fields,field_description:base.field_res_users_apikeys_show__key
+#: model_terms:ir.ui.view,arch_db:base.view_ir_config_search
+msgid "Key"
+msgstr "कुञ्जी"
+
+#. module: base
+#: model:ir.model.fields,field_description:base.field_base_language_export__lang
+#: model:ir.model.fields,field_description:base.field_res_partner__lang
+#: model:ir.model.fields,field_description:base.field_res_users__lang
+#: model_terms:ir.ui.view,arch_db:base.res_lang_search
+msgid "Language"
+msgstr "भाषा"
+
+#. module: base
+#: model:ir.actions.act_window,name:base.res_lang_act_window
+#: model:ir.model,name:base.model_res_lang
+#: model:ir.model.fields,field_description:base.field_base_language_install__lang_ids
+#: model:ir.ui.menu,name:base.menu_res_lang_act_window
+#: model_terms:ir.ui.view,arch_db:base.res_lang_form
+#: model_terms:ir.ui.view,arch_db:base.res_lang_search
+#: model_terms:ir.ui.view,arch_db:base.res_lang_tree
+msgid "Languages"
+msgstr "भाषाहरू"
+
+#. module: base
+#: model:ir.model.fields,field_description:base.field_base_enable_profiling_wizard__write_uid
+#: model:ir.model.fields,field_description:base.field_base_language_export__write_uid
+#: model:ir.model.fields,field_description:base.field_base_language_import__write_uid
+#: model:ir.model.fields,field_description:base.field_base_language_install__write_uid
+#: model:ir.model.fields,field_description:base.field_base_module_uninstall__write_uid
+#: model:ir.model.fields,field_description:base.field_base_module_update__write_uid
+#: model:ir.model.fields,field_description:base.field_base_module_upgrade__write_uid
+#: model:ir.model.fields,field_description:base.field_base_partner_merge_automatic_wizard__write_uid
+#: model:ir.model.fields,field_description:base.field_base_partner_merge_line__write_uid
+#: model:ir.model.fields,field_description:base.field_change_password_own__write_uid
+#: model:ir.model.fields,field_description:base.field_change_password_user__write_uid
+#: model:ir.model.fields,field_description:base.field_change_password_wizard__write_uid
+#: model:ir.model.fields,field_description:base.field_decimal_precision__write_uid
+#: model:ir.model.fields,field_description:base.field_ir_actions_act_url__write_uid
+#: model:ir.model.fields,field_description:base.field_ir_actions_act_window__write_uid
+#: model:ir.model.fields,field_description:base.field_ir_actions_act_window_close__write_uid
+#: model:ir.model.fields,field_description:base.field_ir_actions_act_window_view__write_uid
+#: model:ir.model.fields,field_description:base.field_ir_actions_actions__write_uid
+#: model:ir.model.fields,field_description:base.field_ir_actions_client__write_uid
+#: model:ir.model.fields,field_description:base.field_ir_actions_report__write_uid
+#: model:ir.model.fields,field_description:base.field_ir_actions_server__write_uid
+#: model:ir.model.fields,field_description:base.field_ir_actions_server_history__write_uid
+#: model:ir.model.fields,field_description:base.field_ir_actions_todo__write_uid
+#: model:ir.model.fields,field_description:base.field_ir_asset__write_uid
+#: model:ir.model.fields,field_description:base.field_ir_attachment__write_uid
+#: model:ir.model.fields,field_description:base.field_ir_config_parameter__write_uid
+#: model:ir.model.fields,field_description:base.field_ir_cron__write_uid
+#: model:ir.model.fields,field_description:base.field_ir_cron_progress__write_uid
+#: model:ir.model.fields,field_description:base.field_ir_cron_trigger__write_uid
+#: model:ir.model.fields,field_description:base.field_ir_default__write_uid
+#: model:ir.model.fields,field_description:base.field_ir_demo__write_uid
+#: model:ir.model.fields,field_description:base.field_ir_demo_failure__write_uid
+#: model:ir.model.fields,field_description:base.field_ir_demo_failure_wizard__write_uid
+#: model:ir.model.fields,field_description:base.field_ir_embedded_actions__write_uid
+#: model:ir.model.fields,field_description:base.field_ir_exports__write_uid
+#: model:ir.model.fields,field_description:base.field_ir_exports_line__write_uid
+#: model:ir.model.fields,field_description:base.field_ir_filters__write_uid
+#: model:ir.model.fields,field_description:base.field_ir_logging__write_uid
+#: model:ir.model.fields,field_description:base.field_ir_mail_server__write_uid
+#: model:ir.model.fields,field_description:base.field_ir_model__write_uid
+#: model:ir.model.fields,field_description:base.field_ir_model_access__write_uid
+#: model:ir.model.fields,field_description:base.field_ir_model_constraint__write_uid
+#: model:ir.model.fields,field_description:base.field_ir_model_data__write_uid
+#: model:ir.model.fields,field_description:base.field_ir_model_fields__write_uid
+#: model:ir.model.fields,field_description:base.field_ir_model_fields_selection__write_uid
+#: model:ir.model.fields,field_description:base.field_ir_model_relation__write_uid
+#: model:ir.model.fields,field_description:base.field_ir_module_category__write_uid
+#: model:ir.model.fields,field_description:base.field_ir_module_module__write_uid
+#: model:ir.model.fields,field_description:base.field_ir_module_module_exclusion__write_uid
+#: model:ir.model.fields,field_description:base.field_ir_rule__write_uid
+#: model:ir.model.fields,field_description:base.field_ir_sequence__write_uid
+#: model:ir.model.fields,field_description:base.field_ir_sequence_date_range__write_uid
+#: model:ir.model.fields,field_description:base.field_ir_ui_menu__write_uid
+#: model:ir.model.fields,field_description:base.field_ir_ui_view__write_uid
+#: model:ir.model.fields,field_description:base.field_ir_ui_view_custom__write_uid
+#: model:ir.model.fields,field_description:base.field_properties_base_definition__write_uid
+#: model:ir.model.fields,field_description:base.field_report_layout__write_uid
+#: model:ir.model.fields,field_description:base.field_report_paperformat__write_uid
+#: model:ir.model.fields,field_description:base.field_res_bank__write_uid
+#: model:ir.model.fields,field_description:base.field_res_company__write_uid
+#: model:ir.model.fields,field_description:base.field_res_config__write_uid
+#: model:ir.model.fields,field_description:base.field_res_config_settings__write_uid
+#: model:ir.model.fields,field_description:base.field_res_country__write_uid
+#: model:ir.model.fields,field_description:base.field_res_country_group__write_uid
+#: model:ir.model.fields,field_description:base.field_res_country_state__write_uid
+#: model:ir.model.fields,field_description:base.field_res_currency__write_uid
+#: model:ir.model.fields,field_description:base.field_res_currency_rate__write_uid
+#: model:ir.model.fields,field_description:base.field_res_device__write_uid
+#: model:ir.model.fields,field_description:base.field_res_device_log__write_uid
+#: model:ir.model.fields,field_description:base.field_res_groups__write_uid
+#: model:ir.model.fields,field_description:base.field_res_groups_privilege__write_uid
+#: model:ir.model.fields,field_description:base.field_res_lang__write_uid
+#: model:ir.model.fields,field_description:base.field_res_partner__write_uid
+#: model:ir.model.fields,field_description:base.field_res_partner_bank__write_uid
+#: model:ir.model.fields,field_description:base.field_res_partner_category__write_uid
+#: model:ir.model.fields,field_description:base.field_res_partner_industry__write_uid
+#: model:ir.model.fields,field_description:base.field_res_users__write_uid
+#: model:ir.model.fields,field_description:base.field_res_users_apikeys_description__write_uid
+#: model:ir.model.fields,field_description:base.field_res_users_deletion__write_uid
+#: model:ir.model.fields,field_description:base.field_res_users_identitycheck__write_uid
+#: model:ir.model.fields,field_description:base.field_res_users_log__write_uid
+#: model:ir.model.fields,field_description:base.field_res_users_settings__write_uid
+#: model:ir.model.fields,field_description:base.field_reset_view_arch_wizard__write_uid
+#: model:ir.model.fields,field_description:base.field_server_action_history_wizard__write_uid
+#: model:ir.model.fields,field_description:base.field_wizard_ir_model_menu_create__write_uid
+msgid "Last Updated by"
+msgstr "अन्तिम अद्यावधिक गर्ने"
+
+#. module: base
+#: model:ir.model.fields,field_description:base.field_base_enable_profiling_wizard__write_date
+#: model:ir.model.fields,field_description:base.field_base_language_export__write_date
+#: model:ir.model.fields,field_description:base.field_base_language_import__write_date
+#: model:ir.model.fields,field_description:base.field_base_language_install__write_date
+#: model:ir.model.fields,field_description:base.field_base_module_uninstall__write_date
+#: model:ir.model.fields,field_description:base.field_base_module_update__write_date
+#: model:ir.model.fields,field_description:base.field_base_module_upgrade__write_date
+#: model:ir.model.fields,field_description:base.field_base_partner_merge_automatic_wizard__write_date
+#: model:ir.model.fields,field_description:base.field_base_partner_merge_line__write_date
+#: model:ir.model.fields,field_description:base.field_change_password_own__write_date
+#: model:ir.model.fields,field_description:base.field_change_password_user__write_date
+#: model:ir.model.fields,field_description:base.field_change_password_wizard__write_date
+#: model:ir.model.fields,field_description:base.field_decimal_precision__write_date
+#: model:ir.model.fields,field_description:base.field_ir_actions_act_url__write_date
+#: model:ir.model.fields,field_description:base.field_ir_actions_act_window__write_date
+#: model:ir.model.fields,field_description:base.field_ir_actions_act_window_close__write_date
+#: model:ir.model.fields,field_description:base.field_ir_actions_act_window_view__write_date
+#: model:ir.model.fields,field_description:base.field_ir_actions_actions__write_date
+#: model:ir.model.fields,field_description:base.field_ir_actions_client__write_date
+#: model:ir.model.fields,field_description:base.field_ir_actions_report__write_date
+#: model:ir.model.fields,field_description:base.field_ir_actions_server__write_date
+#: model:ir.model.fields,field_description:base.field_ir_actions_server_history__write_date
+#: model:ir.model.fields,field_description:base.field_ir_actions_todo__write_date
+#: model:ir.model.fields,field_description:base.field_ir_asset__write_date
+#: model:ir.model.fields,field_description:base.field_ir_attachment__write_date
+#: model:ir.model.fields,field_description:base.field_ir_config_parameter__write_date
+#: model:ir.model.fields,field_description:base.field_ir_cron__write_date
+#: model:ir.model.fields,field_description:base.field_ir_cron_progress__write_date
+#: model:ir.model.fields,field_description:base.field_ir_cron_trigger__write_date
+#: model:ir.model.fields,field_description:base.field_ir_default__write_date
+#: model:ir.model.fields,field_description:base.field_ir_demo__write_date
+#: model:ir.model.fields,field_description:base.field_ir_demo_failure__write_date
+#: model:ir.model.fields,field_description:base.field_ir_demo_failure_wizard__write_date
+#: model:ir.model.fields,field_description:base.field_ir_embedded_actions__write_date
+#: model:ir.model.fields,field_description:base.field_ir_exports__write_date
+#: model:ir.model.fields,field_description:base.field_ir_exports_line__write_date
+#: model:ir.model.fields,field_description:base.field_ir_filters__write_date
+#: model:ir.model.fields,field_description:base.field_ir_logging__write_date
+#: model:ir.model.fields,field_description:base.field_ir_mail_server__write_date
+#: model:ir.model.fields,field_description:base.field_ir_model__write_date
+#: model:ir.model.fields,field_description:base.field_ir_model_access__write_date
+#: model:ir.model.fields,field_description:base.field_ir_model_constraint__write_date
+#: model:ir.model.fields,field_description:base.field_ir_model_data__write_date
+#: model:ir.model.fields,field_description:base.field_ir_model_fields__write_date
+#: model:ir.model.fields,field_description:base.field_ir_model_fields_selection__write_date
+#: model:ir.model.fields,field_description:base.field_ir_module_category__write_date
+#: model:ir.model.fields,field_description:base.field_ir_module_module__write_date
+#: model:ir.model.fields,field_description:base.field_ir_module_module_exclusion__write_date
+#: model:ir.model.fields,field_description:base.field_ir_rule__write_date
+#: model:ir.model.fields,field_description:base.field_ir_sequence__write_date
+#: model:ir.model.fields,field_description:base.field_ir_sequence_date_range__write_date
+#: model:ir.model.fields,field_description:base.field_ir_ui_menu__write_date
+#: model:ir.model.fields,field_description:base.field_ir_ui_view__write_date
+#: model:ir.model.fields,field_description:base.field_ir_ui_view_custom__write_date
+#: model:ir.model.fields,field_description:base.field_properties_base_definition__write_date
+#: model:ir.model.fields,field_description:base.field_report_layout__write_date
+#: model:ir.model.fields,field_description:base.field_report_paperformat__write_date
+#: model:ir.model.fields,field_description:base.field_res_bank__write_date
+#: model:ir.model.fields,field_description:base.field_res_company__write_date
+#: model:ir.model.fields,field_description:base.field_res_config__write_date
+#: model:ir.model.fields,field_description:base.field_res_config_settings__write_date
+#: model:ir.model.fields,field_description:base.field_res_country__write_date
+#: model:ir.model.fields,field_description:base.field_res_country_group__write_date
+#: model:ir.model.fields,field_description:base.field_res_country_state__write_date
+#: model:ir.model.fields,field_description:base.field_res_currency__write_date
+#: model:ir.model.fields,field_description:base.field_res_currency_rate__write_date
+#: model:ir.model.fields,field_description:base.field_res_device__write_date
+#: model:ir.model.fields,field_description:base.field_res_device_log__write_date
+#: model:ir.model.fields,field_description:base.field_res_groups__write_date
+#: model:ir.model.fields,field_description:base.field_res_groups_privilege__write_date
+#: model:ir.model.fields,field_description:base.field_res_lang__write_date
+#: model:ir.model.fields,field_description:base.field_res_partner__write_date
+#: model:ir.model.fields,field_description:base.field_res_partner_bank__write_date
+#: model:ir.model.fields,field_description:base.field_res_partner_category__write_date
+#: model:ir.model.fields,field_description:base.field_res_partner_industry__write_date
+#: model:ir.model.fields,field_description:base.field_res_users__write_date
+#: model:ir.model.fields,field_description:base.field_res_users_apikeys_description__write_date
+#: model:ir.model.fields,field_description:base.field_res_users_deletion__write_date
+#: model:ir.model.fields,field_description:base.field_res_users_identitycheck__write_date
+#: model:ir.model.fields,field_description:base.field_res_users_log__write_date
+#: model:ir.model.fields,field_description:base.field_res_users_settings__write_date
+#: model:ir.model.fields,field_description:base.field_reset_view_arch_wizard__write_date
+#: model:ir.model.fields,field_description:base.field_server_action_history_wizard__write_date
+#: model:ir.model.fields,field_description:base.field_wizard_ir_model_menu_create__write_date
+msgid "Last Updated on"
+msgstr "अन्तिम अद्यावधिक मिति"
+
+#. module: base
+#: model:ir.model.fields,field_description:base.field_ir_logging__level
+#: model_terms:ir.ui.view,arch_db:base.ir_logging_search_view
+msgid "Level"
+msgstr "तह"
+
+#. module: base
+#: model:ir.model.fields.selection,name:base.selection__ir_actions_act_window_view__view_mode__list
+#: model:ir.model.fields.selection,name:base.selection__ir_ui_view__type__list
+#: model_terms:ir.ui.view,arch_db:base.view_view_search
+msgid "List"
+msgstr "सूची"
+
+#. module: base
+#: model_terms:ir.ui.view,arch_db:base.res_device_view_kanban
+msgid "Log out"
+msgstr "लगआउट"
+
+#. module: base
+#: model_terms:ir.ui.view,arch_db:base.view_users_form
+#: model_terms:ir.ui.view,arch_db:base.view_users_form_simple_modif
+msgid "Log out from all devices"
+msgstr "सबै उपकरणबाट लगआउट गर्नुहोस्"
+
+#. module: base
+#: model:ir.model.fields,field_description:base.field_res_users__login
+#: model_terms:ir.ui.view,arch_db:base.view_res_users_kanban
+#: model_terms:ir.ui.view,arch_db:base.view_users_form
+msgid "Login"
+msgstr "लगइन"
+
+#. module: base
+#: model:ir.model.fields,field_description:base.field_res_partner__main_user_id
+#: model:ir.model.fields,field_description:base.field_res_users__main_user_id
+msgid "Main User"
+msgstr "मुख्य प्रयोगकर्ता"
+
+#. module: base
+#: model:ir.model.fields,field_description:base.field_ir_logging__message
+#: model:ir.model.fields,field_description:base.field_ir_model_constraint__message
+msgid "Message"
+msgstr "सन्देश"
+
+#. module: base
+#: model:ir.model.fields.selection,name:base.selection__res_device__device_type__mobile
+#: model:ir.model.fields.selection,name:base.selection__res_device_log__device_type__mobile
+#: model:ir.module.module,shortdesc:base.module_web_mobile
+#: model_terms:ir.ui.view,arch_db:base.contact
+#: model_terms:ir.ui.view,arch_db:base.res_device_view_kanban
+msgid "Mobile"
+msgstr "मोबाइल"
+
+#. module: base
+#: model:ir.model.fields,field_description:base.field_ir_actions_report__model_id
+#: model:ir.model.fields,field_description:base.field_ir_actions_server__model_id
+#: model:ir.model.fields,field_description:base.field_ir_cron__model_id
+#: model:ir.model.fields,field_description:base.field_ir_filters__model_id
+#: model:ir.model.fields,field_description:base.field_ir_model__model
+#: model:ir.model.fields,field_description:base.field_ir_model_access__model_id
+#: model:ir.model.fields,field_description:base.field_ir_model_constraint__model
+#: model:ir.model.fields,field_description:base.field_ir_model_fields__model_id
+#: model:ir.model.fields,field_description:base.field_ir_model_inherit__model_id
+#: model:ir.model.fields,field_description:base.field_ir_model_relation__model
+#: model:ir.model.fields,field_description:base.field_ir_rule__model_id
+#: model:ir.model.fields,field_description:base.field_ir_ui_view__model
+#: model:ir.model.fields.selection,name:base.selection__base_language_export__export_type__model
+#: model_terms:ir.ui.view,arch_db:base.act_report_xml_search_view
+#: model_terms:ir.ui.view,arch_db:base.ir_access_view_search
+#: model_terms:ir.ui.view,arch_db:base.ir_cron_view_search
+#: model_terms:ir.ui.view,arch_db:base.ir_filters_view_search
+#: model_terms:ir.ui.view,arch_db:base.view_model_constraint_search
+#: model_terms:ir.ui.view,arch_db:base.view_model_data_search
+#: model_terms:ir.ui.view,arch_db:base.view_model_fields_search
+#: model_terms:ir.ui.view,arch_db:base.view_model_search
+#: model_terms:ir.ui.view,arch_db:base.view_rule_search
+#: model_terms:ir.ui.view,arch_db:base.view_server_action_search
+#: model_terms:ir.ui.view,arch_db:base.view_view_search
+#: model_terms:ir.ui.view,arch_db:base.wizard_lang_export
+msgid "Model"
+msgstr "मोडेल"
+
+#. module: base
+#: model:ir.actions.act_window,name:base.action_model_model
+#: model:ir.model,name:base.model_ir_model
+#: model:ir.ui.menu,name:base.ir_model_model_menu
+#: model_terms:ir.ui.view,arch_db:base.view_base_module_uninstall
+msgid "Models"
+msgstr "मोडेलहरू"
+
+#. module: base
+#: model:ir.model.fields,field_description:base.field_ir_module_category__module_ids
+#: model_terms:ir.ui.view,arch_db:base.wizard_lang_export
+msgid "Modules"
+msgstr "मोड्युलहरू"
+
+#. module: base
+#. odoo-python
+#: code:addons/base/models/ir_qweb_fields.py:0
+#: model:ir.model.fields,field_description:base.field_base_partner_merge_automatic_wizard__group_by_name
+#: model:ir.model.fields,field_description:base.field_ir_actions_todo__name
+#: model:ir.model.fields,field_description:base.field_ir_asset__name
+#: model:ir.model.fields,field_description:base.field_ir_attachment__name
+#: model:ir.model.fields,field_description:base.field_ir_cron__cron_name
+#: model:ir.model.fields,field_description:base.field_ir_embedded_actions__name
+#: model:ir.model.fields,field_description:base.field_ir_logging__name
+#: model:ir.model.fields,field_description:base.field_ir_mail_server__name
+#: model:ir.model.fields,field_description:base.field_ir_model_access__name
+#: model:ir.model.fields,field_description:base.field_ir_model_fields_selection__name
+#: model:ir.model.fields,field_description:base.field_ir_module_category__name
+#: model:ir.model.fields,field_description:base.field_ir_module_module_dependency__name
+#: model:ir.model.fields,field_description:base.field_ir_module_module_exclusion__name
+#: model:ir.model.fields,field_description:base.field_ir_rule__name
+#: model:ir.model.fields,field_description:base.field_ir_sequence__name
+#: model:ir.model.fields,field_description:base.field_report_layout__name
+#: model:ir.model.fields,field_description:base.field_report_paperformat__name
+#: model:ir.model.fields,field_description:base.field_res_bank__name
+#: model:ir.model.fields,field_description:base.field_res_country_group__name
+#: model:ir.model.fields,field_description:base.field_res_currency__full_name
+#: model:ir.model.fields,field_description:base.field_res_groups__name
+#: model:ir.model.fields,field_description:base.field_res_groups_privilege__name
+#: model:ir.model.fields,field_description:base.field_res_lang__name
+#: model:ir.model.fields,field_description:base.field_res_partner__name
+#: model:ir.model.fields,field_description:base.field_res_partner_bank__bank_name
+#: model:ir.model.fields,field_description:base.field_res_partner_category__name
+#: model:ir.model.fields,field_description:base.field_res_partner_industry__name
+#: model:ir.model.fields,field_description:base.field_res_users__name
+#: model_terms:ir.ui.view,arch_db:base.ir_profile_view_search
+#: model_terms:ir.ui.view,arch_db:base.res_device_view_form
+#: model_terms:ir.ui.view,arch_db:base.res_device_view_kanban
+#: model_terms:ir.ui.view,arch_db:base.res_device_view_tree
+#: model_terms:ir.ui.view,arch_db:base.res_partner_category_view_search
+#: model_terms:ir.ui.view,arch_db:base.view_currency_form
+#: model_terms:ir.ui.view,arch_db:base.view_currency_tree
+#: model_terms:ir.ui.view,arch_db:base.view_partner_form
+#: model_terms:ir.ui.view,arch_db:base.view_partner_tree
+#: model_terms:ir.ui.view,arch_db:base.view_server_action_form
+#: model_terms:ir.ui.view,arch_db:base.view_server_action_tree
+msgid "Name"
+msgstr "नाम"
+
+#. module: base
+#: model:ir.model.fields.selection,name:base.selection__ir_mail_server__smtp_encryption__none
+msgid "None"
+msgstr "कुनै पनि होइन"
+
+#. module: base
+#: model_terms:ir.ui.view,arch_db:base.view_partner_bank_form
+msgid "Note"
+msgstr "टिपोट"
+
+#. module: base
+#: model:ir.model.fields,field_description:base.field_res_partner__comment
+#: model:ir.model.fields,field_description:base.field_res_partner_bank__note
+#: model:ir.model.fields,field_description:base.field_res_users__comment
+#: model_terms:ir.ui.view,arch_db:base.view_groups_form
+#: model_terms:ir.ui.view,arch_db:base.view_model_form
+#: model_terms:ir.ui.view,arch_db:base.view_partner_form
+#: model_terms:ir.ui.view,arch_db:base.view_res_groups_privilege_form
+msgid "Notes"
+msgstr "टिपोटहरू"
+
+#. module: base
+#: model:ir.model.fields,field_description:base.field_ir_profile__speedscope_url
+msgid "Open"
+msgstr "खोल्नुहोस्"
+
+#. module: base
+#: model_terms:ir.ui.view,arch_db:base.base_partner_merge_automatic_wizard_form
+msgid "Options"
+msgstr "विकल्पहरू"
+
+#. module: base
+#: model:ir.model.fields,field_description:base.field_ir_model__order
+msgid "Order"
+msgstr "क्रम"
+
+#. module: base
+#: model:ir.model.fields.selection,name:base.selection__res_partner__type__other
+msgid "Other"
+msgstr "अन्य"
+
+#. module: base
+#: model_terms:ir.ui.view,arch_db:base.view_ir_mail_server_search
+msgid "Outgoing Mail Server"
+msgstr "बहिर्गमन मेल सर्भर"
+
+#. module: base
+#: model:ir.model.fields,field_description:base.field_ir_model_inherit__parent_id
+#: model:ir.model.fields,field_description:base.field_res_company__parent_ids
+msgid "Parent"
+msgstr "मूल"
+
+#. module: base
+#: model:ir.model.fields,field_description:base.field_res_company__partner_id
+#: model_terms:ir.ui.view,arch_db:base.view_partner_address_form
+msgid "Partner"
+msgstr "साझेदार"
+
+#. module: base
+#: model:ir.model.fields,field_description:base.field_res_partner_category__partner_ids
+#: model_terms:ir.ui.view,arch_db:base.base_partner_merge_automatic_wizard_form
+#: model_terms:ir.ui.view,arch_db:base.view_partner_form
+msgid "Partners"
+msgstr "साझेदारहरू"
+
+#. module: base
+#: model:ir.module.module,shortdesc:base.module_auth_passkey
+msgid "Passkeys"
+msgstr "पासकीहरू"
+
+#. module: base
+#: model:ir.model.fields,field_description:base.field_ir_mail_server__smtp_pass
+#: model:ir.model.fields,field_description:base.field_res_users__password
+#: model:ir.model.fields,field_description:base.field_res_users_identitycheck__password
+#: model:ir.model.fields.selection,name:base.selection__res_users_identitycheck__auth_method__password
+msgid "Password"
+msgstr "पासवर्ड"
+
+#. module: base
+#: model:ir.module.category,name:base.module_category_accounting_payment
+msgid "Payment"
+msgstr "भुक्तानी"
+
+#. module: base
+#: model:ir.module.category,name:base.module_category_human_resources_payroll
+#: model:ir.module.module,shortdesc:base.module_hr_payroll
+msgid "Payroll"
+msgstr "तलब"
+
+#. module: base
+#. odoo-python
+#: code:addons/base/models/ir_qweb_fields.py:0
+#: model:ir.model.fields,field_description:base.field_res_bank__phone
+#: model:ir.model.fields,field_description:base.field_res_company__phone
+#: model:ir.model.fields,field_description:base.field_res_partner__phone
+#: model:ir.model.fields,field_description:base.field_res_users__phone
+#: model:ir.module.category,name:base.module_category_productivity_phone
+#: model:ir.module.module,shortdesc:base.module_voip
+#: model_terms:ir.ui.view,arch_db:base.contact
+#: model_terms:ir.ui.view,arch_db:base.view_partner_form
+#: model_terms:ir.ui.view,arch_db:base.view_users_form
+#: model_terms:ir.ui.view,arch_db:base.view_users_form_simple_modif
+#: model_terms:ir.ui.view,arch_db:base.view_users_simple_form
+msgid "Phone"
+msgstr "फोन"
+
+#. module: base
+#: model:ir.model.fields.selection,name:base.selection__ir_actions_act_window_view__view_mode__pivot
+#: model:ir.model.fields.selection,name:base.selection__ir_ui_view__type__pivot
+msgid "Pivot"
+msgstr "पिभोट"
+
+#. module: base
+#: model:ir.module.category,name:base.module_category_accounting_localizations_point_of_sale
+#: model:ir.module.category,name:base.module_category_point_of_sale
+#: model:ir.module.category,name:base.module_category_sales_point_of_sale
+#: model:ir.module.module,shortdesc:base.module_point_of_sale
+msgid "Point of Sale"
+msgstr "बिक्री केन्द्र"
+
+#. module: base
+#: model_terms:ir.ui.view,arch_db:base.view_users_form
+#: model_terms:ir.ui.view,arch_db:base.view_users_form_simple_modif
+msgid "Preferences"
+msgstr "प्राथमिकताहरू"
+
+#. module: base
+#: model:ir.model.fields,field_description:base.field_ir_cron__priority
+#: model:ir.model.fields,field_description:base.field_ir_mail_server__sequence
+msgid "Priority"
+msgstr "प्राथमिकता"
+
+#. module: base
+#: model:ir.module.module,shortdesc:base.module_privacy_lookup
+msgid "Privacy"
+msgstr "गोपनीयता"
+
+#. module: base
+#: model:ir.module.category,name:base.module_category_services_project
+#: model:ir.module.module,shortdesc:base.module_project
+msgid "Project"
+msgstr "परियोजना"
+
+#. module: base
+#: model:ir.model.fields,field_description:base.field_properties_base_definition_mixin__properties
+#: model:ir.model.fields,field_description:base.field_res_partner__properties
+#: model:ir.model.fields,field_description:base.field_res_users__properties
+#: model_terms:ir.ui.view,arch_db:base.view_model_fields_form
+#: model_terms:ir.ui.view,arch_db:base.view_model_form
+#: model_terms:ir.ui.view,arch_db:base.view_res_partner_filter
+msgid "Properties"
+msgstr "गुणहरू"
+
+#. module: base
+#: model:ir.module.category,name:base.module_category_accounting_localizations_purchase
+#: model:ir.module.category,name:base.module_category_supply_chain_purchase
+#: model:ir.module.module,shortdesc:base.module_purchase
+#: model_terms:ir.ui.view,arch_db:base.view_partner_form
+msgid "Purchase"
+msgstr "खरिद"
+
+#. module: base
+#: model:ir.model.fields,field_description:base.field_ir_actions_server__resource_ref
+#: model:ir.model.fields,field_description:base.field_ir_cron__resource_ref
+#: model_terms:ir.ui.view,arch_db:base.view_model_data_form
+msgid "Record"
+msgstr "रेकर्ड"
+
+#. module: base
+#: model:ir.module.category,name:base.module_category_human_resources_recruitment
+#: model:ir.module.module,shortdesc:base.module_hr_recruitment
+msgid "Recruitment"
+msgstr "कर्मचारी भर्ना"
+
+#. module: base
+#: model:ir.model.fields,field_description:base.field_ir_model_data__reference
+#: model:ir.model.fields,field_description:base.field_res_partner__ref
+#: model:ir.model.fields,field_description:base.field_res_users__ref
+#: model_terms:ir.ui.view,arch_db:base.view_partner_form
+msgid "Reference"
+msgstr "सन्दर्भ"
+
+#. module: base
+#: model:ir.model.fields,field_description:base.field_res_partner__parent_id
+#: model:ir.model.fields,field_description:base.field_res_users__parent_id
+msgid "Related Company"
+msgstr "सम्बन्धित कम्पनी"
+
+#. module: base
+#: model:ir.model.fields.selection,name:base.selection__ir_asset__directive__remove
+msgid "Remove"
+msgstr "हटाउनुहोस्"
+
+#. module: base
+#: model:ir.model.fields.selection,name:base.selection__ir_actions_act_url__binding_type__report
+#: model:ir.model.fields.selection,name:base.selection__ir_actions_act_window__binding_type__report
+#: model:ir.model.fields.selection,name:base.selection__ir_actions_act_window_close__binding_type__report
+#: model:ir.model.fields.selection,name:base.selection__ir_actions_actions__binding_type__report
+#: model:ir.model.fields.selection,name:base.selection__ir_actions_client__binding_type__report
+#: model:ir.model.fields.selection,name:base.selection__ir_actions_report__binding_type__report
+#: model:ir.model.fields.selection,name:base.selection__ir_actions_server__binding_type__report
+#: model_terms:ir.ui.view,arch_db:base.act_report_xml_search_view
+#: model_terms:ir.ui.view,arch_db:base.act_report_xml_view
+msgid "Report"
+msgstr "प्रतिवेदन"
+
+#. module: base
+#: model:ir.module.category,name:base.module_category_accounting_localizations_reporting
+#: model:ir.ui.menu,name:base.reporting_menuitem
+#: model_terms:res.partner,website_description:base.res_partner_2
+#: model_terms:res.partner,website_description:base.res_partner_4
+msgid "Reporting"
+msgstr "प्रतिवेदन"
+
+#. module: base
+#: model:ir.actions.act_window,name:base.ir_action_report
+#: model:ir.actions.act_window,name:base.reports_action
+#: model:ir.model.fields,field_description:base.field_ir_module_module__reports_by_module
+#: model:ir.ui.menu,name:base.menu_ir_action_report
+#: model:ir.ui.menu,name:base.reports_menuitem
+msgid "Reports"
+msgstr "प्रतिवेदनहरू"
+
+#. module: base
+#: model:ir.model.fields,field_description:base.field_ir_model_fields__required
+#: model_terms:ir.ui.view,arch_db:base.view_model_fields_search
+msgid "Required"
+msgstr "अनिवार्य"
+
+#. module: base
+#: model:ir.module.category,name:base.module_category_sales
+#: model:ir.module.category,name:base.module_category_sales_sales
+#: model:ir.module.module,shortdesc:base.module_sale
+#: model:ir.module.module,shortdesc:base.module_sale_management
+#: model_terms:ir.ui.view,arch_db:base.view_partner_form
+msgid "Sales"
+msgstr "बिक्री"
+
+#. module: base
+#: model:ir.model.fields,field_description:base.field_res_partner__user_id
+#: model:ir.model.fields,field_description:base.field_res_users__user_id
+#: model_terms:ir.ui.view,arch_db:base.view_res_partner_filter
+msgid "Salesperson"
+msgstr "बिक्रेता"
+
+#. module: base
+#: model:ir.model.fields.selection,name:base.selection__ir_ui_view__type__search
+#: model_terms:ir.ui.view,arch_db:base.view_view_search
+msgid "Search"
+msgstr "खोज्नुहोस्"
+
+#. module: base
+#: model:ir.ui.menu,name:base.menu_security
+#: model_terms:ir.ui.view,arch_db:base.view_users_form
+#: model_terms:ir.ui.view,arch_db:base.view_users_form_simple_modif
+msgid "Security"
+msgstr "सुरक्षा"
+
+#. module: base
+#: model:ir.model,name:base.model_ir_sequence
+#: model:ir.model.fields,field_description:base.field_ir_actions_act_window_view__sequence
+#: model:ir.model.fields,field_description:base.field_ir_actions_server__sequence
+#: model:ir.model.fields,field_description:base.field_ir_actions_todo__sequence
+#: model:ir.model.fields,field_description:base.field_ir_asset__sequence
+#: model:ir.model.fields,field_description:base.field_ir_cron__sequence
+#: model:ir.model.fields,field_description:base.field_ir_embedded_actions__sequence
+#: model:ir.model.fields,field_description:base.field_ir_model_fields_selection__sequence
+#: model:ir.model.fields,field_description:base.field_ir_module_category__sequence
+#: model:ir.model.fields,field_description:base.field_ir_module_module__sequence
+#: model:ir.model.fields,field_description:base.field_ir_ui_menu__sequence
+#: model:ir.model.fields,field_description:base.field_ir_ui_view__priority
+#: model:ir.model.fields,field_description:base.field_report_layout__sequence
+#: model:ir.model.fields,field_description:base.field_res_company__sequence
+#: model:ir.model.fields,field_description:base.field_res_groups__sequence
+#: model:ir.model.fields,field_description:base.field_res_groups_privilege__sequence
+#: model:ir.model.fields,field_description:base.field_res_partner_bank__sequence
+#: model:ir.model.fields.selection,name:base.selection__ir_actions_server__evaluation_type__sequence
+#: model_terms:ir.ui.view,arch_db:base.sequence_view
+#: model_terms:ir.ui.view,arch_db:base.view_sequence_search
+#: model_terms:ir.ui.view,arch_db:base.view_view_tree
+msgid "Sequence"
+msgstr "क्रम"
+
+#. module: base
+#: model:ir.actions.act_window,name:base.res_config_setting_act_window
+#: model:ir.model.fields,field_description:base.field_res_users__res_users_settings_id
+#: model:ir.ui.menu,name:base.menu_administration
+#: model_terms:ir.ui.view,arch_db:base.res_config_settings_view_form
+msgid "Settings"
+msgstr "सेटिङहरू"
+
+#. module: base
+#: model:ir.model.fields,field_description:base.field_res_users__share
+msgid "Share User"
+msgstr "साझा प्रयोगकर्ता"
+
+#. module: base
+#: model:ir.model.fields,field_description:base.field_ir_model_fields__size
+msgid "Size"
+msgstr "आकार"
+
+#. module: base
+#: model:ir.module.module,description:base.module_spreadsheet
+#: model:ir.module.module,description:base.module_spreadsheet_dashboard
+#: model:ir.module.module,description:base.module_spreadsheet_dashboard_account
+#: model:ir.module.module,description:base.module_spreadsheet_dashboard_account_accountant
+#: model:ir.module.module,description:base.module_spreadsheet_dashboard_crm
+#: model:ir.module.module,description:base.module_spreadsheet_dashboard_event_sale
+#: model:ir.module.module,description:base.module_spreadsheet_dashboard_helpdesk
+#: model:ir.module.module,description:base.module_spreadsheet_dashboard_hr_expense
+#: model:ir.module.module,description:base.module_spreadsheet_dashboard_hr_payroll
+#: model:ir.module.module,description:base.module_spreadsheet_dashboard_hr_referral
+#: model:ir.module.module,description:base.module_spreadsheet_dashboard_hr_timesheet
+#: model:ir.module.module,description:base.module_spreadsheet_dashboard_im_livechat
+#: model:ir.module.module,description:base.module_spreadsheet_dashboard_marketing_automation
+#: model:ir.module.module,description:base.module_spreadsheet_dashboard_mrp_account
+#: model:ir.module.module,description:base.module_spreadsheet_dashboard_pos_hr
+#: model:ir.module.module,description:base.module_spreadsheet_dashboard_pos_restaurant
+#: model:ir.module.module,description:base.module_spreadsheet_dashboard_purchase_stock
+#: model:ir.module.module,description:base.module_spreadsheet_dashboard_sale
+#: model:ir.module.module,description:base.module_spreadsheet_dashboard_sale_renting
+#: model:ir.module.module,description:base.module_spreadsheet_dashboard_sale_subscription
+#: model:ir.module.module,description:base.module_spreadsheet_dashboard_sale_timesheet
+#: model:ir.module.module,description:base.module_spreadsheet_dashboard_stock
+#: model:ir.module.module,description:base.module_spreadsheet_dashboard_stock_account
+#: model:ir.module.module,description:base.module_spreadsheet_dashboard_website_sale
+#: model:ir.module.module,description:base.module_spreadsheet_dashboard_website_sale_slides
+#: model:ir.module.module,description:base.module_spreadsheet_edition
+#: model:ir.module.module,shortdesc:base.module_spreadsheet
+#: model:ir.module.module,shortdesc:base.module_spreadsheet_edition
+#: model:ir.module.module,summary:base.module_spreadsheet
+#: model:ir.module.module,summary:base.module_spreadsheet_dashboard
+#: model:ir.module.module,summary:base.module_spreadsheet_dashboard_account
+#: model:ir.module.module,summary:base.module_spreadsheet_dashboard_account_accountant
+#: model:ir.module.module,summary:base.module_spreadsheet_dashboard_crm
+#: model:ir.module.module,summary:base.module_spreadsheet_dashboard_event_sale
+#: model:ir.module.module,summary:base.module_spreadsheet_dashboard_helpdesk
+#: model:ir.module.module,summary:base.module_spreadsheet_dashboard_hr_expense
+#: model:ir.module.module,summary:base.module_spreadsheet_dashboard_hr_payroll
+#: model:ir.module.module,summary:base.module_spreadsheet_dashboard_hr_referral
+#: model:ir.module.module,summary:base.module_spreadsheet_dashboard_hr_timesheet
+#: model:ir.module.module,summary:base.module_spreadsheet_dashboard_im_livechat
+#: model:ir.module.module,summary:base.module_spreadsheet_dashboard_marketing_automation
+#: model:ir.module.module,summary:base.module_spreadsheet_dashboard_mrp_account
+#: model:ir.module.module,summary:base.module_spreadsheet_dashboard_pos_hr
+#: model:ir.module.module,summary:base.module_spreadsheet_dashboard_pos_restaurant
+#: model:ir.module.module,summary:base.module_spreadsheet_dashboard_purchase_stock
+#: model:ir.module.module,summary:base.module_spreadsheet_dashboard_sale
+#: model:ir.module.module,summary:base.module_spreadsheet_dashboard_sale_renting
+#: model:ir.module.module,summary:base.module_spreadsheet_dashboard_sale_subscription
+#: model:ir.module.module,summary:base.module_spreadsheet_dashboard_sale_timesheet
+#: model:ir.module.module,summary:base.module_spreadsheet_dashboard_stock
+#: model:ir.module.module,summary:base.module_spreadsheet_dashboard_stock_account
+#: model:ir.module.module,summary:base.module_spreadsheet_dashboard_website_sale
+#: model:ir.module.module,summary:base.module_spreadsheet_dashboard_website_sale_slides
+#: model:ir.module.module,summary:base.module_spreadsheet_edition
+msgid "Spreadsheet"
+msgstr "स्प्रेडसिट"
+
+#. module: base
+#: model:ir.model.fields,field_description:base.field_base_language_export__state
+#: model:ir.model.fields,field_description:base.field_base_partner_merge_automatic_wizard__state
+#: model:ir.model.fields,field_description:base.field_res_partner__state_id
+#: model:ir.model.fields,field_description:base.field_res_users__state_id
+#: model:ir.model.fields,field_description:base.field_res_users_deletion__state
+#: model_terms:ir.ui.view,arch_db:base.view_company_form
+#: model_terms:ir.ui.view,arch_db:base.view_country_state_form
+#: model_terms:ir.ui.view,arch_db:base.view_country_state_tree
+#: model_terms:ir.ui.view,arch_db:base.view_partner_address_form
+#: model_terms:ir.ui.view,arch_db:base.view_partner_form
+#: model_terms:ir.ui.view,arch_db:base.view_res_bank_form
+msgid "State"
+msgstr "अवस्था"
+
+#. module: base
+#: model:ir.model.fields,field_description:base.field_res_country_state__code
+msgid "State Code"
+msgstr "प्रदेश कोड"
+
+#. module: base
+#: model:ir.model.fields,field_description:base.field_res_partner__application_statistics
+#: model:ir.model.fields,field_description:base.field_res_users__application_statistics
+msgid "Stats"
+msgstr "तथ्याङ्क"
+
+#. module: base
+#: model:ir.model.fields,field_description:base.field_base_module_update__state
+#: model:ir.model.fields,field_description:base.field_ir_actions_todo__state
+#: model:ir.model.fields,field_description:base.field_ir_module_module__state
+#: model:ir.model.fields,field_description:base.field_ir_module_module_dependency__state
+#: model:ir.model.fields,field_description:base.field_ir_module_module_exclusion__state
+#: model_terms:ir.ui.view,arch_db:base.view_module_filter
+msgid "Status"
+msgstr "स्थिति"
+
+#. module: base
+#: model:ir.model.fields,field_description:base.field_res_bank__street
+#: model:ir.model.fields,field_description:base.field_res_company__street
+#: model:ir.model.fields,field_description:base.field_res_partner__street
+#: model:ir.model.fields,field_description:base.field_res_users__street
+msgid "Street"
+msgstr "सडक"
+
+#. module: base
+#: model_terms:ir.ui.view,arch_db:base.view_company_form
+#: model_terms:ir.ui.view,arch_db:base.view_partner_address_form
+#: model_terms:ir.ui.view,arch_db:base.view_partner_form
+#: model_terms:ir.ui.view,arch_db:base.view_res_bank_form
+msgid "Street 2..."
+msgstr "सडक २..."
+
+#. module: base
+#: model_terms:ir.ui.view,arch_db:base.view_company_form
+#: model_terms:ir.ui.view,arch_db:base.view_partner_address_form
+#: model_terms:ir.ui.view,arch_db:base.view_partner_form
+#: model_terms:ir.ui.view,arch_db:base.view_res_bank_form
+msgid "Street..."
+msgstr "सडक..."
+
+#. module: base
+#: model:ir.model.fields,field_description:base.field_res_bank__street2
+#: model:ir.model.fields,field_description:base.field_res_company__street2
+#: model:ir.model.fields,field_description:base.field_res_partner__street2
+#: model:ir.model.fields,field_description:base.field_res_users__street2
+msgid "Street2"
+msgstr "सडक २"
+
+#. module: base
+#: model:ir.model.fields,field_description:base.field_ir_module_module__summary
+msgid "Summary"
+msgstr "सारांश"
+
+#. module: base
+#: model_terms:ir.ui.view,arch_db:base.view_res_partner_filter
+msgid "Tag"
+msgstr "ट्याग"
+
+#. module: base
+#: model:ir.model.fields,field_description:base.field_res_partner__category_id
+#: model:ir.model.fields,field_description:base.field_res_users__category_id
+msgid "Tags"
+msgstr "ट्यागहरू"
+
+#. module: base
+#: model:ir.model.fields,field_description:base.field_ir_asset__target
+msgid "Target"
+msgstr "लक्ष्य"
+
+#. module: base
+#. odoo-python
+#: code:addons/base/models/res_partner.py:0
+#: model:ir.model.fields,field_description:base.field_res_company__vat
+#: model:ir.model.fields,field_description:base.field_res_partner__vat
+#: model:ir.model.fields,field_description:base.field_res_users__vat
+msgid "Tax ID"
+msgstr "कर नम्बर"
+
+#. module: base
+#: model:ir.module.category,name:base.module_category_hidden
+#: model:ir.module.category,name:base.module_category_technical
+#: model:ir.ui.menu,name:base.menu_custom
+msgid "Technical"
+msgstr "प्राविधिक"
+
+#. module: base
+#: model:ir.module.category,name:base.module_category_human_resources_time_off
+#: model:ir.module.module,shortdesc:base.module_hr_holidays
+msgid "Time Off"
+msgstr "बिदा"
+
+#. module: base
+#: model:ir.model.fields,field_description:base.field_res_partner__tz
+#: model:ir.model.fields,field_description:base.field_res_users__tz
+msgid "Timezone"
+msgstr "समय क्षेत्र"
+
+#. module: base
+#: model:ir.model.fields,field_description:base.field_ir_actions_server__state
+#: model:ir.model.fields,field_description:base.field_ir_attachment__type
+#: model:ir.model.fields,field_description:base.field_ir_cron__state
+#: model:ir.model.fields,field_description:base.field_ir_logging__type
+#: model:ir.model.fields,field_description:base.field_ir_model__state
+#: model:ir.model.fields,field_description:base.field_ir_model_fields__state
+#: model:ir.model.fields,field_description:base.field_res_partner_bank__acc_type
+#: model_terms:ir.ui.view,arch_db:base.ir_logging_search_view
+#: model_terms:ir.ui.view,arch_db:base.view_attachment_search
+#: model_terms:ir.ui.view,arch_db:base.view_view_search
+msgid "Type"
+msgstr "प्रकार"
+
+#. module: base
+#: model:ir.model.fields,field_description:base.field_ir_module_module__url
+#: model:ir.model.fields.selection,name:base.selection__ir_attachment__type__url
+#: model_terms:ir.ui.view,arch_db:base.view_attachment_search
+#: model_terms:ir.ui.view,arch_db:base.view_server_action_form
+msgid "URL"
+msgstr "यूआरएल"
+
+#. module: base
+#. odoo-python
+#: code:addons/base/models/res_device.py:0 code:addons/models.py:0
+#: model:ir.model,name:base.model__unknown
+#: model:ir.model.fields.selection,name:base.selection__ir_module_module_dependency__state__unknown
+#: model:ir.model.fields.selection,name:base.selection__ir_module_module_exclusion__state__unknown
+msgid "Unknown"
+msgstr "अज्ञात"
+
+#. module: base
+#: model:ir.model,name:base.model_res_users
+#: model:ir.model.fields,field_description:base.field_change_password_user__user_id
+#: model:ir.model.fields,field_description:base.field_ir_default__user_id
+#: model:ir.model.fields,field_description:base.field_ir_embedded_actions__user_id
+#: model:ir.model.fields,field_description:base.field_ir_ui_view_custom__user_id
+#: model:ir.model.fields,field_description:base.field_res_device__user_id
+#: model:ir.model.fields,field_description:base.field_res_device_log__user_id
+#: model:ir.model.fields,field_description:base.field_res_groups__user_ids
+#: model:ir.model.fields,field_description:base.field_res_users_apikeys__user_id
+#: model:ir.model.fields,field_description:base.field_res_users_deletion__user_id
+#: model:ir.model.fields,field_description:base.field_res_users_settings__user_id
+#: model:ir.model.fields.selection,name:base.selection__res_users__role__group_user
+#: model_terms:ir.ui.view,arch_db:base.ir_cron_view_search
+#: model_terms:ir.ui.view,arch_db:base.ir_default_search_view
+#: model_terms:ir.ui.view,arch_db:base.ir_filters_view_search
+#: model_terms:ir.ui.view,arch_db:base.view_users_search
+msgid "User"
+msgstr "प्रयोगकर्ता"
+
+#. module: base
+#. odoo-python
+#: code:addons/base/models/res_users.py:0
+#: model:ir.actions.act_window,name:base.action_res_users
+#: model:ir.model.fields,field_description:base.field_change_password_wizard__user_ids
+#: model:ir.model.fields,field_description:base.field_ir_filters__user_ids
+#: model:ir.model.fields,field_description:base.field_res_partner__user_ids
+#: model:ir.model.fields,field_description:base.field_res_users__user_ids
+#: model:ir.ui.menu,name:base.menu_action_res_users
+#: model_terms:ir.ui.view,arch_db:base.change_password_wizard_user_tree_view
+#: model_terms:ir.ui.view,arch_db:base.view_groups_form
+#: model_terms:ir.ui.view,arch_db:base.view_users_form
+#: model_terms:ir.ui.view,arch_db:base.view_users_form_simple_modif
+#: model_terms:ir.ui.view,arch_db:base.view_users_search
+#: model_terms:ir.ui.view,arch_db:base.view_users_simple_form
+#: model_terms:ir.ui.view,arch_db:base.view_users_tree
+msgid "Users"
+msgstr "प्रयोगकर्ताहरू"
+
+#. module: base
+#. odoo-python
+#: code:addons/base/models/ir_qweb_fields.py:0
+#: model:ir.model.fields,field_description:base.field_base_partner_merge_automatic_wizard__group_by_vat
+#: model:res.country,vat_label:base.be model:res.country,vat_label:base.bg
+#: model:res.country,vat_label:base.cy model:res.country,vat_label:base.cz
+#: model:res.country,vat_label:base.de model:res.country,vat_label:base.dk
+#: model:res.country,vat_label:base.ee model:res.country,vat_label:base.es
+#: model:res.country,vat_label:base.fi model:res.country,vat_label:base.fr
+#: model:res.country,vat_label:base.gr model:res.country,vat_label:base.hr
+#: model:res.country,vat_label:base.hu model:res.country,vat_label:base.ie
+#: model:res.country,vat_label:base.it model:res.country,vat_label:base.lt
+#: model:res.country,vat_label:base.lu model:res.country,vat_label:base.lv
+#: model:res.country,vat_label:base.mt model:res.country,vat_label:base.nl
+#: model:res.country,vat_label:base.pf model:res.country,vat_label:base.pl
+#: model:res.country,vat_label:base.pt model:res.country,vat_label:base.ro
+#: model:res.country,vat_label:base.se model:res.country,vat_label:base.si
+#: model:res.country,vat_label:base.sk model:res.country,vat_label:base.uk
+msgid "VAT"
+msgstr "मूल्य अभिवृद्धि कर"
+
+#. module: base
+#: model:ir.model.fields,field_description:base.field_ir_actions_server__value
+#: model:ir.model.fields,field_description:base.field_ir_config_parameter__value
+#: model:ir.model.fields,field_description:base.field_ir_cron__value
+#: model:ir.model.fields,field_description:base.field_ir_model_fields_selection__value
+msgid "Value"
+msgstr "मान"
+
+#. module: base
+#: model:res.partner.category,name:base.res_partner_category_0
+msgid "Vendor"
+msgstr "विक्रेता"
+
+#. module: base
+#: model:ir.actions.act_window,name:base.action_partner_supplier_form
+msgid "Vendors"
+msgstr "विक्रेताहरू"
+
+#. module: base
+#: model:ir.model,name:base.model_ir_ui_view
+#: model:ir.model.fields,field_description:base.field_ir_actions_act_window_view__view_id
+#: model:ir.model.fields,field_description:base.field_reset_view_arch_wizard__view_id
+#: model_terms:ir.ui.view,arch_db:base.view_view_search
+msgid "View"
+msgstr "हेर्नुहोस्"
+
+#. module: base
+#: model_terms:ir.ui.view,arch_db:base.view_currency_form
+#: model_terms:ir.ui.view,arch_db:base.view_partner_form
+msgid "Visible to all"
+msgstr "सबैलाई देखिने"
+
+#. module: base
+#. odoo-python
+#: code:addons/base/models/ir_mail_server.py:0
+#: code:addons/base/models/ir_model.py:0 code:addons/models.py:0
+#: model:ir.model.fields,field_description:base.field_ir_actions_server__warning
+#: model:ir.model.fields,field_description:base.field_ir_cron__warning
+msgid "Warning"
+msgstr "चेतावनी"
+
+#. module: base
+#: model:ir.model.fields,field_description:base.field_ir_module_module__website
+#: model:ir.module.category,name:base.module_category_accounting_localizations_website
+#: model:ir.module.category,name:base.module_category_website
+#: model:ir.module.category,name:base.module_category_website_website
+#: model:ir.module.module,shortdesc:base.module_website
+#: model_terms:ir.ui.view,arch_db:base.contact
+#: model_terms:ir.ui.view,arch_db:base.view_company_form
+#: model_terms:ir.ui.view,arch_db:base.view_partner_address_form
+#: model_terms:ir.ui.view,arch_db:base.view_partner_form
+msgid "Website"
+msgstr "वेबसाइट"
+
+#. module: base
+#: model:ir.model.fields,field_description:base.field_res_company__website
+#: model:ir.model.fields,field_description:base.field_res_partner__website
+#: model:ir.model.fields,field_description:base.field_res_users__website
+msgid "Website Link"
+msgstr "वेबसाइट लिङ्क"
+
+#. module: base
+#. odoo-python
+#: code:addons/base/models/ir_qweb_fields.py:0
+msgid "Width"
+msgstr "चौडाइ"
+
+#. module: base
+#: model_terms:ir.ui.view,arch_db:base.view_company_form
+#: model_terms:ir.ui.view,arch_db:base.view_partner_address_form
+#: model_terms:ir.ui.view,arch_db:base.view_partner_form
+#: model_terms:ir.ui.view,arch_db:base.view_res_bank_form
+msgid "ZIP"
+msgstr "पोस्ट कोड"
+
+#. module: base
+#: model:ir.model.fields,field_description:base.field_res_bank__zip
+#: model:ir.model.fields,field_description:base.field_res_company__zip
+#: model:ir.model.fields,field_description:base.field_res_partner__zip
+#: model:ir.model.fields,field_description:base.field_res_users__zip
+msgid "Zip"
+msgstr "पोस्ट कोड"

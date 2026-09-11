@@ -1,0 +1,246 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0 (sales_team)\n"
+"Report-Msgid-Bugs-To: \n"
+"Language-Team: Nepali\n"
+"Language: ne\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: sales_team
+#: model:ir.model.fields,field_description:sales_team.field_crm_team__message_needaction
+#: model:ir.model.fields,field_description:sales_team.field_crm_team_member__message_needaction
+msgid "Action Needed"
+msgstr "कार्य आवश्यक"
+
+#. module: sales_team
+#: model:ir.model.fields,field_description:sales_team.field_crm_team__active
+#: model:ir.model.fields,field_description:sales_team.field_crm_team_member__active
+msgid "Active"
+msgstr "सक्रिय"
+
+#. module: sales_team
+#: model:ir.actions.act_window,name:sales_team.mail_activity_type_action_config_sales
+msgid "Activity Types"
+msgstr "गतिविधि प्रकारहरू"
+
+#. module: sales_team
+#: model_terms:ir.ui.view,arch_db:sales_team.crm_team_member_view_form
+#: model_terms:ir.ui.view,arch_db:sales_team.crm_team_member_view_kanban
+#: model_terms:ir.ui.view,arch_db:sales_team.crm_team_member_view_search
+#: model_terms:ir.ui.view,arch_db:sales_team.crm_team_view_form
+#: model_terms:ir.ui.view,arch_db:sales_team.crm_team_view_search
+msgid "Archived"
+msgstr "संग्रहित"
+
+#. module: sales_team
+#: model:ir.model.fields,field_description:sales_team.field_crm_team__message_attachment_count
+#: model:ir.model.fields,field_description:sales_team.field_crm_team_member__message_attachment_count
+msgid "Attachment Count"
+msgstr "संलग्न संख्या"
+
+#. module: sales_team
+#: model:ir.model.fields,field_description:sales_team.field_crm_tag__color
+msgid "Color"
+msgstr "रङ"
+
+#. module: sales_team
+#: model:ir.model.fields,field_description:sales_team.field_crm_team__company_id
+#: model:ir.model.fields,field_description:sales_team.field_crm_team_member__company_id
+#: model_terms:ir.ui.view,arch_db:sales_team.crm_team_view_search
+msgid "Company"
+msgstr "कम्पनी"
+
+#. module: sales_team
+#: model_terms:ir.ui.view,arch_db:sales_team.crm_team_view_kanban_dashboard
+msgid "Configuration"
+msgstr "कन्फिगरेसन"
+
+#. module: sales_team
+#: model:ir.model.fields,field_description:sales_team.field_crm_tag__create_uid
+#: model:ir.model.fields,field_description:sales_team.field_crm_team__create_uid
+#: model:ir.model.fields,field_description:sales_team.field_crm_team_member__create_uid
+msgid "Created by"
+msgstr "सिर्जना गर्ने"
+
+#. module: sales_team
+#: model:ir.model.fields,field_description:sales_team.field_crm_tag__create_date
+#: model:ir.model.fields,field_description:sales_team.field_crm_team__create_date
+#: model:ir.model.fields,field_description:sales_team.field_crm_team_member__create_date
+msgid "Created on"
+msgstr "सिर्जना मिति"
+
+#. module: sales_team
+#: model:ir.model.fields,field_description:sales_team.field_crm_team__currency_id
+msgid "Currency"
+msgstr "मुद्रा"
+
+#. module: sales_team
+#: model:ir.model.fields,field_description:sales_team.field_crm_tag__display_name
+#: model:ir.model.fields,field_description:sales_team.field_crm_team__display_name
+#: model:ir.model.fields,field_description:sales_team.field_crm_team_member__display_name
+#: model:ir.model.fields,field_description:sales_team.field_res_users__display_name
+msgid "Display Name"
+msgstr "प्रदर्शन नाम"
+
+#. module: sales_team
+#: model:ir.model.fields,field_description:sales_team.field_crm_team_member__email
+msgid "Email"
+msgstr "इमेल"
+
+#. module: sales_team
+#: model:ir.model.fields,field_description:sales_team.field_crm_team__message_follower_ids
+#: model:ir.model.fields,field_description:sales_team.field_crm_team_member__message_follower_ids
+msgid "Followers"
+msgstr "अनुयायीहरू"
+
+#. module: sales_team
+#: model:ir.model.fields,field_description:sales_team.field_crm_team__message_partner_ids
+#: model:ir.model.fields,field_description:sales_team.field_crm_team_member__message_partner_ids
+msgid "Followers (Partners)"
+msgstr "अनुयायीहरू (साझेदारहरू)"
+
+#. module: sales_team
+#: model:ir.model.fields,field_description:sales_team.field_crm_team__has_message
+#: model:ir.model.fields,field_description:sales_team.field_crm_team_member__has_message
+msgid "Has Message"
+msgstr "सन्देश छ"
+
+#. module: sales_team
+#: model:ir.model.fields,field_description:sales_team.field_crm_tag__id
+#: model:ir.model.fields,field_description:sales_team.field_crm_team__id
+#: model:ir.model.fields,field_description:sales_team.field_crm_team_member__id
+#: model:ir.model.fields,field_description:sales_team.field_res_users__id
+msgid "ID"
+msgstr "आईडी"
+
+#. module: sales_team
+#: model:ir.model.fields,field_description:sales_team.field_crm_team_member__image_1920
+msgid "Image"
+msgstr "तस्बिर"
+
+#. module: sales_team
+#: model:ir.model.fields,field_description:sales_team.field_crm_team__message_is_follower
+#: model:ir.model.fields,field_description:sales_team.field_crm_team_member__message_is_follower
+msgid "Is Follower"
+msgstr "अनुयायी हो"
+
+#. module: sales_team
+#: model:ir.model.fields,field_description:sales_team.field_crm_tag__write_uid
+#: model:ir.model.fields,field_description:sales_team.field_crm_team__write_uid
+#: model:ir.model.fields,field_description:sales_team.field_crm_team_member__write_uid
+msgid "Last Updated by"
+msgstr "अन्तिम अद्यावधिक गर्ने"
+
+#. module: sales_team
+#: model:ir.model.fields,field_description:sales_team.field_crm_tag__write_date
+#: model:ir.model.fields,field_description:sales_team.field_crm_team__write_date
+#: model:ir.model.fields,field_description:sales_team.field_crm_team_member__write_date
+msgid "Last Updated on"
+msgstr "अन्तिम अद्यावधिक मिति"
+
+#. module: sales_team
+#: model:ir.model.fields,field_description:sales_team.field_crm_team__message_has_error
+#: model:ir.model.fields,field_description:sales_team.field_crm_team_member__message_has_error
+msgid "Message Delivery error"
+msgstr "सन्देश पठाउन त्रुटि"
+
+#. module: sales_team
+#: model:ir.model.fields,field_description:sales_team.field_crm_team__message_ids
+#: model:ir.model.fields,field_description:sales_team.field_crm_team_member__message_ids
+msgid "Messages"
+msgstr "सन्देशहरू"
+
+#. module: sales_team
+#: model:ir.model.fields,field_description:sales_team.field_crm_team_member__name
+msgid "Name"
+msgstr "नाम"
+
+#. module: sales_team
+#: model:ir.model.fields,field_description:sales_team.field_crm_team__message_needaction_counter
+#: model:ir.model.fields,field_description:sales_team.field_crm_team_member__message_needaction_counter
+msgid "Number of Actions"
+msgstr "कार्यहरूको संख्या"
+
+#. module: sales_team
+#: model:ir.model.fields,field_description:sales_team.field_crm_team__message_has_error_counter
+#: model:ir.model.fields,field_description:sales_team.field_crm_team_member__message_has_error_counter
+msgid "Number of errors"
+msgstr "त्रुटिहरूको संख्या"
+
+#. module: sales_team
+#: model:crm.tag,name:sales_team.categ_oppor8
+msgid "Other"
+msgstr "अन्य"
+
+#. module: sales_team
+#: model:ir.model.fields,field_description:sales_team.field_crm_team_member__phone
+msgid "Phone"
+msgstr "फोन"
+
+#. module: sales_team
+#: model:crm.team,name:sales_team.pos_sales_team
+msgid "Point of Sale"
+msgstr "बिक्री केन्द्र"
+
+#. module: sales_team
+#: model:crm.tag,name:sales_team.categ_oppor1
+msgid "Product"
+msgstr "उत्पादन"
+
+#. module: sales_team
+#: model:ir.model.fields,field_description:sales_team.field_crm_team__rating_ids
+#: model:ir.model.fields,field_description:sales_team.field_crm_team_member__rating_ids
+msgid "Ratings"
+msgstr "मूल्याङ्कनहरू"
+
+#. module: sales_team
+#: model:crm.team,name:sales_team.team_sales_department
+#: model:res.groups.privilege,name:sales_team.res_groups_privilege_sales
+msgid "Sales"
+msgstr "बिक्री"
+
+#. module: sales_team
+#: model:ir.model,name:sales_team.model_crm_team
+#: model:ir.model.fields,field_description:sales_team.field_crm_team__name
+#: model:ir.model.fields,field_description:sales_team.field_crm_team_member__crm_team_id
+#: model_terms:ir.ui.view,arch_db:sales_team.crm_team_member_view_search
+#: model_terms:ir.ui.view,arch_db:sales_team.crm_team_view_form
+#: model_terms:ir.ui.view,arch_db:sales_team.crm_team_view_tree
+msgid "Sales Team"
+msgstr "बिक्री टोली"
+
+#. module: sales_team
+#: model:ir.model.fields,field_description:sales_team.field_crm_team_member__user_id
+msgid "Salesperson"
+msgstr "बिक्रेता"
+
+#. module: sales_team
+#: model:ir.model.fields,field_description:sales_team.field_crm_team__sequence
+msgid "Sequence"
+msgstr "क्रम"
+
+#. module: sales_team
+#: model:ir.actions.act_window,name:sales_team.sales_team_crm_tag_action
+#: model_terms:ir.ui.view,arch_db:sales_team.sales_team_crm_tag_view_form
+#: model_terms:ir.ui.view,arch_db:sales_team.sales_team_crm_tag_view_tree
+msgid "Tags"
+msgstr "ट्यागहरू"
+
+#. module: sales_team
+#: model:ir.model,name:sales_team.model_res_users
+msgid "User"
+msgstr "प्रयोगकर्ता"
+
+#. module: sales_team
+#: model_terms:ir.ui.view,arch_db:sales_team.crm_team_view_form
+msgid "Visible to all"
+msgstr "सबैलाई देखिने"
+
+#. module: sales_team
+#: model:crm.team,name:sales_team.salesteam_website_sales
+msgid "Website"
+msgstr "वेबसाइट"

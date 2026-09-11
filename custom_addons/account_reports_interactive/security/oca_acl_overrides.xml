@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!--
+        SEC-5: the aged-balance bucket configuration was writable by every employee.
+
+        `account_financial_report/security/ir.model.access.csv:8-9` grants
+        `base.group_user` full CRUD (1,1,1,1) on `account.age.report.configuration`
+        and its lines. That model is not per-user state: it defines the ageing
+        buckets every Aged Partner Balance is built from. Any employee could
+        rewrite or delete the bucketing that the whole finance team reads, and the
+        report would simply start answering a different question.
+
+        Records are UPDATED here by fully-qualified xmlid rather than edited in the
+        vendored CSV. VENDORED.md forbids editing those modules in place: the
+        zero-drift property is what keeps the LIC-1 licence position defensible,
+        and an edit there also disappears on the next vendor refresh. An update by
+        xmlid is applied after the CSV loads, because this module depends on that
+        one, so load order is guaranteed rather than hoped for.
+
+        Employees keep READ. That is deliberate and is the minimum the feature
+        needs: the wizard resolves the configuration while building the report, so
+        removing read would break the report for anyone who is allowed to run it.
+        What they lose is write, create and unlink.
+    -->
+    <record id="account_financial_report.access_account_age_report_configuration"
+            model="ir.model.access">
+        <field name="perm_write" eval="0"/>
+        <field name="perm_create" eval="0"/>
+        <field name="perm_unlink" eval="0"/>
+    </record>
+
+    <record id="account_financial_report.access_account_age_report_configuration_line"
+            model="ir.model.access">
+        <field name="perm_write" eval="0"/>
+        <field name="perm_create" eval="0"/>
+        <field name="perm_unlink" eval="0"/>
+    </record>
+
+    <!--
+        Somebody still has to be able to configure it. The vendored CSV had exactly
+        one row per model, so narrowing it above would otherwise leave the
+        configuration editable by nobody at all. These restore that ability to the
+        accounting ladder, following the convention used across this repository:
+        an Accountant may create and amend, only an Adviser may delete.
+    -->
+    <record id="access_age_report_configuration_accountant" model="ir.model.access">
+        <field name="name">account.age.report.configuration accountant</field>
+        <field name="model_id" ref="account_financial_report.model_account_age_report_configuration"/>
+        <field name="group_id" ref="account.group_account_user"/>
+        <field name="perm_read" eval="1"/>
+        <field name="perm_write" eval="1"/>
+        <field name="perm_create" eval="1"/>
+        <field name="perm_unlink" eval="0"/>
+    </record>
+
+    <record id="access_age_report_configuration_manager" model="ir.model.access">
+        <field name="name">account.age.report.configuration manager</field>
+        <field name="model_id" ref="account_financial_report.model_account_age_report_configuration"/>
+        <field name="group_id" ref="account.group_account_manager"/>
+        <field name="perm_read" eval="1"/>
+        <field name="perm_write" eval="1"/>
+        <field name="perm_create" eval="1"/>
+        <field name="perm_unlink" eval="1"/>
+    </record>
+
+    <record id="access_age_report_configuration_line_accountant" model="ir.model.access">
+        <field name="name">account.age.report.configuration.line accountant</field>
+        <field name="model_id" ref="account_financial_report.model_account_age_report_configuration_line"/>
+        <field name="group_id" ref="account.group_account_user"/>
+        <field name="perm_read" eval="1"/>
+        <field name="perm_write" eval="1"/>
+        <field name="perm_create" eval="1"/>
+        <field name="perm_unlink" eval="0"/>
+    </record>
+
+    <record id="access_age_report_configuration_line_manager" model="ir.model.access">
+        <field name="name">account.age.report.configuration.line manager</field>
+        <field name="model_id" ref="account_financial_report.model_account_age_report_configuration_line"/>
+        <field name="group_id" ref="account.group_account_manager"/>
+        <field name="perm_read" eval="1"/>
+        <field name="perm_write" eval="1"/>
+        <field name="perm_create" eval="1"/>
+        <field name="perm_unlink" eval="1"/>
+    </record>
+
+</odoo>

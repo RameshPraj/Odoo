@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_tds_category_list" model="ir.ui.view">
+        <field name="name">l10n_np.tds.category.list</field>
+        <field name="model">l10n_np.tds.category</field>
+        <field name="arch" type="xml">
+            <list string="TDS Categories" editable="bottom">
+                <field name="code"/>
+                <field name="name"/>
+                <field name="rate"/>
+                <field name="threshold"/>
+                <field name="date_from"/>
+                <field name="date_to"/>
+                <field name="account_id"/>
+                <field name="legal_reference" optional="show"/>
+                <field name="company_id" column_invisible="True"/>
+                <field name="currency_id" column_invisible="True"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_tds_category_form" model="ir.ui.view">
+        <field name="name">l10n_np.tds.category.form</field>
+        <field name="model">l10n_np.tds.category</field>
+        <field name="arch" type="xml">
+            <form string="TDS Category">
+                <div class="alert alert-warning" role="alert">
+                    Rates here are entered by your accountant, not shipped with the
+                    software. They are set by the Income Tax Act and amended by Finance
+                    Acts. Close an old rate with an <b>Effective to</b> date and add a
+                    new record rather than editing the rate in place, so that past
+                    returns still compute on the rate that applied then.
+                </div>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="code"/>
+                            <field name="name"/>
+                            <field name="rate"/>
+                            <field name="threshold"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                        <group>
+                            <field name="date_from"/>
+                            <field name="date_to"/>
+                            <field name="account_id"/>
+                            <field name="tax_id"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="active" widget="boolean_toggle"/>
+                        </group>
+                    </group>
+                    <group string="Audit">
+                        <field name="legal_reference"
+                               placeholder="e.g. Income Tax Act 2058, section reference"/>
+                        <field name="description"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_tds_category" model="ir.actions.act_window">
+        <field name="name">TDS Categories</field>
+        <field name="res_model">l10n_np.tds.category</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Add the first TDS rate</p>
+            <p>
+                No TDS rates are configured. This module deliberately ships none:
+                Nepali withholding rates are set by law and change with Finance Acts.
+                Ask your accountant for the current schedule and enter it here.
+            </p>
+        </field>
+    </record>
+
+</odoo>

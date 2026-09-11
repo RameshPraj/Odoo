@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="res_config_settings_view_form" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.l10n_np_accounting</field>
+        <field name="model">res.config.settings</field>
+        <field name="priority" eval="50"/>
+        <field name="inherit_id" ref="account.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <!--
+                UPG-3: anchored to the Invoicing *app*, not to a sibling block.
+
+                This was `//block[@id='analytic']` with position="before". That
+                block is core's (account/views/res_config_settings_views.xml:354)
+                and sits in the arch Odoo churns most; if it is renamed, moved to
+                another module or dropped, the xpath does not degrade. It raises
+                ParseError, and a ParseError in a view this module *installs*
+                means the module fails to install at all.
+
+                `//app[@name='account']` is the container that block already lives
+                in (it spans :23-388), so the block still renders in the same
+                place in the Settings page and under the same visibility. What
+                changes is only that it is appended to the app rather than
+                positioned against a neighbour it never had a reason to know
+                about.
+            -->
+            <xpath expr="//app[@name='account']" position="inside">
+                <block title="Nepal" id="l10n_np_accounting"
+                       groups="account.group_account_readonly">
+                    <setting id="l10n_np_calendar_system"
+                             string="Calendar"
+                             help="Default calendar for staff who have not chosen one in their own Preferences. Bikram Sambat covers every date in Odoo, not only accounting.">
+                        <field name="calendar_system"/>
+                        <div class="content-group mt-2"
+                             invisible="calendar_system != 'bs'">
+                            <div class="row">
+                                <label for="bs_digits" class="col-lg-4 o_light_label"/>
+                                <field name="bs_digits"/>
+                            </div>
+                            <div class="row">
+                                <label for="bs_report_output" class="col-lg-4 o_light_label"/>
+                                <field name="bs_report_output"/>
+                            </div>
+                            <div class="text-muted mt-2">
+                                Dates remain stored as Gregorian, so reports, filters and
+                                reconciliation are unaffected. Individuals can choose their
+                                own calendar under <b>Preferences</b>. Browse the calendar
+                                itself under <b>Accounting Nepal &gt; Nepali Calendar</b>.
+                            </div>
+                        </div>
+                    </setting>
+                </block>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

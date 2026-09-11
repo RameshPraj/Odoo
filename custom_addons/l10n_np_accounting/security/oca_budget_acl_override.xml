@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!--
+        SEC-5: budget lines were writable by every employee.
+
+        `account_budget_oca/security/ir.model.access.csv:7` grants
+        `base.group_user` read, write and create on `crossovered.budget.lines`:
+
+            access_budget,crossovered.budget.lines manager,
+            model_crossovered_budget_lines,base.group_user,1,1,1,0
+
+        Note the row is *named* "manager" while being granted to every employee,
+        which reads as an upstream slip rather than a decision. It is also
+        redundant: the same file already grants the accounting ladder properly on
+        the line above, `access_crossovered_budget_lines_accountant`
+        (`account.group_account_user`, 1,1,1,1). So the only thing this row adds is
+        write and create for non-accounting staff on budget figures.
+
+        Narrowed to read here rather than removed. Removing the row entirely would
+        also take away visibility, and employee *visibility* of a budget is a
+        plausible thing for the upstream module to have intended — a department
+        head looking at their own numbers. Write and create are not, and those are
+        what this drops. Accountants are unaffected: their grant is a separate row.
+
+        Updated by fully-qualified xmlid rather than edited in the vendored CSV,
+        per VENDORED.md. `l10n_np_accounting` declares `account_budget_oca` in
+        `depends`, so this loads after the row it amends.
+    -->
+    <record id="account_budget_oca.access_budget" model="ir.model.access">
+        <field name="perm_write" eval="0"/>
+        <field name="perm_create" eval="0"/>
+    </record>
+
+</odoo>

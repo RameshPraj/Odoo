@@ -1,0 +1,74 @@
+[options]
+; ---------------------------------------------------------------------------
+; Odoo 19.0 - Linux server configuration (RHEL / Ubuntu)
+; Install to /etc/odoo/odoo.conf, owned by odoo:odoo, mode 0640.
+; It holds the database and master passwords, so it must not be world-readable.
+; ---------------------------------------------------------------------------
+
+admin_passwd = CHANGE-ME
+
+; --- PostgreSQL ---
+; With Odoo and PostgreSQL on the same host, prefer the local socket: leave
+; db_host empty and let peer authentication match the `odoo` OS user to the
+; `odoo` database role. Then no password travels anywhere.
+db_host = False
+db_port = False
+db_user = odoo
+db_password = False
+db_name = odoo19
+db_maxconn = 64
+
+; Note: db_user must not be `postgres`. Odoo aborts at startup if it is,
+; see check_postgres_user() in odoo/cli/server.py.
+
+; --- Where modules are loaded from ---
+addons_path = /opt/odoo/odoo/addons,/opt/odoo/custom_addons
+
+; --- Filestore, sessions, compiled assets ---
+; Must be writable by the odoo user and listed in ReadWritePaths= in the unit.
+data_dir = /var/lib/odoo
+
+; --- HTTP ---
+; Bind to localhost and terminate TLS in nginx/Apache in front. Odoo's own
+; server speaks plain HTTP only.
+http_interface = 127.0.0.1
+http_port = 8069
+gevent_port = 8072
+proxy_mode = True
+
+; --- Process model ---
+; Unlike the Windows box, Linux has gevent, so real multiprocessing is
+; available. Rule of thumb: workers = (cpu_cores * 2) + 1, budgeting roughly
+; 1 GB of RAM each. `workers = 0` would fall back to the threaded server.
+workers = 5
+max_cron_threads = 2
+
+; --- Wall-clock request watchdog ---
+; Keep the 120s default here. On Linux the watchdog works as designed: it
+; flags a thread past the limit and calls reload(), which is
+; os.kill(pid, SIGHUP), and SIGHUP is a real signal that triggers a graceful
+; worker reload. On Windows the same path is fatal, which is why the
+; development config sets this to 0 -- see odoo.conf.example.
+limit_time_real = 120
+limit_time_real_cron = 300
+limit_time_cpu = 60
+limit_memory_soft = 2147483648
+limit_memory_hard = 2684354560
+limit_request = 65536
+
+; --- Logging ---
+; Leave logfile unset to log to stdout and let systemd capture it in the
+; journal (StandardOutput=journal). Set a path only if you want a file, and
+; then install deploy/logrotate.d/odoo, because Odoo has no size-based rotation
+; at any point and the file will otherwise grow without bound (finding OPS-6).
+; A plain rename is safe: on POSIX Odoo uses WatchedFileHandler, which reopens
+; on inode change, so do NOT use copytruncate.
+; logfile = /var/log/odoo/odoo.log
+log_level = info
+log_handler = :INFO
+
+; --- Database manager ---
+; Off in production: /web/database/manager can create, duplicate, drop and
+; back up databases, guarded only by admin_passwd.
+list_db = False
+dbfilter = ^odoo19$

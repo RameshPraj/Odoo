@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--
+        Complete the accounting permission ladder.
+
+        Odoo 19 Community defines the Accounting, Review and Reporting menus and
+        gates them on `account.group_account_readonly` / `account.group_account_user`.
+        It then ships no way to hold either group:
+
+          * both are declared without a `privilege_id`, so they never appear in
+            the Accounting dropdown on a user form;
+          * `group_account_manager` ("Administrator") implies only
+            `group_account_invoice`, not `group_account_user`.
+
+        The net effect is that in a stock Community database nobody at all, the
+        administrator included, can see those three menu sections. That is true
+        in this app and equally true in Odoo's own Invoicing app. Enterprise's
+        `account_accountant` closes the gap by giving the two groups a privilege
+        (renamed "Read-only" and "Bookkeeper") and making Administrator imply
+        Bookkeeper.
+
+        This file does the same thing using only records that Community itself
+        defines under LGPL-3. No Enterprise module, code or data is involved: the
+        groups, the privilege and the menus all already exist here; they were
+        simply not wired to each other.
+
+        Note: these are `account` records, so they keep these values if this
+        module is later uninstalled. Reverting means restoring the two
+        `privilege_id` fields to empty and removing the implication below.
+    -->
+
+    <record id="account.group_account_readonly" model="res.groups">
+        <field name="name">Accounting - Read Only</field>
+        <field name="comment">See every accounting screen and report, change nothing.</field>
+        <field name="privilege_id" ref="account.res_groups_privilege_accounting"/>
+        <field name="sequence">30</field>
+    </record>
+
+    <record id="account.group_account_user" model="res.groups">
+        <field name="name">Accountant</field>
+        <field name="comment">Post entries, reconcile, run the statutory reports. No configuration rights.</field>
+        <field name="privilege_id" ref="account.res_groups_privilege_accounting"/>
+        <field name="sequence">40</field>
+    </record>
+
+    <!-- Administrator must be a superset of Accountant, as it is in Enterprise.
+         Without this, choosing "Administrator" grants *fewer* accounting
+         features than choosing "Accountant", which is a trap. -->
+    <record id="account.group_account_manager" model="res.groups">
+        <field name="implied_ids" eval="[(4, ref('account.group_account_user'))]"/>
+    </record>
+
+</odoo>

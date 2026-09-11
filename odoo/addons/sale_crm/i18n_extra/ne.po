@@ -1,0 +1,82 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0 (sale_crm)\n"
+"Report-Msgid-Bugs-To: \n"
+"Language-Team: Nepali\n"
+"Language: ne\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: sale_crm
+#: model_terms:ir.ui.view,arch_db:sale_crm.crm_quotation_partner_view_form
+msgid "Cancel"
+msgstr "रद्द गर्नुहोस्"
+
+#. module: sale_crm
+#: model_terms:ir.ui.view,arch_db:sale_crm.crm_quotation_partner_view_form
+msgid "Confirm"
+msgstr "पुष्टि गर्नुहोस्"
+
+#. module: sale_crm
+#: model:ir.model.fields,field_description:sale_crm.field_crm_quotation_partner__create_uid
+msgid "Created by"
+msgstr "सिर्जना गर्ने"
+
+#. module: sale_crm
+#: model:ir.model.fields,field_description:sale_crm.field_crm_quotation_partner__create_date
+msgid "Created on"
+msgstr "सिर्जना मिति"
+
+#. module: sale_crm
+#: model:ir.model.fields,field_description:sale_crm.field_crm_quotation_partner__partner_id
+msgid "Customer"
+msgstr "ग्राहक"
+
+#. module: sale_crm
+#: model:ir.model.fields,field_description:sale_crm.field_crm_lead__display_name
+#: model:ir.model.fields,field_description:sale_crm.field_crm_quotation_partner__display_name
+#: model:ir.model.fields,field_description:sale_crm.field_crm_team__display_name
+#: model:ir.model.fields,field_description:sale_crm.field_sale_order__display_name
+msgid "Display Name"
+msgstr "प्रदर्शन नाम"
+
+#. module: sale_crm
+#: model:ir.model.fields,field_description:sale_crm.field_crm_lead__id
+#: model:ir.model.fields,field_description:sale_crm.field_crm_quotation_partner__id
+#: model:ir.model.fields,field_description:sale_crm.field_crm_team__id
+#: model:ir.model.fields,field_description:sale_crm.field_sale_order__id
+msgid "ID"
+msgstr "आईडी"
+
+#. module: sale_crm
+#: model:ir.model.fields,field_description:sale_crm.field_crm_quotation_partner__write_uid
+msgid "Last Updated by"
+msgstr "अन्तिम अद्यावधिक गर्ने"
+
+#. module: sale_crm
+#: model:ir.model.fields,field_description:sale_crm.field_crm_quotation_partner__write_date
+msgid "Last Updated on"
+msgstr "अन्तिम अद्यावधिक मिति"
+
+#. module: sale_crm
+#: model:ir.model.fields,field_description:sale_crm.field_crm_lead__order_ids
+msgid "Orders"
+msgstr "अर्डरहरू"
+
+#. module: sale_crm
+#: model:ir.actions.act_window,name:sale_crm.sale_action_quotations_new
+msgid "Quotation"
+msgstr "कोटेशन"
+
+#. module: sale_crm
+#: model:ir.model,name:sale_crm.model_sale_order
+msgid "Sales Order"
+msgstr "बिक्री अर्डर"
+
+#. module: sale_crm
+#: model:ir.model,name:sale_crm.model_crm_team
+msgid "Sales Team"
+msgstr "बिक्री टोली"

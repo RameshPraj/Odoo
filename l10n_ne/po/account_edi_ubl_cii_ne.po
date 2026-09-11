@@ -1,0 +1,103 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0 (account_edi_ubl_cii)\n"
+"Report-Msgid-Bugs-To: \n"
+"Language-Team: Nepali\n"
+"Language: ne\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: account_edi_ubl_cii
+#: model:ir.model.fields,field_description:account_edi_ubl_cii.field_account_bank_statement_line__ubl_cii_xml_id
+#: model:ir.model.fields,field_description:account_edi_ubl_cii.field_account_move__ubl_cii_xml_id
+msgid "Attachment"
+msgstr "संलग्न"
+
+#. module: account_edi_ubl_cii
+#: model:ir.model,name:account_edi_ubl_cii.model_res_partner
+msgid "Contact"
+msgstr "सम्पर्क"
+
+#. module: account_edi_ubl_cii
+#: model:ir.model,website_form_label:account_edi_ubl_cii.model_res_partner
+msgid "Create a Customer"
+msgstr "ग्राहक सिर्जना गर्नुहोस्"
+
+#. module: account_edi_ubl_cii
+#. odoo-python
+#: code:addons/account_edi_ubl_cii/models/account_edi_ubl.py:0
+msgid "Discount"
+msgstr "छुट"
+
+#. module: account_edi_ubl_cii
+#: model:ir.model.fields,field_description:account_edi_ubl_cii.field_account_edi_common__display_name
+#: model:ir.model.fields,field_description:account_edi_ubl_cii.field_account_edi_ubl__display_name
+#: model:ir.model.fields,field_description:account_edi_ubl_cii.field_account_edi_ubl_cen_en16931__display_name
+#: model:ir.model.fields,field_description:account_edi_ubl_cii.field_account_edi_ubl_pint__display_name
+#: model:ir.model.fields,field_description:account_edi_ubl_cii.field_account_edi_ubl_pint_eu__display_name
+#: model:ir.model.fields,field_description:account_edi_ubl_cii.field_account_edi_xml_cii__display_name
+#: model:ir.model.fields,field_description:account_edi_ubl_cii.field_account_edi_xml_ubl_20__display_name
+#: model:ir.model.fields,field_description:account_edi_ubl_cii.field_account_edi_xml_ubl_21__display_name
+#: model:ir.model.fields,field_description:account_edi_ubl_cii.field_account_edi_xml_ubl_a_nz__display_name
+#: model:ir.model.fields,field_description:account_edi_ubl_cii.field_account_edi_xml_ubl_bis3__display_name
+#: model:ir.model.fields,field_description:account_edi_ubl_cii.field_account_edi_xml_ubl_de__display_name
+#: model:ir.model.fields,field_description:account_edi_ubl_cii.field_account_edi_xml_ubl_efff__display_name
+#: model:ir.model.fields,field_description:account_edi_ubl_cii.field_account_edi_xml_ubl_nl__display_name
+#: model:ir.model.fields,field_description:account_edi_ubl_cii.field_account_edi_xml_ubl_sg__display_name
+#: model:ir.model.fields,field_description:account_edi_ubl_cii.field_account_move__display_name
+#: model:ir.model.fields,field_description:account_edi_ubl_cii.field_account_move_send__display_name
+#: model:ir.model.fields,field_description:account_edi_ubl_cii.field_account_move_send_wizard__display_name
+#: model:ir.model.fields,field_description:account_edi_ubl_cii.field_account_tax__display_name
+#: model:ir.model.fields,field_description:account_edi_ubl_cii.field_ir_actions_report__display_name
+#: model:ir.model.fields,field_description:account_edi_ubl_cii.field_res_partner__display_name
+msgid "Display Name"
+msgstr "प्रदर्शन नाम"
+
+#. module: account_edi_ubl_cii
+#. odoo-python
+#: code:addons/account_edi_ubl_cii/models/account_edi_ubl.py:0
+msgid "Draft"
+msgstr "मस्यौदा"
+
+#. module: account_edi_ubl_cii
+#: model:ir.model.fields,field_description:account_edi_ubl_cii.field_account_edi_common__id
+#: model:ir.model.fields,field_description:account_edi_ubl_cii.field_account_edi_ubl__id
+#: model:ir.model.fields,field_description:account_edi_ubl_cii.field_account_edi_ubl_cen_en16931__id
+#: model:ir.model.fields,field_description:account_edi_ubl_cii.field_account_edi_ubl_pint__id
+#: model:ir.model.fields,field_description:account_edi_ubl_cii.field_account_edi_ubl_pint_eu__id
+#: model:ir.model.fields,field_description:account_edi_ubl_cii.field_account_edi_xml_cii__id
+#: model:ir.model.fields,field_description:account_edi_ubl_cii.field_account_edi_xml_ubl_20__id
+#: model:ir.model.fields,field_description:account_edi_ubl_cii.field_account_edi_xml_ubl_21__id
+#: model:ir.model.fields,field_description:account_edi_ubl_cii.field_account_edi_xml_ubl_a_nz__id
+#: model:ir.model.fields,field_description:account_edi_ubl_cii.field_account_edi_xml_ubl_bis3__id
+#: model:ir.model.fields,field_description:account_edi_ubl_cii.field_account_edi_xml_ubl_de__id
+#: model:ir.model.fields,field_description:account_edi_ubl_cii.field_account_edi_xml_ubl_efff__id
+#: model:ir.model.fields,field_description:account_edi_ubl_cii.field_account_edi_xml_ubl_nl__id
+#: model:ir.model.fields,field_description:account_edi_ubl_cii.field_account_edi_xml_ubl_sg__id
+#: model:ir.model.fields,field_description:account_edi_ubl_cii.field_account_move__id
+#: model:ir.model.fields,field_description:account_edi_ubl_cii.field_account_move_send__id
+#: model:ir.model.fields,field_description:account_edi_ubl_cii.field_account_move_send_wizard__id
+#: model:ir.model.fields,field_description:account_edi_ubl_cii.field_account_tax__id
+#: model:ir.model.fields,field_description:account_edi_ubl_cii.field_ir_actions_report__id
+#: model:ir.model.fields,field_description:account_edi_ubl_cii.field_res_partner__id
+msgid "ID"
+msgstr "आईडी"
+
+#. module: account_edi_ubl_cii
+#: model:ir.model,name:account_edi_ubl_cii.model_account_move
+msgid "Journal Entry"
+msgstr "जर्नल प्रविष्टि"
+
+#. module: account_edi_ubl_cii
+#: model:ir.model,name:account_edi_ubl_cii.model_account_tax
+msgid "Tax"
+msgstr "कर"
+
+#. module: account_edi_ubl_cii
+#: model_terms:ir.ui.view,arch_db:account_edi_ubl_cii.layout_invoices_generated_by_odoo
+#: model_terms:ir.ui.view,arch_db:account_edi_ubl_cii.report_invoice_document
+msgid "Tax ID"
+msgstr "कर नम्बर"

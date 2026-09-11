@@ -1,0 +1,61 @@
+.o_bs_calendar_action {
+    // Layout gives us the height; this just scrolls within it.
+    height: 100%;
+
+    .o_bs_cal_scroll {
+        height: 100%;
+        overflow-y: auto;
+    }
+
+    .o_bs_cal_card {
+        max-width: 46rem;
+    }
+
+    .o_bs_cal_grid {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 4px;
+    }
+
+    .o_bs_cal_wd {
+        padding: 0.25rem 0;
+    }
+
+    .o_bs_cal_cell {
+        min-height: 3.4rem;
+        padding: 0.25rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+    }
+
+    .o_bs_cal_blank {
+        border: 0 !important;
+    }
+
+    .o_bs_cal_np {
+        font-size: 1.15rem;
+        line-height: 1.2;
+    }
+
+    .o_bs_cal_ad {
+        font-size: 0.68rem;
+        line-height: 1;
+    }
+
+    // Saturday is the weekly holiday in Nepal
+    .o_bs_cal_sat {
+        color: var(--bs-danger, #d9534f);
+    }
+
+    .o_bs_cal_today {
+        background-color: var(--bs-primary, #714b67);
+        border-color: var(--bs-primary, #714b67) !important;
+        color: #fff;
+
+        .o_bs_cal_ad {
+            color: rgba(255, 255, 255, 0.85) !important;
+        }
+    }
+}

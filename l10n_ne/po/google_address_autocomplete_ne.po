@@ -1,0 +1,38 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0 (google_address_autocomplete)\n"
+"Report-Msgid-Bugs-To: \n"
+"Language-Team: Nepali\n"
+"Language: ne\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: google_address_autocomplete
+#: model:ir.model,name:google_address_autocomplete.model_res_config_settings
+msgid "Config Settings"
+msgstr "कन्फिग सेटिङहरू"
+
+#. module: google_address_autocomplete
+#: model:ir.model,name:google_address_autocomplete.model_res_partner
+msgid "Contact"
+msgstr "सम्पर्क"
+
+#. module: google_address_autocomplete
+#: model:ir.model,website_form_label:google_address_autocomplete.model_res_partner
+msgid "Create a Customer"
+msgstr "ग्राहक सिर्जना गर्नुहोस्"
+
+#. module: google_address_autocomplete
+#: model:ir.model.fields,field_description:google_address_autocomplete.field_res_config_settings__display_name
+#: model:ir.model.fields,field_description:google_address_autocomplete.field_res_partner__display_name
+msgid "Display Name"
+msgstr "प्रदर्शन नाम"
+
+#. module: google_address_autocomplete
+#: model:ir.model.fields,field_description:google_address_autocomplete.field_res_config_settings__id
+#: model:ir.model.fields,field_description:google_address_autocomplete.field_res_partner__id
+msgid "ID"
+msgstr "आईडी"

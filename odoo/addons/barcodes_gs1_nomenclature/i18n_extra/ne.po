@@ -1,0 +1,45 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0 (barcodes_gs1_nomenclature)\n"
+"Report-Msgid-Bugs-To: \n"
+"Language-Team: Nepali\n"
+"Language: ne\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: barcodes_gs1_nomenclature
+#: model:ir.model.fields.selection,name:barcodes_gs1_nomenclature.selection__barcode_rule__gs1_content_type__date
+msgid "Date"
+msgstr "मिति"
+
+#. module: barcodes_gs1_nomenclature
+#: model:ir.model.fields,field_description:barcodes_gs1_nomenclature.field_barcode_nomenclature__display_name
+#: model:ir.model.fields,field_description:barcodes_gs1_nomenclature.field_barcode_rule__display_name
+#: model:ir.model.fields,field_description:barcodes_gs1_nomenclature.field_ir_http__display_name
+msgid "Display Name"
+msgstr "प्रदर्शन नाम"
+
+#. module: barcodes_gs1_nomenclature
+#: model:ir.model.fields,field_description:barcodes_gs1_nomenclature.field_barcode_nomenclature__id
+#: model:ir.model.fields,field_description:barcodes_gs1_nomenclature.field_barcode_rule__id
+#: model:ir.model.fields,field_description:barcodes_gs1_nomenclature.field_ir_http__id
+msgid "ID"
+msgstr "आईडी"
+
+#. module: barcodes_gs1_nomenclature
+#: model:ir.model.fields.selection,name:barcodes_gs1_nomenclature.selection__barcode_rule__type__location
+msgid "Location"
+msgstr "स्थान"
+
+#. module: barcodes_gs1_nomenclature
+#: model:ir.model.fields.selection,name:barcodes_gs1_nomenclature.selection__barcode_rule__type__quantity
+msgid "Quantity"
+msgstr "परिमाण"
+
+#. module: barcodes_gs1_nomenclature
+#: model:ir.model.fields,field_description:barcodes_gs1_nomenclature.field_barcode_rule__type
+msgid "Type"
+msgstr "प्रकार"

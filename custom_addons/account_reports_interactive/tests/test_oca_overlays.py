@@ -1,0 +1,417 @@
+# -*- coding: utf-8 -*-
+"""The OCA overlays must actually take effect.
+
+    venv\\Scripts\\python.exe -m odoo -c odoo.conf -d <db> \\
+        --test-enable --test-tags /account_reports_interactive --stop-after-init
+
+These assert on the *combined* arch rather than on our own file, because our file
+being correct proves nothing: what matters is what Odoo produced after applying
+inheritance to the vendored template.
+"""
+import ast
+
+from lxml import etree
+from odoo import Command
+from odoo.tests import TransactionCase, tagged
+
+AGED_TEMPLATE = "account_financial_report.report_aged_partner_balance_move_lines"
+
+
+def _recpay_accounts(case):
+    """The receivable/payable accounts these reports filter on.
+
+    `account_ids` on these wizards has no default and is populated only by onchange,
+    which `create()` does not trigger. Omit it and every report renders an empty
+    shell — which passes any assertion about *absence* and proves nothing.
+    """
+    return case.env["account.account"].search([
+        ("account_type", "in", ("asset_receivable", "liability_payable")),
+        ("company_ids", "in", case.env.company.id),
+    ])
+
+
+def _seed_open_item(case, date="2026-08-10", label="open item"):
+    """One posted, unreconciled receivable entry, created unconditionally (TST-3).
+
+    Seeding is unconditional rather than conditional: a fixture that exists only
+    sometimes gives you a test that runs only sometimes, which is the defect rather
+    than a fix for it. Where the database already has books, this entry is simply
+    one more line among them.
+    """
+    receivable = _recpay_accounts(case).filtered(
+        lambda a: a.account_type == "asset_receivable")[:1]
+    if not receivable:
+        receivable = case.env["account.account"].create({
+            "code": "TST3AR", "name": "Test receivable",
+            "account_type": "asset_receivable", "reconcile": True,
+            "company_ids": [Command.set([case.env.company.id])],
+        })
+    income = case.env["account.account"].search(
+        [("account_type", "=", "income")], limit=1) or case.env["account.account"].create({
+            "code": "TST3IN", "name": "Test income", "account_type": "income",
+            "company_ids": [Command.set([case.env.company.id])],
+        })
+    journal = case.env["account.journal"].search(
+        [("type", "=", "general"), ("company_id", "=", case.env.company.id)],
+        limit=1) or case.env["account.journal"].create({
+            "name": "TST-3 General", "code": "T3OVL", "type": "general",
+            "company_id": case.env.company.id,
+        })
+    partner = case.env["res.partner"].create({"name": f"TST-3 Overlay {label}"})
+    move = case.env["account.move"].create({
+        "move_type": "entry", "date": date, "journal_id": journal.id,
+        "line_ids": [
+            Command.create({"account_id": receivable.id, "name": label,
+                            "debit": 1000.0, "credit": 0.0,
+                            "partner_id": partner.id}),
+            Command.create({"account_id": income.id, "name": label,
+                            "debit": 0.0, "credit": 1000.0,
+                            "partner_id": partner.id}),
+        ],
+    })
+    move.action_post()
+    return move
+
+
+def _aged_wizard(case, details=False):
+    return case.env["aged.partner.balance.report.wizard"].create({
+        "company_id": case.env.company.id,
+        "date_at": "2026-08-31",
+        "target_move": "posted",
+        "account_ids": [(6, 0, _recpay_accounts(case).ids)],
+        "show_move_line_details": details,
+        # Pinned rather than inherited. This field has no default on the wizard and
+        # is filled from an `ir.default` written by Settings
+        # (account_financial_report/models/res_config_settings.py:15-22), so a
+        # company that configures aging intervals would silently switch the
+        # template from its five static bands to the dynamic `t-foreach` branch.
+        # The assertions below hold either way, but the branch under test should be
+        # a decision here rather than a property of whoever last opened Settings.
+        "age_partner_config_id": False,
+    })
+
+
+def _render_via_button(case, wizard):
+    """Render the way the web client does, not via a hand-built data dict.
+
+    This distinction is the entire point of these tests. The vendored report's own
+    suite builds `data` by hand and so never traversed the wizard that was producing
+    a `date_at` of the wrong type — see the module docstring in
+    models/aged_partner_balance_wizard.py.
+    """
+    action = wizard.button_export_html()
+    html, _ext = case.env["ir.actions.report"]._render_qweb_html(
+        action["report_name"], wizard.ids, data=action["data"])
+    return html.decode() if isinstance(html, bytes) else str(html)
+
+
+def _rows_with_domains(text):
+    """Detail rows that carry at least one drill-down, and how many each carries."""
+    rows = etree.HTML(text).xpath(
+        "//div[contains(@class,'act_as_row') and contains(@class,'lines')]")
+    counts = [len(row.xpath(".//*[@domain]")) for row in rows]
+    return [count for count in counts if count]
+
+
+def _domains_in(text):
+    """Every drill-down domain the rendered HTML carries, parsed."""
+    parsed = []
+    for raw in etree.HTML(text).xpath("//*[@domain]/@domain"):
+        parsed.append(ast.literal_eval(raw))
+    return parsed
+
+
+@tagged("-at_install", "post_install")
+class TestAgedPartnerBalanceOverlay(TransactionCase):
+
+    def _arch(self, xmlid):
+        return etree.fromstring(self.env.ref(xmlid).get_combined_arch())
+
+    def test_no_raw_domain_attribute_survives(self):
+        """A bare `domain=` means QWeb never evaluated the expression.
+
+        Upstream wrote eight of these without the `t-att-` prefix, so the Python
+        source text was copied into the HTML attribute verbatim and handed to
+        doAction as if it were a domain. The drill-down could not work, and looked
+        present in the source, which is why it went unnoticed.
+        """
+        raw = self._arch(AGED_TEMPLATE).xpath("//span[@domain]")
+        self.assertFalse(
+            [etree.tostring(node)[:80] for node in raw],
+            "a raw domain= attribute is unevaluated Python and cannot drill down")
+
+    def test_all_eight_amounts_became_evaluated_domains(self):
+        """Eight, not one.
+
+        The overlay applies the same xpath repeatedly, relying on each application
+        removing the attribute it fixed so the next selects the following one. If
+        Odoo ever stopped applying inheritance specs sequentially, only the first
+        would be fixed -- and everything else would still look fine. Hence the
+        exact count.
+        """
+        evaluated = self._arch(AGED_TEMPLATE).xpath("//span[@t-att-domain]")
+        self.assertEqual(len(evaluated), 8)
+
+    def test_the_expressions_still_target_move_lines(self):
+        arch = self._arch(AGED_TEMPLATE)
+        for node in arch.xpath("//span[@t-att-domain]"):
+            self.assertEqual(node.get("res-model"), "account.move.line")
+            self.assertIn("line_rec", node.get("t-att-domain"),
+                          "the reconciliation expression was lost in the rewrite")
+
+    def test_the_repaired_attributes_survive_a_real_render(self):
+        """Arch assertions are not enough: these must reach the HTML evaluated.
+
+        The eight amounts live in the move-line detail template, which renders only
+        when `show_move_line_details` is on — so a version of this test without that
+        flag passes while exercising none of the fix.
+
+        **Two per row, not eight.** This asserted `len(domains) == 8`, carrying the
+        structural eight of the arch over to the render, where it does not belong.
+        Only two of the eight cells can ever emit a domain for a given line:
+
+          * `amount_residual` is unconditional, so it always emits;
+          * every other cell is `t-if="line['<band>'] == 0"` / `t-else`, and emits
+            only when that band is non-zero — and a line falls into exactly one
+            band, whether the five static ones or the dynamic `t-foreach`.
+
+        So a detail row emits residual plus its single band: two. Eight was
+        reachable only as four rows × two, which is consistent with the database
+        holding four open items on the day the assertion was written, and it went
+        red the moment that count changed — which is what it did here, at two rows.
+
+        The invariant below is the one worth having, because it is a property of the
+        template rather than of the data: **every row that drills down at all drills
+        down exactly twice.**
+
+        What it does and does not guard, stated precisely rather than generously.
+        It catches a cell losing its drill-down (the row would emit one), a
+        drill-down that resolves to nothing, and unevaluated Python text reaching
+        the output — that last one because `_domains_in` calls `literal_eval` on
+        every `@domain` it finds, so a bare attribute raises here rather than
+        silently counting. Sequential application of the eight inheritance specs is
+        *not* guarded here: if only the first were applied, the remaining seven
+        would still render as `@domain` attributes and this count would still be
+        two. That failure is caught by `test_no_raw_domain_attribute_survives` and
+        `test_all_eight_amounts_became_evaluated_domains`, on the arch, which is
+        where it belongs.
+
+        The `assertTrue(per_row)` guard is not decoration either: rendering with
+        `show_move_line_details` off produces zero rows carrying domains, verified
+        directly, so a version of this test that lost the flag fails instead of
+        passing while exercising nothing.
+        """
+        seeded = _seed_open_item(self, label="render")
+        text = _render_via_button(self, _aged_wizard(self, details=True))
+
+        self.assertNotIn("t-att-domain", text,
+                         "t-att-domain reached the output unevaluated")
+
+        per_row = _rows_with_domains(text)
+        self.assertTrue(
+            per_row,
+            "no row drilled down, so this render exercised none of the fix")
+        self.assertEqual(
+            set(per_row), {2},
+            f"each detail row must emit the residual plus its one non-zero band; "
+            f"got {per_row}")
+
+        domains = _domains_in(text)
+        self.assertEqual(len(domains), 2 * len(per_row))
+        for domain in domains:
+            self.assertTrue(
+                self.env["account.move.line"].search_count(domain),
+                f"a drill-down that resolves to nothing is not a drill-down: "
+                f"{domain}")
+
+        # And it points at real data, not merely at something searchable.
+        line = seeded.line_ids.filtered(
+            lambda aml: aml.account_id.account_type == "asset_receivable")
+        self.assertTrue(
+            any(line.id in self.env["account.move.line"].search(domain).ids
+                for domain in domains),
+            "the seeded open item is on the report but no drill-down reaches it")
+
+    def test_the_vendored_file_itself_is_untouched(self):
+        """VENDORED.md forbids editing these modules in place.
+
+        The reason is not tidiness: account_financial_report is AGPL-3, and
+        modifying it while serving it over a network triggers the publication
+        clause. This asserts the fix really is an overlay, by checking the
+        original template record still carries the broken markup while the
+        combined arch does not.
+        """
+        original = self.env.ref(AGED_TEMPLATE)
+        own_arch = etree.fromstring(original.arch_db)
+        self.assertEqual(
+            len(own_arch.xpath("//span[@domain]")), 8,
+            "the vendored template should still contain its original markup; "
+            "if this is 0 somebody edited the AGPL-3 module in place")
+
+
+@tagged("-at_install", "post_install")
+class TestAgedPartnerBalanceRenders(TransactionCase):
+    """Aged Partner Balance could not render at all before 2026-08-19.
+
+    Its wizard passed `date_at` as a date while the report did
+    `strptime(date_at, ...)`, so every Export raised TypeError. Nobody noticed
+    because the report's own tests call `_get_report_values` directly with a
+    hand-built string, so they never cross the boundary where the types disagree.
+    """
+
+    def test_it_renders_from_its_own_button(self):
+        text = _render_via_button(self, _aged_wizard(self))
+        self.assertGreater(len(text), 1000)
+
+    def test_the_wizard_is_left_alone(self):
+        """The fix must NOT change what the wizard returns.
+
+        Coercing there was the first attempt and it broke two of the vendored
+        module's own tests, which convert `date_at` themselves
+        (`test_aged_partner_balance.py:63,98`) — the workaround that hid this defect
+        in the first place. The coercion belongs at the point of consumption.
+        """
+        data = _aged_wizard(self)._prepare_report_aged_partner_balance()
+        self.assertNotIsInstance(
+            data["date_at"], str,
+            "the wizard's output changed; upstream tests call .strftime() on it")
+
+    def test_the_report_accepts_either_type(self):
+        """Tolerant, like general_ledger.py:793 already is.
+
+        A string must pass through unchanged and a date must be accepted, so this
+        keeps working whether or not upstream later fixes the wizard.
+
+        Note `_prepare_report_data`, not `_prepare_report_aged_partner_balance`: the
+        latter returns only this report's own keys, and the abstract report needs
+        `wizard_name` from the base payload.
+        """
+        model = self.env["report.account_financial_report.aged_partner_balance"]
+        wizard = _aged_wizard(self)
+        for date_at in ("2026-08-31", wizard.date_at):
+            with self.subTest(supplied=type(date_at).__name__):
+                data = dict(wizard._prepare_report_data(), date_at=date_at)
+                self.assertTrue(model._get_report_values(wizard.ids, data))
+
+    def test_an_unset_date_from_is_not_turned_into_a_string(self):
+        """`date_from` is legitimately unset, and False must stay False.
+
+        Converting unconditionally would make it the string "None", which is truthy,
+        so every `if date_from:` downstream would take the wrong branch. That is why
+        the override checks each value instead of mapping the whole dict.
+        """
+        wizard = _aged_wizard(self)
+        self.assertFalse(wizard.date_from, "fixture assumption: date_from is unset")
+        data = wizard._prepare_report_data()
+        self.assertIs(data["date_from"], False)
+        # And it survives the override, still False rather than "None".
+        self.env["report.account_financial_report.aged_partner_balance"] \
+            ._get_report_values(wizard.ids, data)
+
+
+@tagged("-at_install", "post_install")
+class TestDrilldownAddedWhereThereWasNone(TransactionCase):
+    """Open Items and Journal Ledger had zero amount-level drill-down.
+
+    Both build their domains from the ids the report already selected rather than
+    from a reconstructed filter, because neither figure can be re-derived safely: an
+    open-items residual "as at" a past date is a function of reconciliation history,
+    not of the current `amount_residual`, and a journal total depends on wizard
+    filters that would have to be kept in step by hand.
+    """
+
+    @classmethod
+    def setUpClass(cls):
+        """Seed one posted, unreconciled receivable entry (TST-3).
+
+        Both tests in this class used to begin with a skip when the database
+        happened to hold no open items and no journal activity in the period. On
+        an empty database — a fresh install, or CI — they asserted nothing and the
+        suite still reported success. Nothing printed a skip count to say so.
+
+        Seeding is unconditional rather than conditional: a fixture that exists
+        only sometimes gives you a test that runs only sometimes, which is the
+        defect rather than a fix for it. Where the database already has books,
+        this entry is simply one more line among them and changes nothing the
+        assertions depend on — they compare a report total against its own
+        drill-down, whatever the total happens to be.
+        """
+        super().setUpClass()
+        cls.seeded = _seed_open_item(cls)
+
+    def test_open_items_totals_are_drillable(self):
+        accounts = _recpay_accounts(self)
+        self.assertTrue(
+            self.env["account.move.line"].search_count([
+                ("account_id", "in", accounts.ids), ("parent_state", "=", "posted"),
+                ("amount_residual", "!=", 0),
+            ]),
+            "fixture: setUpClass must leave at least one open item to report on")
+        wizard = self.env["open.items.report.wizard"].create({
+            "company_id": self.env.company.id,
+            "date_at": "2026-08-31",
+            "target_move": "posted",
+            "hide_account_at_0": False,
+            "account_ids": [(6, 0, accounts.ids)],
+        })
+        text = _render_via_button(self, wizard)
+        self.assertNotIn("t-att-domain", text)
+        domains = _domains_in(text)
+        self.assertTrue(domains, "no ending-balance drill-down was emitted")
+        for domain in domains:
+            self.env["account.move.line"].search_count(domain)
+
+    def test_journal_ledger_totals_are_drillable(self):
+        wizard = self.env["journal.ledger.report.wizard"].create({
+            "company_id": self.env.company.id,
+            "date_from": "2026-04-01",
+            "date_to": "2026-08-31",
+            "move_target": "posted",
+        })
+        text = _render_via_button(self, wizard)
+        self.assertNotIn("t-att-domain", text)
+        domains = _domains_in(text)
+        self.assertTrue(domains, "no journal-total drill-down was emitted")
+        for domain in domains:
+            self.env["account.move.line"].search_count(domain)
+
+    def test_journal_totals_tie_to_what_they_open(self):
+        """The invariant, applied to vendored reports too.
+
+        A journal's debit total must equal the summed debit of the lines its link
+        opens. This is the assertion that makes the drill-down trustworthy rather
+        than merely present.
+        """
+        wizard = self.env["journal.ledger.report.wizard"].create({
+            "company_id": self.env.company.id,
+            "date_from": "2026-04-01",
+            "date_to": "2026-08-31",
+            "move_target": "posted",
+        })
+        action = wizard.button_export_html()
+        values = self.env[
+            "report.account_financial_report.journal_ledger"
+        ]._get_report_values(wizard.ids, action["data"])
+
+        checked = 0
+        for journal in values["Journal_Ledgers"]:
+            ids = [aml["move_line_id"]
+                   for move in journal["report_moves"]
+                   for aml in move["report_move_lines"]]
+            if not ids:
+                continue
+            for field in ("debit", "credit"):
+                groups = self.env["account.move.line"]._read_group(
+                    [("id", "in", ids), (field, "!=", 0)],
+                    groupby=[], aggregates=[f"{field}:sum"])
+                total = (groups[0][0] or 0.0) if groups else 0.0
+                self.assertEqual(
+                    self.env.company.currency_id.compare_amounts(
+                        total, journal[field]), 0,
+                    f"journal {journal['name']} shows {field} {journal[field]} "
+                    f"but its drill-down sums to {total}")
+                checked += 1
+        self.assertTrue(
+            checked,
+            "fixture: setUpClass posts an entry dated 2026-08-10, so the journal "
+            "ledger must show activity in the period")

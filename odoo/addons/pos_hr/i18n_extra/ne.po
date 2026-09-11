@@ -1,0 +1,79 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0 (pos_hr)\n"
+"Report-Msgid-Bugs-To: \n"
+"Language-Team: Nepali\n"
+"Language: ne\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: pos_hr
+#: model:ir.model,name:pos_hr.model_res_config_settings
+msgid "Config Settings"
+msgstr "कन्फिग सेटिङहरू"
+
+#. module: pos_hr
+#: model:ir.model,name:pos_hr.model_res_partner
+msgid "Contact"
+msgstr "सम्पर्क"
+
+#. module: pos_hr
+#: model:ir.model,website_form_label:pos_hr.model_res_partner
+msgid "Create a Customer"
+msgstr "ग्राहक सिर्जना गर्नुहोस्"
+
+#. module: pos_hr
+#. odoo-javascript
+#: code:addons/pos_hr/static/src/app/screens/login_screen/login_screen.js:0
+msgid "Discard"
+msgstr "खारेज गर्नुहोस्"
+
+#. module: pos_hr
+#: model:ir.model.fields,field_description:pos_hr.field_account_bank_statement_line__display_name
+#: model:ir.model.fields,field_description:pos_hr.field_hr_employee__display_name
+#: model:ir.model.fields,field_description:pos_hr.field_pos_config__display_name
+#: model:ir.model.fields,field_description:pos_hr.field_pos_daily_sales_reports_wizard__display_name
+#: model:ir.model.fields,field_description:pos_hr.field_pos_order__display_name
+#: model:ir.model.fields,field_description:pos_hr.field_pos_payment__display_name
+#: model:ir.model.fields,field_description:pos_hr.field_pos_session__display_name
+#: model:ir.model.fields,field_description:pos_hr.field_product_product__display_name
+#: model:ir.model.fields,field_description:pos_hr.field_report_pos_hr_single_employee_sales_report__display_name
+#: model:ir.model.fields,field_description:pos_hr.field_report_pos_order__display_name
+#: model:ir.model.fields,field_description:pos_hr.field_res_config_settings__display_name
+#: model:ir.model.fields,field_description:pos_hr.field_res_partner__display_name
+msgid "Display Name"
+msgstr "प्रदर्शन नाम"
+
+#. module: pos_hr
+#: model:ir.model,name:pos_hr.model_hr_employee
+#: model:ir.model.fields,field_description:pos_hr.field_account_bank_statement_line__employee_id
+#: model:ir.model.fields,field_description:pos_hr.field_pos_daily_sales_reports_wizard__employee_ids
+#: model:ir.model.fields,field_description:pos_hr.field_report_pos_order__employee_id
+#: model_terms:ir.ui.view,arch_db:pos_hr.view_report_pos_order_search_inherit
+msgid "Employee"
+msgstr "कर्मचारी"
+
+#. module: pos_hr
+#: model:ir.model.fields,field_description:pos_hr.field_account_bank_statement_line__id
+#: model:ir.model.fields,field_description:pos_hr.field_hr_employee__id
+#: model:ir.model.fields,field_description:pos_hr.field_pos_config__id
+#: model:ir.model.fields,field_description:pos_hr.field_pos_daily_sales_reports_wizard__id
+#: model:ir.model.fields,field_description:pos_hr.field_pos_order__id
+#: model:ir.model.fields,field_description:pos_hr.field_pos_payment__id
+#: model:ir.model.fields,field_description:pos_hr.field_pos_session__id
+#: model:ir.model.fields,field_description:pos_hr.field_product_product__id
+#: model:ir.model.fields,field_description:pos_hr.field_report_pos_hr_single_employee_sales_report__id
+#: model:ir.model.fields,field_description:pos_hr.field_report_pos_order__id
+#: model:ir.model.fields,field_description:pos_hr.field_res_config_settings__id
+#: model:ir.model.fields,field_description:pos_hr.field_res_partner__id
+msgid "ID"
+msgstr "आईडी"
+
+#. module: pos_hr
+#. odoo-javascript
+#: code:addons/pos_hr/static/src/app/components/popups/closing_popup/closing_popup.xml:0
+msgid "Payments"
+msgstr "भुक्तानीहरू"

@@ -1,0 +1,67 @@
+# pylint-odoo configuration (audit finding QA-1).
+#
+# Scoped to the Odoo-specific checks pylint-odoo adds, not general pylint style:
+# ruff.toml already covers naming, imports, dead code and the bandit subset, and
+# running both on full settings produces thousands of overlapping messages that
+# nobody reads. What pylint-odoo knows and ruff cannot: manifest keys, missing
+# module imports, SQL injection through cr.execute, translation-function misuse,
+# and deprecated Odoo APIs.
+#
+# Run:  .\run-odoo.ps1 lint     /     ./run-odoo.sh lint
+
+[MAIN]
+load-plugins = pylint_odoo
+# The vendored core is 98.6% of the tree and is not ours to lint.
+# The vendored core, the venv, and the standalone CLI utilities that live inside
+# modules: `custom_addons/*/tools/*.py` are scripts run by an operator, where
+# `print` is the correct output mechanism and `print-used` is noise.
+ignore-paths = ^odoo/.*$,^venv/.*$,^\.runtime/.*$,^setup/.*$,^custom_addons/[^/]+/tools/.*$
+
+[MESSAGES CONTROL]
+# Start from nothing, then enable the Odoo checks deliberately. This is the only
+# way to keep the output actionable; `disable=all` plus an explicit enable list
+# also means a pylint upgrade cannot silently add fifty new messages.
+disable = all
+
+enable =
+    # --- correctness of the module itself -------------------------------
+    manifest-required-key,
+    manifest-version-format,
+    missing-readme,
+    development-status-allowed,
+    #
+    # Deliberately NOT enabled, with reasons:
+    #
+    #   manifest-required-author -- demands "Odoo Community Association (OCA)" as
+    #     an author. These are locally written modules, not OCA projects; claiming
+    #     OCA authorship would be false. The check is right for its own ecosystem
+    #     and wrong here.
+    #
+    #   manifest-deprecated-key -- flags `description`. That is an OCA convention
+    #     favouring README.rst; Odoo core still reads `description`, and several
+    #     of these manifests carry substantial DESIGN INTENT there that a lint
+    #     should not push anyone into deleting.
+    #
+    #   missing-import-error -- not a message pylint-odoo 10.0.11 defines; it was
+    #     in the first draft of this file and pylint rejected it outright, which
+    #     is a good argument for having actually run the config.
+    # --- security -------------------------------------------------------
+    sql-injection,
+    # --- translations ---------------------------------------------------
+    translation-required,
+    translation-not-lazy,
+    translation-format-interpolation,
+    translation-format-truncated,
+    translation-fstring-interpolation,
+    # --- Odoo API misuse ------------------------------------------------
+    invalid-commit,
+    print-used,
+    renamed-field-parameter,
+    attribute-string-redundant,
+    method-compute,
+    method-search,
+    method-inverse,
+    no-write-in-compute
+
+[REPORTS]
+score = no

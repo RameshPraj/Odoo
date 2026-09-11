@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <!-- Client actions must render inside <Layout>. Without it the action
+         container establishes no height, so the page renders blank with no
+         error. Modelled on mrp.MoOverview. -->
+    <t t-name="nepali_calendar_core.Calendar">
+        <div class="o_action o_bs_calendar_action">
+            <Layout display="display" className="'o_bs_calendar_layout'">
+
+                <div class="o_bs_cal_scroll p-3">
+                    <div class="o_bs_cal_card mx-auto bg-view border rounded shadow-sm p-3">
+
+                        <!-- header -->
+                        <div class="d-flex align-items-center justify-content-between mb-1">
+                            <div class="btn-group">
+                                <button class="btn btn-light" type="button" title="Previous year"
+                                        t-on-click="() => this.shiftYear(-1)">«</button>
+                                <button class="btn btn-light" type="button" title="Previous month"
+                                        t-on-click="() => this.shift(-1)">‹</button>
+                            </div>
+                            <div class="text-center">
+                                <h3 class="mb-0" t-esc="title"/>
+                                <small class="text-muted" t-esc="subtitle"/>
+                            </div>
+                            <div class="btn-group">
+                                <button class="btn btn-light" type="button" title="Next month"
+                                        t-on-click="() => this.shift(1)">›</button>
+                                <button class="btn btn-light" type="button" title="Next year"
+                                        t-on-click="() => this.shiftYear(1)">»</button>
+                            </div>
+                        </div>
+
+                        <!-- NB: Layout only renders the `layout-buttons` slot when
+                             env.inDialog is true, so these live in the content. -->
+                        <div class="d-flex justify-content-center gap-2 my-2">
+                            <button class="btn btn-sm btn-primary" type="button" t-on-click="goToday">
+                                आज / Today
+                            </button>
+                            <button class="btn btn-sm btn-secondary" type="button" t-on-click="toggleDigits">
+                                <t t-if="state.npDigits">123</t>
+                                <t t-else="">१२३</t>
+                            </button>
+                        </div>
+
+                        <!-- grid -->
+                        <div class="o_bs_cal_grid mt-2">
+                            <div t-foreach="weekdays" t-as="wd" t-key="wd"
+                                 class="o_bs_cal_wd text-center fw-bold small"
+                                 t-att-class="wd_index === 6 ? 'text-danger' : 'text-muted'"
+                                 t-esc="wd"/>
+                            <t t-foreach="cells" t-as="c" t-key="c.key">
+                                <div t-if="c.blank" class="o_bs_cal_cell o_bs_cal_blank"/>
+                                <!-- OWL supports `and`/`or` but NOT `not`; use `!` instead. -->
+                                <div t-else=""
+                                     class="o_bs_cal_cell border rounded"
+                                     t-att-class="{
+                                         'o_bs_cal_today': c.today,
+                                         'o_bs_cal_sat': c.saturday and !c.today,
+                                     }">
+                                    <div class="o_bs_cal_np" t-esc="c.label"/>
+                                    <div class="o_bs_cal_ad text-muted" t-esc="c.adLabel"/>
+                                </div>
+                            </t>
+                        </div>
+
+                        <!-- footer -->
+                        <div class="d-flex justify-content-between align-items-center mt-3 pt-2 border-top small">
+                            <span>
+                                <span class="text-muted">आज / Today:</span>
+                                <strong class="ms-1" t-esc="todayLabel"/>
+                            </span>
+                            <span class="text-muted" t-esc="rangeHint"/>
+                        </div>
+                    </div>
+                </div>
+
+            </Layout>
+        </div>
+    </t>
+
+</templates>
