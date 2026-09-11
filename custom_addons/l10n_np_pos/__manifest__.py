@@ -1,7 +1,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 {
     'name': 'Point of Sale (Nepal)',
-    'version': '19.0.4.0.0',
+    'version': '19.0.4.0.1',
     'category': 'Sales/Point of Sale',
     'summary': 'Walk-in cash sales are not stranded in invoice mode, and honest session journal items',
     'description': """
