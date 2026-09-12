@@ -7,6 +7,12 @@ Findings by ID in [`BACKLOG.md`](BACKLOG.md). Absorbs the schema portion of the 
 
 PostgreSQL **17.10** on `localhost:5433`.
 
+> This section records the cluster **as observed during the audit** and is left unchanged.
+> The Linux host at `/var/www/hosts/odoo19` runs a different cluster — PostgreSQL 18.6 on
+> `localhost:5432` — documented in
+> [`docs/operations/HOST_RUNBOOK.md`](../operations/HOST_RUNBOOK.md). The role posture below
+> (`odoo` with CREATEDB and no superuser) is reproduced there.
+
 | Role | Superuser | CreateDB | CreateRole | BypassRLS |
 |---|---|---|---|---|
 | `odoo` | **No** | **Yes** | No | No |

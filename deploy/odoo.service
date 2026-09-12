@@ -5,9 +5,13 @@ Documentation=https://www.odoo.com/documentation/19.0/
 # absent, so ordering after it matters on a reboot. Use postgresql.service on
 # both RHEL and Ubuntu; on RHEL with the PGDG packages the unit is versioned
 # (postgresql-17.service), so adjust both lines to match.
-After=network-online.target postgresql.service
+# On Ubuntu with the PGDG packages, postgresql.service is a Type=oneshot wrapper
+# that reports "exited" as soon as it has queued the cluster, so requiring it
+# alone does NOT guarantee PostgreSQL is accepting connections. Depend on the
+# real cluster unit and adjust the version to match the installed one.
+After=network-online.target postgresql.service postgresql@18-main.service
 Wants=network-online.target
-Requires=postgresql.service
+Requires=postgresql@18-main.service
 
 [Service]
 Type=simple
@@ -19,13 +23,26 @@ WorkingDirectory=/opt/odoo
 Environment=PYTHONUNBUFFERED=1
 ExecStart=/opt/odoo/venv/bin/python3 -m odoo -c /etc/odoo/odoo.conf
 
-# SIGHUP sets Odoo's `server_phoenix` flag: it shuts down cleanly and re-execs
-# itself, so config and code are re-read. That is a graceful *restart*, not a
-# zero-downtime worker reload -- expect a few seconds of unavailability.
-# This is also the whole point of running on Linux rather than Windows, where
-# SIGHUP is shimmed to -1 and os.kill means TerminateProcess, so the same code
-# path kills the server outright (see limit_time_real in odoo.conf.example).
-ExecReload=/bin/kill -HUP $MAINPID
+# NO ExecReload, deliberately -- `kill -HUP` does NOT work with the ExecStart
+# above, and fails in a way that hides itself.
+#
+# Odoo handles SIGHUP and logs "Initiating server reload", but the re-exec then
+# dies with:
+#     ImportError: attempted relative import with no known parent package
+# _reexec() (odoo/service/server.py) rebuilds the command from sys.argv via
+# stripped_sys_argv() (odoo/tools/misc.py), which drops "-m odoo" and rewrites
+# argv[0] -- the same mechanism run-odoo.sh's is_our_odoo() documents. Under
+# `python -m odoo`, argv[0] is the path to odoo/__main__.py, so the re-exec runs
+# that file directly rather than as a module and its relative imports fail.
+#
+# Restart=on-failure below then restarts it ~5s later, so `systemctl reload`
+# LOOKS like it worked while logging a traceback and adding downtime.
+#
+# setup/odoo is not a usable alternative entry point either: run as
+# `python3 setup/odoo`, sys.path[0] becomes setup/ and `import odoo.cli` fails.
+#
+# Use `systemctl restart odoo`. With no ExecReload, `systemctl reload` fails
+# fast and harmlessly instead of crashing the service.
 
 # SIGTERM (systemd's default) and SIGINT take the same branch in Odoo's handler:
 # a clean shutdown, with a second signal forcing os._exit(0). KillMode=mixed
