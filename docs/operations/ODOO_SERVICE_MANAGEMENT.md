@@ -281,6 +281,15 @@ The JavaScript suites need a real Chrome; `doctor` reports whether one is presen
 `deploy/odoo.service` is the production service on Linux. It runs as user `odoo`, from
 `/etc/odoo/odoo.conf`, with a different `data_dir`, `workers` and `list_db`.
 
+> **`systemctl reload` is not supported.** `kill -HUP` cannot restart a server started with
+> `python -m odoo`: the re-exec drops `-m odoo`, runs `odoo/__main__.py` directly and dies on
+> its relative imports, which `Restart=on-failure` then hides. The unit ships without an
+> `ExecReload` for that reason — use `systemctl restart`. Details in
+> [`HOST_RUNBOOK.md`](HOST_RUNBOOK.md#4-execreload-sighup-is-broken-under-python--m-odoo).
+
+> A deployed host may differ from the layout above; the one at `/var/www/hosts/odoo19` is
+> documented in [`HOST_RUNBOOK.md`](HOST_RUNBOOK.md).
+
 `run-odoo.sh` therefore **detects and refuses** rather than delegating:
 
 | systemd state | `start` does |
