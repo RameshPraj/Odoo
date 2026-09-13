@@ -38,7 +38,14 @@ rule in `deploy/README.md`. Do not expose Odoo or PostgreSQL directly.
 
 ## Automated deployment contract
 
-The GitHub `staging` or `production` environment supplies only SSH host, user,
+The local staging instance is deployed automatically from `main` by a dedicated
+Windows self-hosted runner labelled `odoo-staging`. The runner pulls the exact
+GHCR image produced by the successful quality run, replaces the local staging
+container, verifies its localhost health endpoint, and restores the prior image
+if the new one is unhealthy. It must run under the same Windows user that owns
+the rootless Podman machine.
+
+The GitHub `production` environment supplies only SSH host, user,
 private key, known-hosts entry, checkout path, and public URL. The server-side
 `deploy.sh` receives an immutable `ghcr.io/<owner>/<repo>:<commit-sha>` reference,
 pulls it before stopping the old process, starts it through Quadlet, then requires

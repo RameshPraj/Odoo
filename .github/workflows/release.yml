@@ -50,25 +50,23 @@ jobs:
     environment:
       name: staging
       url: ${{ vars.PUBLIC_URL }}
-    runs-on: ubuntu-latest
+    # This is the dedicated Windows runner attached to the local Podman staging
+    # machine. It is intentionally not used by pull-request quality checks.
+    runs-on: [self-hosted, windows, odoo-staging]
     steps:
-      - name: Deploy tested immutable image to staging
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.publish.outputs.sha }}
+          persist-credentials: false
+      - name: Log in to GitHub Container Registry
+        shell: pwsh
         env:
-          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
-          DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
-          DEPLOY_SSH_PRIVATE_KEY: ${{ secrets.DEPLOY_SSH_PRIVATE_KEY }}
-          DEPLOY_SSH_KNOWN_HOSTS: ${{ secrets.DEPLOY_SSH_KNOWN_HOSTS }}
-          DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
-          IMAGE: ${{ needs.publish.outputs.image }}
-          SHA: ${{ needs.publish.outputs.sha }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          install -d -m 0700 ~/.ssh
-          printf '%s\n' "$DEPLOY_SSH_PRIVATE_KEY" > ~/.ssh/id_ed25519
-          printf '%s\n' "$DEPLOY_SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
-          chmod 0600 ~/.ssh/id_ed25519 ~/.ssh/known_hosts
-          ssh -i ~/.ssh/id_ed25519 "$DEPLOY_USER@$DEPLOY_HOST" \
-            "cd '$DEPLOY_PATH' && git fetch origin main && git checkout --detach '$SHA' && ODOO_IMAGE='$IMAGE' deploy/podman/deploy.sh"
-      - name: Verify public staging health
+          $podman = Join-Path $env:LOCALAPPDATA 'Programs\Podman\podman.exe'
+          $env:GITHUB_TOKEN | & $podman login ghcr.io --username $env:GITHUB_ACTOR --password-stdin
+      - name: Deploy tested immutable image to staging
+        shell: pwsh
         env:
-          PUBLIC_URL: ${{ vars.PUBLIC_URL }}
-        run: curl --fail --retry 5 --retry-connrefused "$PUBLIC_URL/web/health?db_server_status=1"
+          IMAGE: ${{ needs.publish.outputs.image }}
+        run: .\deploy\podman\deploy-local-staging.ps1 -Image $env:IMAGE
