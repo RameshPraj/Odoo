@@ -59,14 +59,14 @@ jobs:
           ref: ${{ needs.publish.outputs.sha }}
           persist-credentials: false
       - name: Log in to GitHub Container Registry
-        shell: pwsh
+        shell: powershell
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           $podman = Join-Path $env:LOCALAPPDATA 'Programs\Podman\podman.exe'
           $env:GITHUB_TOKEN | & $podman login ghcr.io --username $env:GITHUB_ACTOR --password-stdin
       - name: Deploy tested immutable image to staging
-        shell: pwsh
+        shell: powershell
         env:
           IMAGE: ${{ needs.publish.outputs.image }}
         run: .\deploy\podman\deploy-local-staging.ps1 -Image $env:IMAGE
