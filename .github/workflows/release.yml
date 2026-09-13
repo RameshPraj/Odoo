@@ -58,14 +58,6 @@ jobs:
         with:
           ref: ${{ needs.publish.outputs.sha }}
           persist-credentials: false
-      - name: Log in to GitHub Container Registry
-        shell: powershell
-        env:
-          GHCR_PULL_TOKEN: ${{ secrets.GHCR_PULL_TOKEN }}
-          GHCR_USERNAME: ${{ github.repository_owner }}
-        run: |
-          $podman = Join-Path $env:LOCALAPPDATA 'Programs\Podman\podman.exe'
-          $env:GHCR_PULL_TOKEN | & $podman login ghcr.io --username $env:GHCR_USERNAME --password-stdin
       - name: Deploy tested immutable image to staging
         shell: powershell
         env:
