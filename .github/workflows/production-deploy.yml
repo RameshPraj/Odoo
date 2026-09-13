@@ -111,5 +111,8 @@ jobs:
           printf '%s\n' "$DEPLOY_SSH_PRIVATE_KEY" > ~/.ssh/id_ed25519
           printf '%s\n' "$DEPLOY_SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
           chmod 0600 ~/.ssh/id_ed25519 ~/.ssh/known_hosts
+          # The server remains on its current revision until the native script has
+          # captured it as the rollback target.  Stream that script from the
+          # approved commit instead of assuming it exists in the old checkout.
           ssh -i ~/.ssh/id_ed25519 "$DEPLOY_USER@$DEPLOY_HOST" \
-            "cd '$DEPLOY_PATH' && git fetch origin main && sh deploy/deploy-native-production.sh '${{ needs.resolve.outputs.sha }}'"
+            "cd '$DEPLOY_PATH' && git fetch origin main && git show '${{ needs.resolve.outputs.sha }}:deploy/deploy-native-production.sh' | sh -s '${{ needs.resolve.outputs.sha }}'"
