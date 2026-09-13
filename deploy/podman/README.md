@@ -72,11 +72,16 @@ Create these separately in `staging` and `production`:
 In GitHub, protect `production` with a required reviewer. `staging` may deploy
 automatically after a successful merge to `main`.
 
-Production never deploys from a push or merge. An authorised operator must open
-**Actions → Manual production deployment → Run workflow**, supply the immutable
-commit SHA that was merged to `main`, and approve the protected `production`
-environment. The workflow refuses a SHA outside `main` and deploys the matching
-immutable GHCR image.
+Production never deploys from a push or merge. An authorised operator opens
+**Actions → Manual environment deployment → Run workflow**, selects
+`production` from the **Deployment target** dropdown, and approves the protected
+`production` environment. The workflow automatically promotes the latest
+successfully staged immutable image; the operator does not enter a SHA.
+
+The same workflow can manually redeploy `staging`. Select `staging` and leave
+the optional reference blank to deploy current `main`, or supply a specific
+main ref. A separate development target is intentionally not offered: this
+installation has one local staging instance and no development server.
 
 ## Host checks
 

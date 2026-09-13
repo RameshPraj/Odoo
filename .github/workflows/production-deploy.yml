@@ -1,58 +1,128 @@
-name: Manual production deployment
+name: Manual environment deployment
 
 on:
   workflow_dispatch:
     inputs:
-      ref:
-        description: Immutable commit SHA already merged into main and staged successfully
+      target:
+        description: Deployment target
         required: true
+        default: staging
+        type: choice
+        options:
+          - staging
+          - production
+      ref:
+        description: Optional main commit SHA or ref for a manual staging redeploy (leave blank for current main; ignored for production)
+        required: false
         type: string
 
 permissions:
   contents: read
+  deployments: read
   packages: read
 
 concurrency:
-  group: production-deploy
+  group: manual-deploy-${{ inputs.target }}
   cancel-in-progress: false
 
 jobs:
-  deploy:
-    name: Deploy approved immutable image to production
+  resolve:
+    name: Resolve approved immutable revision
     runs-on: ubuntu-latest
-    environment:
-      name: production
-      url: ${{ vars.PUBLIC_URL }}
+    outputs:
+      sha: ${{ steps.publish.outputs.sha }}
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ inputs.ref }}
+          ref: main
           fetch-depth: 0
-      - name: Validate the approved immutable revision
-        id: source
+      - name: Resolve staging revision from main
+        id: revision
+        if: inputs.target == 'staging'
         env:
           INPUT_REF: ${{ inputs.ref }}
         run: |
-          test "${#INPUT_REF}" -eq 40
-          case "$INPUT_REF" in (*[!0-9a-f]*) exit 1;; esac
           git fetch origin main
-          git merge-base --is-ancestor "$INPUT_REF" origin/main
-          echo "sha=$INPUT_REF" >> "$GITHUB_OUTPUT"
-      - name: Deploy the approved immutable image
+          ref="${INPUT_REF:-origin/main}"
+          sha=$(git rev-parse "$ref^{commit}")
+          git merge-base --is-ancestor "$sha" origin/main
+          echo "sha=$sha" >> "$GITHUB_OUTPUT"
+      - name: Resolve the latest successfully staged revision
+        id: staged
+        if: inputs.target == 'production'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          while IFS=$'\t' read -r deployment_id sha; do
+            state=$(gh api "repos/$GITHUB_REPOSITORY/deployments/$deployment_id/statuses?per_page=1" --jq '.[0].state // empty')
+            if [ "$state" = success ]; then
+              echo "sha=$sha" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+          done < <(gh api "repos/$GITHUB_REPOSITORY/deployments?environment=staging&per_page=100" --jq '.[] | [.id, .sha] | @tsv')
+          echo "No successful staging deployment is available for production promotion." >&2
+          exit 1
+      - name: Publish selected revision
+        id: publish
+        env:
+          STAGING_SHA: ${{ steps.revision.outputs.sha }}
+          STAGED_SHA: ${{ steps.staged.outputs.sha }}
+        run: echo "sha=${STAGING_SHA:-$STAGED_SHA}" >> "$GITHUB_OUTPUT"
+
+  staging:
+    name: Manually deploy immutable image to staging
+    if: inputs.target == 'staging'
+    needs: resolve
+    environment:
+      name: staging
+    runs-on: [self-hosted, windows, odoo-staging]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.resolve.outputs.sha }}
+          persist-credentials: false
+      - name: Log in to GitHub Container Registry
+        shell: powershell
+        env:
+          GHCR_PULL_TOKEN: ${{ secrets.GHCR_PULL_TOKEN }}
+          GHCR_USERNAME: ${{ github.repository_owner }}
+        run: |
+          $podman = Join-Path $env:LOCALAPPDATA 'Programs\Podman\podman.exe'
+          $env:GHCR_PULL_TOKEN | & $podman login ghcr.io --username $env:GHCR_USERNAME --password-stdin
+      - name: Deploy selected immutable image
+        shell: powershell
+        env:
+          IMAGE: ghcr.io/${{ github.repository_owner }}/odoo:${{ needs.resolve.outputs.sha }}
+        run: .\deploy\podman\deploy-local-staging.ps1 -Image $env:IMAGE
+
+  production:
+    name: Manually promote the staged immutable image to production
+    if: inputs.target == 'production'
+    needs: resolve
+    environment:
+      name: production
+      url: ${{ vars.PUBLIC_URL }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.resolve.outputs.sha }}
+          fetch-depth: 0
+      - name: Deploy the staged immutable image
         env:
           DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
           DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
           DEPLOY_SSH_PRIVATE_KEY: ${{ secrets.DEPLOY_SSH_PRIVATE_KEY }}
           DEPLOY_SSH_KNOWN_HOSTS: ${{ secrets.DEPLOY_SSH_KNOWN_HOSTS }}
           DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
+          IMAGE: ghcr.io/${{ github.repository_owner }}/odoo:${{ needs.resolve.outputs.sha }}
         run: |
           install -d -m 0700 ~/.ssh
           printf '%s\n' "$DEPLOY_SSH_PRIVATE_KEY" > ~/.ssh/id_ed25519
           printf '%s\n' "$DEPLOY_SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
           chmod 0600 ~/.ssh/id_ed25519 ~/.ssh/known_hosts
-          image="ghcr.io/${GITHUB_REPOSITORY,,}:${{ steps.source.outputs.sha }}"
           ssh -i ~/.ssh/id_ed25519 "$DEPLOY_USER@$DEPLOY_HOST" \
-            "cd '$DEPLOY_PATH' && git fetch origin main && git checkout --detach '${{ steps.source.outputs.sha }}' && ODOO_IMAGE='$image' deploy/podman/deploy.sh"
+            "cd '$DEPLOY_PATH' && git fetch origin main && git checkout --detach '${{ needs.resolve.outputs.sha }}' && ODOO_IMAGE='$IMAGE' deploy/podman/deploy.sh"
       - name: Verify public production health
         env:
           PUBLIC_URL: ${{ vars.PUBLIC_URL }}
