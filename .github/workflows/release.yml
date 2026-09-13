@@ -61,10 +61,10 @@ jobs:
       - name: Log in to GitHub Container Registry
         shell: powershell
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GHCR_PULL_TOKEN: ${{ secrets.GHCR_PULL_TOKEN }}
         run: |
           $podman = Join-Path $env:LOCALAPPDATA 'Programs\Podman\podman.exe'
-          $env:GITHUB_TOKEN | & $podman login ghcr.io --username $env:GITHUB_ACTOR --password-stdin
+          $env:GHCR_PULL_TOKEN | & $podman login ghcr.io --username $env:GITHUB_ACTOR --password-stdin
       - name: Deploy tested immutable image to staging
         shell: powershell
         env:
