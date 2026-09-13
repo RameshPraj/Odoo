@@ -261,6 +261,27 @@ server {
 Odoo is directly reachable would let a client spoof its own address, so bind
 `http_interface = 127.0.0.1` as the example config does.
 
+### Container configuration
+
+The compose stack uses a separate configuration because its PostgreSQL host is the
+`db` container, not a local socket. Create it from the tracked template; do not
+commit the resulting file:
+
+```bash
+cp deploy/odoo.conf.container.example deploy/odoo.conf.container
+chmod 600 deploy/odoo.conf.container
+# Set a distinct, strong admin_passwd and db_password. The latter must match
+# POSTGRES_PASSWORD supplied to docker compose.
+${EDITOR:-vi} deploy/odoo.conf.container
+POSTGRES_USER=odoo POSTGRES_PASSWORD='<strong database password>' \
+  docker compose -f deploy/docker-compose.yml up --build
+```
+
+This compose stack is a production-shaped verification artefact, not a complete
+internet-facing deployment. It remains loopback-bound and requires the TLS/nginx
+configuration below before external use. The CI pipeline builds and starts this
+same artefact with disposable credentials on every change.
+
 ## Distribution-specific traps
 
 **RHEL: SELinux.** Enforcing mode blocks nginx from connecting to Odoo, and blocks Odoo from

@@ -52,7 +52,8 @@ services:
       PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD}
     volumes:
       # The config carries credentials and is gitignored, so it is mounted rather
-      # than baked into the image. Start from deploy/odoo.conf.linux.example.
+      # than baked into the image. Copy deploy/odoo.conf.container.example, then
+      # set unique strong values before bringing this stack up.
       - ./odoo.conf.container:/etc/odoo/odoo.conf:ro
       # The filestore must outlive the container. A database dump without the
       # filestore from the same instant restores to a database full of broken

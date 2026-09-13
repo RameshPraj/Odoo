@@ -1,0 +1,159 @@
+name: Quality and deployment smoke test
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+env:
+  PYTHON_VERSION: "3.12"
+
+jobs:
+  lint:
+    name: Static quality gates
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: pip
+          cache-dependency-path: |
+            requirements.txt
+            requirements-dev.txt
+      - name: Install application and quality dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends --yes libldap2-dev libsasl2-dev
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt -r requirements-dev.txt
+      - name: Run static quality gates
+        run: |
+          python -m ruff check --config ruff.toml
+          python -m pylint --rcfile=.pylintrc \
+            custom_addons/account_financial_statements \
+            custom_addons/account_reports_interactive \
+            custom_addons/l10n_np \
+            custom_addons/l10n_np_accounting \
+            custom_addons/l10n_np_bs \
+            custom_addons/l10n_np_fiscal_year \
+            custom_addons/l10n_np_loan \
+            custom_addons/l10n_np_pos \
+            custom_addons/l10n_np_tds \
+            custom_addons/l10n_np_vat_return \
+            custom_addons/local_ui_tweaks \
+            custom_addons/nepali_calendar_core
+          python tools/check_module_versions.py --quiet
+          python tools/check_test_wiring.py --quiet
+          python tools/check_xml_wellformed.py --quiet
+          python tools/check_backlog_counts.py --quiet
+          python -c "import yaml, pathlib; yaml.safe_load(pathlib.Path('deploy/docker-compose.yml').read_text(encoding='utf-8'))"
+
+  tests:
+    name: Database-backed test suite
+    needs: lint
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:17-bookworm
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_USER: odoo
+          POSTGRES_PASSWORD: ci-only-password
+          POSTGRES_DB: postgres
+        options: >-
+          --health-cmd "pg_isready -U odoo"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: pip
+          cache-dependency-path: |
+            requirements.txt
+            requirements-dev.txt
+      - name: Install a browser for Odoo JavaScript tests
+        id: chrome
+        uses: browser-actions/setup-chrome@v2
+        with:
+          chrome-version: stable
+          install-dependencies: true
+      - name: Verify browser test prerequisite
+        run: |
+          test -x "${{ steps.chrome.outputs.chrome-path }}"
+          "${{ steps.chrome.outputs.chrome-path }}" --version
+      - name: Install isolated test environment
+        run: |
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends --yes libldap2-dev libsasl2-dev wkhtmltopdf
+          python -m venv venv
+          ./venv/bin/python -m pip install --upgrade pip
+          ./venv/bin/python -m pip install -r requirements.txt -r requirements-dev.txt
+      - name: Write non-production Odoo configuration
+        run: |
+          mkdir -p .runtime/ci-data
+          cat > .runtime/odoo-ci.conf <<EOF
+          [options]
+          admin_passwd = ci-only-admin-password
+          db_host = 127.0.0.1
+          db_port = 5432
+          db_user = odoo
+          db_password = ci-only-password
+          addons_path = $GITHUB_WORKSPACE/odoo/addons,$GITHUB_WORKSPACE/custom_addons
+          data_dir = $GITHUB_WORKSPACE/.runtime/ci-data
+          http_interface = 127.0.0.1
+          http_port = 8069
+          workers = 0
+          list_db = False
+          EOF
+      - name: Install custom modules into an isolated database
+        run: |
+          modules=$(find custom_addons -mindepth 2 -maxdepth 2 -name __manifest__.py -printf '%h\n' | xargs -n1 basename | paste -sd, -)
+          ./venv/bin/python -m odoo -c .runtime/odoo-ci.conf -d odoo_ci -i "$modules" --stop-after-init
+      - name: Apply database access hardening
+        run: ./venv/bin/python tools/harden_database.py --db odoo_ci --config .runtime/odoo-ci.conf
+      - name: Run every custom test and fail on skipped tests
+        env:
+          ODOO_CONF: ${{ github.workspace }}/.runtime/odoo-ci.conf
+          ODOO_BROWSER_BIN: ${{ steps.chrome.outputs.chrome-path }}
+        run: ./run-odoo.sh test --db odoo_ci --fail-on-skip
+      - name: Upload test transcript on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: odoo-test-transcript
+          path: .runtime/last-test-run.log
+          if-no-files-found: ignore
+
+  container-smoke:
+    name: Container build and health check
+    needs: lint
+    runs-on: ubuntu-latest
+    env:
+      POSTGRES_USER: odoo
+      POSTGRES_PASSWORD: ci-only-password
+    steps:
+      - uses: actions/checkout@v4
+      - name: Supply CI-only container configuration
+        run: |
+          cp deploy/odoo.conf.container.example deploy/odoo.conf.container
+          sed -i \
+            -e 's/CHANGE_ME_ADMIN_PASSWORD/ci-only-admin-password/' \
+            -e 's/CHANGE_ME_DATABASE_PASSWORD/ci-only-password/' \
+            deploy/odoo.conf.container
+      - name: Build and start the production-shaped artifact
+        run: docker compose -f deploy/docker-compose.yml up --build --wait
+      - name: Verify HTTP health endpoint
+        run: curl --fail --retry 5 --retry-connrefused http://127.0.0.1:8069/web/health
+      - name: Collect container logs on failure
+        if: failure()
+        run: docker compose -f deploy/docker-compose.yml logs --no-color
+      - name: Remove CI containers and volumes
+        if: always()
+        run: docker compose -f deploy/docker-compose.yml down --volumes --remove-orphans

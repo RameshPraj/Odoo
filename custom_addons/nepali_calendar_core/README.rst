@@ -18,10 +18,18 @@ Two representations, one source of truth
   JavaScript lookup table from it, so the Python and JavaScript sides cannot drift.
 * ``tools/selftest.py`` cross-checks all 46,022 days both ways.
 
-Known gaps
-==========
+Supported reporting and known boundaries
+========================================
 
-The JavaScript has no automated tests (audit finding **TST-4**), and
-``tools/selftest.py`` is not yet wired into the test suite (**BS-1**).
+Printed QWeb dates can be configured per company as Gregorian only, Bikram
+Sambat only, or both. The default both-date form is appropriate for accounting
+documents: it keeps the Nepali-facing BS date while retaining the canonical AD
+date used for reconciliation and audit.
+
+The JavaScript unit suite and the exhaustive 46,022-day
+``tools/selftest.py`` verification run as part of the automated test suite.
+Exports, API payloads, search domains, and Gregorian group-by boundaries remain
+Gregorian deliberately; changing those surfaces would break round trips or
+change accounting/reporting semantics rather than merely add a display date.
 
 See ``docs/bs-calendar/`` for the design, the coverage matrix and the test plan.

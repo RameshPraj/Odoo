@@ -43,6 +43,7 @@ Exit codes: 0 hardened (or already hardened), 1 refused or failed, 2 could not r
 from __future__ import annotations
 
 import argparse
+import os
 import re
 import sys
 from pathlib import Path
@@ -93,6 +94,13 @@ def main() -> int:
                         help="database to harden; never defaulted, because a "
                              "destructive-sounding default on a shared cluster is "
                              "how the wrong database gets touched")
+    parser.add_argument(
+        "--config",
+        default=os.environ.get("ODOO_RC", REPO / "odoo.conf"),
+        type=Path,
+        help="Odoo configuration containing the target database credentials "
+             "(default: ODOO_RC or %(default)s)",
+    )
     parser.add_argument("--dry-run", action="store_true",
                         help="show the ACLs and the statements, change nothing")
     args = parser.parse_args()
@@ -107,7 +115,7 @@ def main() -> int:
     try:
         import odoo
         from odoo.tools import config
-        config.parse_config(["-c", str(REPO / "odoo.conf")])
+        config.parse_config(["-c", str(args.config)])
         odoo.sql_db  # noqa: B018 -- imported for its side effect of pool setup
         from odoo.sql_db import db_connect
     except Exception as exc:  # pragma: no cover - environment problem

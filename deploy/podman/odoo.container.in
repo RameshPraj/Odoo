@@ -1,0 +1,25 @@
+[Unit]
+Description=Odoo 19 Accounting Nepal
+Requires=odoo.network odoo-filestore.volume odoo-db.service
+After=odoo.network odoo-filestore.volume odoo-db.service
+
+[Container]
+Image=__ODOO_IMAGE__
+ContainerName=odoo
+Network=odoo.network
+PublishPort=127.0.0.1:8069:8069
+Volume=/etc/odoo/odoo.conf:/etc/odoo/odoo.conf:ro
+Volume=odoo-filestore.volume:/var/lib/odoo:U
+NoNewPrivileges=true
+HealthCmd=python -c "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8069/web/health?db_server_status=1', timeout=5)"
+HealthInterval=30s
+HealthTimeout=10s
+HealthRetries=3
+Notify=healthy
+
+[Service]
+Restart=always
+TimeoutStartSec=900
+
+[Install]
+WantedBy=default.target

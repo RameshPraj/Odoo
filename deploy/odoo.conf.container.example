@@ -1,0 +1,43 @@
+[options]
+; Container configuration template. Copy this file to
+; deploy/odoo.conf.container, set the two passwords to distinct strong secrets,
+; and keep the copied file untracked.
+;
+; The compose stack is intentionally bound to localhost. Put nginx (with TLS
+; and the database-manager deny rule from deploy/README.md) in front of it
+; before exposing it to any network.
+
+admin_passwd = CHANGE_ME_ADMIN_PASSWORD
+
+; Must match POSTGRES_USER and POSTGRES_PASSWORD supplied to docker compose.
+db_host = db
+db_port = 5432
+db_user = odoo
+db_password = CHANGE_ME_DATABASE_PASSWORD
+db_maxconn = 64
+
+addons_path = /opt/odoo/odoo/addons,/opt/odoo/custom_addons
+data_dir = /var/lib/odoo
+
+http_interface = 0.0.0.0
+http_port = 8069
+gevent_port = 8072
+
+; The compose file has no reverse proxy. Enable proxy_mode only after Odoo is
+; reachable exclusively through a trusted proxy that pins forwarded headers.
+proxy_mode = False
+workers = 2
+max_cron_threads = 1
+limit_time_real = 120
+limit_time_real_cron = 300
+limit_time_cpu = 60
+limit_memory_soft = 2147483648
+limit_memory_hard = 2684354560
+limit_request = 65536
+
+log_level = info
+log_handler = :INFO
+
+; Never expose Odoo's database manager at the edge. list_db hides discovery;
+; nginx must still deny /web/database/* as documented in deploy/README.md.
+list_db = False
