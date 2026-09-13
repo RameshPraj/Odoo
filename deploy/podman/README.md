@@ -47,11 +47,11 @@ the rootless Podman machine. Authenticate that user to private GHCR once with
 `podman login ghcr.io`; the runner deliberately reuses that local Podman
 credential rather than copying a long-lived registry token into every workflow.
 
-The GitHub `production` environment supplies only SSH host, user,
-private key, known-hosts entry, checkout path, and public URL. The server-side
-`deploy.sh` receives an immutable `ghcr.io/<owner>/<repo>:<commit-sha>` reference,
-pulls it before stopping the old process, starts it through Quadlet, then requires
-`/web/health?db_server_status=1` to return HTTP 200.
+The GitHub `production` environment supplies SSH host, user, private key,
+known-hosts entry, and checkout path. Production is a native Ubuntu systemd
+service, not a Podman host: its deploy script checks out the approved commit,
+installs its pinned Python requirements, restarts `odoo`, checks the loopback
+health endpoint, and restores the prior commit if health fails.
 
 This script intentionally does **not** run module upgrades. An Odoo `-u` can
 migrate data and needs a matched PostgreSQL/filestore backup plus a reviewed
@@ -60,16 +60,15 @@ restore automation has been proven.
 
 ## Required GitHub Environment configuration
 
-Create these separately in `staging` and `production`:
+For native Ubuntu production, create these in `production`:
 
 | Secret | Meaning |
 |---|---|
 | `DEPLOY_HOST` | Ubuntu host name or address |
-| `DEPLOY_USER` | `odoo` |
+| `DEPLOY_USER` | `ubuntu` |
 | `DEPLOY_SSH_PRIVATE_KEY` | Deploy-only SSH key |
 | `DEPLOY_SSH_KNOWN_HOSTS` | Pinned server host-key line, not `ssh-keyscan` output at deploy time |
-| `DEPLOY_PATH` | Checkout path, normally `/opt/odoo` |
-| `PUBLIC_URL` | An Environment **variable** holding the HTTPS URL verified after deployment |
+| `DEPLOY_PATH` | Checkout path, `/var/www/hosts/odoo19` on this host |
 
 In GitHub, protect `production` with a required reviewer. `staging` may deploy
 automatically after a successful merge to `main`.
