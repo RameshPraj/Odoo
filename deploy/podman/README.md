@@ -43,7 +43,9 @@ Windows self-hosted runner labelled `odoo-staging`. The runner pulls the exact
 GHCR image produced by the successful quality run, replaces the local staging
 container, verifies its localhost health endpoint, and restores the prior image
 if the new one is unhealthy. It must run under the same Windows user that owns
-the rootless Podman machine.
+the rootless Podman machine. Authenticate that user to private GHCR once with
+`podman login ghcr.io`; the runner deliberately reuses that local Podman
+credential rather than copying a long-lived registry token into every workflow.
 
 The GitHub `production` environment supplies only SSH host, user,
 private key, known-hosts entry, checkout path, and public URL. The server-side
