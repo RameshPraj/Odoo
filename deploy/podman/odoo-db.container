@@ -1,0 +1,26 @@
+[Unit]
+Description=Odoo PostgreSQL database
+Requires=odoo.network odoo-db-data.volume
+After=odoo.network odoo-db-data.volume
+
+[Container]
+Image=docker.io/library/postgres:17-bookworm
+ContainerName=odoo-db
+Network=odoo.network
+NetworkAlias=db
+Volume=odoo-db-data.volume:/var/lib/postgresql/data
+Environment=POSTGRES_USER=odoo
+Environment=POSTGRES_DB=postgres
+EnvironmentFile=/etc/odoo/podman.env
+HealthCmd=pg_isready -U odoo
+HealthInterval=5s
+HealthTimeout=5s
+HealthRetries=12
+NoNewPrivileges=true
+
+[Service]
+Restart=always
+TimeoutStartSec=900
+
+[Install]
+WantedBy=default.target

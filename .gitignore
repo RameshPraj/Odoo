@@ -43,6 +43,13 @@ __pycache__/
 # ---------------------------------------------------------------------------
 /odoo.conf
 
+# Container runtime configuration follows the same rule: its tracked .example
+# has safe placeholders, while the copied file holds real database and master
+# passwords and must never be committed.
+/deploy/odoo.conf.container
+/deploy/podman/production.env
+/deploy/podman/local-staging.conf
+
 # ---------------------------------------------------------------------------
 # Local tooling
 #   .claude/settings.local.json holds per-machine tool permissions. It is

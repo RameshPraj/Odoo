@@ -1,19 +1,8 @@
 # Odoo 19 + the Nepal localisation, as one build artefact (audit finding CI-2).
 #
-# ============================================================================
-# THIS IMAGE HAS NEVER BEEN BUILT.
-#
-# Docker is not installed on the machine where this was written, so nothing here
-# has been executed. Treat it as a reviewed starting point, not a working build:
-# the package list, the wkhtmltopdf URL and the requirements install are the three
-# things most likely to need adjustment on first contact.
-#
-# CI-2 stays OPEN until someone has run `docker build` and `docker compose up`
-# and a container has served a request. Ticking that gate on the strength of an
-# unbuilt Dockerfile would repeat the exact mistake this audit keeps recording:
-# FIN-2's reports "worked" until someone rendered one, and TST-5's certificate
-# path "worked" until someone called it.
-# ============================================================================
+# This image was built and served from the isolated local Podman staging stack
+# on 2026-09-13. CI still builds it on every relevant change; that validation is
+# intentionally repeatable rather than a one-time manual sign-off.
 #
 # Why this exists: dev is Windows with `workers = 0` and production is Linux with
 # systemd and multiprocessing, and they share no artefact. They are related by a

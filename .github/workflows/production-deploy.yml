@@ -1,0 +1,59 @@
+name: Manual production deployment
+
+on:
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: Immutable commit SHA already merged into main and staged successfully
+        required: true
+        type: string
+
+permissions:
+  contents: read
+  packages: read
+
+concurrency:
+  group: production-deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Deploy approved immutable image to production
+    runs-on: ubuntu-latest
+    environment:
+      name: production
+      url: ${{ vars.PUBLIC_URL }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref }}
+          fetch-depth: 0
+      - name: Validate the approved immutable revision
+        id: source
+        env:
+          INPUT_REF: ${{ inputs.ref }}
+        run: |
+          test "${#INPUT_REF}" -eq 40
+          case "$INPUT_REF" in (*[!0-9a-f]*) exit 1;; esac
+          git fetch origin main
+          git merge-base --is-ancestor "$INPUT_REF" origin/main
+          echo "sha=$INPUT_REF" >> "$GITHUB_OUTPUT"
+      - name: Deploy the approved immutable image
+        env:
+          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+          DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
+          DEPLOY_SSH_PRIVATE_KEY: ${{ secrets.DEPLOY_SSH_PRIVATE_KEY }}
+          DEPLOY_SSH_KNOWN_HOSTS: ${{ secrets.DEPLOY_SSH_KNOWN_HOSTS }}
+          DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
+        run: |
+          install -d -m 0700 ~/.ssh
+          printf '%s\n' "$DEPLOY_SSH_PRIVATE_KEY" > ~/.ssh/id_ed25519
+          printf '%s\n' "$DEPLOY_SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
+          chmod 0600 ~/.ssh/id_ed25519 ~/.ssh/known_hosts
+          image="ghcr.io/${GITHUB_REPOSITORY,,}:${{ steps.source.outputs.sha }}"
+          ssh -i ~/.ssh/id_ed25519 "$DEPLOY_USER@$DEPLOY_HOST" \
+            "cd '$DEPLOY_PATH' && git fetch origin main && git checkout --detach '${{ steps.source.outputs.sha }}' && ODOO_IMAGE='$image' deploy/podman/deploy.sh"
+      - name: Verify public production health
+        env:
+          PUBLIC_URL: ${{ vars.PUBLIC_URL }}
+        run: curl --fail --retry 5 --retry-connrefused "$PUBLIC_URL/web/health?db_server_status=1"

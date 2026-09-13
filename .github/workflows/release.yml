@@ -1,0 +1,74 @@
+name: Release immutable image and deploy
+
+on:
+  workflow_run:
+    workflows: ["Quality and deployment smoke test"]
+    branches: [main]
+    types: [completed]
+
+permissions:
+  contents: read
+  packages: write
+
+concurrency:
+  group: production-release
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    if: github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    outputs:
+      image: ${{ steps.image.outputs.reference }}
+      sha: ${{ steps.source.outputs.sha }}
+    steps:
+      - name: Resolve tested source revision
+        id: source
+        env:
+          EVENT_SHA: ${{ github.event.workflow_run.head_sha }}
+        run: echo "sha=$EVENT_SHA" >> "$GITHUB_OUTPUT"
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ steps.source.outputs.sha }}
+          fetch-depth: 0
+      - name: Log in to GitHub Container Registry
+        run: echo "$GITHUB_TOKEN" | docker login ghcr.io -u "$GITHUB_ACTOR" --password-stdin
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build and publish immutable OCI image
+        id: image
+        env:
+          SOURCE_SHA: ${{ steps.source.outputs.sha }}
+        run: |
+          image="ghcr.io/${GITHUB_REPOSITORY,,}:${SOURCE_SHA}"
+          docker build --pull --tag "$image" --file deploy/Dockerfile .
+          docker push "$image"
+          echo "reference=$image" >> "$GITHUB_OUTPUT"
+
+  staging:
+    needs: publish
+    environment:
+      name: staging
+      url: ${{ vars.PUBLIC_URL }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy tested immutable image to staging
+        env:
+          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+          DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
+          DEPLOY_SSH_PRIVATE_KEY: ${{ secrets.DEPLOY_SSH_PRIVATE_KEY }}
+          DEPLOY_SSH_KNOWN_HOSTS: ${{ secrets.DEPLOY_SSH_KNOWN_HOSTS }}
+          DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
+          IMAGE: ${{ needs.publish.outputs.image }}
+          SHA: ${{ needs.publish.outputs.sha }}
+        run: |
+          install -d -m 0700 ~/.ssh
+          printf '%s\n' "$DEPLOY_SSH_PRIVATE_KEY" > ~/.ssh/id_ed25519
+          printf '%s\n' "$DEPLOY_SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
+          chmod 0600 ~/.ssh/id_ed25519 ~/.ssh/known_hosts
+          ssh -i ~/.ssh/id_ed25519 "$DEPLOY_USER@$DEPLOY_HOST" \
+            "cd '$DEPLOY_PATH' && git fetch origin main && git checkout --detach '$SHA' && ODOO_IMAGE='$IMAGE' deploy/podman/deploy.sh"
+      - name: Verify public staging health
+        env:
+          PUBLIC_URL: ${{ vars.PUBLIC_URL }}
+        run: curl --fail --retry 5 --retry-connrefused "$PUBLIC_URL/web/health?db_server_status=1"

@@ -1,0 +1,29 @@
+# Development-only state and credentials must never be copied into an image.
+.git
+.github
+.agents
+.codex
+.venv
+venv
+__pycache__
+*.py[cod]
+.pytest_cache
+.ruff_cache
+.pylint.d
+.runtime
+.odoo_data
+odoo.conf
+deploy/odoo.conf.container
+deploy/podman/production.env
+
+# Keep the two languages this deployment supports.  Odoo's source tree contains
+# roughly 850 MB of translations for other languages; those remain in Git but
+# do not belong in an English/Nepali production image.
+odoo/addons/**/i18n/*.po
+!odoo/addons/**/i18n/en*.po
+!odoo/addons/**/i18n/ne.po
+
+# Editor and operating-system metadata.
+.vscode
+.idea
+*.log
