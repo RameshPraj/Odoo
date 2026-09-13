@@ -19,7 +19,6 @@ on:
 permissions:
   contents: read
   deployments: read
-  packages: read
 
 concurrency:
   group: manual-deploy-${{ inputs.target }}
@@ -107,15 +106,10 @@ jobs:
           DEPLOY_SSH_PRIVATE_KEY: ${{ secrets.DEPLOY_SSH_PRIVATE_KEY }}
           DEPLOY_SSH_KNOWN_HOSTS: ${{ secrets.DEPLOY_SSH_KNOWN_HOSTS }}
           DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
-          IMAGE: ghcr.io/${{ github.repository_owner }}/odoo:${{ needs.resolve.outputs.sha }}
         run: |
           install -d -m 0700 ~/.ssh
           printf '%s\n' "$DEPLOY_SSH_PRIVATE_KEY" > ~/.ssh/id_ed25519
           printf '%s\n' "$DEPLOY_SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
           chmod 0600 ~/.ssh/id_ed25519 ~/.ssh/known_hosts
           ssh -i ~/.ssh/id_ed25519 "$DEPLOY_USER@$DEPLOY_HOST" \
-            "cd '$DEPLOY_PATH' && git fetch origin main && git checkout --detach '${{ needs.resolve.outputs.sha }}' && ODOO_IMAGE='$IMAGE' deploy/podman/deploy.sh"
-      - name: Verify public production health
-        env:
-          PUBLIC_URL: ${{ vars.PUBLIC_URL }}
-        run: curl --fail --retry 5 --retry-connrefused "$PUBLIC_URL/web/health?db_server_status=1"
+            "cd '$DEPLOY_PATH' && git fetch origin main && sh deploy/deploy-native-production.sh '${{ needs.resolve.outputs.sha }}'"
