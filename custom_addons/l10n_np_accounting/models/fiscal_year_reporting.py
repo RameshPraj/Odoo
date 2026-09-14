@@ -10,19 +10,25 @@ Gregorian boundaries move by a day across Bikram Sambat years.
 from odoo import api, fields, models
 
 
+def _explicit_fiscal_year_start(company, date):
+    """Return an explicit fiscal-year start, never the fixed-setting fallback."""
+    fiscal_year = company.compute_fiscalyear_dates(date)
+    return fiscal_year["date_from"] if fiscal_year.get("record") else False
+
+
 class TrialBalanceReportWizard(models.TransientModel):
     _inherit = "trial.balance.report.wizard"
 
     @api.depends("date_from", "company_id")
     def _compute_fy_start_date(self):
+        super()._compute_fy_start_date()
         for wizard in self:
-            wizard.fy_start_date = (
-                wizard.company_id.compute_fiscalyear_dates(wizard.date_from)[
-                    "date_from"
-                ]
-                if wizard.date_from and wizard.company_id
-                else False
-            )
+            if wizard.date_from and wizard.company_id:
+                exact_start = _explicit_fiscal_year_start(
+                    wizard.company_id, wizard.date_from
+                )
+                if exact_start:
+                    wizard.fy_start_date = exact_start
 
 
 class GeneralLedgerReportWizard(models.TransientModel):
@@ -31,17 +37,18 @@ class GeneralLedgerReportWizard(models.TransientModel):
     def _init_date_from(self):
         """Default to the exact start of the active company fiscal year."""
         company = self.company_id or self.env.company
-        return company.compute_fiscalyear_dates(
-            fields.Date.context_today(self)
-        )["date_from"]
+        exact_start = _explicit_fiscal_year_start(
+            company, fields.Date.context_today(self)
+        )
+        return exact_start or super()._init_date_from()
 
     @api.depends("date_from", "company_id")
     def _compute_fy_start_date(self):
+        super()._compute_fy_start_date()
         for wizard in self:
-            wizard.fy_start_date = (
-                wizard.company_id.compute_fiscalyear_dates(wizard.date_from)[
-                    "date_from"
-                ]
-                if wizard.date_from and wizard.company_id
-                else False
-            )
+            if wizard.date_from and wizard.company_id:
+                exact_start = _explicit_fiscal_year_start(
+                    wizard.company_id, wizard.date_from
+                )
+                if exact_start:
+                    wizard.fy_start_date = exact_start
