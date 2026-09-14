@@ -10,91 +10,125 @@ Edit the CSV, then re-run:
     python tools/gen_jira_tree.py
 """
 
-import csv, os, re, sys, shutil
+import csv
+import os
+import re
+import shutil
+import sys
 
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-SRC  = os.path.join(REPO, "docs", "project-review", "JIRA_ACTIVE_ROADMAP.csv")
-OUT  = os.path.join(REPO, "docs", "project-review", "jira")
+SRC = os.path.join(REPO, "docs", "project-review", "JIRA_ACTIVE_ROADMAP.csv")
+OUT = os.path.join(REPO, "docs", "project-review", "jira")
 
-STOP = {"and","the","of","for","to","a","an","on","in","with"}
+STOP = {"and", "the", "of", "for", "to", "a", "an", "on", "in", "with"}
 ID_RE = re.compile(r"^(E|ST|SP|S|T|B)\d+")
 
-def slug(text, maxlen=55):
-    w = re.sub(r"[^a-z0-9\s-]", " ", text.lower()).split()
-    w = [x for x in w if x not in STOP]
-    s = ""
-    for x in w:
-        if s and len(s) + 1 + len(x) > maxlen: break
-        s = f"{s}-{x}" if s else x
-    return s or "issue"
 
-with open(SRC, newline="", encoding="utf-8") as f:
-    rows = list(csv.DictReader(f))
+def slug(text, maxlen=55):
+    """Build a readable directory/file stem from an issue summary."""
+    words = re.sub(r"[^a-z0-9\s-]", " ", text.lower()).split()
+    words = [w for w in words if w not in STOP]
+    out = ""
+    for word in words:
+        if out and len(out) + 1 + len(word) > maxlen:
+            break
+        out = f"{out}-{word}" if out else word
+    return out or "issue"
+
+
+with open(SRC, newline="", encoding="utf-8") as fh:
+    rows = list(csv.DictReader(fh))
 
 by_id = {r["Issue ID"]: r for r in rows}
-kids  = {r["Issue ID"]: [] for r in rows}
+kids = {r["Issue ID"]: [] for r in rows}
 epic_kids = {r["Issue ID"]: [] for r in rows}
-for r in rows:
-    p, e, t = r["Parent ID"], r["Epic ID"], r["Issue Type"]
-    if p:
-        kids[p].append(r["Issue ID"])
-    elif t != "Epic" and e:
-        epic_kids[e].append(r["Issue ID"])
+for row_ in rows:
+    parent, epic_, type_ = row_["Parent ID"], row_["Epic ID"], row_["Issue Type"]
+    if parent:
+        kids[parent].append(row_["Issue ID"])
+    elif type_ != "Epic" and epic_:
+        epic_kids[epic_].append(row_["Issue ID"])
 
-def is_container(i): return len(kids[i]) > 0
+
+def is_container(issue_id):
+    """True when the issue owns sub-tasks and therefore needs its own directory."""
+    return len(kids[issue_id]) > 0
+
+
+def stem(r):
+    return f'{r["Issue ID"]}-{slug(r["Summary"])}'
+
 
 paths = {}
-def stem(r): return f'{r["Issue ID"]}-{slug(r["Summary"])}'
-for r in rows:
-    if r["Issue Type"] != "Epic": continue
-    ed = stem(r); paths[r["Issue ID"]] = f"{ed}/_epic.md"
-    for cid in epic_kids[r["Issue ID"]]:
-        c = by_id[cid]
-        if is_container(cid):
-            cd = f"{ed}/{stem(c)}"
-            paths[cid] = f"{cd}/_{c['Issue Type'].lower().replace('-','')}.md"
-            for sid in kids[cid]:
-                paths[sid] = f"{cd}/{stem(by_id[sid])}.md"
+for row_ in rows:
+    if row_["Issue Type"] != "Epic":
+        continue
+    epic_dir = stem(row_)
+    paths[row_["Issue ID"]] = f"{epic_dir}/_epic.md"
+    for child_id in epic_kids[row_["Issue ID"]]:
+        child = by_id[child_id]
+        if is_container(child_id):
+            child_dir = f"{epic_dir}/{stem(child)}"
+            kind = child["Issue Type"].lower().replace("-", "")
+            paths[child_id] = f"{child_dir}/_{kind}.md"
+            for sub_id in kids[child_id]:
+                paths[sub_id] = f"{child_dir}/{stem(by_id[sub_id])}.md"
         else:
-            paths[cid] = f"{ed}/{stem(c)}.md"
+            paths[child_id] = f"{epic_dir}/{stem(child)}.md"
 
-missing = [r["Issue ID"] for r in rows if r["Issue ID"] not in paths]
-if missing:
-    sys.exit(f"FATAL: unplaced issues {missing}")
+unplaced = [r["Issue ID"] for r in rows if r["Issue ID"] not in paths]
+if unplaced:
+    sys.exit(f"FATAL: unplaced issues {unplaced}")
+
 
 def rel(frm, to):
-    p = os.path.relpath(paths[to], os.path.dirname(paths[frm])).replace("\\", "/")
-    return p if p.startswith(".") else "./" + p
+    """Relative markdown link from one issue's file to another's."""
+    path = os.path.relpath(paths[to], os.path.dirname(paths[frm])).replace("\\", "/")
+    return path if path.startswith(".") else "./" + path
+
 
 def split_deps(cell):
+    """Separate resolvable issue IDs from free-text prerequisites."""
     deps, prereq = [], []
-    for tok in (t.strip() for t in cell.split(";")):
-        if not tok: continue
-        if tok in by_id: deps.append((tok, None)); continue
-        m = ID_RE.match(tok)
-        if m and m.group(0) in by_id:
-            deps.append((m.group(0), tok[m.end():].strip(" -,") or None))
+    for token in (t.strip() for t in cell.split(";")):
+        if not token:
+            continue
+        if token in by_id:
+            deps.append((token, None))
+            continue
+        match = ID_RE.match(token)
+        if match and match.group(0) in by_id:
+            note = token[match.end():].strip(" -,") or None
+            deps.append((match.group(0), note))
         else:
-            prereq.append(tok)
+            prereq.append(token)
     return deps, prereq
 
-def yl(items): return "[" + ", ".join(items) + "]" if items else "[]"
+
+def yaml_list(items):
+    return "[" + ", ".join(items) + "]" if items else "[]"
+
 
 def render(r):
-    i, t = r["Issue ID"], r["Issue Type"]
+    """Render one issue as a markdown file with YAML frontmatter."""
+    issue_id, type_ = r["Issue ID"], r["Issue Type"]
     deps, prereq = split_deps(r["Depends On"])
     labels = [x.strip() for x in r["Labels"].split(",") if x.strip()]
     pts = r["Story Points"]
-    meta = [f'**{t}** · {r["Priority"]} · `{r["Status"]}`']
-    if pts: meta.append(f'{pts} pts')
-    meta.append(r["Components"])
-    if r["Due Date"]: meta.append(f'due {r["Due Date"]}')
-    if r["Fix Version"]: meta.append(r["Fix Version"])
 
-    fm = [
+    meta = [f'**{type_}** · {r["Priority"]} · `{r["Status"]}`']
+    if pts:
+        meta.append(f"{pts} pts")
+    meta.append(r["Components"])
+    if r["Due Date"]:
+        meta.append(f'due {r["Due Date"]}')
+    if r["Fix Version"]:
+        meta.append(r["Fix Version"])
+
+    out = [
         "---",
-        f'id: {i}',
-        f'type: {t}',
+        f"id: {issue_id}",
+        f"type: {type_}",
         f'summary: "{r["Summary"]}"',
         f'epic: {r["Epic ID"] or "~"}',
         f'parent: {r["Parent ID"] or "~"}',
@@ -102,48 +136,77 @@ def render(r):
         f'priority: {r["Priority"]}',
         f'story_points: {pts or "~"}',
         f'component: "{r["Components"]}"',
-        f'labels: {yl(labels)}',
-        f'depends_on: {yl([d for d,_ in deps])}',
+        f"labels: {yaml_list(labels)}",
+        f"depends_on: {yaml_list([d for d, _ in deps])}",
         f'assignee: {r["Assignee"] or "~"}',
         f'due_date: {r["Due Date"] or "~"}',
         f'fix_version: {r["Fix Version"] or "~"}',
         f'project_key: {r["Project Key"]}',
-        "---", "",
-        f'# {i} · {r["Summary"]}', "",
-        " · ".join(meta), "",
-        r["Description"], "",
-        "## Acceptance criteria", "", r["Acceptance Criteria"], "",
+        "---",
+        "",
+        f'# {issue_id} · {r["Summary"]}',
+        "",
+        " · ".join(meta),
+        "",
+        r["Description"],
+        "",
+        "## Acceptance criteria",
+        "",
+        r["Acceptance Criteria"],
+        "",
     ]
-    if is_container(i) or (t == "Epic" and epic_kids[i]):
-        children = epic_kids[i] if t == "Epic" else kids[i]
-        fm += ["## Children", ""]
-        for cid in children:
-            c = by_id[cid]
-            fm.append(f'- [`{cid}`]({rel(i, cid)}) · {c["Issue Type"]} · '
-                      f'`{c["Status"]}` · {c["Summary"]}')
-        fm.append("")
-    if deps:
-        fm += ["## Depends on", ""]
-        for d, note in deps:
-            fm.append(f'- [`{d}`]({rel(i, d)}) — {by_id[d]["Summary"]}'
-                      + (f' _({note})_' if note else ""))
-        fm.append("")
-    if prereq:
-        fm += ["## External prerequisites", ""] + [f"- {p}" for p in prereq] + [""]
-    if r["Source Reference"]:
-        fm += ["## Source reference", ""]
-        fm += [f"- `{s.strip()}`" for s in r["Source Reference"].split(";") if s.strip()]
-        fm.append("")
-    fm += ["---", "", "_Generated from `JIRA_ACTIVE_ROADMAP.csv`. "
-           "That CSV remains the Jira import artifact; edit it, then regenerate._"]
-    return "\n".join(fm) + "\n"
 
-if os.path.isdir(OUT): shutil.rmtree(OUT)
-for r in rows:
-    dest = os.path.join(OUT, paths[r["Issue ID"]].replace("/", os.sep))
+    if is_container(issue_id) or (type_ == "Epic" and epic_kids[issue_id]):
+        children = epic_kids[issue_id] if type_ == "Epic" else kids[issue_id]
+        out += ["## Children", ""]
+        for child_id in children:
+            child = by_id[child_id]
+            out.append(
+                f"- [`{child_id}`]({rel(issue_id, child_id)}) · "
+                f'{child["Issue Type"]} · `{child["Status"]}` · {child["Summary"]}'
+            )
+        out.append("")
+
+    if deps:
+        out += ["## Depends on", ""]
+        for dep, note in deps:
+            suffix = f" _({note})_" if note else ""
+            out.append(
+                f"- [`{dep}`]({rel(issue_id, dep)}) — "
+                f'{by_id[dep]["Summary"]}{suffix}'
+            )
+        out.append("")
+
+    if prereq:
+        out += ["## External prerequisites", ""]
+        out += [f"- {p}" for p in prereq]
+        out.append("")
+
+    if r["Source Reference"]:
+        out += ["## Source reference", ""]
+        out += [
+            f"- `{s.strip()}`"
+            for s in r["Source Reference"].split(";")
+            if s.strip()
+        ]
+        out.append("")
+
+    out += [
+        "---",
+        "",
+        "_Generated from `JIRA_ACTIVE_ROADMAP.csv`. That CSV remains the Jira "
+        "import artifact; edit it, then regenerate._",
+    ]
+    return "\n".join(out) + "\n"
+
+
+if os.path.isdir(OUT):
+    shutil.rmtree(OUT)
+for row_ in rows:
+    dest = os.path.join(OUT, paths[row_["Issue ID"]].replace("/", os.sep))
     os.makedirs(os.path.dirname(dest), exist_ok=True)
     with open(dest, "w", encoding="utf-8", newline="\n") as fh:
-        fh.write(render(r))
+        fh.write(render(row_))
 
 print(f"wrote {len(rows)} files")
-print(f"dirs  {sum(1 for _,d,_ in os.walk(OUT) for _ in d)}")
+print(f"dirs  {sum(1 for _, dirnames, _ in os.walk(OUT) for _ in dirnames)}")
