@@ -3,7 +3,7 @@
     'name': 'Accounting Nepal',
     # Bumped so migrations/19.0.1.1.0 runs: the Bikram Sambat group is
     # retired in favour of the calendar preference in nepali_calendar_core.
-    'version': '19.0.1.5.1',   # 1.1.0 = accounting group ladder;
+    'version': '19.0.1.6.0',   # 1.1.0 = accounting group ladder;
                               # 1.2.0 = app gated on accounting rights (SEC-12)
                               # and the group-wiring guard test (UPG-1);
                               # 1.3.0 = matching_status/matching_label and the
@@ -12,6 +12,7 @@
                               # payment against a bank statement line, plus the
                               # first views for account.bank.statement.line;
                               # 1.4.1 = PG-2/PG-4 asserted by a test
+                              # 1.6.0 = exact BS fiscal-year openings in GL/TB
     'countries': ['np'],
     'category': 'Accounting/Accounting',
     'sequence': 11,

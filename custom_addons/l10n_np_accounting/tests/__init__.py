@@ -10,3 +10,4 @@ from . import test_matching_column
 from . import test_js_unit
 from . import test_bank_matching
 from . import test_database_hardening
+from . import test_fiscal_year_reporting

@@ -3,3 +3,4 @@ from . import account_move_line
 from . import res_config_settings
 from . import account_bank_statement_line
 from . import account_payment
+from . import fiscal_year_reporting
